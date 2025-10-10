@@ -27,13 +27,6 @@ class SingleSolution:
     assignment: dict[Pos, Monster]
 
 
-def get_hashable_solution(solution: SingleSolution) -> str:
-    result = []
-    for pos, monster in solution.assignment.items():
-        result.append((pos[0], pos[1], monster.value[0]))
-    return json.dumps(result, sort_keys=True)
-
-
 def get_all_monster_types() -> Iterable[tuple[str, str]]:
     for monster in Monster:
         yield monster, monster.value[1]
@@ -48,11 +41,6 @@ def can_see(pos: Pos, reflect_count: int, monster: Monster) -> bool:
         return reflect_count > 0
     else:
         raise ValueError
-
-
-def get_next_pos(cur_pos: Pos, direction: Direction) -> Pos:
-    delta_x, delta_y = get_deltas(direction)
-    return (cur_pos[0]+delta_y, cur_pos[1]+delta_x)
 
 
 def get_deltas(direction: Direction) -> Tuple[int, int]:
@@ -70,6 +58,18 @@ def get_deltas(direction: Direction) -> Tuple[int, int]:
 
 def get_pos(x: int, y: int) -> Pos:
     return (y, x)
+
+
+def get_next_pos(cur_pos: Pos, direction: Direction) -> Pos:
+    delta_x, delta_y = get_deltas(direction)
+    return (cur_pos[0]+delta_y, cur_pos[1]+delta_x)
+
+
+def get_hashable_solution(solution: SingleSolution) -> str:
+    result = []
+    for pos, monster in solution.assignment.items():
+        result.append((pos[0], pos[1], monster.value[0]))
+    return json.dumps(result, sort_keys=True)
 
 
 def get_char(board: np.array, pos: Pos) -> str:
