@@ -39,10 +39,6 @@ def get_all_monster_types() -> Iterable[tuple[str, str]]:
         yield monster, monster.value[1]
 
 
-def get_pos(x: int, y: int) -> Pos:
-    return (y, x)
-
-
 def can_see(pos: Pos, reflect_count: int, monster: Monster) -> bool:
     if monster == Monster.ZOMBIE:
         return True
@@ -72,11 +68,17 @@ def get_deltas(direction: Direction) -> Tuple[int, int]:
         raise ValueError
 
 
+def get_pos(x: int, y: int) -> Pos:
+    return (y, x)
+
 
 def get_char(board: np.array, pos: Pos) -> str:
     c = board[pos[0]][pos[1]]
-    assert c in ['//', '\\', '*']
+    assert c in ['//', '\\', '**']
     return c
+
+def set_char(board: np.array, pos: Pos, char: str):
+    board[pos[0]][pos[1]] = char
 
 
 def in_bounds(pos: Pos, N: int) -> bool:

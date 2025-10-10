@@ -1,31 +1,22 @@
 import numpy as np
-import importlib
 import board
-from ortools.sat.python import cp_model
-import multiprocessing
-from utils import get_char
+from utils import Monster
 
-importlib.reload(board)
-
+# define board and parameters
 bor = np.array([
-  ['*', '*', '*'], 
-  ['*', '\\', '*'], 
-  ['*', '//', '*']]
-)
-t = np.array([1, 1, 1])
-b = np.array([1, 1, 1])
-r = np.array([1, 1, 1])
-l = np.array([1, 1, 1])
-binst = board.Board(board=bor, sides={'top': t, 'bottom': b, 'right': r, 'left': l})
+  ['**', '**', '//', '\\', '**', '//'],
+  ['**', '**', '\\', '//', '**', '**'],
+  ['//', '\\', '**', '**', '//', '//'],
+  ['**', '**', '**', '**', '**', '**'],
+  ['\\', '\\', '**', '**', '**', '**'],
+  ['**', '//', '\\', '**', '**', '\\'],
+])
+t = np.array([0, 4, 2, 0, 5, 0])
+b = np.array([0, 0, 0, 2, 0, 6])
+r = np.array([3, 4, 0, 3, 5, 0])
+l = np.array([0, 5, 2, 3, 1, 5])
+counts = {Monster.VAMPIRE: 6, Monster.ZOMBIE: 3, Monster.GHOST: 13}
 
-def callback(single_res: board.SingleSolution):
-    print("Solution found")
-    res = np.zeros_like(bor)
-    for pos in binst.get_all_pos():
-      c = get_char(binst.board, pos)
-      if c == '*':
-          c = single_res.assignment[pos].value[0]
-      res[pos[1]][pos[0]] = c
-    print(res)
-
-binst.solve_all(callback=callback)
+# create board and solve
+binst = board.Board(board=bor, sides={'top': t, 'bottom': b, 'right': r, 'left': l}, monster_count=counts)
+binst.solve_and_print()

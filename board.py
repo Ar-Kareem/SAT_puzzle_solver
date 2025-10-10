@@ -8,7 +8,7 @@ from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
 from ortools.sat.python.cp_model import CpSolverSolutionCallback
 
-from utils import Pos, Monster, Direction, get_pos, get_next_pos, in_bounds, get_char, get_all_monster_types, can_see, SingleBeamResult, SingleSolution, get_hashable_solution
+from utils import Pos, Monster, Direction, get_pos, get_next_pos, in_bounds, get_char, get_all_monster_types, can_see, SingleBeamResult, SingleSolution, get_hashable_solution, set_char
 
 class AllSolutionsCollector(CpSolverSolutionCallback):
     def __init__(self, board: "Board", out: List[SingleSolution], max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None):
@@ -47,7 +47,7 @@ class AllSolutionsCollector(CpSolverSolutionCallback):
             raise e
 
 class Board:
-    def __init__(self, board: np.array, sides: dict[str, np.array]):
+    def __init__(self, board: np.array, sides: dict[str, np.array], monster_count: Optional[dict[Monster, int]] = None):
         assert board.ndim == 2, f'board must be 2d, got {board.ndim}'
         assert board.shape[0] == board.shape[1], 'board must be square'
         assert len(sides) == 4, '4 sides must be provided'
@@ -58,7 +58,8 @@ class Board:
         self.N = board.shape[0]
         self.model = cp_model.CpModel()
         self.model_vars: dict[tuple[Pos, str], cp_model.IntVar] = {}
-        self.star_positions: set[Pos] = {pos for pos in self.get_all_pos() if get_char(self.board, pos) == '*'}
+        self.star_positions: set[Pos] = {pos for pos in self.get_all_pos() if get_char(self.board, pos) == '**'}
+        self.monster_count = monster_count
 
         self.create_vars()
         self.add_all_constraints()
@@ -71,7 +72,7 @@ class Board:
     def create_vars(self):
         for pos in self.star_positions:
             c = get_char(self.board, pos)
-            assert c == '*', f'star position {pos} has character {c}'
+            assert c == '**', f'star position {pos} has character {c}'
             monster_vars = []
             for _, monster_name in get_all_monster_types():
                 v = self.model.NewBoolVar(f"{pos}_is_{monster_name}")
@@ -81,32 +82,34 @@ class Board:
 
     def add_all_constraints(self):
         # top edge
-        print("top edge")
         for i, ground in zip(range(self.N), self.sides['top']):
             pos = get_pos(x=i, y=-1)
             beam_result = self.beam(pos, 'down')
             self.model.add(self.get_var(beam_result) == ground)
 
         # left edge
-        print("left edge")
         for i, ground in zip(range(self.N), self.sides['left']):
             pos = get_pos(x=-1, y=i)
             beam_result = self.beam(pos, 'right')
             self.model.add(self.get_var(beam_result) == ground)
 
         # right edge
-        print("right edge")
         for i, ground in zip(range(self.N), self.sides['right']):
             pos = get_pos(x=self.N, y=i)
             beam_result = self.beam(pos, 'left')
             self.model.add(self.get_var(beam_result) == ground)
 
         # bottom edge
-        print("bottom edge")
         for i, ground in zip(range(self.N), self.sides['bottom']):
             pos = get_pos(x=i, y=self.N)
             beam_result = self.beam(pos, 'up')
             self.model.add(self.get_var(beam_result) == ground)
+        
+        if self.monster_count is not None:
+            for monster, limit in self.monster_count.items():
+                monster_name = monster.value[1]
+                monster_vars = [self.model_vars[(pos, monster_name)] for pos in self.star_positions]
+                self.model.add(lxp.Sum(monster_vars) == limit)
 
     def get_var(self, path: list[SingleBeamResult]) -> lxp:
         path_vars = []
@@ -152,8 +155,19 @@ class Board:
         solver.parameters.num_search_workers = multiprocessing.cpu_count()
         solutions: List[SingleSolution] = []
         collector = AllSolutionsCollector(self, solutions, max_solutions=max_solutions, callback=callback)
-        print("Searching for solutions...")
         solver.Solve(self.model, collector)
         print("Solutions found:", len(solutions))
         print("status:", solver.StatusName())
         return solutions
+
+    def solve_and_print(self):
+        def callback(single_res: SingleSolution):
+            print("Solution found")
+            res = np.zeros_like(self.board)
+            for pos in self.get_all_pos():
+                c = get_char(self.board, pos)
+                if c == '**':
+                    c = single_res.assignment[pos].value[0]
+                set_char(res, pos, c)
+            print(res)
+        self.solve_all(callback=callback)
