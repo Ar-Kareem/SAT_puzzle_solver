@@ -6,7 +6,11 @@ import json
 import numpy as np
 
 
-Pos = Tuple[int, int]
+@dataclass(frozen=True)
+class Pos:
+    x: int
+    y: int
+
 
 Direction = Literal['right', 'left', 'down', 'up']
 
@@ -57,29 +61,29 @@ def get_deltas(direction: Direction) -> Tuple[int, int]:
 
 
 def get_pos(x: int, y: int) -> Pos:
-    return (y, x)
+    return Pos(x, y)
 
 
 def get_next_pos(cur_pos: Pos, direction: Direction) -> Pos:
     delta_x, delta_y = get_deltas(direction)
-    return (cur_pos[0]+delta_y, cur_pos[1]+delta_x)
+    return Pos(cur_pos.x+delta_x, cur_pos.y+delta_y)
 
 
 def get_hashable_solution(solution: SingleSolution) -> str:
     result = []
     for pos, monster in solution.assignment.items():
-        result.append((pos[0], pos[1], monster.value[0]))
+        result.append((pos.x, pos.y, monster.value[0]))
     return json.dumps(result, sort_keys=True)
 
 
 def get_char(board: np.array, pos: Pos) -> str:
-    c = board[pos[0]][pos[1]]
+    c = board[pos.y][pos.x]
     assert c in ['//', '\\', '**']
     return c
 
 def set_char(board: np.array, pos: Pos, char: str):
-    board[pos[0]][pos[1]] = char
+    board[pos.y][pos.x] = char
 
 
 def in_bounds(pos: Pos, N: int) -> bool:
-    return 0 <= pos[0] < N and 0 <= pos[1] < N
+    return 0 <= pos.y < N and 0 <= pos.x < N
