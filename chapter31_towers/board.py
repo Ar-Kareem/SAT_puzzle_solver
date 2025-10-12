@@ -23,26 +23,8 @@ class SingleSolution:
     assignment: dict[Pos, int]
 
 
-def get_deltas(direction: Direction) -> Tuple[int, int]:
-    if direction == 'right':
-        return +1, 0
-    elif direction == 'left':
-        return -1, 0
-    elif direction == 'down':
-        return 0, +1
-    elif direction == 'up':
-        return 0, -1
-    else:
-        raise ValueError
-
-
 def get_pos(x: int, y: int) -> Pos:
     return Pos(x=x, y=y)
-
-
-def get_next_pos(cur_pos: Pos, direction: Direction) -> Pos:
-    delta_x, delta_y = get_deltas(direction)
-    return Pos(x=cur_pos.x+delta_x, y=cur_pos.y+delta_y)
 
 
 def get_hashable_solution(solution: SingleSolution) -> str:
