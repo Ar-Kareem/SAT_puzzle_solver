@@ -200,33 +200,43 @@ class Board:
     def add_all_constraints(self):
         # top edge
         for i, ground in zip(range(self.N), self.sides['top']):
+            if ground == -1:
+                continue
             pos = get_pos(x=i, y=-1)
             beam_result = beam(self.board, pos, 'down')
             self.model.add(self.get_var(beam_result) == ground)
 
         # left edge
         for i, ground in zip(range(self.N), self.sides['left']):
+            if ground == -1:
+                continue
             pos = get_pos(x=-1, y=i)
             beam_result = beam(self.board, pos, 'right')
             self.model.add(self.get_var(beam_result) == ground)
 
         # right edge
         for i, ground in zip(range(self.N), self.sides['right']):
+            if ground == -1:
+                continue
             pos = get_pos(x=self.N, y=i)
             beam_result = beam(self.board, pos, 'left')
             self.model.add(self.get_var(beam_result) == ground)
 
         # bottom edge
         for i, ground in zip(range(self.N), self.sides['bottom']):
+            if ground == -1:
+                continue
             pos = get_pos(x=i, y=self.N)
             beam_result = beam(self.board, pos, 'up')
             self.model.add(self.get_var(beam_result) == ground)
         
         if self.monster_count is not None:
-            for monster, limit in self.monster_count.items():
+            for monster, count in self.monster_count.items():
+                if count == -1:
+                    continue
                 monster_name = monster.value[1]
                 monster_vars = [self.model_vars[(pos, monster_name)] for pos in self.star_positions]
-                self.model.add(lxp.Sum(monster_vars) == limit)
+                self.model.add(lxp.Sum(monster_vars) == count)
 
     def get_var(self, path: list[SingleBeamResult]) -> lxp:
         path_vars = []

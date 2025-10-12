@@ -21,4 +21,3 @@ counts = {Monster.VAMPIRE: 6, Monster.ZOMBIE: 3, Monster.GHOST: 13}
 binst = board.Board(board=bor, sides={'top': t, 'bottom': b, 'right': r, 'left': l}, monster_count=counts)
 solutions = binst.solve_and_print()
 assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
-print(solutions[0])
