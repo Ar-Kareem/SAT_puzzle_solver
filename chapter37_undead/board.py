@@ -42,7 +42,7 @@ def get_all_monster_types() -> Iterable[tuple[str, str]]:
         yield monster, monster.value[1]
 
 
-def can_see(pos: Pos, reflect_count: int, monster: Monster) -> bool:
+def can_see(reflect_count: int, monster: Monster) -> bool:
     if monster == Monster.ZOMBIE:
         return True
     elif monster == Monster.VAMPIRE:
@@ -82,6 +82,12 @@ def get_hashable_solution(solution: SingleSolution) -> str:
     return json.dumps(result, sort_keys=True)
 
 
+def get_all_pos(N):
+    for y in range(N):
+        for x in range(N):
+            yield get_pos(x, y)
+
+
 def get_char(board: np.array, pos: Pos) -> str:
     c = board[pos.y][pos.x]
     assert c in ['//', '\\', '**']
@@ -94,10 +100,42 @@ def set_char(board: np.array, pos: Pos, char: str):
 def in_bounds(pos: Pos, N: int) -> bool:
     return 0 <= pos.y < N and 0 <= pos.x < N
 
+
+def beam(board, start_pos: Pos, direction: Direction) -> list[SingleBeamResult]:
+    N = board.shape[0]
+    cur_result: list[SingleBeamResult] = []
+    reflect_count = 0
+    cur_pos = start_pos
+    while True:
+        cur_pos = get_next_pos(cur_pos, direction)
+        if not in_bounds(cur_pos, N):
+            break
+        cur_pos_char = get_char(board, cur_pos)
+        if cur_pos_char == '//':
+            direction = {
+                'right': 'up',
+                'up': 'right',
+                'down': 'left',
+                'left': 'down'
+            }[direction]
+            reflect_count += 1
+        elif cur_pos_char == '\\':
+            direction = {
+                'right': 'down',
+                'down': 'right',
+                'up': 'left',
+                'left': 'up'
+            }[direction]
+            reflect_count += 1
+        else:
+            # not a mirror
+            cur_result.append(SingleBeamResult(cur_pos, reflect_count))
+    return cur_result
+
+
 class AllSolutionsCollector(CpSolverSolutionCallback):
-    def __init__(self, board: "Board", out: List[SingleSolution], max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None):
+    def __init__(self, model_vars, out: List[SingleSolution], max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None):
         super().__init__()
-        self.board = board
         self.out = out
         self.unique_solutions = set()
         self.max_solutions = max_solutions
@@ -105,7 +143,7 @@ class AllSolutionsCollector(CpSolverSolutionCallback):
         # Precompute a name->Monster map and group vars by cell for fast lookup
         self.name_to_monster: Dict[str, Monster] = {m.value[1]: m for m in Monster}
         self.vars_by_pos: Dict[Pos, List[tuple[str, cp_model.IntVar]]] = {}
-        for (pos, monster_name), var in board.model_vars.items():
+        for (pos, monster_name), var in model_vars.items():
             self.vars_by_pos.setdefault(pos, []).append((monster_name, var))
 
     def on_solution_callback(self):
@@ -142,16 +180,11 @@ class Board:
         self.N = board.shape[0]
         self.model = cp_model.CpModel()
         self.model_vars: dict[tuple[Pos, str], cp_model.IntVar] = {}
-        self.star_positions: set[Pos] = {pos for pos in self.get_all_pos() if get_char(self.board, pos) == '**'}
+        self.star_positions: set[Pos] = {pos for pos in get_all_pos(self.N) if get_char(self.board, pos) == '**'}
         self.monster_count = monster_count
 
         self.create_vars()
         self.add_all_constraints()
-
-    def get_all_pos(self):
-        for y in range(self.N):
-            for x in range(self.N):
-                yield get_pos(x, y)
 
     def create_vars(self):
         for pos in self.star_positions:
@@ -168,25 +201,25 @@ class Board:
         # top edge
         for i, ground in zip(range(self.N), self.sides['top']):
             pos = get_pos(x=i, y=-1)
-            beam_result = self.beam(pos, 'down')
+            beam_result = beam(self.board, pos, 'down')
             self.model.add(self.get_var(beam_result) == ground)
 
         # left edge
         for i, ground in zip(range(self.N), self.sides['left']):
             pos = get_pos(x=-1, y=i)
-            beam_result = self.beam(pos, 'right')
+            beam_result = beam(self.board, pos, 'right')
             self.model.add(self.get_var(beam_result) == ground)
 
         # right edge
         for i, ground in zip(range(self.N), self.sides['right']):
             pos = get_pos(x=self.N, y=i)
-            beam_result = self.beam(pos, 'left')
+            beam_result = beam(self.board, pos, 'left')
             self.model.add(self.get_var(beam_result) == ground)
 
         # bottom edge
         for i, ground in zip(range(self.N), self.sides['bottom']):
             pos = get_pos(x=i, y=self.N)
-            beam_result = self.beam(pos, 'up')
+            beam_result = beam(self.board, pos, 'up')
             self.model.add(self.get_var(beam_result) == ground)
         
         if self.monster_count is not None:
@@ -200,45 +233,15 @@ class Board:
         for square in path:
             assert square.position in self.star_positions, f'square {square.position} is not a star position'
             for monster, monster_name in get_all_monster_types():
-                if can_see(square.position, square.reflect_count, monster):
+                if can_see(square.reflect_count, monster):
                     path_vars.append(self.model_vars[(square.position, monster_name)])
         return lxp.Sum(path_vars) if path_vars else 0
-
-    def beam(self, start_pos: Pos, direction: Direction) -> list[SingleBeamResult]:
-        cur_result: list[SingleBeamResult] = []
-        reflect_count = 0
-        cur_pos = start_pos
-        while True:
-            cur_pos = get_next_pos(cur_pos, direction)
-            if not in_bounds(cur_pos, self.N):
-                break
-            cur_pos_char = get_char(self.board, cur_pos)
-            if cur_pos_char == '//':
-                direction = {
-                    'right': 'up',
-                    'up': 'right',
-                    'down': 'left',
-                    'left': 'down'
-                }[direction]
-                reflect_count += 1
-            elif cur_pos_char == '\\':
-                direction = {
-                    'right': 'down',
-                    'down': 'right',
-                    'up': 'left',
-                    'left': 'up'
-                }[direction]
-                reflect_count += 1
-            else:
-                # not a mirror
-                cur_result.append(SingleBeamResult(cur_pos, reflect_count))
-        return cur_result
 
     def solve_all(self, max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None) -> List[SingleSolution]:
         solver = cp_model.CpSolver()
         solver.parameters.num_search_workers = multiprocessing.cpu_count()
         solutions: List[SingleSolution] = []
-        collector = AllSolutionsCollector(self, solutions, max_solutions=max_solutions, callback=callback)
+        collector = AllSolutionsCollector(self.model_vars, solutions, max_solutions=max_solutions, callback=callback)
         solver.Solve(self.model, collector)
         print("Solutions found:", len(solutions))
         print("status:", solver.StatusName())
@@ -248,10 +251,10 @@ class Board:
         def callback(single_res: SingleSolution):
             print("Solution found")
             res = np.zeros_like(self.board)
-            for pos in self.get_all_pos():
+            for pos in get_all_pos(self.N):
                 c = get_char(self.board, pos)
                 if c == '**':
                     c = single_res.assignment[pos].value[0]
                 set_char(res, pos, c)
             print(res)
-        self.solve_all(callback=callback)
+        return self.solve_all(callback=callback)
