@@ -424,7 +424,7 @@ Which exactly matches the true solutions:
 
 <img src="./images/range_solved.png" alt="Range solved" width="500">
 
-### UnDead (Puzzle Type #7)
+### UnDead (Puzzle Type #8)
 
 Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/undead.html
 
@@ -475,7 +475,7 @@ Which exactly matches the true solutions:
 
 <img src="./images/undead_solved.png" alt="UnDead solved" width="500">
 
-### Unruly (Puzzle Type #8)
+### Unruly (Puzzle Type #9)
 
 Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/unruly.html
 
@@ -533,7 +533,7 @@ Which exactly matches the true solutions:
 
 <img src="./images/unruly_solved.png" alt="Unruly solved" width="500">
 
-### Mosaic (Puzzle Type #9)
+### Mosaic (Puzzle Type #10)
 
 Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/mosaic.html
 
