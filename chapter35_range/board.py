@@ -38,7 +38,7 @@ def in_bounds(pos: Pos, V: int, H: int) -> bool:
 
 def get_neighbors4(pos: Pos, V: int, H: int) -> List[Pos]:
     for dx, dy in ((1,0),(-1,0),(0,1),(0,-1)):
-        p2 = Pos(pos.x+dx, pos.y+dy)
+        p2 = get_pos(x=pos.x+dx, y=pos.y+dy)
         if in_bounds(p2, V, H):
             yield p2
 
@@ -47,10 +47,23 @@ def get_ray(pos: Pos, V: int, H: int, dx: int, dy: int) -> List[Pos]:
     out = []
     x, y = pos.x + dx, pos.y + dy
     while 0 <= y < V and 0 <= x < H:
-        out.append(Pos(x, y))
+        out.append(get_pos(x=x, y=y))
         x += dx
         y += dy
     return out
+
+
+def and_constraint(model: cp_model.CpModel, target: cp_model.IntVar, cs: list[cp_model.IntVar]):
+    for c in cs:
+        model.Add(target <= c)
+    model.Add(target >= sum(cs) - len(cs) + 1)
+
+
+def or_constraint(model: cp_model.CpModel, target: cp_model.IntVar, cs: list[cp_model.IntVar]):
+    for c in cs:
+        model.Add(target >= c)
+    model.Add(target <= sum(cs))
+
 
 
 class AllSolutionsCollector(CpSolverSolutionCallback):
@@ -64,9 +77,6 @@ class AllSolutionsCollector(CpSolverSolutionCallback):
         self.raw_count = 0
 
     def on_solution_callback(self):
-        self.raw_count += 1
-        if self.raw_count % 100 == 0:
-            print(f"raw count: {self.raw_count}")
         assignment: Dict[Pos, int] = {}
         for pos, var in self.vars_by_pos.items():
             assignment[pos] = self.Value(var)
@@ -115,14 +125,10 @@ class Board:
         # Percolation layers R_t (monotone flood fill)
         T = self.V * self.H  # large enough to cover whole board
         for t in range(T + 1):
-            layer: dict[Pos, cp_model.IntVar] = {}
+            Rt: dict[Pos, cp_model.IntVar] = {}
             for pos in get_all_pos(self.V, self.H):
-                layer[pos] = self.model.NewBoolVar(f"R[{t}][{pos.x},{pos.y}]")
-            self.reach_layers.append(layer)
-
-        # Seed: R0 = root
-        for pos in get_all_pos(self.V, self.H):
-            self.model.Add(self.reach_layers[0][pos] == self.root[pos])
+                Rt[pos] = self.model.NewBoolVar(f"R[{t}][{pos.x},{pos.y}]")
+            self.reach_layers.append(Rt)
 
     def add_all_constraints(self):
         self.no_adjacent_blacks()
@@ -142,46 +148,37 @@ class Board:
     def white_connectivity_percolation(self):
         """
         Layered percolation:
-          - R_t is monotone nondecreasing in t
-          - A cell can 'turn on' at layer t+1 if it's white and has a neighbor on at layer t
-          - Final layer equals the white mask: R_T[p] == w[p]  => all whites are connected to the unique root
+          - root is exactly the first white cell
+          - R_t is monotone nondecreasing in t (R_t+1 >= R_t)
+          - A cell can 'turn on' at layer t+1 iff it's white and has a neighbor on at layer t (or is root)
+          - Final layer is equal to the white mask: R_T[p] == w[p]  => all whites are connected to the unique root
         """
-        # to find unique solutions easily, we make only 1 possible root allowed; root implies the first white cell and all previous cells are black
-        prev_cells: List[cp_model.IntVar] = []
+        # to find unique solutions easily, we make only 1 possible root allowed; root is exactly the first white cell
+        prev_cells_black: List[cp_model.IntVar] = []
         for pos in get_all_pos(self.V, self.H):
-            self.model.Add(self.root[pos] == 1).OnlyEnforceIf([self.w[pos]] + prev_cells)
-            prev_cells.append(self.b[pos])
+            and_constraint(self.model, target=self.root[pos], cs=[self.w[pos]] + prev_cells_black)
+            prev_cells_black.append(self.b[pos])
 
-        # Exactly one root overall (assumes at least one white exists)
-        self.model.Add(sum(self.root.values()) == 1)
+        # Seed: R0 = root
+        for pos in get_all_pos(self.V, self.H):
+            self.model.Add(self.reach_layers[0][pos] == self.root[pos])
 
-        T = len(self.reach_layers) - 1
-        for t in range(T):
+        T = len(self.reach_layers)
+        for t in range(1, T):
+            Rt_prev = self.reach_layers[t - 1]
             Rt = self.reach_layers[t]
-            Rt1 = self.reach_layers[t + 1]
             for p in get_all_pos(self.V, self.H):
-                # Monotonicity: once reached, stays reached
-                self.model.Add(Rt1[p] >= Rt[p])
-                # Can only be reached if white
-                self.model.Add(Rt1[p] <= self.w[p])
-
-                # Helper "AND" vars for (white[p] AND Rt[q]) for each neighbor q
+                # Rt[p] = Rt_prev[p] | (white[p] & Rt_prev[neighbour #1]) | (white[p] & Rt_prev[neighbour #2]) | ...
+                # Create helper (white[p] & Rt_prev[neighbour #X]) for each neighbor q
                 neigh_helpers: List[cp_model.IntVar] = []
                 for q in get_neighbors4(p, self.V, self.H):
-                    a = self.model.NewBoolVar(f"A[{t+1}][{p.x},{p.y}]<-({q.x},{q.y})")
-                    # a == w[p] & Rt[q]
-                    self.model.Add(a <= self.w[p])
-                    self.model.Add(a <= Rt[q])
-                    self.model.Add(a >= self.w[p] + Rt[q] - 1)
+                    a = self.model.NewBoolVar(f"A[{t}][{p.x},{p.y}]<-({q.x},{q.y})")
+                    and_constraint(self.model, target=a, cs=[self.w[p], Rt_prev[q]])
                     neigh_helpers.append(a)
-                    # If supported by any neighbor, you can be reached
-                    self.model.Add(Rt1[p] >= a)
-
-                # Upper bound to tighten: Rt1[p] can't exceed previous reach or sum of supports
-                self.model.Add(Rt1[p] <= Rt[p] + sum(neigh_helpers))
+                or_constraint(self.model, target=Rt[p], cs=[Rt_prev[p]] + neigh_helpers)
 
         # All whites must be reached by the final layer
-        RT = self.reach_layers[T]
+        RT = self.reach_layers[T - 1]
         for p in get_all_pos(self.V, self.H):
             self.model.Add(RT[p] == self.w[p])
 
@@ -196,7 +193,7 @@ class Board:
                 k = self.clues[y][x]
                 if k == -1:
                     continue
-                p = Pos(x, y)
+                p = get_pos(x=x, y=y)
                 # Numbered cell must be white
                 self.model.Add(self.b[p] == 0)
 
@@ -206,7 +203,7 @@ class Board:
                     ray = get_ray(p, self.V, self.H, dx, dy)  # cells outward
                     if not ray:
                         continue
-                    # Chain: v0 = w[ray[0]]; vt = vt-1 & w[ray[t]]
+                    # Chain: v0 = w[ray[0]]; vt = w[ray[t]] & vt-1
                     prev = None
                     for idx, cell in enumerate(ray):
                         v = self.model.NewBoolVar(f"vis[{x},{y}]->({dx},{dy})[{idx}]")
@@ -214,9 +211,7 @@ class Board:
                             # v0 == w[cell]
                             self.model.Add(v == self.w[cell])
                         else:
-                            self.model.Add(v <= prev)
-                            self.model.Add(v <= self.w[cell])
-                            self.model.Add(v >= prev + self.w[cell] - 1)
+                            and_constraint(self.model, target=v, cs=[self.w[cell], prev])
                         vis_vars.append(v)
                         prev = v
 
