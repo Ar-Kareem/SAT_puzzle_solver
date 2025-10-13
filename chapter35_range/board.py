@@ -5,8 +5,8 @@ import numpy as np
 from ortools.sat.python import cp_model
 
 sys.path.append(str(Path(__file__).parent.parent))
-from core.utils import Pos, get_all_pos, set_char, get_pos, get_neighbors4, SingleSolution
-from core.utils_ortools import and_constraint, or_constraint, generic_solve_all
+from core.utils import Pos, get_all_pos, set_char, get_pos, get_neighbors4
+from core.utils_ortools import and_constraint, or_constraint, generic_solve_all, SingleSolution
 
 
 def get_ray(pos: Pos, V: int, H: int, dx: int, dy: int) -> list[Pos]:
@@ -153,10 +153,9 @@ class Board:
             return assignment
         def callback(single_res: SingleSolution):
             print("Solution:")
-            res = np.full((self.V, self.H), '', dtype=object)
+            res = np.full((self.V, self.H), ' ', dtype=object)
             for pos in get_all_pos(self.V, self.H):
-                c = 'B' if single_res.assignment[pos] == 1 else '.'
+                c = 'B' if single_res.assignment[pos] == 1 else ' '
                 set_char(res, pos, c)
-            for row in res:
-                print(' '.join(row))
+            print(res)
         return generic_solve_all(self, board_to_assignment, callback=callback)

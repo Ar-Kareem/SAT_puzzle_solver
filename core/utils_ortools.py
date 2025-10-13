@@ -1,9 +1,18 @@
 import time
+import json
+from dataclasses import dataclass
 from typing import List, Optional, Callable, Any
+
 from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import CpSolverSolutionCallback
 
-from core.utils import Pos, SingleSolution, get_hashable_solution
+from core.utils import Pos
+
+
+@dataclass(frozen=True)
+class SingleSolution:
+    assignment: dict[Pos, str|int]
+
 
 def and_constraint(model: cp_model.CpModel, target: cp_model.IntVar, cs: list[cp_model.IntVar]):
     for c in cs:
@@ -15,6 +24,13 @@ def or_constraint(model: cp_model.CpModel, target: cp_model.IntVar, cs: list[cp_
     for c in cs:
         model.Add(target >= c)
     model.Add(target <= sum(cs))
+
+
+def get_hashable_solution(solution: SingleSolution) -> str:
+    result = []
+    for pos, v in solution.assignment.items():
+        result.append((pos.x, pos.y, v))
+    return json.dumps(result, sort_keys=True)
 
 
 class AllSolutionsCollector(CpSolverSolutionCallback):

@@ -18,11 +18,6 @@ class Pos:
     y: int
 
 
-@dataclass(frozen=True)
-class SingleSolution:
-    assignment: dict[Pos, str|int]
-
-
 def get_pos(x: int, y: int) -> Pos:
     return Pos(x=x, y=y)
 
@@ -84,10 +79,3 @@ def get_deltas(direction: Direction) -> Tuple[int, int]:
         return 0, -1
     else:
         raise ValueError
-
-
-def get_hashable_solution(solution: SingleSolution) -> str:
-    result = []
-    for pos, v in solution.assignment.items():
-        result.append((pos.x, pos.y, v))
-    return json.dumps(result, sort_keys=True)

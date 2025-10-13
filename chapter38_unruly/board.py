@@ -6,8 +6,8 @@ from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
 
 sys.path.append(str(Path(__file__).parent.parent))
-from core.utils import Pos, get_all_pos, set_char, get_pos, get_char, SingleSolution
-from core.utils_ortools import generic_solve_all
+from core.utils import Pos, get_all_pos, set_char, get_pos, get_char
+from core.utils_ortools import generic_solve_all, SingleSolution
 
 
 class Board:
@@ -63,7 +63,7 @@ class Board:
             return assignment
         def callback(single_res: SingleSolution):
             print("Solution found")
-            res = np.zeros_like(self.board)
+            res = np.full((self.V, self.H), ' ', dtype=object)
             for pos in get_all_pos(self.V, self.H):
                 c = get_char(self.board, pos)
                 if c == '*':

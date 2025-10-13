@@ -7,8 +7,8 @@ from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
 
 sys.path.append(str(Path(__file__).parent.parent))
-from core.utils import Pos, get_all_pos, get_char, set_char, in_bounds, get_next_pos, get_neighbors4, Direction, SingleSolution
-from core.utils_ortools import generic_solve_all
+from core.utils import Pos, get_all_pos, get_char, set_char, in_bounds, get_next_pos, get_neighbors4, Direction
+from core.utils_ortools import generic_solve_all, SingleSolution
 
 
 class State(Enum):
@@ -87,7 +87,7 @@ class Board:
             return assignment
         def callback(single_res: SingleSolution):
             print("Solution found")
-            res = np.zeros_like(self.board)
+            res = np.full((self.N, self.N), ' ', dtype=object)
             for pos in get_all_pos(self.N):
                 c = get_char(self.board, pos)
                 if c == '*':
