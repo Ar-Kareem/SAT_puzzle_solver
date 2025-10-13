@@ -2,20 +2,21 @@ import numpy as np
 import board
 from board import Monster
 
-# define board and parameters
+# https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/undead.html#7x7:5,12,11,aRdLcRdRRbLRRLRaRLaRaRLaRRaLLLdRe,3,0,3,0,5,6,0,0,8,0,4,2,2,4,0,2,8,3,1,2,5,2,2,0,0,8,4,1
 bor = np.array([
-  ['**', '**', '//', '\\', '**', '//'],
-  ['**', '**', '\\', '//', '**', '**'],
-  ['//', '\\', '**', '**', '//', '//'],
-  ['**', '**', '**', '**', '**', '**'],
-  ['\\', '\\', '**', '**', '**', '**'],
-  ['**', '//', '\\', '**', '**', '\\'],
+  ['**', '//', '**', '**', '**', '**', '\\'],
+  ['**', '**', '**', '//', '**', '**', '**'],
+  ['**', '//', '//', '**', '**', '\\', '//'],
+  ['//', '\\', '//', '**', '//', '\\', '**'],
+  ['//', '**', '//', '\\', '**', '//', '//'],
+  ['**', '\\', '\\', '\\', '**', '**', '**'],
+  ['**', '//', '**', '**', '**', '**', '**'],
 ])
-t = np.array([0, 4, 2, 0, 5, 0])
-b = np.array([0, 0, 0, 2, 0, 6])
-r = np.array([3, 4, 0, 3, 5, 0])
-l = np.array([0, 5, 2, 3, 1, 5])
-counts = {Monster.VAMPIRE: 6, Monster.ZOMBIE: 3, Monster.GHOST: 13}
+t = np.array([3, 0, 3, 0, 5, 6, 0])
+b = np.array([5, 2, 1, 3, 8, 2, 0])
+r = np.array([0, 8, 0, 4, 2, 2, 4])
+l = np.array([1, 4, 8, 0, 0, 2, 2])
+counts = {Monster.GHOST: 5, Monster.VAMPIRE: 12, Monster.ZOMBIE: 11}
 
 # create board and solve
 binst = board.Board(board=bor, sides={'top': t, 'bottom': b, 'right': r, 'left': l}, monster_count=counts)

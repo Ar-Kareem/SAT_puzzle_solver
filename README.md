@@ -10,7 +10,7 @@ You can play the puzzles online here: https://www.chiark.greenend.org.uk/~sgtath
 
 Only a few puzzles in the website have solvers implemented here. Here we list them:
 
-### Nonograms
+### Nonograms (Puzzle Type #1)
 
 Called "Pattern" in the website.
 
@@ -64,7 +64,7 @@ True solutions:
 
 <img src="./images/nonogram_solved.png" alt="Nonogram solved" width="500">
 
-### Light Up
+### Light Up (Puzzle Type #2)
 
 Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/lightup.html
 
@@ -79,17 +79,17 @@ Code to utilize this package and solve the puzzle:
 import numpy as np
 import board
 bor = np.array([
-  ['*', '*', '0', '*', 'W', 'W', 'W', '*', '*', '*'],
-  ['*', '*', '*', '*', '*', '*', '*', '1', '*', '*'],
-  ['*', '*', '2', '*', '*', '2', '*', '*', '*', '*'],
-  ['*', '*', '*', '3', '*', '*', '*', '0', '*', '*'],
-  ['0', '*', '*', '*', '3', '*', '*', '*', '*', '0'],
-  ['W', '*', '*', '*', '*', '1', '*', '*', '*', '0'],
-  ['*', '*', 'W', '*', '*', '*', '0', '*', '*', '*'],
-  ['*', '*', '*', '*', 'W', '*', '*', 'W', '*', '*'],
-  ['*', '*', '1', '*', '*', '*', '*', '*', '*', '*'],
-  ['*', '*', '*', '1', '1', 'W', '*', '2', '*', '*'],
-])
+  ['*', '0', '*', '*', '*', '*', 'W', '*', '*', '*'],
+  ['*', '*', '*', '0', '*', '*', '*', '*', '*', '1'],
+  ['W', '*', 'W', '*', '*', 'W', '*', '*', '0', '*'],
+  ['0', '*', '*', '*', '3', '*', 'W', '*', '0', '*'],
+  ['*', '*', '*', '*', 'W', '*', '2', '*', 'W', '*'],
+  ['*', '1', '*', 'W', '*', '2', '*', '*', '*', '*'],
+  ['*', '0', '*', 'W', '*', 'W', '*', '*', '*', 'W'],
+  ['*', '0', '*', '*', '1', '*', '*', '2', '*', 'W'],
+  ['0', '*', '*', '*', '*', '*', '1', '*', '*', '*'],
+  ['*', '*', '*', '2', '*', '*', '*', '*', 'W', '*'],
+])  # W is wall, * is space, # is number
 
 binst = board.Board(board=bor)
 solutions = binst.solve_and_print()
@@ -97,23 +97,233 @@ solutions = binst.solve_and_print()
 Output:
 ```
 Solution found
-[['L' ' ' '0' ' ' 'W' 'W' 'W' 'L' ' ' ' ']
- [' ' ' ' ' ' ' ' ' ' 'L' ' ' '1' ' ' 'L']
- [' ' 'L' '2' 'L' ' ' '2' 'L' ' ' ' ' ' ']
- [' ' ' ' ' ' '3' 'L' ' ' ' ' '0' ' ' ' ']
- ['0' ' ' ' ' 'L' '3' 'L' ' ' ' ' ' ' '0']
- ['W' ' ' 'L' ' ' ' ' '1' ' ' 'L' ' ' '0']
- [' ' ' ' 'W' ' ' 'L' ' ' '0' ' ' ' ' ' ']
- ['L' ' ' ' ' ' ' 'W' 'L' ' ' 'W' ' ' 'L']
- [' ' ' ' '1' ' ' 'L' ' ' ' ' ' ' ' ' ' ']
- [' ' ' ' 'L' '1' '1' 'W' 'L' '2' 'L' ' ']]
+[[' ' '0' ' ' ' ' ' ' 'L' 'W' ' ' ' ' 'L']
+ ['L' ' ' ' ' '0' ' ' ' ' 'L' ' ' ' ' '1']
+ ['W' 'L' 'W' ' ' 'L' 'W' ' ' ' ' '0' ' ']
+ ['0' ' ' ' ' 'L' '3' 'L' 'W' ' ' '0' ' ']
+ [' ' ' ' 'L' ' ' 'W' ' ' '2' 'L' 'W' 'L']
+ ['L' '1' ' ' 'W' 'L' '2' 'L' ' ' ' ' ' ']
+ [' ' '0' ' ' 'W' ' ' 'W' ' ' ' ' ' ' 'W']
+ [' ' '0' ' ' ' ' '1' 'L' ' ' '2' 'L' 'W']
+ ['0' ' ' ' ' 'L' ' ' ' ' '1' 'L' ' ' ' ']
+ [' ' 'L' ' ' '2' 'L' ' ' ' ' ' ' 'W' 'L']]
+Solutions found: 1
+status: OPTIMAL
+```
+
+Which exactly matches the true solutions (Remember, the goal of the puzzle is to find where to place the lights, marked as 'L' in the solution above):
+
+<img src="./images/lightup_solved.png" alt="Light Up solved" width="500">
+
+### Towers (Puzzle Type #3)
+
+Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/towers.html
+
+Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/towers.html#towers
+
+Unsolved puzzle:
+
+<img src="./images/towers_unsolved.png" alt="Towers unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+```python
+import numpy as np
+import board
+bor = np.array([
+  ['*', '*', '*', '*', '*', '*'],
+  ['*', '*', '*', '*', '*', '*'],
+  ['*', '*', '3', '*', '*', '*'],
+  ['*', '*', '*', '*', '*', '*'],
+  ['*', '*', '*', '*', '*', '*'],
+  ['*', '*', '*', '*', '*', '*'],
+])
+t = np.array([2, -1, 2, 2, 2, 3])
+b = np.array([2, 4, -1, 4, -1, -1])
+r = np.array([3, -1, 2, -1, -1, -1])
+l = np.array([-1, -1, -1, 2, -1, 4])
+binst = board.Board(board=bor, sides={'top': t, 'bottom': b, 'right': r, 'left': l})
+solutions = binst.solve_and_print()
+```
+Output:
+```
+Solution found
+[['5' '6' '4' '1' '2' '3']
+ ['3' '4' '2' '6' '1' '5']
+ ['4' '5' '3' '2' '6' '1']
+ ['2' '1' '6' '5' '3' '4']
+ ['6' '3' '1' '4' '5' '2']
+ ['1' '2' '5' '3' '4' '6']]
 Solutions found: 1
 status: OPTIMAL
 ```
 
 Which exactly matches the true solutions:
 
-<img src="./images/lightup_solved.png" alt="Light Up solved" width="500">
+<img src="./images/towers_solved.png" alt="Towers solved" width="500">
+
+### Magnets (Puzzle Type #4)
+
+Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/magnets.html
+
+Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/magnets.html#magnets
+
+Unsolved puzzle:
+
+<img src="./images/magnets_unsolved.png" alt="Magnets unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+```python
+import numpy as np
+import board
+bor = np.array([
+  ['H', 'H', 'H', 'H', 'V', 'V', 'V', 'V', 'H', 'H'],
+  ['H', 'H', 'H', 'H', 'V', 'V', 'V', 'V', 'V', 'V'],
+  ['H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'V', 'V'],
+  ['V', 'V', 'V', 'H', 'H', 'H', 'H', 'H', 'H', 'V'],
+  ['V', 'V', 'V', 'V', 'V', 'V', 'V', 'H', 'H', 'V'],
+  ['V', 'H', 'H', 'V', 'V', 'V', 'V', 'V', 'V', 'V'],
+  ['V', 'V', 'V', 'V', 'V', 'H', 'H', 'V', 'V', 'V'],
+  ['V', 'V', 'V', 'V', 'V', 'V', 'H', 'H', 'H', 'H'],
+  ['V', 'H', 'H', 'H', 'H', 'V', 'H', 'H', 'H', 'H'],
+])
+pos_v = np.array([-1, -1, 3, 5, 3, 3, -1, 3, -1, 4])
+neg_v = np.array([-1, 2, 3, 4, -1, 3, 4, 3, 4, 4])
+pos_h = np.array([5, -1, -1, -1, 5, -1, 3, 1, -1])
+neg_h = np.array([4, -1, 4, -1, 5, 4, -1, 2, -1])
+
+binst = board.Board(board=bor, sides={'pos_v': pos_v, 'neg_v': neg_v, 'pos_h': pos_h, 'neg_h': neg_h})
+solutions = binst.solve_and_print()
+```
+Output:
+```
+Solution found
+[['-' '+' '-' '+' ' ' '+' '-' '+' '-' '+']
+ [' ' ' ' '+' '-' ' ' '-' '+' '-' '+' '-']
+ ['-' '+' '-' '+' ' ' ' ' '-' '+' '-' '+']
+ ['+' '-' '+' '-' '+' '-' '+' '-' '+' '-']
+ ['-' '+' '-' '+' '-' '+' '-' '+' '-' '+']
+ [' ' '-' '+' '-' '+' '-' '+' ' ' '+' '-']
+ [' ' ' ' ' ' '+' '-' '+' '-' ' ' '-' '+']
+ ['-' ' ' ' ' '-' '+' ' ' ' ' ' ' ' ' ' ']
+ ['+' ' ' ' ' '+' '-' ' ' '+' '-' '+' '-']]
+Solutions found: 1
+status: OPTIMAL
+```
+
+Which exactly matches the true solutions:
+
+<img src="./images/magnets_solved.png" alt="Magnets solved" width="500">
+
+### UnDead (Puzzle Type #5)
+
+Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/undead.html
+
+Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/undead.html#undead
+
+Unsolved puzzle:
+
+<img src="./images/undead_unsolved.png" alt="UnDead unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+```python
+import numpy as np
+import board
+bor = np.array([
+  ['**', '//', '**', '**', '**', '**', '\\'],
+  ['**', '**', '**', '//', '**', '**', '**'],
+  ['**', '//', '//', '**', '**', '\\', '//'],
+  ['//', '\\', '//', '**', '//', '\\', '**'],
+  ['//', '**', '//', '\\', '**', '//', '//'],
+  ['**', '\\', '\\', '\\', '**', '**', '**'],
+  ['**', '//', '**', '**', '**', '**', '**'],
+])
+t = np.array([3, 0, 3, 0, 5, 6, 0])
+b = np.array([5, 2, 1, 3, 8, 2, 0])
+r = np.array([0, 8, 0, 4, 2, 2, 4])
+l = np.array([1, 4, 8, 0, 0, 2, 2])
+counts = {Monster.GHOST: 5, Monster.VAMPIRE: 12, Monster.ZOMBIE: 11}
+
+# create board and solve
+binst = board.Board(board=bor, sides={'top': t, 'bottom': b, 'right': r, 'left': l}, monster_count=counts)
+solutions = binst.solve_and_print()
+```
+Output:
+```
+Solution found
+[['VA' '//' 'GH' 'GH' 'ZO' 'GH' '\\']
+ ['VA' 'VA' 'VA' '//' 'ZO' 'ZO' 'ZO']
+ ['VA' '//' '//' 'ZO' 'ZO' '\\' '//']
+ ['//' '\\' '//' 'VA' '//' '\\' 'VA']
+ ['//' 'VA' '//' '\\' 'ZO' '//' '//']
+ ['ZO' '\\' '\\' '\\' 'ZO' 'VA' 'GH']
+ ['ZO' '//' 'VA' 'VA' 'ZO' 'VA' 'GH']]
+Solutions found: 1
+status: OPTIMAL
+```
+
+Which exactly matches the true solutions:
+
+<img src="./images/undead_solved.png" alt="UnDead solved" width="500">
+
+### Mosaic (Puzzle Type #6)
+
+Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/mosaic.html
+
+Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/mosaic.html#mosaic
+
+Unsolved puzzle:
+
+<img src="./images/mosaic_unsolved.png" alt="Mosaic unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+```python
+import numpy as np
+import board
+bor = np.array([
+  ['*', '*', '2', '1', '*', '*', '*', '3', '*', '4', '2', '2', '*', '*', '4'],
+  ['3', '*', '*', '*', '4', '*', '*', '*', '*', '*', '4', '*', '2', '*', '*'],
+  ['4', '*', '*', '5', '*', '5', '*', '*', '5', '*', '3', '3', '2', '5', '*'],
+  ['*', '*', '7', '*', '4', '*', '*', '5', '*', '*', '*', '*', '*', '5', '*'],
+  ['*', '6', '7', '*', '*', '4', '*', '7', '*', '*', '*', '*', '7', '7', '*'],
+  ['3', '*', '*', '3', '*', '5', '7', '7', '6', '4', '*', '4', '*', '5', '*'],
+  ['*', '*', '4', '*', '5', '7', '8', '*', '5', '*', '1', '3', '4', '5', '*'],
+  ['*', '5', '*', '4', '3', '*', '*', '*', '7', '*', '3', '*', '3', '*', '*'],
+  ['3', '*', '*', '*', '*', '*', '*', '5', '*', '6', '*', '*', '*', '*', '*'],
+  ['4', '*', '7', '*', '5', '*', '*', '4', '6', '7', '*', '3', '*', '3', '*'],
+  ['5', '*', '*', '*', '*', '*', '*', '*', '6', '*', '*', '3', '5', '*', '*'],
+  ['*', '*', '*', '5', '4', '5', '3', '*', '7', '*', '*', '5', '6', '6', '*'],
+  ['2', '*', '*', '*', '3', '4', '*', '*', '*', '7', '*', '*', '7', '*', '3'],
+  ['1', '*', '*', '5', '*', '*', '*', '5', '*', '*', '*', '6', '*', '6', '*'],
+  ['*', '*', '3', '*', '2', '*', '3', '*', '2', '*', '*', '*', '*', '*', '*']
+])
+binst = board.Board(board=bor)
+solutions = binst.solve_and_print()
+```
+Output:
+```
+Solution found
+[[' ' 'B' ' ' ' ' ' ' ' ' ' ' ' ' 'B' ' ' 'B' ' ' ' ' 'B' 'B']
+ [' ' 'B' ' ' ' ' 'B' 'B' ' ' 'B' 'B' ' ' 'B' ' ' ' ' 'B' 'B']
+ [' ' 'B' 'B' ' ' 'B' 'B' ' ' ' ' ' ' 'B' 'B' ' ' ' ' ' ' 'B']
+ ['B' 'B' 'B' 'B' ' ' ' ' 'B' 'B' 'B' ' ' ' ' ' ' 'B' ' ' 'B']
+ [' ' 'B' 'B' ' ' ' ' 'B' ' ' 'B' 'B' 'B' ' ' 'B' 'B' 'B' ' ']
+ [' ' 'B' ' ' 'B' ' ' 'B' 'B' ' ' 'B' ' ' ' ' 'B' 'B' 'B' 'B']
+ ['B' ' ' 'B' ' ' ' ' 'B' 'B' 'B' 'B' ' ' ' ' ' ' ' ' ' ' ' ']
+ [' ' ' ' 'B' ' ' 'B' 'B' 'B' 'B' 'B' ' ' ' ' ' ' 'B' ' ' 'B']
+ [' ' 'B' 'B' ' ' ' ' ' ' ' ' 'B' 'B' 'B' 'B' 'B' ' ' 'B' ' ']
+ ['B' 'B' 'B' 'B' 'B' 'B' ' ' ' ' ' ' 'B' 'B' ' ' ' ' 'B' ' ']
+ [' ' 'B' ' ' 'B' 'B' ' ' 'B' ' ' 'B' 'B' ' ' ' ' ' ' 'B' ' ']
+ ['B' 'B' ' ' ' ' 'B' ' ' ' ' 'B' 'B' 'B' ' ' 'B' 'B' 'B' 'B']
+ [' ' ' ' 'B' ' ' 'B' ' ' 'B' ' ' 'B' 'B' 'B' 'B' 'B' ' ' 'B']
+ [' ' ' ' 'B' 'B' ' ' ' ' 'B' ' ' 'B' 'B' ' ' 'B' 'B' ' ' ' ']
+ ['B' ' ' 'B' ' ' ' ' 'B' 'B' ' ' ' ' ' ' ' ' ' ' 'B' 'B' 'B']]
+Solutions found: 1
+status: OPTIMAL
+```
+
+Which exactly matches the true solutions:
+
+<img src="./images/mosaic_solved.png" alt="Mosaic solved" width="500">
 
 ## What’s inside
 

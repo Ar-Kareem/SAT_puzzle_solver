@@ -19,9 +19,9 @@ class Pos:
 
 
 class State(Enum):
-    BLANK = ('BLANK', 'B')
-    POSITIVE = ('POSITIVE', 'P')
-    NEGATIVE = ('NEGATIVE', 'N')
+    BLANK = ('BLANK', ' ')
+    POSITIVE = ('POSITIVE', '+')
+    NEGATIVE = ('NEGATIVE', '-')
 
 
 @dataclass(frozen=True)
@@ -85,7 +85,6 @@ class AllSolutionsCollector(CpSolverSolutionCallback):
         self.unique_solutions = set()
         self.max_solutions = max_solutions
         self.callback = callback
-        self.name_to_state: Dict[str, State] = {m.value[0]: m for m in State}
         self.vars_by_pos: Dict[Pos, List[tuple[str, cp_model.IntVar]]] = {}
         for (pos, state), var in model_vars.items():
             self.vars_by_pos.setdefault(pos, []).append((state, var))

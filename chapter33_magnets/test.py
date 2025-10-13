@@ -14,23 +14,22 @@ import board
 # neg_v = np.array([2, 2, 1, 2, 2])
 # pos_h = np.array([2, 1, 1, 2, 2, 1])
 # neg_h = np.array([1, 2, 1, 2, 2, 1])
-
+# https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/magnets.html#10x9:..3533.3.4,5...5.31.,.234.34344,4.4.54.2.,LRLRTTTTLRLRLRBBBBTTLRLRLRLRBBTTTLRLRLRTBBBTTTTLRBTLRBBBBTTTBTTTTLRBBBTBBBBTLRLRBLRLRBLRLR
 bor = np.array([
-  ['V', 'H', 'H', 'V', 'V', 'H', 'H', 'H', 'H'],
-  ['V', 'H', 'H', 'V', 'V', 'V', 'V', 'V', 'V'],
-  ['V', 'H', 'H', 'H', 'H', 'V', 'V', 'V', 'V'],
-  ['V', 'V', 'H', 'H', 'V', 'V', 'V', 'V', 'V'],
-  ['V', 'V', 'H', 'H', 'V', 'V', 'V', 'V', 'V'],
-  ['V', 'V', 'H', 'H', 'H', 'H', 'H', 'H', 'V'],
-  ['V', 'V', 'V', 'H', 'H', 'V', 'H', 'H', 'V'],
-  ['V', 'V', 'V', 'H', 'H', 'V', 'V', 'H', 'H'],
-  ['V', 'V', 'H', 'H', 'H', 'H', 'V', 'H', 'H'],
-  ['V', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H'],
+  ['H', 'H', 'H', 'H', 'V', 'V', 'V', 'V', 'H', 'H'],
+  ['H', 'H', 'H', 'H', 'V', 'V', 'V', 'V', 'V', 'V'],
+  ['H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'V', 'V'],
+  ['V', 'V', 'V', 'H', 'H', 'H', 'H', 'H', 'H', 'V'],
+  ['V', 'V', 'V', 'V', 'V', 'V', 'V', 'H', 'H', 'V'],
+  ['V', 'H', 'H', 'V', 'V', 'V', 'V', 'V', 'V', 'V'],
+  ['V', 'V', 'V', 'V', 'V', 'H', 'H', 'V', 'V', 'V'],
+  ['V', 'V', 'V', 'V', 'V', 'V', 'H', 'H', 'H', 'H'],
+  ['V', 'H', 'H', 'H', 'H', 'V', 'H', 'H', 'H', 'H'],
 ])
-pos_v = np.array([-1, -1, -1, 4, 1, 3, 5, 3, 5])
-neg_v = np.array([5, 5, 4, -1, -1, 3, -1, 5, -1])
-pos_h = np.array([-1, -1, -1, 4, -1, -1, -1, -1, -1, 5])
-neg_h = np.array([3, -1, -1, -1, -1, -1, -1, 1, 3, -1])
+pos_v = np.array([-1, -1, 3, 5, 3, 3, -1, 3, -1, 4])
+neg_v = np.array([-1, 2, 3, 4, -1, 3, 4, 3, 4, 4])
+pos_h = np.array([5, -1, -1, -1, 5, -1, 3, 1, -1])
+neg_h = np.array([4, -1, 4, -1, 5, 4, -1, 2, -1])
 
 binst = board.Board(board=bor, sides={'pos_v': pos_v, 'neg_v': neg_v, 'pos_h': pos_h, 'neg_h': neg_h})
 solutions = binst.solve_and_print()
