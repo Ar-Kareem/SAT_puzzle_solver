@@ -1,22 +1,15 @@
-import json
 import sys
 import time
 from pathlib import Path
 from typing import Dict, List, Optional, Callable
-from dataclasses import dataclass
 
 import numpy as np
 from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import CpSolverSolutionCallback
 
 sys.path.append(str(Path(__file__).parent.parent))
-from core.utils import Pos, get_all_pos, set_char, get_pos, get_neighbors4
+from core.utils import Pos, get_all_pos, set_char, get_pos, get_neighbors4, SingleSolution, get_hashable_solution
 from core.utils_ortools import and_constraint, or_constraint
-
-
-@dataclass(frozen=True)
-class SingleSolution:
-    assignment: dict[Pos, int]  # 1 = black, 0 = white
 
 
 def get_ray(pos: Pos, V: int, H: int, dx: int, dy: int) -> List[Pos]:
@@ -33,7 +26,7 @@ class AllSolutionsCollector(CpSolverSolutionCallback):
     def __init__(self, board: 'Board', out: List[SingleSolution], max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None):
         super().__init__()
         self.out = out
-        self.unique = set()
+        self.unique_solutions = set()
         self.max_solutions = max_solutions
         self.callback = callback
         self.vars_by_pos: Dict[Pos, cp_model.IntVar] = board.b.copy()
@@ -44,10 +37,10 @@ class AllSolutionsCollector(CpSolverSolutionCallback):
         for pos, var in self.vars_by_pos.items():
             assignment[pos] = self.Value(var)
         result = SingleSolution(assignment=assignment)
-        key = json.dumps(sorted([(p.x, p.y, v) for p, v in assignment.items()]))
-        if key in self.unique:
+        result_json = get_hashable_solution(result)
+        if result_json in self.unique_solutions:
             return
-        self.unique.add(key)
+        self.unique_solutions.add(result_json)
         self.out.append(result)
         if self.callback:
             self.callback(result)

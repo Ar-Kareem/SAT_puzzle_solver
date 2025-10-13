@@ -1,9 +1,7 @@
-import json
 import sys
 import time
 from pathlib import Path
 from typing import Dict, List, Optional, Callable
-from dataclasses import dataclass
 
 import numpy as np
 from ortools.sat.python import cp_model
@@ -11,19 +9,8 @@ from ortools.sat.python.cp_model import LinearExpr as lxp
 from ortools.sat.python.cp_model import CpSolverSolutionCallback
 
 sys.path.append(str(Path(__file__).parent.parent))
-from core.utils import Pos, get_all_pos, set_char, get_pos, get_char
+from core.utils import Pos, get_all_pos, set_char, get_pos, get_char, SingleSolution, get_hashable_solution
 
-
-@dataclass(frozen=True)
-class SingleSolution:
-    assignment: dict[Pos, int]
-
-
-def get_hashable_solution(solution: SingleSolution) -> str:
-    result = []
-    for pos, v in solution.assignment.items():
-        result.append((pos.x, pos.y, v))
-    return json.dumps(result, sort_keys=True)
 
 
 class AllSolutionsCollector(CpSolverSolutionCallback):

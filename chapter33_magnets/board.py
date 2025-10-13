@@ -1,5 +1,3 @@
-
-import json
 import sys
 import time
 from pathlib import Path
@@ -13,7 +11,7 @@ from ortools.sat.python.cp_model import LinearExpr as lxp
 from ortools.sat.python.cp_model import CpSolverSolutionCallback
 
 sys.path.append(str(Path(__file__).parent.parent))
-from core.utils import Pos, get_all_pos, get_char, set_char, get_pos, in_bounds, get_next_pos, Direction
+from core.utils import Pos, get_all_pos, get_char, set_char, get_pos, in_bounds, get_next_pos, Direction, SingleSolution, get_hashable_solution
 
 
 
@@ -21,18 +19,6 @@ class State(Enum):
     BLANK = ('BLANK', ' ')
     POSITIVE = ('POSITIVE', '+')
     NEGATIVE = ('NEGATIVE', '-')
-
-
-@dataclass(frozen=True)
-class SingleSolution:
-    assignment: dict[Pos, str]
-
-
-def get_hashable_solution(solution: SingleSolution) -> str:
-    result = []
-    for pos, state in solution.assignment.items():
-        result.append((pos.x, pos.y, state.value[0]))
-    return json.dumps(result, sort_keys=True)
 
 
 class AllSolutionsCollector(CpSolverSolutionCallback):
@@ -52,7 +38,7 @@ class AllSolutionsCollector(CpSolverSolutionCallback):
             for pos, candidates in self.vars_by_pos.items():
                 for state, var in candidates:  # exactly one is true per star cell
                     if self.BooleanValue(var):
-                        assignment[pos] = state
+                        assignment[pos] = state.value[1]
                         break
             result = SingleSolution(assignment=assignment)
             result_json = get_hashable_solution(result)
@@ -174,7 +160,7 @@ class Board:
             res = np.zeros_like(self.board)
             for pos in get_all_pos(V=self.V, H=self.H):
                 c = get_char(self.board, pos)
-                c = single_res.assignment[pos].value[1]
+                c = single_res.assignment[pos]
                 set_char(res, pos, c)
             print(res)
         return self.solve_all(callback=callback, max_solutions=999)

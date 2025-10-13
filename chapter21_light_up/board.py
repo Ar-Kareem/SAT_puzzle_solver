@@ -1,10 +1,7 @@
-
-import json
 import sys
 import time
 from pathlib import Path
 from typing import Dict, List, Optional, Optional, Callable
-from dataclasses import dataclass
 from enum import Enum
 
 import numpy as np
@@ -13,25 +10,13 @@ from ortools.sat.python.cp_model import LinearExpr as lxp
 from ortools.sat.python.cp_model import CpSolverSolutionCallback
 
 sys.path.append(str(Path(__file__).parent.parent))
-from core.utils import Pos, get_all_pos, get_char, set_char, in_bounds, get_next_pos, get_neighbors4, Direction
+from core.utils import Pos, get_all_pos, get_char, set_char, in_bounds, get_next_pos, get_neighbors4, Direction, SingleSolution, get_hashable_solution
 
 
 class State(Enum):
     BLACK = ('BLACK', 'B')
     SHINE = ('SHINE', 'S')
     LIGHT = ('LIGHT', 'L')
-
-
-@dataclass(frozen=True)
-class SingleSolution:
-    assignment: dict[Pos, str]
-
-
-def get_hashable_solution(solution: SingleSolution) -> str:
-    result = []
-    for pos, state in solution.assignment.items():
-        result.append((pos.x, pos.y, state.value[0]))
-    return json.dumps(result, sort_keys=True)
 
 
 def laser_out(board: np.array, init_pos: Pos) -> list[Pos]:
@@ -56,8 +41,7 @@ class AllSolutionsCollector(CpSolverSolutionCallback):
         self.unique_solutions = set()
         self.max_solutions = max_solutions
         self.callback = callback
-        self.name_to_state: Dict[str, State] = {m.value[0]: m for m in State}
-        self.vars_by_pos: Dict[Pos, List[tuple[str, cp_model.IntVar]]] = {}
+        self.vars_by_pos: Dict[Pos, List[tuple[State, cp_model.IntVar]]] = {}
         for (pos, state), var in board.model_vars.items():
             self.vars_by_pos.setdefault(pos, []).append((state, var))
 
@@ -67,7 +51,7 @@ class AllSolutionsCollector(CpSolverSolutionCallback):
             for pos, candidates in self.vars_by_pos.items():
                 for state, var in candidates:  # exactly one is true per star cell
                     if self.BooleanValue(var):
-                        assignment[pos] = state
+                        assignment[pos] = state.value[1]
                         break
             result = SingleSolution(assignment=assignment)
             result_json = get_hashable_solution(result)
@@ -150,7 +134,7 @@ class Board:
             for pos in get_all_pos(self.N):
                 c = get_char(self.board, pos)
                 if c == '*':
-                    c = single_res.assignment[pos].value[1]
+                    c = single_res.assignment[pos]
                     c = 'L' if c == 'L' else ' '
                 set_char(res, pos, c)
             print(res)

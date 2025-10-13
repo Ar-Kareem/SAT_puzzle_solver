@@ -1,4 +1,3 @@
-import json
 import sys
 import time
 from pathlib import Path
@@ -12,13 +11,13 @@ from ortools.sat.python.cp_model import LinearExpr as lxp
 from ortools.sat.python.cp_model import CpSolverSolutionCallback
 
 sys.path.append(str(Path(__file__).parent.parent))
-from core.utils import Pos, get_all_pos, set_char, get_pos, get_next_pos, in_bounds, get_char, Direction
+from core.utils import Pos, get_all_pos, set_char, get_pos, get_next_pos, in_bounds, get_char, Direction, SingleSolution, get_hashable_solution
 
 
 class Monster(Enum):
-    VAMPIRE = ("VA", "vampire")
-    ZOMBIE = ("ZO", "zombie")
-    GHOST = ("GH", "ghost")
+    VAMPIRE = "VA"
+    ZOMBIE = "ZO"
+    GHOST = "GH"
 
 
 @dataclass
@@ -27,14 +26,9 @@ class SingleBeamResult:
     reflect_count: int
 
 
-@dataclass(frozen=True)
-class SingleSolution:
-    assignment: dict[Pos, Monster]
-
-
 def get_all_monster_types() -> Iterable[tuple[str, str]]:
     for monster in Monster:
-        yield monster, monster.value[1]
+        yield monster, monster.value
 
 
 def can_see(reflect_count: int, monster: Monster) -> bool:
@@ -46,13 +40,6 @@ def can_see(reflect_count: int, monster: Monster) -> bool:
         return reflect_count > 0
     else:
         raise ValueError
-
-
-def get_hashable_solution(solution: SingleSolution) -> str:
-    result = []
-    for pos, monster in solution.assignment.items():
-        result.append((pos.x, pos.y, monster.value[0]))
-    return json.dumps(result, sort_keys=True)
 
 
 def beam(board, start_pos: Pos, direction: Direction) -> list[SingleBeamResult]:
@@ -94,19 +81,17 @@ class AllSolutionsCollector(CpSolverSolutionCallback):
         self.unique_solutions = set()
         self.max_solutions = max_solutions
         self.callback = callback
-        # Precompute a name->Monster map and group vars by cell for fast lookup
-        self.name_to_monster: Dict[str, Monster] = {m.value[1]: m for m in Monster}
         self.vars_by_pos: Dict[Pos, List[tuple[str, cp_model.IntVar]]] = {}
         for (pos, monster_name), var in board.model_vars.items():
             self.vars_by_pos.setdefault(pos, []).append((monster_name, var))
 
     def on_solution_callback(self):
         try:
-            assignment: Dict[Pos, Monster] = {}
+            assignment: Dict[Pos, str] = {}
             for pos, candidates in self.vars_by_pos.items():
                 for monster_name, var in candidates:  # exactly one is true per star cell
                     if self.BooleanValue(var):
-                        assignment[pos] = self.name_to_monster[monster_name]
+                        assignment[pos] = monster_name
                         break
             result = SingleSolution(assignment=assignment)
             result_json = get_hashable_solution(result)
@@ -188,7 +173,7 @@ class Board:
             for monster, count in self.monster_count.items():
                 if count == -1:
                     continue
-                monster_name = monster.value[1]
+                monster_name = monster.value
                 monster_vars = [self.model_vars[(pos, monster_name)] for pos in self.star_positions]
                 self.model.add(lxp.Sum(monster_vars) == count)
 
@@ -217,11 +202,11 @@ class Board:
     def solve_and_print(self):
         def callback(single_res: SingleSolution):
             print("Solution found")
-            res = np.zeros_like(self.board)
+            res = np.zeros_like(self.board, dtype='U16')
             for pos in get_all_pos(self.N):
                 c = get_char(self.board, pos)
                 if c == '**':
-                    c = single_res.assignment[pos].value[0]
+                    c = single_res.assignment[pos]
                 set_char(res, pos, c)
             print(res)
         return self.solve_all(callback=callback)
