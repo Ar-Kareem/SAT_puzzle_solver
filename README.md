@@ -115,7 +115,70 @@ Which exactly matches the true solutions (Remember, the goal of the puzzle is to
 
 <img src="./images/lightup_solved.png" alt="Light Up solved" width="500">
 
-### Towers (Puzzle Type #3)
+### Tents (Puzzle Type #3)
+
+Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/tents.html
+
+Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/tents.html#tents
+
+Unsolved puzzle:
+
+<img src="./images/tents_unsolved.png" alt="Tents unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+```python
+import numpy as np
+import board
+bor = np.array([
+  ['*', 'T', '*', '*', '*', '*', '*', '*', 'T', '*', 'T', '*', 'T', '*', '*'],
+  ['*', '*', '*', '*', 'T', '*', '*', 'T', '*', 'T', '*', '*', 'T', '*', '*'],
+  ['*', 'T', '*', 'T', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*'],
+  ['*', '*', '*', '*', '*', '*', '*', '*', 'T', '*', '*', '*', 'T', '*', 'T'],
+  ['*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*'],
+  ['*', 'T', '*', '*', 'T', '*', 'T', '*', '*', 'T', '*', '*', 'T', 'T', '*'],
+  ['*', 'T', '*', '*', 'T', '*', '*', '*', 'T', '*', '*', '*', '*', '*', '*'],
+  ['*', '*', '*', '*', '*', '*', 'T', '*', '*', '*', '*', '*', '*', '*', '*'],
+  ['*', '*', '*', '*', '*', 'T', '*', '*', '*', '*', 'T', '*', '*', 'T', '*'],
+  ['*', '*', '*', 'T', '*', '*', '*', '*', '*', '*', '*', '*', 'T', '*', 'T'],
+  ['T', '*', '*', '*', '*', '*', '*', 'T', '*', '*', '*', 'T', '*', '*', '*'],
+  ['T', '*', '*', '*', 'T', '*', 'T', '*', '*', '*', '*', '*', '*', '*', '*'],
+  ['*', '*', '*', '*', '*', '*', '*', '*', 'T', '*', 'T', '*', '*', '*', 'T'],
+  ['*', 'T', '*', '*', '*', 'T', '*', '*', '*', '*', '*', '*', 'T', '*', '*'],
+  ['*', 'T', '*', '*', 'T', '*', '*', '*', '*', 'T', '*', 'T', '*', '*', '*'],
+])
+side = np.array([4, 1, 6, 0, 5, 2, 3, 1, 5, 2, 3, 2, 4, 3, 4])
+top = np.array([4, 2, 4, 1, 3, 3, 3, 3, 3, 3, 2, 2, 6, 2, 4])
+
+binst = board.Board(board=bor, sides={'top': top, 'side': side})
+solutions = binst.solve_and_print()
+```
+Output:
+```
+Solution found
+[[' ' 'T' 'E' ' ' ' ' ' ' ' ' 'E' 'T' ' ' 'T' 'E' 'T' 'E' ' ']
+ [' ' ' ' ' ' ' ' 'T' 'E' ' ' 'T' ' ' 'T' ' ' ' ' 'T' ' ' ' ']
+ ['E' 'T' 'E' 'T' ' ' ' ' ' ' 'E' ' ' 'E' ' ' ' ' 'E' ' ' 'E']
+ [' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' 'T' ' ' ' ' ' ' 'T' ' ' 'T']
+ [' ' 'E' ' ' ' ' 'E' ' ' 'E' ' ' 'E' ' ' ' ' ' ' 'E' ' ' ' ']
+ [' ' 'T' ' ' ' ' 'T' ' ' 'T' ' ' ' ' 'T' 'E' ' ' 'T' 'T' 'E']
+ [' ' 'T' ' ' ' ' 'T' 'E' ' ' 'E' 'T' ' ' ' ' ' ' 'E' ' ' ' ']
+ [' ' 'E' ' ' ' ' ' ' ' ' 'T' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ']
+ [' ' ' ' ' ' ' ' 'E' 'T' 'E' ' ' ' ' 'E' 'T' ' ' 'E' 'T' 'E']
+ ['E' ' ' 'E' 'T' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' 'T' ' ' 'T']
+ ['T' ' ' ' ' ' ' ' ' ' ' ' ' 'T' 'E' ' ' ' ' 'T' 'E' ' ' 'E']
+ ['T' ' ' ' ' 'E' 'T' 'E' 'T' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ']
+ ['E' ' ' ' ' ' ' ' ' ' ' ' ' ' ' 'T' 'E' 'T' 'E' ' ' 'E' 'T']
+ [' ' 'T' 'E' ' ' 'E' 'T' 'E' ' ' ' ' ' ' ' ' ' ' 'T' ' ' ' ']
+ ['E' 'T' ' ' ' ' 'T' ' ' ' ' ' ' 'E' 'T' 'E' 'T' 'E' ' ' ' ']]
+Solutions found: 1
+status: OPTIMAL
+```
+
+Which exactly matches the true solutions:
+
+<img src="./images/tents_solved.png" alt="Tents solved" width="500">
+
+### Towers (Puzzle Type #4)
 
 Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/towers.html
 
@@ -161,7 +224,7 @@ Which exactly matches the true solutions:
 
 <img src="./images/towers_solved.png" alt="Towers solved" width="500">
 
-### Magnets (Puzzle Type #4)
+### Magnets (Puzzle Type #5)
 
 Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/magnets.html
 
@@ -214,7 +277,7 @@ Which exactly matches the true solutions:
 
 <img src="./images/magnets_solved.png" alt="Magnets solved" width="500">
 
-### UnDead (Puzzle Type #5)
+### UnDead (Puzzle Type #6)
 
 Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/undead.html
 
@@ -265,7 +328,7 @@ Which exactly matches the true solutions:
 
 <img src="./images/undead_solved.png" alt="UnDead solved" width="500">
 
-### Mosaic (Puzzle Type #6)
+### Mosaic (Puzzle Type #7)
 
 Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/mosaic.html
 
@@ -331,6 +394,7 @@ Each chapter directory targets a different puzzle type:
 
 * `chapter10_nonograms` — Picross/Griddlers (paint-by-numbers) via run-length constraints per row/column. ([Chapter 10][2])
 * `chapter21_light_up` — *Akari* / Light Up (place bulbs so every white cell is lit; numbered blacks constrain adjacency). ([chapter 21][3])
+* `chapter25_tents` — Tents (place tents so every tree is orthogonally adjacent to its own tent). ([chapter 25][8])
 * `chapter31_towers` — Skyscrapers (permutation rows/cols with “visible tower” counts). ([Chapter 31][4])
 * `chapter33_magnets` — Magnets (place polarized dominoes to satisfy row/column + polarity counts). ([Chapter 33][5])
 * `chapter37_undead` — UnDead / Count Vampires, Zombies, Ghosts (logic with neighborhood constraints). ([Chapter 37][6])
@@ -441,6 +505,7 @@ Issues and PRs welcome! Please:
 
 [2]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter10_nonograms "SAT_puzzle_solver/chapter10_nonograms at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [3]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter21_light_up "SAT_puzzle_solver/chapter21_light_up at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[8]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter25_tents "SAT_puzzle_solver/chapter25_tents at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [4]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter31_towers "SAT_puzzle_solver/chapter31_towers at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [5]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter33_magnets "SAT_puzzle_solver/chapter33_magnets at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [6]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter37_undead "SAT_puzzle_solver/chapter37_undead at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
