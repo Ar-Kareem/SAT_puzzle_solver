@@ -234,8 +234,8 @@ class Board:
             print("Solution:")
             res = np.full((V, H), '', dtype=object)
             for pos in get_all_pos(V, H):
-                c = 'B ' if sol.assignment[pos] == 1 else '. '
+                c = 'B' if sol.assignment[pos] == 1 else '.'
                 set_char(res, pos, c)
             for row in res:
-                print(''.join(row))
+                print(' '.join(row))
         return self.solve_all(callback=cb)
