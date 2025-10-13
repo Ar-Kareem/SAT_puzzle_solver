@@ -1,16 +1,15 @@
 import sys
 import time
 from pathlib import Path
-from typing import Dict, List, Optional, Optional, Callable
 from enum import Enum
 
 import numpy as np
 from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
-from ortools.sat.python.cp_model import CpSolverSolutionCallback
 
 sys.path.append(str(Path(__file__).parent.parent))
-from core.utils import Pos, get_all_pos, get_char, set_char, get_pos, in_bounds, get_next_pos, Direction, SingleSolution, get_hashable_solution
+from core.utils import Pos, get_all_pos, get_char, set_char, get_pos, in_bounds, get_next_pos, Direction, SingleSolution
+from core.utils_ortools import generic_solve_all
 
 
 class State(Enum):
@@ -18,39 +17,6 @@ class State(Enum):
     POSITIVE = ('POSITIVE', '+')
     NEGATIVE = ('NEGATIVE', '-')
 
-
-class AllSolutionsCollector(CpSolverSolutionCallback):
-    def __init__(self, board: 'Board', out: List[SingleSolution], max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None):
-        super().__init__()
-        self.out = out
-        self.unique_solutions = set()
-        self.max_solutions = max_solutions
-        self.callback = callback
-        self.vars_by_pos: Dict[Pos, List[tuple[str, cp_model.IntVar]]] = {}
-        for (pos, state), var in board.model_vars.items():
-            self.vars_by_pos.setdefault(pos, []).append((state, var))
-
-    def on_solution_callback(self):
-        try:
-            assignment: Dict[Pos, str] = {}
-            for pos, candidates in self.vars_by_pos.items():
-                for state, var in candidates:  # exactly one is true per star cell
-                    if self.BooleanValue(var):
-                        assignment[pos] = state.value[1]
-                        break
-            result = SingleSolution(assignment=assignment)
-            result_json = get_hashable_solution(result)
-            if result_json in self.unique_solutions:
-                return
-            self.unique_solutions.add(result_json)
-            self.out.append(result)
-            if self.callback is not None:
-                self.callback(result)
-            if self.max_solutions is not None and len(self.out) >= self.max_solutions:
-                self.StopSearch()
-        except Exception as e:
-            print(e)
-            raise e
 
 class Board:
     def __init__(self, board: np.array, sides: dict[str, np.array]):
@@ -139,20 +105,13 @@ class Board:
             if ground_neg != -1:
                 self.model.Add(sum_neg == ground_neg)
 
-    def solve_all(self, max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None) -> List[SingleSolution]:
-        solver = cp_model.CpSolver()
-        solver.parameters.enumerate_all_solutions = True
-        solutions: List[SingleSolution] = []
-        collector = AllSolutionsCollector(self, solutions, max_solutions=max_solutions, callback=callback)
-        tic = time.time()
-        solver.solve(self.model, collector)
-        print("Solutions found:", len(solutions))
-        print("status:", solver.StatusName())
-        toc = time.time()
-        print(f"Time taken: {toc - tic:.2f} seconds")
-        return solutions
-
     def solve_and_print(self):
+        def board_to_assignment(board: Board, solver: cp_model.CpSolverSolutionCallback) -> dict[Pos, str|int]:
+            assignment: dict[Pos, str] = {}
+            for (pos, state), var in board.model_vars.items():
+                if solver.BooleanValue(var):
+                    assignment[pos] = state.value[1]
+            return assignment
         def callback(single_res: SingleSolution):
             print("Solution found")
             res = np.zeros_like(self.board)
@@ -161,4 +120,4 @@ class Board:
                 c = single_res.assignment[pos]
                 set_char(res, pos, c)
             print(res)
-        return self.solve_all(callback=callback, max_solutions=999)
+        return generic_solve_all(self, board_to_assignment, callback=callback)

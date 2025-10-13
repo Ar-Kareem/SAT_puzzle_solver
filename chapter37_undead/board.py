@@ -1,17 +1,16 @@
 import sys
-import time
 from pathlib import Path
-from typing import Dict, List, Iterable, Optional, Callable
+from typing import Iterable, Optional
 from enum import Enum
 from dataclasses import dataclass
 
 import numpy as np
 from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
-from ortools.sat.python.cp_model import CpSolverSolutionCallback
 
 sys.path.append(str(Path(__file__).parent.parent))
-from core.utils import Pos, get_all_pos, set_char, get_pos, get_next_pos, in_bounds, get_char, Direction, SingleSolution, get_hashable_solution
+from core.utils import Pos, get_all_pos, set_char, get_pos, get_next_pos, in_bounds, get_char, Direction, SingleSolution
+from core.utils_ortools import generic_solve_all
 
 
 class Monster(Enum):
@@ -73,39 +72,6 @@ def beam(board, start_pos: Pos, direction: Direction) -> list[SingleBeamResult]:
             cur_result.append(SingleBeamResult(cur_pos, reflect_count))
     return cur_result
 
-
-class AllSolutionsCollector(CpSolverSolutionCallback):
-    def __init__(self, board: 'Board', out: List[SingleSolution], max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None):
-        super().__init__()
-        self.out = out
-        self.unique_solutions = set()
-        self.max_solutions = max_solutions
-        self.callback = callback
-        self.vars_by_pos: Dict[Pos, List[tuple[str, cp_model.IntVar]]] = {}
-        for (pos, monster_name), var in board.model_vars.items():
-            self.vars_by_pos.setdefault(pos, []).append((monster_name, var))
-
-    def on_solution_callback(self):
-        try:
-            assignment: Dict[Pos, str] = {}
-            for pos, candidates in self.vars_by_pos.items():
-                for monster_name, var in candidates:  # exactly one is true per star cell
-                    if self.BooleanValue(var):
-                        assignment[pos] = monster_name
-                        break
-            result = SingleSolution(assignment=assignment)
-            result_json = get_hashable_solution(result)
-            if result_json in self.unique_solutions:
-                return
-            self.unique_solutions.add(result_json)
-            self.out.append(result)
-            if self.callback is not None:
-                self.callback(result)
-            if self.max_solutions is not None and len(self.out) >= self.max_solutions:
-                self.StopSearch()
-        except Exception as e:
-            print(e)
-            raise e
 
 class Board:
     def __init__(self, board: np.array, sides: dict[str, np.array], monster_count: Optional[dict[Monster, int]] = None):
@@ -186,20 +152,13 @@ class Board:
                     path_vars.append(self.model_vars[(square.position, monster_name)])
         return lxp.Sum(path_vars) if path_vars else 0
 
-    def solve_all(self, max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None) -> List[SingleSolution]:
-        solver = cp_model.CpSolver()
-        solver.parameters.enumerate_all_solutions = True
-        solutions: List[SingleSolution] = []
-        collector = AllSolutionsCollector(self, solutions, max_solutions=max_solutions, callback=callback)
-        tic = time.time()
-        solver.solve(self.model, collector)
-        print("Solutions found:", len(solutions))
-        print("status:", solver.StatusName())
-        toc = time.time()
-        print(f"Time taken: {toc - tic:.2f} seconds")
-        return solutions
-
     def solve_and_print(self):
+        def board_to_assignment(board: Board, solver: cp_model.CpSolverSolutionCallback) -> dict[Pos, str|int]:
+            assignment: dict[Pos, str] = {}
+            for (pos, monster_name), var in board.model_vars.items():
+                if solver.BooleanValue(var):
+                    assignment[pos] = monster_name
+            return assignment
         def callback(single_res: SingleSolution):
             print("Solution found")
             res = np.zeros_like(self.board, dtype='U16')
@@ -209,4 +168,4 @@ class Board:
                     c = single_res.assignment[pos]
                 set_char(res, pos, c)
             print(res)
-        return self.solve_all(callback=callback)
+        return generic_solve_all(self, board_to_assignment, callback=callback)

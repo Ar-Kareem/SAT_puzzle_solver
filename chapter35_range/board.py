@@ -1,18 +1,15 @@
 import sys
-import time
 from pathlib import Path
-from typing import Dict, List, Optional, Callable
 
 import numpy as np
 from ortools.sat.python import cp_model
-from ortools.sat.python.cp_model import CpSolverSolutionCallback
 
 sys.path.append(str(Path(__file__).parent.parent))
-from core.utils import Pos, get_all_pos, set_char, get_pos, get_neighbors4, SingleSolution, get_hashable_solution
-from core.utils_ortools import and_constraint, or_constraint
+from core.utils import Pos, get_all_pos, set_char, get_pos, get_neighbors4, SingleSolution
+from core.utils_ortools import and_constraint, or_constraint, generic_solve_all
 
 
-def get_ray(pos: Pos, V: int, H: int, dx: int, dy: int) -> List[Pos]:
+def get_ray(pos: Pos, V: int, H: int, dx: int, dy: int) -> list[Pos]:
     out = []
     x, y = pos.x + dx, pos.y + dy
     while 0 <= y < V and 0 <= x < H:
@@ -20,32 +17,6 @@ def get_ray(pos: Pos, V: int, H: int, dx: int, dy: int) -> List[Pos]:
         x += dx
         y += dy
     return out
-
-
-class AllSolutionsCollector(CpSolverSolutionCallback):
-    def __init__(self, board: 'Board', out: List[SingleSolution], max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None):
-        super().__init__()
-        self.out = out
-        self.unique_solutions = set()
-        self.max_solutions = max_solutions
-        self.callback = callback
-        self.vars_by_pos: Dict[Pos, cp_model.IntVar] = board.b.copy()
-        self.raw_count = 0
-
-    def on_solution_callback(self):
-        assignment: Dict[Pos, int] = {}
-        for pos, var in self.vars_by_pos.items():
-            assignment[pos] = self.Value(var)
-        result = SingleSolution(assignment=assignment)
-        result_json = get_hashable_solution(result)
-        if result_json in self.unique_solutions:
-            return
-        self.unique_solutions.add(result_json)
-        self.out.append(result)
-        if self.callback:
-            self.callback(result)
-        if self.max_solutions is not None and len(self.out) >= self.max_solutions:
-            self.StopSearch()
 
 
 class Board:
@@ -62,7 +33,7 @@ class Board:
         self.w: dict[Pos, cp_model.IntVar] = {}  # 1=white, 0=black
         # Connectivity helpers
         self.root: dict[Pos, cp_model.IntVar] = {}       # exactly one root; root <= w
-        self.reach_layers: List[dict[Pos, cp_model.IntVar]] = []  # R_t[p] booleans, t = 0..T
+        self.reach_layers: list[dict[Pos, cp_model.IntVar]] = []  # R_t[p] booleans, t = 0..T
 
         self.create_vars()
         self.add_all_constraints()
@@ -110,7 +81,7 @@ class Board:
           - Final layer is equal to the white mask: R_T[p] == w[p]  => all whites are connected to the unique root
         """
         # to find unique solutions easily, we make only 1 possible root allowed; root is exactly the first white cell
-        prev_cells_black: List[cp_model.IntVar] = []
+        prev_cells_black: list[cp_model.IntVar] = []
         for pos in get_all_pos(self.V, self.H):
             and_constraint(self.model, target=self.root[pos], cs=[self.w[pos]] + prev_cells_black)
             prev_cells_black.append(self.b[pos])
@@ -126,7 +97,7 @@ class Board:
             for p in get_all_pos(self.V, self.H):
                 # Rt[p] = Rt_prev[p] | (white[p] & Rt_prev[neighbour #1]) | (white[p] & Rt_prev[neighbour #2]) | ...
                 # Create helper (white[p] & Rt_prev[neighbour #X]) for each neighbor q
-                neigh_helpers: List[cp_model.IntVar] = []
+                neigh_helpers: list[cp_model.IntVar] = []
                 for q in get_neighbors4(p, self.V, self.H):
                     a = self.model.NewBoolVar(f"A[{t}][{p.x},{p.y}]<-({q.x},{q.y})")
                     and_constraint(self.model, target=a, cs=[self.w[p], Rt_prev[q]])
@@ -154,7 +125,7 @@ class Board:
                 self.model.Add(self.b[p] == 0)
 
                 # Build visibility chains per direction (exclude self)
-                vis_vars: List[cp_model.IntVar] = []
+                vis_vars: list[cp_model.IntVar] = []
                 for (dx, dy) in dirs:
                     ray = get_ray(p, self.V, self.H, dx, dy)  # cells outward
                     if not ray:
@@ -174,27 +145,18 @@ class Board:
                 # 1 (self) + sum(vis_vars) == k
                 self.model.Add(1 + sum(vis_vars) == k)
 
-    def solve_all(self, max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None) -> List[SingleSolution]:
-        solver = cp_model.CpSolver()
-        solver.parameters.enumerate_all_solutions = True
-        solutions: List[SingleSolution] = []
-        collector = AllSolutionsCollector(self, solutions, max_solutions=max_solutions, callback=callback)
-        tic = time.time()
-        solver.solve(self.model, collector)
-        print("Solutions found:", len(solutions))
-        print("status:", solver.StatusName())
-        toc = time.time()
-        print(f"Time taken: {toc - tic:.2f} seconds")
-        return solutions
-
     def solve_and_print(self):
-        H, V = self.H, self.V
-        def cb(sol: SingleSolution):
+        def board_to_assignment(board: Board, solver: cp_model.CpSolverSolutionCallback) -> dict[Pos, str|int]:
+            assignment: dict[Pos, int] = {}
+            for pos, var in board.b.items():
+                assignment[pos] = solver.Value(var)
+            return assignment
+        def callback(single_res: SingleSolution):
             print("Solution:")
-            res = np.full((V, H), '', dtype=object)
-            for pos in get_all_pos(V, H):
-                c = 'B' if sol.assignment[pos] == 1 else '.'
+            res = np.full((self.V, self.H), '', dtype=object)
+            for pos in get_all_pos(self.V, self.H):
+                c = 'B' if single_res.assignment[pos] == 1 else '.'
                 set_char(res, pos, c)
             for row in res:
                 print(' '.join(row))
-        return self.solve_all(callback=cb)
+        return generic_solve_all(self, board_to_assignment, callback=callback)

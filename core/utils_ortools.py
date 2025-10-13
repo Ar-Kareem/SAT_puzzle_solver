@@ -1,5 +1,9 @@
+import time
+from typing import List, Optional, Callable, Any
 from ortools.sat.python import cp_model
+from ortools.sat.python.cp_model import CpSolverSolutionCallback
 
+from core.utils import Pos, SingleSolution, get_hashable_solution
 
 def and_constraint(model: cp_model.CpModel, target: cp_model.IntVar, cs: list[cp_model.IntVar]):
     for c in cs:
@@ -11,3 +15,50 @@ def or_constraint(model: cp_model.CpModel, target: cp_model.IntVar, cs: list[cp_
     for c in cs:
         model.Add(target >= c)
     model.Add(target <= sum(cs))
+
+
+class AllSolutionsCollector(CpSolverSolutionCallback):
+    def __init__(self,
+            board: Any,
+            board_to_assignment: Callable[Any, dict[Pos, str|int]],
+            out: List[SingleSolution],
+            max_solutions: Optional[int] = None,
+            callback: Optional[Callable[SingleSolution, None]] = None
+        ):
+        super().__init__()
+        self.board = board
+        self.board_to_assignment = board_to_assignment
+        self.out = out
+        self.max_solutions = max_solutions
+        self.callback = callback
+        self.unique_solutions = set()
+
+    def on_solution_callback(self):
+        try:
+            assignment = self.board_to_assignment(self.board, self)
+            result = SingleSolution(assignment=assignment)
+            result_json = get_hashable_solution(result)
+            if result_json in self.unique_solutions:
+                return
+            self.unique_solutions.add(result_json)
+            self.out.append(result)
+            if self.callback is not None:
+                self.callback(result)
+            if self.max_solutions is not None and len(self.out) >= self.max_solutions:
+                self.StopSearch()
+        except Exception as e:
+            print(e)
+            raise e
+
+def generic_solve_all(board: Any, board_to_assignment: Callable[Any, dict[Pos, str|int]], max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None) -> List[SingleSolution]:
+    solver = cp_model.CpSolver()
+    solver.parameters.enumerate_all_solutions = True
+    solutions: List[SingleSolution] = []
+    collector = AllSolutionsCollector(board, board_to_assignment, solutions, max_solutions=max_solutions, callback=callback)
+    tic = time.time()
+    solver.solve(board.model, collector)
+    print("Solutions found:", len(solutions))
+    print("status:", solver.StatusName())
+    toc = time.time()
+    print(f"Time taken: {toc - tic:.2f} seconds")
+    return solutions
