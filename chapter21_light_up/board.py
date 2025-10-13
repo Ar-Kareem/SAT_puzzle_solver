@@ -205,6 +205,7 @@ class Board:
                 c = get_char(self.board, pos)
                 if c == '*':
                     c = single_res.assignment[pos].value[1]
+                    c = 'L' if c == 'L' else ' '
                 set_char(res, pos, c)
             print(res)
         return self.solve_all(callback=callback)
