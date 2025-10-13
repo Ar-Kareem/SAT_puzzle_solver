@@ -1,6 +1,8 @@
-
 import json
-from typing import Dict, List, Tuple, Optional, Literal, Optional, Callable
+import sys
+import time
+from pathlib import Path
+from typing import Dict, List, Optional, Optional, Callable
 from dataclasses import dataclass
 
 import numpy as np
@@ -9,20 +11,13 @@ from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
 from ortools.sat.python.cp_model import CpSolverSolutionCallback
 
-
-@dataclass(frozen=True)
-class Pos:
-    x: int
-    y: int
+sys.path.append(str(Path(__file__).parent.parent))
+from core.utils import Pos, get_pos, get_all_pos, set_char
 
 
 @dataclass(frozen=True)
 class SingleSolution:
     assignment: dict[Pos, int]
-
-
-def get_pos(x: int, y: int) -> Pos:
-    return Pos(x=x, y=y)
 
 
 def get_hashable_solution(solution: SingleSolution) -> str:
@@ -32,28 +27,14 @@ def get_hashable_solution(solution: SingleSolution) -> str:
     return json.dumps(result, sort_keys=True)
 
 
-def get_all_pos(V, H):
-    for y in range(V):
-        for x in range(H):
-            yield get_pos(x=x, y=y)
-
-
-def set_char(board: np.array, pos: Pos, char: str):
-    board[pos.y][pos.x] = char
-
-
-def in_bounds(pos: Pos, V: int, H: int) -> bool:
-    return 0 <= pos.y < V and 0 <= pos.x < H
-
-
 class AllSolutionsCollector(CpSolverSolutionCallback):
-    def __init__(self, model_vars, out: List[SingleSolution], max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None):
+    def __init__(self, board: 'Board', out: List[SingleSolution], max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None):
         super().__init__()
         self.out = out
         self.unique_solutions = set()
         self.max_solutions = max_solutions
         self.callback = callback
-        self.vars_by_pos: Dict[Pos, cp_model.IntVar] = model_vars.copy()
+        self.vars_by_pos: Dict[Pos, cp_model.IntVar] = board.model_vars.copy()
 
     def on_solution_callback(self):
         try:
@@ -77,6 +58,8 @@ class AllSolutionsCollector(CpSolverSolutionCallback):
 
 class Board:
     def __init__(self, top: list[list[int]], side: list[list[int]]):
+        assert all(isinstance(i, int) for l in top for i in l), 'top must be a list of lists of integers'
+        assert all(isinstance(i, int) for l in side for i in l), 'side must be a list of lists of integers'
         self.top = top
         self.side = side
         self.V = len(side)
@@ -183,12 +166,13 @@ class Board:
         solver = cp_model.CpSolver()
         solver.parameters.enumerate_all_solutions = True
         solutions: List[SingleSolution] = []
-        collector = AllSolutionsCollector(self.model_vars, solutions, max_solutions=max_solutions, callback=callback)
+        collector = AllSolutionsCollector(self, solutions, max_solutions=max_solutions, callback=callback)
+        tic = time.time()
         solver.solve(self.model, collector)
         print("Solutions found:", len(solutions))
         print("status:", solver.StatusName())
-        # for n, v in self.extra_vars.items():
-        #     print(n, v)
+        toc = time.time()
+        print(f"Time taken: {toc - tic:.2f} seconds")
         return solutions
 
     def solve_and_print(self):

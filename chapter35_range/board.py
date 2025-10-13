@@ -1,46 +1,22 @@
 import json
-from typing import Dict, List, Tuple, Optional, Callable
+import sys
+import time
+from pathlib import Path
+from typing import Dict, List, Optional, Callable
 from dataclasses import dataclass
 
 import numpy as np
 from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import CpSolverSolutionCallback
 
-
-@dataclass(frozen=True)
-class Pos:
-    x: int
-    y: int
+sys.path.append(str(Path(__file__).parent.parent))
+from core.utils import Pos, get_all_pos, set_char, get_pos, get_neighbors4
+from core.utils_ortools import and_constraint, or_constraint
 
 
 @dataclass(frozen=True)
 class SingleSolution:
     assignment: dict[Pos, int]  # 1 = black, 0 = white
-
-
-def get_pos(x: int, y: int) -> Pos:
-    return Pos(x=x, y=y)
-
-
-def get_all_pos(V: int, H: int):
-    for y in range(V):
-        for x in range(H):
-            yield get_pos(x=x, y=y)
-
-
-def set_char(board: np.ndarray, pos: Pos, char: str):
-    board[pos.y][pos.x] = char
-
-
-def in_bounds(pos: Pos, V: int, H: int) -> bool:
-    return 0 <= pos.y < V and 0 <= pos.x < H
-
-
-def get_neighbors4(pos: Pos, V: int, H: int) -> List[Pos]:
-    for dx, dy in ((1,0),(-1,0),(0,1),(0,-1)):
-        p2 = get_pos(x=pos.x+dx, y=pos.y+dy)
-        if in_bounds(p2, V, H):
-            yield p2
 
 
 def get_ray(pos: Pos, V: int, H: int, dx: int, dy: int) -> List[Pos]:
@@ -53,27 +29,14 @@ def get_ray(pos: Pos, V: int, H: int, dx: int, dy: int) -> List[Pos]:
     return out
 
 
-def and_constraint(model: cp_model.CpModel, target: cp_model.IntVar, cs: list[cp_model.IntVar]):
-    for c in cs:
-        model.Add(target <= c)
-    model.Add(target >= sum(cs) - len(cs) + 1)
-
-
-def or_constraint(model: cp_model.CpModel, target: cp_model.IntVar, cs: list[cp_model.IntVar]):
-    for c in cs:
-        model.Add(target >= c)
-    model.Add(target <= sum(cs))
-
-
-
 class AllSolutionsCollector(CpSolverSolutionCallback):
-    def __init__(self, model_vars, out: List[SingleSolution], max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None):
+    def __init__(self, board: 'Board', out: List[SingleSolution], max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None):
         super().__init__()
         self.out = out
         self.unique = set()
         self.max_solutions = max_solutions
         self.callback = callback
-        self.vars_by_pos: Dict[Pos, cp_model.IntVar] = model_vars.copy()
+        self.vars_by_pos: Dict[Pos, cp_model.IntVar] = board.b.copy()
         self.raw_count = 0
 
     def on_solution_callback(self):
@@ -222,10 +185,13 @@ class Board:
         solver = cp_model.CpSolver()
         solver.parameters.enumerate_all_solutions = True
         solutions: List[SingleSolution] = []
-        collector = AllSolutionsCollector(self.b, solutions, max_solutions=max_solutions, callback=callback)
-        solver.Solve(self.model, collector)
+        collector = AllSolutionsCollector(self, solutions, max_solutions=max_solutions, callback=callback)
+        tic = time.time()
+        solver.solve(self.model, collector)
         print("Solutions found:", len(solutions))
         print("status:", solver.StatusName())
+        toc = time.time()
+        print(f"Time taken: {toc - tic:.2f} seconds")
         return solutions
 
     def solve_and_print(self):

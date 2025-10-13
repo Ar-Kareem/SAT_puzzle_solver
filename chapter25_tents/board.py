@@ -1,5 +1,8 @@
 
 import json
+import sys
+import time
+from pathlib import Path
 from typing import Dict, List, Tuple, Optional, Literal, Optional, Callable
 from dataclasses import dataclass
 from collections import defaultdict
@@ -10,39 +13,14 @@ from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
 from ortools.sat.python.cp_model import CpSolverSolutionCallback
 
-
-@dataclass(frozen=True)
-class Pos:
-    x: int
-    y: int
+sys.path.append(str(Path(__file__).parent.parent))
+from core.utils import Pos, get_all_pos, get_char, set_char, in_bounds, get_next_pos, Direction, get_pos
 
 
-class Direction(Enum):
-    UP = 1
-    DOWN = 2
-    LEFT = 3
-    RIGHT = 4
 
 @dataclass(frozen=True)
 class SingleSolution:
     assignment: dict[Pos, int]
-
-
-def get_pos(x: int, y: int) -> Pos:
-    return Pos(x=x, y=y)
-
-
-def get_delta_pos(pos: Pos, direction: Direction) -> Pos:
-    if direction == Direction.UP:
-        return Pos(pos.x, pos.y-1)
-    elif direction == Direction.DOWN:
-        return Pos(pos.x, pos.y+1)
-    elif direction == Direction.LEFT:
-        return Pos(pos.x-1, pos.y)
-    elif direction == Direction.RIGHT:
-        return Pos(pos.x+1, pos.y)
-    else:
-        raise ValueError(f'Invalid direction: {direction}')
 
 
 def get_hashable_solution(solution: SingleSolution) -> str:
@@ -50,26 +28,6 @@ def get_hashable_solution(solution: SingleSolution) -> str:
     for pos, v in solution.assignment.items():
         result.append((pos.x, pos.y, v > 0))  # we don't care which assignment of tent-tree, we only care if there is a tent or not to determine uniqueness
     return json.dumps(result, sort_keys=True)
-
-
-def get_all_pos(N):
-    for y in range(N):
-        for x in range(N):
-            yield get_pos(x=x, y=y)
-
-
-def get_char(board: np.array, pos: Pos) -> str:
-    c = board[pos.y][pos.x]
-    assert c in ['*', 'T']
-    return c
-
-
-def set_char(board: np.array, pos: Pos, char: str):
-    board[pos.y][pos.x] = char
-
-
-def in_bounds(pos: Pos, N: int) -> bool:
-    return 0 <= pos.y < N and 0 <= pos.x < N
 
 
 def neighbours(board: np.array, pos: Pos) -> list[Pos]:
@@ -91,18 +49,18 @@ class ModelVars:
 
 
 class AllSolutionsCollector(CpSolverSolutionCallback):
-    def __init__(self, model_vars, out: List[SingleSolution], max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None):
+    def __init__(self, board: 'Board', out: List[SingleSolution], max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None):
         super().__init__()
         self.out = out
         self.unique_solutions = set()
         self.max_solutions = max_solutions
         self.callback = callback
-        self.vars_by_pos: ModelVars = model_vars
+        self.model_vars: ModelVars = board.model_vars
 
     def on_solution_callback(self):
         try:
             assignment: Dict[Pos, int] = {}
-            for pos, var in self.vars_by_pos.is_tent.items():
+            for pos, var in self.model_vars.is_tent.items():
                 if isinstance(var, int):
                     continue
                 assignment[pos] = self.value(var)
@@ -127,6 +85,7 @@ class Board:
         assert len(sides) == 2, '2 sides must be provided'
         assert set(sides.keys()) == set(['top', 'side'])
         assert all(s.ndim == 1 and s.shape[0] == board.shape[0] for s in sides.values()), 'all sides must be equal to board size'
+        assert all(c.item() in ['*', 'T'] for c in np.nditer(board)), 'board must contain only * or T'
         self.board = board
         self.N = board.shape[0]
         self.star_positions: set[Pos] = {pos for pos in get_all_pos(self.N) if get_char(self.board, pos) == '*'}
@@ -170,10 +129,10 @@ class Board:
             self.add_tree_constraints(tree)
 
     def add_tree_constraints(self, tree_pos: Pos):
-        left_pos = get_delta_pos(tree_pos, Direction.LEFT)
-        right_pos = get_delta_pos(tree_pos, Direction.RIGHT)
-        top_pos = get_delta_pos(tree_pos, Direction.UP)
-        bottom_pos = get_delta_pos(tree_pos, Direction.DOWN)
+        left_pos = get_next_pos(tree_pos, Direction.LEFT)
+        right_pos = get_next_pos(tree_pos, Direction.RIGHT)
+        top_pos = get_next_pos(tree_pos, Direction.UP)
+        bottom_pos = get_next_pos(tree_pos, Direction.DOWN)
         var_list = []
         if left_pos in self.star_positions:
             aux = self.model.NewBoolVar(f'{tree_pos}:left')
@@ -201,10 +160,13 @@ class Board:
         solver = cp_model.CpSolver()
         solver.parameters.enumerate_all_solutions = True
         solutions: List[SingleSolution] = []
-        collector = AllSolutionsCollector(self.model_vars, solutions, max_solutions=max_solutions, callback=callback)
+        collector = AllSolutionsCollector(self, solutions, max_solutions=max_solutions, callback=callback)
+        tic = time.time()
         solver.solve(self.model, collector)
         print("Solutions found:", len(solutions))
         print("status:", solver.StatusName())
+        toc = time.time()
+        print(f"Time taken: {toc - tic:.2f} seconds")
         return solutions
 
     def solve_and_print(self):

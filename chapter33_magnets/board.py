@@ -1,6 +1,9 @@
 
 import json
-from typing import Dict, List, Tuple, Optional, Literal, Optional, Callable
+import sys
+import time
+from pathlib import Path
+from typing import Dict, List, Optional, Optional, Callable
 from dataclasses import dataclass
 from enum import Enum
 
@@ -9,13 +12,9 @@ from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
 from ortools.sat.python.cp_model import CpSolverSolutionCallback
 
-Direction = Literal['right', 'left', 'down', 'up']
+sys.path.append(str(Path(__file__).parent.parent))
+from core.utils import Pos, get_all_pos, get_char, set_char, get_pos, in_bounds, get_next_pos, Direction
 
-
-@dataclass(frozen=True)
-class Pos:
-    x: int
-    y: int
 
 
 class State(Enum):
@@ -29,28 +28,6 @@ class SingleSolution:
     assignment: dict[Pos, str]
 
 
-def get_deltas(direction: Direction) -> Tuple[int, int]:
-    if direction == 'right':
-        return +1, 0
-    elif direction == 'left':
-        return -1, 0
-    elif direction == 'down':
-        return 0, +1
-    elif direction == 'up':
-        return 0, -1
-    else:
-        raise ValueError
-
-
-def get_pos(x: int, y: int) -> Pos:
-    return Pos(x=x, y=y)
-
-
-def get_next_pos(cur_pos: Pos, direction: Direction) -> Pos:
-    delta_x, delta_y = get_deltas(direction)
-    return Pos(cur_pos.x+delta_x, cur_pos.y+delta_y)
-
-
 def get_hashable_solution(solution: SingleSolution) -> str:
     result = []
     for pos, state in solution.assignment.items():
@@ -58,35 +35,15 @@ def get_hashable_solution(solution: SingleSolution) -> str:
     return json.dumps(result, sort_keys=True)
 
 
-def get_all_pos(V, H):
-    for y in range(V):
-        for x in range(H):
-            yield get_pos(x=x, y=y)
-
-
-def get_char(board: np.array, pos: Pos) -> str:
-    c = board[pos.y][pos.x]
-    assert c in ['H', 'V']
-    return c
-
-
-def set_char(board: np.array, pos: Pos, char: str):
-    board[pos.y][pos.x] = char
-
-
-def in_bounds(pos: Pos, H: int, V: int) -> bool:
-    return 0 <= pos.y < V and 0 <= pos.x < H
-
-
 class AllSolutionsCollector(CpSolverSolutionCallback):
-    def __init__(self, model_vars, out: List[SingleSolution], max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None):
+    def __init__(self, board: 'Board', out: List[SingleSolution], max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None):
         super().__init__()
         self.out = out
         self.unique_solutions = set()
         self.max_solutions = max_solutions
         self.callback = callback
         self.vars_by_pos: Dict[Pos, List[tuple[str, cp_model.IntVar]]] = {}
-        for (pos, state), var in model_vars.items():
+        for (pos, state), var in board.model_vars.items():
             self.vars_by_pos.setdefault(pos, []).append((state, var))
 
     def on_solution_callback(self):
@@ -148,7 +105,7 @@ class Board:
                 continue
             seen_pos.add(pos)
             c = get_char(self.board, pos)
-            direction = {'V': 'down', 'H': 'right'}[c]
+            direction = {'V': Direction.DOWN, 'H': Direction.RIGHT}[c]
             other_pos = get_next_pos(pos, direction)
             seen_pos.add(other_pos)
             self.pairs.add((pos, other_pos))
@@ -198,17 +155,17 @@ class Board:
             if ground_neg != -1:
                 self.model.Add(sum_neg == ground_neg)
 
-        
-
-
     def solve_all(self, max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None) -> List[SingleSolution]:
         solver = cp_model.CpSolver()
         solver.parameters.enumerate_all_solutions = True
         solutions: List[SingleSolution] = []
-        collector = AllSolutionsCollector(self.model_vars, solutions, max_solutions=max_solutions, callback=callback)
+        collector = AllSolutionsCollector(self, solutions, max_solutions=max_solutions, callback=callback)
+        tic = time.time()
         solver.solve(self.model, collector)
         print("Solutions found:", len(solutions))
         print("status:", solver.StatusName())
+        toc = time.time()
+        print(f"Time taken: {toc - tic:.2f} seconds")
         return solutions
 
     def solve_and_print(self):

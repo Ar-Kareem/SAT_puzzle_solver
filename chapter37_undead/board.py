@@ -1,7 +1,8 @@
-
-import multiprocessing
 import json
-from typing import Dict, List, Tuple, Iterable, Optional, Literal, Optional, Callable
+import sys
+import time
+from pathlib import Path
+from typing import Dict, List, Iterable, Optional, Callable
 from enum import Enum
 from dataclasses import dataclass
 
@@ -10,14 +11,8 @@ from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
 from ortools.sat.python.cp_model import CpSolverSolutionCallback
 
-
-Direction = Literal['right', 'left', 'down', 'up']
-
-
-@dataclass(frozen=True)
-class Pos:
-    x: int
-    y: int
+sys.path.append(str(Path(__file__).parent.parent))
+from core.utils import Pos, get_all_pos, set_char, get_pos, get_next_pos, in_bounds, get_char, Direction
 
 
 class Monster(Enum):
@@ -53,52 +48,11 @@ def can_see(reflect_count: int, monster: Monster) -> bool:
         raise ValueError
 
 
-def get_deltas(direction: Direction) -> Tuple[int, int]:
-    if direction == 'right':
-        return +1, 0
-    elif direction == 'left':
-        return -1, 0
-    elif direction == 'down':
-        return 0, +1
-    elif direction == 'up':
-        return 0, -1
-    else:
-        raise ValueError
-
-
-def get_pos(x: int, y: int) -> Pos:
-    return Pos(x, y)
-
-
-def get_next_pos(cur_pos: Pos, direction: Direction) -> Pos:
-    delta_x, delta_y = get_deltas(direction)
-    return Pos(cur_pos.x+delta_x, cur_pos.y+delta_y)
-
-
 def get_hashable_solution(solution: SingleSolution) -> str:
     result = []
     for pos, monster in solution.assignment.items():
         result.append((pos.x, pos.y, monster.value[0]))
     return json.dumps(result, sort_keys=True)
-
-
-def get_all_pos(N):
-    for y in range(N):
-        for x in range(N):
-            yield get_pos(x, y)
-
-
-def get_char(board: np.array, pos: Pos) -> str:
-    c = board[pos.y][pos.x]
-    assert c in ['//', '\\', '**']
-    return c
-
-def set_char(board: np.array, pos: Pos, char: str):
-    board[pos.y][pos.x] = char
-
-
-def in_bounds(pos: Pos, N: int) -> bool:
-    return 0 <= pos.y < N and 0 <= pos.x < N
 
 
 def beam(board, start_pos: Pos, direction: Direction) -> list[SingleBeamResult]:
@@ -113,18 +67,18 @@ def beam(board, start_pos: Pos, direction: Direction) -> list[SingleBeamResult]:
         cur_pos_char = get_char(board, cur_pos)
         if cur_pos_char == '//':
             direction = {
-                'right': 'up',
-                'up': 'right',
-                'down': 'left',
-                'left': 'down'
+                Direction.RIGHT: Direction.UP,
+                Direction.UP: Direction.RIGHT,
+                Direction.DOWN: Direction.LEFT,
+                Direction.LEFT: Direction.DOWN
             }[direction]
             reflect_count += 1
         elif cur_pos_char == '\\':
             direction = {
-                'right': 'down',
-                'down': 'right',
-                'up': 'left',
-                'left': 'up'
+                Direction.RIGHT: Direction.DOWN,
+                Direction.DOWN: Direction.RIGHT,
+                Direction.UP: Direction.LEFT,
+                Direction.LEFT: Direction.UP
             }[direction]
             reflect_count += 1
         else:
@@ -134,7 +88,7 @@ def beam(board, start_pos: Pos, direction: Direction) -> list[SingleBeamResult]:
 
 
 class AllSolutionsCollector(CpSolverSolutionCallback):
-    def __init__(self, model_vars, out: List[SingleSolution], max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None):
+    def __init__(self, board: 'Board', out: List[SingleSolution], max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None):
         super().__init__()
         self.out = out
         self.unique_solutions = set()
@@ -143,7 +97,7 @@ class AllSolutionsCollector(CpSolverSolutionCallback):
         # Precompute a name->Monster map and group vars by cell for fast lookup
         self.name_to_monster: Dict[str, Monster] = {m.value[1]: m for m in Monster}
         self.vars_by_pos: Dict[Pos, List[tuple[str, cp_model.IntVar]]] = {}
-        for (pos, monster_name), var in model_vars.items():
+        for (pos, monster_name), var in board.model_vars.items():
             self.vars_by_pos.setdefault(pos, []).append((monster_name, var))
 
     def on_solution_callback(self):
@@ -203,7 +157,7 @@ class Board:
             if ground == -1:
                 continue
             pos = get_pos(x=i, y=-1)
-            beam_result = beam(self.board, pos, 'down')
+            beam_result = beam(self.board, pos, Direction.DOWN)
             self.model.add(self.get_var(beam_result) == ground)
 
         # left edge
@@ -211,7 +165,7 @@ class Board:
             if ground == -1:
                 continue
             pos = get_pos(x=-1, y=i)
-            beam_result = beam(self.board, pos, 'right')
+            beam_result = beam(self.board, pos, Direction.RIGHT)
             self.model.add(self.get_var(beam_result) == ground)
 
         # right edge
@@ -219,7 +173,7 @@ class Board:
             if ground == -1:
                 continue
             pos = get_pos(x=self.N, y=i)
-            beam_result = beam(self.board, pos, 'left')
+            beam_result = beam(self.board, pos, Direction.LEFT)
             self.model.add(self.get_var(beam_result) == ground)
 
         # bottom edge
@@ -227,7 +181,7 @@ class Board:
             if ground == -1:
                 continue
             pos = get_pos(x=i, y=self.N)
-            beam_result = beam(self.board, pos, 'up')
+            beam_result = beam(self.board, pos, Direction.UP)
             self.model.add(self.get_var(beam_result) == ground)
         
         if self.monster_count is not None:
@@ -249,12 +203,15 @@ class Board:
 
     def solve_all(self, max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None) -> List[SingleSolution]:
         solver = cp_model.CpSolver()
-        solver.parameters.num_search_workers = multiprocessing.cpu_count()
+        solver.parameters.enumerate_all_solutions = True
         solutions: List[SingleSolution] = []
-        collector = AllSolutionsCollector(self.model_vars, solutions, max_solutions=max_solutions, callback=callback)
-        solver.Solve(self.model, collector)
+        collector = AllSolutionsCollector(self, solutions, max_solutions=max_solutions, callback=callback)
+        tic = time.time()
+        solver.solve(self.model, collector)
         print("Solutions found:", len(solutions))
         print("status:", solver.StatusName())
+        toc = time.time()
+        print(f"Time taken: {toc - tic:.2f} seconds")
         return solutions
 
     def solve_and_print(self):

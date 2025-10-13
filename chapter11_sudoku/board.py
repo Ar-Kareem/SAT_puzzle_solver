@@ -1,6 +1,9 @@
 
 import json
-from typing import Dict, List, Tuple, Optional, Literal, Optional, Callable
+import sys
+import time
+from pathlib import Path
+from typing import Dict, List, Optional, Optional, Callable
 from dataclasses import dataclass
 
 import numpy as np
@@ -8,20 +11,12 @@ from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
 from ortools.sat.python.cp_model import CpSolverSolutionCallback
 
-
-@dataclass(frozen=True)
-class Pos:
-    x: int
-    y: int
-
+sys.path.append(str(Path(__file__).parent.parent))
+from core.utils import Pos, get_pos, get_all_pos, get_char, set_char, in_bounds
 
 @dataclass(frozen=True)
 class SingleSolution:
     assignment: dict[Pos, int]
-
-
-def get_pos(x: int, y: int) -> Pos:
-    return Pos(x=x, y=y)
 
 
 def get_hashable_solution(solution: SingleSolution) -> str:
@@ -31,14 +26,8 @@ def get_hashable_solution(solution: SingleSolution) -> str:
     return json.dumps(result, sort_keys=True)
 
 
-def get_all_pos(N):
-    for y in range(N):
-        for x in range(N):
-            yield get_pos(x=x, y=y)
-
-
 def get_value(board: np.array, pos: Pos) -> int|str:
-    c = board[pos.y][pos.x]
+    c = get_char(board, pos)
     if c == '*':
         return c
     if str(c).isdecimal():
@@ -49,16 +38,12 @@ def get_value(board: np.array, pos: Pos) -> int|str:
 
 def set_value(board: np.array, pos: Pos, value: int|str):
     if value == '*':
-        board[pos.y][pos.x] = '*'
-        return
-    if value < 10:
-        board[pos.y][pos.x] = str(value)
-        return
-    board[pos.y][pos.x] = chr(value - 10 + ord('a'))
-
-
-def in_bounds(pos: Pos, N: int) -> bool:
-    return 0 <= pos.y < N and 0 <= pos.x < N
+        value = '*'
+    elif value < 10:
+        value = str(value)
+    else:
+        value = chr(value - 10 + ord('a'))
+    set_char(board, pos, value)
 
 
 def get_block_pos(i: int, B: int) -> list[Pos]:
@@ -66,13 +51,13 @@ def get_block_pos(i: int, B: int) -> list[Pos]:
     return [Pos(x=top_left.x + x, y=top_left.y + y) for x in range(B) for y in range(B)]
 
 class AllSolutionsCollector(CpSolverSolutionCallback):
-    def __init__(self, model_vars, out: List[SingleSolution], max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None):
+    def __init__(self, board: 'Board', out: List[SingleSolution], max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None):
         super().__init__()
         self.out = out
         self.unique_solutions = set()
         self.max_solutions = max_solutions
         self.callback = callback
-        self.vars_by_pos: Dict[Pos, cp_model.IntVar] = model_vars.copy()
+        self.vars_by_pos: Dict[Pos, cp_model.IntVar] = board.model_vars.copy()
 
     def on_solution_callback(self):
         try:
@@ -98,6 +83,7 @@ class Board:
     def __init__(self, board: np.array):
         assert board.ndim == 2, f'board must be 2d, got {board.ndim}'
         assert board.shape[0] == board.shape[1], 'board must be square'
+        assert all(isinstance(i.item(), str) and len(i.item()) == 1 and (i.item().isalnum() or i.item() == '*') for i in np.nditer(board)), 'board must contain only alphanumeric characters or *'
         self.board = board
         self.N = board.shape[0]
         self.B = np.sqrt(self.N)  # block size
@@ -137,10 +123,13 @@ class Board:
         solver = cp_model.CpSolver()
         solver.parameters.enumerate_all_solutions = True
         solutions: List[SingleSolution] = []
-        collector = AllSolutionsCollector(self.model_vars, solutions, max_solutions=max_solutions, callback=callback)
+        collector = AllSolutionsCollector(self, solutions, max_solutions=max_solutions, callback=callback)
+        tic = time.time()
         solver.solve(self.model, collector)
         print("Solutions found:", len(solutions))
         print("status:", solver.StatusName())
+        toc = time.time()
+        print(f"Time taken: {toc - tic:.2f} seconds")
         return solutions
 
     def solve_and_print(self):

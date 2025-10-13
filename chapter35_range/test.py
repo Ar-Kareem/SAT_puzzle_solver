@@ -1,4 +1,3 @@
-import time
 import numpy as np
 import board
 
@@ -17,7 +16,4 @@ clues = np.array([
     [-1, 7, -1, -1, -1, -1, 6, -1, -1, -1, 6, -1, -1, 13, 5, -1],
 ])
 board = board.Board(clues)
-start_time = time.time()
 sols = board.solve_and_print()
-end_time = time.time()
-print(f"Time taken: {end_time - start_time:.2f} seconds")
