@@ -61,8 +61,12 @@ class AllSolutionsCollector(CpSolverSolutionCallback):
         self.max_solutions = max_solutions
         self.callback = callback
         self.vars_by_pos: Dict[Pos, cp_model.IntVar] = model_vars.copy()
+        self.raw_count = 0
 
     def on_solution_callback(self):
+        self.raw_count += 1
+        if self.raw_count % 100 == 0:
+            print(f"raw count: {self.raw_count}")
         assignment: Dict[Pos, int] = {}
         for pos, var in self.vars_by_pos.items():
             assignment[pos] = self.Value(var)
@@ -91,40 +95,38 @@ class Board:
         self.b: dict[Pos, cp_model.IntVar] = {}  # 1=black, 0=white
         self.w: dict[Pos, cp_model.IntVar] = {}  # 1=white, 0=black
         # Connectivity helpers
-        self.root: dict[Pos, cp_model.IntVar] = {}
-        self.dist: dict[Pos, cp_model.IntVar] = {}
-        # Directed adjacency arc use (q -> p)
-        self.arc: dict[Tuple[Pos, Pos], cp_model.IntVar] = {}
+        self.root: dict[Pos, cp_model.IntVar] = {}       # exactly one root; root <= w
+        self.reach_layers: List[dict[Pos, cp_model.IntVar]] = []  # R_t[p] booleans, t = 0..T
 
         self.create_vars()
         self.add_all_constraints()
 
     def create_vars(self):
-        M = self.V * self.H  # big enough distance bound
-
         # Cell color vars
         for pos in get_all_pos(self.V, self.H):
             self.b[pos] = self.model.NewBoolVar(f"b[{pos.x},{pos.y}]")
             self.w[pos] = self.model.NewBoolVar(f"w[{pos.x},{pos.y}]")
             self.model.AddExactlyOne([self.b[pos], self.w[pos]])
 
-        # Root and distance for connectivity over white cells
+        # Root
         for pos in get_all_pos(self.V, self.H):
             self.root[pos] = self.model.NewBoolVar(f"root[{pos.x},{pos.y}]")
-            # Distances in [0, M]
-            self.dist[pos] = self.model.NewIntVar(0, M, f"d[{pos.x},{pos.y}]")
 
-        # Directed arcs on 4-neighborhood
-        for p in get_all_pos(self.V, self.H):
-            for q in get_neighbors4(p, self.V, self.H):
-                self.arc[(q, p)] = self.model.NewBoolVar(f"arc[{q.x},{q.y}]->[{p.x},{p.y}]")
-                # Arc can only be used if both endpoints are white
-                self.model.Add(self.arc[(q, p)] <= self.w[p])
-                self.model.Add(self.arc[(q, p)] <= self.w[q])
+        # Percolation layers R_t (monotone flood fill)
+        T = self.V * self.H  # large enough to cover whole board
+        for t in range(T + 1):
+            layer: dict[Pos, cp_model.IntVar] = {}
+            for pos in get_all_pos(self.V, self.H):
+                layer[pos] = self.model.NewBoolVar(f"R[{t}][{pos.x},{pos.y}]")
+            self.reach_layers.append(layer)
+
+        # Seed: R0 = root
+        for pos in get_all_pos(self.V, self.H):
+            self.model.Add(self.reach_layers[0][pos] == self.root[pos])
 
     def add_all_constraints(self):
         self.no_adjacent_blacks()
-        self.white_connectivity_single_component()
+        self.white_connectivity_percolation()
         self.range_clues()
 
     def no_adjacent_blacks(self):
@@ -136,12 +138,14 @@ class Board:
                 cache.add((p, q))
                 self.model.Add(self.b[p] + self.b[q] <= 1)
 
-    def white_connectivity_single_component(self):
-        # three rules for arcs (which are between any two white neighbors p and q) (arc (q, p) means an arc from q to p)
-        # 1. If either is black, the arc is false
-        # 2. Every non-root white cell has exactly one incoming arc
-        # 3. If you have an incoming arc from q, then your distance is > dist[q]
 
+    def white_connectivity_percolation(self):
+        """
+        Layered percolation:
+          - R_t is monotone nondecreasing in t
+          - A cell can 'turn on' at layer t+1 if it's white and has a neighbor on at layer t
+          - Final layer equals the white mask: R_T[p] == w[p]  => all whites are connected to the unique root
+        """
         # to find unique solutions easily, we make only 1 possible root allowed; root implies the first white cell and all previous cells are black
         prev_cells: List[cp_model.IntVar] = []
         for pos in get_all_pos(self.V, self.H):
@@ -151,23 +155,35 @@ class Board:
         # Exactly one root overall (assumes at least one white exists)
         self.model.Add(sum(self.root.values()) == 1)
 
-        # basic distance constraints
-        for pos in get_all_pos(self.V, self.H):
-            # If root, distance==0
-            self.model.Add(self.dist[pos] == 0).OnlyEnforceIf(self.root[pos])
-            # If white and not root, distance >= 1
-            self.model.Add(self.dist[pos] >= 1).OnlyEnforceIf([self.w[pos], self.root[pos].Not()])
-            # If black, distance==0 (not strictly needed but helps tighten)
-            self.model.Add(self.dist[pos] == 0).OnlyEnforceIf(self.b[pos])
+        T = len(self.reach_layers) - 1
+        for t in range(T):
+            Rt = self.reach_layers[t]
+            Rt1 = self.reach_layers[t + 1]
+            for p in get_all_pos(self.V, self.H):
+                # Monotonicity: once reached, stays reached
+                self.model.Add(Rt1[p] >= Rt[p])
+                # Can only be reached if white
+                self.model.Add(Rt1[p] <= self.w[p])
 
-        # Each white cell has exactly one incoming arc unless it is the unique root (then zero).
+                # Helper "AND" vars for (white[p] AND Rt[q]) for each neighbor q
+                neigh_helpers: List[cp_model.IntVar] = []
+                for q in get_neighbors4(p, self.V, self.H):
+                    a = self.model.NewBoolVar(f"A[{t+1}][{p.x},{p.y}]<-({q.x},{q.y})")
+                    # a == w[p] & Rt[q]
+                    self.model.Add(a <= self.w[p])
+                    self.model.Add(a <= Rt[q])
+                    self.model.Add(a >= self.w[p] + Rt[q] - 1)
+                    neigh_helpers.append(a)
+                    # If supported by any neighbor, you can be reached
+                    self.model.Add(Rt1[p] >= a)
+
+                # Upper bound to tighten: Rt1[p] can't exceed previous reach or sum of supports
+                self.model.Add(Rt1[p] <= Rt[p] + sum(neigh_helpers))
+
+        # All whites must be reached by the final layer
+        RT = self.reach_layers[T]
         for p in get_all_pos(self.V, self.H):
-            incoming = [self.arc[(q, p)] for q in get_neighbors4(p, self.V, self.H)]
-            self.model.Add(sum(incoming) == self.w[p] - self.root[p])
-
-        # Distance strictly increases along chosen arcs (breaks cycles; ensures reachability from root)
-        for (q, p), a in self.arc.items():
-            self.model.Add(self.dist[p] == self.dist[q] + 1).OnlyEnforceIf(a)
+            self.model.Add(RT[p] == self.w[p])
 
     def range_clues(self):
         # For each numbered cell c with value k:
