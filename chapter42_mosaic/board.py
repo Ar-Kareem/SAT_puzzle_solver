@@ -63,7 +63,7 @@ class Board:
             c = get_char(self.board, pos)
             if not str(c).isdecimal():
                 continue
-            neighbour_vars = [self.model_vars[p] for p in get_neighbors8(pos, self.N)]
+            neighbour_vars = [self.model_vars[p] for p in get_neighbors8(pos, self.N, include_self=True)]
             self.model.Add(lxp.sum(neighbour_vars) == int(c))
 
     def solve_all(self, max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None) -> List[SingleSolution]:

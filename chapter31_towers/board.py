@@ -2,7 +2,6 @@ import sys
 import time
 from pathlib import Path
 from typing import Dict, List, Optional, Optional, Callable
-from dataclasses import dataclass
 
 import numpy as np
 from ortools.sat.python import cp_model

@@ -2,12 +2,8 @@ import sys
 import time
 from pathlib import Path
 from typing import Dict, List, Optional, Optional, Callable
-from dataclasses import dataclass
 
-import numpy as np
-from numpy.core.defchararray import isdecimal
 from ortools.sat.python import cp_model
-from ortools.sat.python.cp_model import LinearExpr as lxp
 from ortools.sat.python.cp_model import CpSolverSolutionCallback
 
 sys.path.append(str(Path(__file__).parent.parent))

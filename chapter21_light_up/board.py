@@ -27,10 +27,9 @@ def laser_out(board: np.array, init_pos: Pos) -> list[Pos]:
         cur_pos = init_pos
         while True:
             cur_pos = get_next_pos(cur_pos, direction)
-            if in_bounds(cur_pos, N) and get_char(board, cur_pos) == '*':
-                result.append(cur_pos)
-            else:
+            if not in_bounds(cur_pos, N) or get_char(board, cur_pos) != '*':
                 break
+            result.append(cur_pos)
     return result
 
 

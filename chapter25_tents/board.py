@@ -1,10 +1,8 @@
 import sys
 import time
 from pathlib import Path
-from typing import Dict, List, Tuple, Optional, Literal, Optional, Callable
-from dataclasses import dataclass
+from typing import Dict, List, Optional, Optional, Callable
 from collections import defaultdict
-from enum import Enum
 
 import numpy as np
 from ortools.sat.python import cp_model
@@ -12,25 +10,7 @@ from ortools.sat.python.cp_model import LinearExpr as lxp
 from ortools.sat.python.cp_model import CpSolverSolutionCallback
 
 sys.path.append(str(Path(__file__).parent.parent))
-from core.utils import Pos, get_all_pos, get_char, set_char, in_bounds, get_next_pos, Direction, get_pos, SingleSolution, get_hashable_solution
-
-
-def neighbours(board: np.array, pos: Pos) -> list[Pos]:
-    N = board.shape[0]
-    result = []
-    for dx in [-1, 0, 1]:
-        for dy in [-1, 0, 1]:
-            if (dx, dy) == (0, 0):
-                continue
-            d_pos = Pos(x=pos.x+dx, y=pos.y+dy)
-            if in_bounds(d_pos, N) and get_char(board, d_pos) == '*':
-                result.append(d_pos)
-    return result
-
-@dataclass(frozen=True)
-class ModelVars:
-    is_tent: dict[Pos, cp_model.IntVar]
-    tent_direction: dict[Pos, cp_model.IntVar]
+from core.utils import Pos, get_all_pos, get_char, set_char, get_neighbors8, get_next_pos, Direction, get_pos, SingleSolution, get_hashable_solution
 
 
 class AllSolutionsCollector(CpSolverSolutionCallback):
@@ -40,12 +20,12 @@ class AllSolutionsCollector(CpSolverSolutionCallback):
         self.unique_solutions = set()
         self.max_solutions = max_solutions
         self.callback = callback
-        self.model_vars: ModelVars = board.model_vars
+        self.is_tent = board.is_tent
 
     def on_solution_callback(self):
         try:
             assignment: Dict[Pos, int] = {}
-            for pos, var in self.model_vars.is_tent.items():
+            for pos, var in self.is_tent.items():
                 if isinstance(var, int):
                     continue
                 assignment[pos] = self.value(var)
@@ -76,7 +56,8 @@ class Board:
         self.star_positions: set[Pos] = {pos for pos in get_all_pos(self.N) if get_char(self.board, pos) == '*'}
         self.tree_positions: set[Pos] = {pos for pos in get_all_pos(self.N) if get_char(self.board, pos) == 'T'}
         self.model = cp_model.CpModel()
-        self.model_vars: ModelVars = ModelVars(is_tent=defaultdict(int), tent_direction=defaultdict(int))
+        self.is_tent = defaultdict(int)
+        self.tent_direction = defaultdict(int)
         self.sides = sides
         self.create_vars()
         self.add_all_constraints()
@@ -87,22 +68,24 @@ class Board:
             tent_direction = self.model.NewIntVar(0, 4, f'{pos}:tent_direction')
             self.model.Add(tent_direction == 0).OnlyEnforceIf(is_tent.Not())
             self.model.Add(tent_direction > 0).OnlyEnforceIf(is_tent)
-            self.model_vars.is_tent[pos] = is_tent
-            self.model_vars.tent_direction[pos] = tent_direction
+            self.is_tent[pos] = is_tent
+            self.tent_direction[pos] = tent_direction
 
     def add_all_constraints(self):
         # - There are exactly as many tents as trees.
-        self.model.Add(lxp.sum([self.model_vars.is_tent[pos] for pos in self.star_positions]) == len(self.tree_positions))
+        self.model.Add(lxp.sum([self.is_tent[pos] for pos in self.star_positions]) == len(self.tree_positions))
         # - no two tents are adjacent horizontally, vertically or diagonally
         for pos in self.star_positions:
-            for neighbour in neighbours(self.board, pos):
-                self.model.Add(self.model_vars.is_tent[neighbour] == 0).OnlyEnforceIf(self.model_vars.is_tent[pos])
+            for neighbour in get_neighbors8(pos, V=self.N, H=self.N, include_self=False):
+                if get_char(self.board, neighbour) != '*':
+                    continue
+                self.model.Add(self.is_tent[neighbour] == 0).OnlyEnforceIf(self.is_tent[pos])
         # - the number of tents in each row and column matches the numbers around the edge of the grid 
         for row in range(self.N):
-            row_vars = [self.model_vars.is_tent[get_pos(x=i, y=row)] for i in range(self.N)]
+            row_vars = [self.is_tent[get_pos(x=i, y=row)] for i in range(self.N)]
             self.model.Add(lxp.sum(row_vars) == self.sides['side'][row])
         for col in range(self.N):
-            col_vars = [self.model_vars.is_tent[get_pos(x=col, y=i)] for i in range(self.N)]
+            col_vars = [self.is_tent[get_pos(x=col, y=i)] for i in range(self.N)]
             self.model.Add(lxp.sum(col_vars) == self.sides['top'][col])
         # - it is possible to match tents to trees so that each tree is orthogonally adjacent to its own tent (but may also be adjacent to other tents). 
         # for each tree, one of the following must be true:
@@ -121,23 +104,23 @@ class Board:
         var_list = []
         if left_pos in self.star_positions:
             aux = self.model.NewBoolVar(f'{tree_pos}:left')
-            self.model.Add(self.model_vars.tent_direction[left_pos] == Direction.RIGHT.value).OnlyEnforceIf(aux)
-            self.model.Add(self.model_vars.tent_direction[left_pos] != Direction.RIGHT.value).OnlyEnforceIf(aux.Not())
+            self.model.Add(self.tent_direction[left_pos] == Direction.RIGHT.value).OnlyEnforceIf(aux)
+            self.model.Add(self.tent_direction[left_pos] != Direction.RIGHT.value).OnlyEnforceIf(aux.Not())
             var_list.append(aux)
         if right_pos in self.star_positions:
             aux = self.model.NewBoolVar(f'{tree_pos}:right')
-            self.model.Add(self.model_vars.tent_direction[right_pos] == Direction.LEFT.value).OnlyEnforceIf(aux)
-            self.model.Add(self.model_vars.tent_direction[right_pos] != Direction.LEFT.value).OnlyEnforceIf(aux.Not())
+            self.model.Add(self.tent_direction[right_pos] == Direction.LEFT.value).OnlyEnforceIf(aux)
+            self.model.Add(self.tent_direction[right_pos] != Direction.LEFT.value).OnlyEnforceIf(aux.Not())
             var_list.append(aux)
         if top_pos in self.star_positions:
             aux = self.model.NewBoolVar(f'{tree_pos}:top')
-            self.model.Add(self.model_vars.tent_direction[top_pos] == Direction.DOWN.value).OnlyEnforceIf(aux)
-            self.model.Add(self.model_vars.tent_direction[top_pos] != Direction.DOWN.value).OnlyEnforceIf(aux.Not())
+            self.model.Add(self.tent_direction[top_pos] == Direction.DOWN.value).OnlyEnforceIf(aux)
+            self.model.Add(self.tent_direction[top_pos] != Direction.DOWN.value).OnlyEnforceIf(aux.Not())
             var_list.append(aux)
         if bottom_pos in self.star_positions:
             aux = self.model.NewBoolVar(f'{tree_pos}:bottom')
-            self.model.Add(self.model_vars.tent_direction[bottom_pos] == Direction.UP.value).OnlyEnforceIf(aux)
-            self.model.Add(self.model_vars.tent_direction[bottom_pos] != Direction.UP.value).OnlyEnforceIf(aux.Not())
+            self.model.Add(self.tent_direction[bottom_pos] == Direction.UP.value).OnlyEnforceIf(aux)
+            self.model.Add(self.tent_direction[bottom_pos] != Direction.UP.value).OnlyEnforceIf(aux.Not())
             var_list.append(aux)
         self.model.AddBoolOr(var_list)
 

@@ -39,11 +39,13 @@ def get_neighbors4(pos: Pos, V: int, H: int) -> Iterable[Pos]:
             yield p2
 
 
-def get_neighbors8(pos: Pos, V: int, H: int = None) -> Iterable[Pos]:
+def get_neighbors8(pos: Pos, V: int, H: int = None, include_self: bool = False) -> Iterable[Pos]:
     if H is None:
         H = V
     for dx in [-1, 0, 1]:
         for dy in [-1, 0, 1]:
+            if not include_self and (dx, dy) == (0, 0):
+                continue
             d_pos = Pos(x=pos.x+dx, y=pos.y+dy)
             if in_bounds(d_pos, V, H):
                 yield d_pos
