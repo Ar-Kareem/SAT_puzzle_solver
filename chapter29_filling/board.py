@@ -1,292 +1,231 @@
-import json
-from typing import Dict, List, Tuple, Optional, Callable
-from dataclasses import dataclass
+# <chapter29_filling/board.py>
+import sys
+from pathlib import Path
 
 import numpy as np
 from ortools.sat.python import cp_model
-from ortools.sat.python.cp_model import CpSolverSolutionCallback
-from tqdm import tqdm
 
-@dataclass(frozen=True)
-class Pos:
-    x: int
-    y: int
-
-
-@dataclass(frozen=True)
-class SingleSolution:
-    assignment: dict[Pos, int]  # digit at each cell (1..9)
-
-
-def get_pos(x: int, y: int) -> Pos:
-    return Pos(x=x, y=y)
-
-
-def get_all_pos(V: int, H: int):
-    for y in range(V):
-        for x in range(H):
-            yield get_pos(x=x, y=y)
-
-
-def set_char(board: np.ndarray, pos: Pos, char: str):
-    board[pos.y][pos.x] = char
-
-
-def in_bounds(pos: Pos, V: int, H: int) -> bool:
-    return 0 <= pos.y < V and 0 <= pos.x < H
-
-
-def get_neighbors4(pos: Pos, V: int, H: int) -> List[Pos]:
-    for dx, dy in ((1,0),(-1,0),(0,1),(0,-1)):
-        p2 = Pos(pos.x+dx, pos.y+dy)
-        if in_bounds(p2, V, H):
-            yield p2
-
-
-class AllSolutionsCollector(CpSolverSolutionCallback):
-    def __init__(self, model_vars, out: List[SingleSolution], max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None):
-        super().__init__()
-        self.out = out
-        self.unique = set()
-        self.max_solutions = max_solutions
-        self.callback = callback
-        self.vars_by_pos: Dict[Pos, cp_model.IntVar] = model_vars.copy()
-
-    def on_solution_callback(self):
-        assignment: Dict[Pos, int] = {}
-        for pos, var in self.vars_by_pos.items():
-            assignment[pos] = self.Value(var)
-        key = json.dumps(sorted([(p.x, p.y, v) for p, v in assignment.items()]))
-        if key in self.unique:
-            return
-        self.unique.add(key)
-        result = SingleSolution(assignment=assignment)
-        self.out.append(result)
-        if self.callback:
-            self.callback(result)
-        if self.max_solutions is not None and len(self.out) >= self.max_solutions:
-            self.StopSearch()
+sys.path.append(str(Path(__file__).parent.parent))
+from core.utils import Pos, get_all_pos, get_char, set_char, get_neighbors4
+from core.utils_ortools import generic_solve_all, SingleSolution
 
 
 class Board:
     """
-    Chapter 29: Filling
-    clues: 2D numpy array of strings: '*' for empty, or '1'..'9' for fixed digits.
-    Output: assign digit 1..9 to every cell.
-    Each 4-connected region of equal digits d must have area exactly d.
+    Chapter 29: Filling (Fillomino-style)
+
+    Variables per cell p:
+      val[p]    ∈ {1..9}                        # digit
+      region[p] ∈ {0..N-1}                      # id = linear index of the region's root
+      is_root[p] <=> (region[p] == idx[p])      # root channel
+      depth[p]  ∈ {0..N}                        # shortest 4-step distance to its region root
+      parent[p->q] ∈ {0,1} for each 4-neighbor q # unique parent for non-roots
+
+    Extra booleans:
+      is_val[p,k] <=> (val[p] == k) for k=1..9
+      same_edge[u,v] <=> (region[u] == region[v])  for each undirected neighbor edge
+
+    Key constraints:
+      - Respect givens for val.
+      - Region root is the min index among its members: region[p] <= idx[p] for all p,
+        plus root/size logic below fixes the root at the minimum index.
+      - same-digit neighbors must be in the same region.
+      - Inside a region, |depth[u]-depth[v]| ≤ 1 along edges (1-Lipschitz).
+      - Roots: depth=0 and have no parent. Non-roots: choose exactly one neighbor
+        as parent that is in the same region with depth[v] = depth[u]-1.
+      - Lexicographic tie-break on candidates gives a unique parent:
+        pick the earliest neighbor in fixed order (Up, Left, Right, Down).
+      - Region size equals the root's digit; unused region ids have size 0.
     """
-    def __init__(self, clues: np.ndarray):
-        assert clues.ndim == 2 and clues.shape[0] > 0 and clues.shape[1] > 0, 'clues must be 2d'
-        # Your requested assertion:
-        assert all(isinstance(i.item(), str) and (i.item() == '*' or 1 <= int(i.item()) <= 9)
-                   for i in np.nditer(clues)), 'clues must be -1 or digit 1..9'
-        self.V = clues.shape[0]
-        self.H = clues.shape[1]
+
+    def __init__(self, board: np.ndarray):
+        assert board.ndim == 2, f'board must be 2d, got {board.ndim}'
+        self.board = board
+        self.V, self.H = board.shape
+        assert all((c == '*') or (str(c).isdecimal() and 0 <= int(c) <= 9)
+                   for c in np.nditer(board)), "board must contain '*' or digits 0..9"
+
         self.N = self.V * self.H
-        self.clues = clues
+
+        # Linear index maps, keyed by Pos (never construct tuples)
+        self.idx_of: dict[Pos, int] = {pos: (pos.y * self.H + pos.x) for pos in get_all_pos(self.V, self.H)}
+        self.pos_of: list[Pos] = [None] * self.N
+        for pos, idx in self.idx_of.items():
+            self.pos_of[idx] = pos
+
         self.model = cp_model.CpModel()
 
-        # Vars
-        self.digit: dict[Pos, cp_model.IntVar] = {}  # 1..9
-        # a[p,k] ∈ {0,1}: p belongs to component whose anchor is cell k (k in 0..N-1)
-        self.a: dict[Tuple[Pos, int], cp_model.BoolVar] = {}
-        # z_k = a[kpos,k] (label k used?)
-        self.z: List[cp_model.BoolVar] = []
-        # size[k] = sum_p a[p,k]
-        self.size: List[cp_model.IntVar] = []
-        # eq[p,q] ⇔ digit[p] == digit[q] for 4-neighbors
-        self.eq: dict[Tuple[Pos, Pos], cp_model.BoolVar] = {}
-        # Percolation reachability for each label k (layers 0..T)
-        self.reach: List[List[dict[Pos, cp_model.BoolVar]]] = []
+        # Per-cell variables
+        self.val = {}
+        self.region = {}  # fixed given val
+        self.is_root = {}  # fixed given val
+        self.depth = {}  # fixed given parent
+        # parent[(u, v)] -> Bool for directed neighbor u->v
+        self.parent = {}
+        # is_val[(p, k)] -> Bool
+        self.is_val = {}  # fixed given val
+        self.same_edge = {}  # fixed given region
+        # cand[(u, v)] -> Bool
+        self.cand = {}  # complex; parent => cand => same_edge ; also cand[p,q] => val[p] == val[q] ; also cand[p,q] => depth[p] == depth[q] + 1
+        self.members = {}  # fixed given region
+        self.size_r = {}  # fixed given val + root
 
-        self.create_vars()
-        self.add_all_constraints()
+        # Create core vars and respect givens
+        for p in get_all_pos(self.V, self.H):
+            idx = self.idx_of[p]
 
-    def lin_idx(self, p: Pos) -> int:
-        return p.y * self.H + p.x
+            # val in 1..9; givens fixed
+            v = self.model.NewIntVar(1, 9, f'val[{idx}]')
+            ch = get_char(self.board, p)
+            if str(ch).isdecimal():
+                self.model.Add(v == int(ch))
+            self.val[p] = v
 
-    def idx_pos(self, k: int) -> Pos:
-        y, x = divmod(k, self.H)
-        return Pos(x, y)
+            # region id and root channel
+            r = self.model.NewIntVar(0, self.N - 1, f'region[{idx}]')
+            self.region[p] = r
+            b = self.model.NewBoolVar(f'is_root[{idx}]')
+            self.is_root[p] = b
+            self.model.Add(r == idx).OnlyEnforceIf(b)
+            self.model.Add(r != idx).OnlyEnforceIf(b.Not())
 
-    def create_vars(self):
-        V, H, N = self.V, self.H, self.N
-        T = N - 1  # enough steps to flood any connected set
+            # depth
+            d = self.model.NewIntVar(0, self.N, f'depth[{idx}]')
+            self.depth[p] = d
+            self.model.Add(d == 0).OnlyEnforceIf(b)
+            self.model.Add(d >= 1).OnlyEnforceIf(b.Not())
 
-        # Digits
-        for p in get_all_pos(V, H):
-            self.digit[p] = self.model.NewIntVar(1, 9, f"dig[{p.x},{p.y}]")
+            # parent vars to all 4-neighbors
+            for q in get_neighbors4(p, self.V, self.H):
+                self.parent[(p, q)] = self.model.NewBoolVar(f'parent[{idx}->{self.idx_of[q]}]')
 
-        # Fix clues (exactly as you asked)
-        for y in range(V):
-            for x in range(H):
-                k = self.clues[y][x]
-                if k != '*':
-                    self.model.Add(self.digit[Pos(x, y)] == int(k))
+        # is_val indicators (used for "same-digit neighbors must merge")
+        for p in get_all_pos(self.V, self.H):
+            for k in range(1, 10):
+                b = self.model.NewBoolVar(f'is_val[{self.idx_of[p]}=={k}]')
+                self.is_val[(p, k)] = b
+                self.model.Add(self.val[p] == k).OnlyEnforceIf(b)
+                self.model.Add(self.val[p] != k).OnlyEnforceIf(b.Not())
 
-        # One-hot labels per cell
-        for p in get_all_pos(V, H):
-            for k in range(N):
-                self.a[(p, k)] = self.model.NewBoolVar(f"a[{p.x},{p.y}]={k}")
-            self.model.Add(sum(self.a[(p, k)] for k in range(N)) == 1)
+        # Helper: unique key for an undirected edge (u,v)
+        def edge_key(u: Pos, v: Pos):
+            iu, iv = self.idx_of[u], self.idx_of[v]
+            return (iu, iv) if iu < iv else (iv, iu)
 
-        # z_k, size[k]
-        for k in range(N):
-            kpos = self.idx_pos(k)
-            zk = self.a[(kpos, k)]  # used iff anchor cell takes its own label
-            self.z.append(zk)
-            self.size.append(self.model.NewIntVar(0, N, f"size[{k}]"))
-
-        for k in range(N):
-            self.model.Add(self.size[k] == sum(self.a[(p, k)] for p in get_all_pos(V, H)))
-
-        # Anchor guard: a[p,k] <= z_k
-        for k in range(N):
-            zk = self.z[k]
-            for p in get_all_pos(V, H):
-                self.model.Add(self.a[(p, k)] <= zk)
-
-        # Neighbor digit equality flags
-        for p in get_all_pos(V, H):
-            for q in get_neighbors4(p, V, H):
-                if (q, p) in self.eq:
+        # same_edge[u,v] <=> region[u] == region[v], plus 1-Lipschitz on depths within a region
+        for u in get_all_pos(self.V, self.H):
+            for v in get_neighbors4(u, self.V, self.H):
+                key = edge_key(u, v)
+                if key in self.same_edge:
                     continue
-                b = self.model.NewBoolVar(f"eq[{p.x},{p.y}]==[{q.x},{q.y}]")
-                self.model.Add(self.digit[p] == self.digit[q]).OnlyEnforceIf(b)
-                self.model.Add(self.digit[p] != self.digit[q]).OnlyEnforceIf(b.Not())
-                self.eq[(p, q)] = b
-                self.eq[(q, p)] = b
+                b = self.model.NewBoolVar(f'same[{key[0]},{key[1]}]')
+                self.same_edge[key] = b
+                # channel region equality
+                self.model.Add(self.region[u] == self.region[v]).OnlyEnforceIf(b)
+                self.model.Add(self.region[u] != self.region[v]).OnlyEnforceIf(b.Not())
+                # 1-Lipschitz inside region: |depth[u]-depth[v]| ≤ 1
+                self.model.Add(self.depth[u] <= self.depth[v] + 1).OnlyEnforceIf(b)
+                self.model.Add(self.depth[v] <= self.depth[u] + 1).OnlyEnforceIf(b)
 
-        # Percolation reachability arrays
+        # same-digit neighbors must be in the same region
+        for u in get_all_pos(self.V, self.H):
+            for v in get_neighbors4(u, self.V, self.H):
+                if self.idx_of[v] < self.idx_of[u]:
+                    continue  # avoid duplicating the undirected pair
+                b_same_region = self.same_edge[edge_key(u, v)]
+                for k in range(1, 10):
+                    self.model.Add(b_same_region == 1).OnlyEnforceIf([self.is_val[(u, k)], self.is_val[(v, k)]])
 
-        for k in tqdm(range(N), desc='create'):
-            layers_k: List[dict[Pos, cp_model.BoolVar]] = []
-            for t in range(T + 1):
-                layer: dict[Pos, cp_model.BoolVar] = {}
-                for p in get_all_pos(V, H):
-                    layer[p] = self.model.NewBoolVar(f"R[{k}][{t}][{p.x},{p.y}]")
-                layers_k.append(layer)
-            self.reach.append(layers_k)
+        # Candidate parents: same region AND one step closer
+        def dir_index(u: Pos, v: Pos) -> int:
+            dy, dx = v.y - u.y, v.x - u.x
+            # Fixed order: Up(0), Left(1), Right(2), Down(3)
+            if dy == -1 and dx == 0: return 0
+            if dy == 0 and dx == -1: return 1
+            if dy == 0 and dx == 1:  return 2
+            return 3  # dy == 1 and dx == 0
 
-    def add_all_constraints(self):
-        self.same_digit_neighbors_share_label()
-        self.component_digit_uniformity()
-        self.component_connectivity_percolation()
-        self.component_size_equals_digit()
-        self.canonical_min_anchor()  # remove label symmetry
-        self.prune_digit_one()
+        for u in get_all_pos(self.V, self.H):
+            for v in get_neighbors4(u, self.V, self.H):
+                key = edge_key(u, v)
+                b_same_region = self.same_edge[key]
+                c = self.model.NewBoolVar(f'cand[{self.idx_of[u]}->{self.idx_of[v]}]')
+                self.cand[(u, v)] = c
+                # candidate only if same region and depth[v] = depth[u] - 1
+                self.model.AddImplication(c, b_same_region)
+                self.model.Add(self.depth[u] == self.depth[v] + 1).OnlyEnforceIf(c)
+                # parent implies candidate
+                self.model.AddImplication(self.parent[(u, v)], c)
+                # candidates/parents imply equal value (propagates uniform value through the tree)
+                self.model.Add(self.val[u] == self.val[v]).OnlyEnforceIf(c)
 
-    # Adjacent equal digits must be same label
-    def same_digit_neighbors_share_label(self):
-        N = self.N
-        for p in get_all_pos(self.V, self.H):
-            for q in get_neighbors4(p, self.V, self.H):
-                b = self.eq[(p, q)]
-                for k in range(N):
-                    apk = self.a[(p, k)]
-                    aqk = self.a[(q, k)]
-                    # If eq=1 then apk == aqk (two inequalities gated by b)
-                    self.model.Add(apk <= aqk + (1 - b))
-                    self.model.Add(aqk <= apk + (1 - b))
+        # Root vs non-root parent counting + lexicographic tiebreak by direction
+        for u in get_all_pos(self.V, self.H):
+            nbrs = sorted(get_neighbors4(u, self.V, self.H), key=lambda v: dir_index(u, v))
+            par_vars = [self.parent[(u, v)] for v in nbrs]
+            cand_vars = [self.cand[(u, v)] for v in nbrs]
 
-    # All cells in label k have the anchor k's digit
-    def component_digit_uniformity(self):
-        for k in range(self.N):
-            kpos = self.idx_pos(k)
-            dk = self.digit[kpos]
-            for p in get_all_pos(self.V, self.H):
-                apk = self.a[(p, k)]
-                self.model.Add(self.digit[p] == dk).OnlyEnforceIf(apk)
+            if par_vars:
+                self.model.Add(sum(par_vars) == 0).OnlyEnforceIf(self.is_root[u])
+                self.model.Add(sum(par_vars) == 1).OnlyEnforceIf(self.is_root[u].Not())
+            else:
+                # Isolated cell (shouldn't happen on a grid) -> must be a root
+                self.model.Add(self.is_root[u] == 1)
 
-    # Connectivity for each label using percolation (seed at anchor when used)
-    def component_connectivity_percolation(self):
-        V, H, N = self.V, self.H, self.N
-        T = N - 1
-        for k in tqdm(range(N), desc='component_connectivity_percolation'):
-            zk = self.z[k]
-            R0 = self.reach[k][0]
-            # Seed: only anchor is reached if used; others 0
-            for p in get_all_pos(V, H):
-                if p == self.idx_pos(k):
-                    self.model.Add(R0[p] == zk)
+            # Tiebreak: earliest candidate wins
+            seen = []
+            for pvar, cvar in zip(par_vars, cand_vars):
+                # parent ≤ cand
+                self.model.Add(pvar <= cvar)
+                # parent ≥ cand - sum(seen)
+                if seen:
+                    self.model.Add(pvar >= cvar - sum(seen))
                 else:
-                    self.model.Add(R0[p] == 0)
+                    self.model.Add(pvar >= cvar)
+                seen.append(cvar)
 
-            # Grow monotonically inside the chosen set a[*,k]
-            for t in range(T):
-                Rt = self.reach[k][t]
-                Rt1 = self.reach[k][t + 1]
-                for p in get_all_pos(V, H):
-                    apk = self.a[(p, k)]
-                    # Monotone and capped by membership
-                    self.model.Add(Rt1[p] >= Rt[p])
-                    self.model.Add(Rt1[p] <= apk)
-                    # Support from any reached neighbor
-                    neigh_and = []
-                    for q in get_neighbors4(p, V, H):
-                        s = self.model.NewBoolVar(f"S[{k}][{t+1}][{p.x},{p.y}]<-({q.x},{q.y})")
-                        self.model.Add(s <= apk)
-                        self.model.Add(s <= Rt[q])
-                        self.model.Add(s >= apk + Rt[q] - 1)
-                        neigh_and.append(s)
-                        self.model.Add(Rt1[p] >= s)
-                    if neigh_and:
-                        self.model.Add(Rt1[p] <= Rt[p] + sum(neigh_and))
-
-            # Final layer equals the chosen set a[*,k]
-            RT = self.reach[k][T]
-            for p in get_all_pos(V, H):
-                self.model.Add(RT[p] == self.a[(p, k)])
-
-    # Region size equals its digit, using OnlyEnforceIf (no invalid multiplication)
-    def component_size_equals_digit(self):
-        for k in range(self.N):
-            kpos = self.idx_pos(k)
-            dk = self.digit[kpos]
-            zk = self.z[k]
-            size_k = self.size[k]
-            # If label unused -> size == 0
-            self.model.Add(size_k == 0).OnlyEnforceIf(zk.Not())
-            # If label used -> size == digit at anchor
-            self.model.Add(size_k == dk).OnlyEnforceIf(zk)
-
-    # Canonical anchor: a region may use label k only if no member has index < k
-    # (forces k to be the minimum linear index among its cells; removes symmetry)
-    def canonical_min_anchor(self):
-        for k in range(self.N):
-            for j in range(k):  # all indices less than k
-                jpos = self.idx_pos(j)
-                # No cell with smaller index can belong to label k
-                self.model.Add(self.a[(jpos, k)] == 0)
-
-    def prune_digit_one(self):
-        """Optional pruning: digit==1 implies no equal-digit neighbor."""
+        # Ensure region id is the minimum index among its members (fixes root choice)
         for p in get_all_pos(self.V, self.H):
-            is1 = self.model.NewBoolVar(f"is1[{p.x},{p.y}]")
-            self.model.Add(self.digit[p] == 1).OnlyEnforceIf(is1)
-            self.model.Add(self.digit[p] != 1).OnlyEnforceIf(is1.Not())
-            for q in get_neighbors4(p, self.V, self.H):
-                self.model.Add(self.eq[(p, q)] == 0).OnlyEnforceIf(is1)
+            self.model.Add(self.region[p] <= self.idx_of[p])
 
-    def solve_all(self, max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None) -> List[SingleSolution]:
-        solver = cp_model.CpSolver()
-        solver.parameters.enumerate_all_solutions = True
-        # Do NOT set num_search_workers (per your note)
-        solutions: List[SingleSolution] = []
-        collector = AllSolutionsCollector(self.digit, solutions, max_solutions=max_solutions, callback=callback)
-        solver.Solve(self.model, collector)
-        print("Solutions found:", len(solutions))
-        print("status:", solver.StatusName())
-        return solutions
+        # Membership indicators and region sizes
+        # size[r] == number of cells whose region == r
+        # If is_root[pos_of(r)] -> size[r] == val[pos_of(r)]
+        # If not root -> size[r] == 0
+        for r_idx in range(self.N):
+            root_pos = self.pos_of[r_idx]
+            members = []
+            for p in get_all_pos(self.V, self.H):
+                b = self.model.NewBoolVar(f'in_region[{self.idx_of[p]}=={r_idx}]')
+                self.members[(p, r_idx)] = b
+                # b <=> (region[p] == r_idx)
+                self.model.Add(self.region[p] == r_idx).OnlyEnforceIf(b)
+                self.model.Add(self.region[p] != r_idx).OnlyEnforceIf(b.Not())
+                members.append(b)
+            size_r = self.model.NewIntVar(0, self.N, f'size[{r_idx}]')
+            self.size_r[r_idx] = size_r
+            self.model.Add(size_r == sum(members))
+            # root -> size == val[root]
+            self.model.Add(size_r == self.val[root_pos]).OnlyEnforceIf(self.is_root[root_pos])
+            # not root -> size == 0
+            self.model.Add(size_r == 0).OnlyEnforceIf(self.is_root[root_pos].Not())
 
+    # --- Solve/print ----------------------------------------------------------
     def solve_and_print(self):
-        H, V = self.H, self.V
-        def cb(sol: SingleSolution):
-            print("Solution:")
-            res = np.full((V, H), '', dtype=object)
-            for p in get_all_pos(V, H):
-                c = f'{sol.assignment[p]} '
-                set_char(res, p, c)
-            for row in res:
-                print(''.join(row))
-        return self.solve_all(callback=cb)
+        def board_to_assignment(board: "Board", solver: cp_model.CpSolverSolutionCallback):
+            print('raw solve')
+            # Return a mapping Pos -> digit for printing
+            digits = {}
+            for p in get_all_pos(board.V, board.H):
+                digits[p] = solver.Value(board.val[p])
+            return digits
+
+        def callback(single_res: SingleSolution):
+            print("Solution found")
+            digits = single_res.assignment
+            out = np.full((self.V, self.H), ' ', dtype=object)
+            for p in get_all_pos(self.V, self.H):
+                out[p.y][p.x] = str(digits[p])
+            print(out)
+
+        return generic_solve_all(self, board_to_assignment, callback=callback)
