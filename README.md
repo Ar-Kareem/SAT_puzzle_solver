@@ -409,6 +409,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from . import board
+# tells the api the shape of the blocks in the board
 bor = np.array([
   ['d01', 'd01', 'd03', 'd03', 'd05', 'd05', 'd08', 'd08', 'd10'],
   ['d02', 'd02', 'd03', 'd04', 'd06', 'd06', 'd09', 'd09', 'd10'],
@@ -420,6 +421,7 @@ bor = np.array([
   ['d22', 'd23', 'd25', 'd27', 'd31', 'd32', 'd34', 'd34', 'd36'],
   ['d22', 'd23', 'd25', 'd25', 'd31', 'd32', 'd35', 'd35', 'd36'],
 ])
+# tells the api the operation and the result for each block
 block_results = {
   'd01': ('-', 1), 'd02': ('-', 1), 'd03': ('*', 378), 'd04': ('/', 4), 'd05': ('/', 2),
   'd06': ('-', 2), 'd07': ('*', 6), 'd08': ('+', 9), 'd09': ('/', 2), 'd10': ('+', 9),
