@@ -103,7 +103,7 @@ class Board:
 
     def can_see_tower(self, blocks: list[cp_model.IntVar], tower: cp_model.IntVar, name: str):
         if len(blocks) == 0:
-            return self.model.NewConstant(True)
+            return True
         # I can see "tower" if it's larger that all the blocks
         # lits is a list of [(tower > b0), (tower > b1), ..., (tower > bi)]
         lits = [bool_from_greater_than(self.model, tower, block, f'{name}:lits:{i}') for i, block in enumerate(blocks)]
