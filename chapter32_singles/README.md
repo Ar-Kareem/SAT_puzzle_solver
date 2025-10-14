@@ -6,9 +6,9 @@ Below are the details of how to utilize the solver. In addition, the solver give
 
 (The solver mainly utilizes the CP-SAT solver from Google OR-Tools)
 
-* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/single.html)
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/singles.html)
 
-* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/single.html#single)
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/singles.html#singles)
 
 **Unsolved puzzle**
 
