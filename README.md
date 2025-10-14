@@ -624,7 +624,9 @@ This repo uses Python to build those constraints and calls a SAT/CP-SAT solver (
 
 ### 1) Install Python deps
 
-Use a fresh virtualenv/conda env:
+If you want to use this repo to solve puzzles (or for development) Then:
+
+Run the following to use a fresh virtualenv/conda env:
 
 ```bash
 conda create -p ./env python=3.11
