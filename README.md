@@ -1060,7 +1060,9 @@ You’ll see the solution grid and status in the terminal.
 
 To run the tests, simply follow the instructions in Install Python deps section ([here](#1-install-python-deps)) and then run:
 
-```python -m pytest --import-mode=importlib```
+```python -m pytest --import-mode=importlib -n 4```
+
+where `-n 4` is the number of workers to use and `--import-mode=importlib` is to not complain about attempted relative import with no known parent package.
 
 ## Contributing
 
