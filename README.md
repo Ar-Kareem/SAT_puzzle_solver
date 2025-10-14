@@ -1,12 +1,67 @@
 # SAT Puzzle Solver
 
-This is a simple project solves classic logic puzzles by encoding them as SAT/CP-SAT problems in Python.
+Solve classic logic puzzles problems in Python.  
+Each puzzle family lives in its own folder with a minimal, self-contained example.
 
-This repo collects small, focused solvers for different puzzle families, each living in its own folder with self-contained examples.
+Play the original puzzles online: https://www.chiark.greenend.org.uk/~sgtatham/puzzles
 
-If you have one of the puzzles below and need a python solver, then this repo is perfect for you!
+All the solvers in this repo use the CP-SAT solver from Google OR-Tools.
 
-You can play the puzzles online here: https://www.chiark.greenend.org.uk/~sgtatham/puzzles
+---
+
+## Table of Contents
+
+- [SAT Puzzle Solver](#sat-puzzle-solver)
+  - [Table of Contents](#table-of-contents)
+  - [Why SAT / CP-SAT?](#why-sat--cp-sat)
+  - [What’s Inside](#whats-inside)
+  - [Puzzles](#puzzles)
+    - [Nonograms (Puzzle Type #1)](#nonograms-puzzle-type-1)
+    - [Sudoku (Puzzle Type #2)](#sudoku-puzzle-type-2)
+    - [Light Up (Puzzle Type #3)](#light-up-puzzle-type-3)
+    - [Tents (Puzzle Type #4)](#tents-puzzle-type-4)
+    - [Towers (Puzzle Type #5)](#towers-puzzle-type-5)
+    - [Magnets (Puzzle Type #6)](#magnets-puzzle-type-6)
+    - [Range (Puzzle Type #7)](#range-puzzle-type-7)
+    - [UnDead (Puzzle Type #8)](#undead-puzzle-type-8)
+    - [Unruly (Puzzle Type #9)](#unruly-puzzle-type-9)
+    - [Mosaic (Puzzle Type #10)](#mosaic-puzzle-type-10)
+  - [Quick Start](#quick-start)
+    - [1) Install Python deps](#1-install-python-deps)
+    - [2) Explore a puzzle](#2-explore-a-puzzle)
+  - [Testing](#testing)
+  - [Contributing](#contributing)
+
+---
+
+## Why SAT / CP-SAT?
+
+Many pencil puzzles can be modeled with:
+
+- **Boolean decisions** (e.g., black/white, bulb/no-bulb)
+- **Linear constraints** (counts, separations, adjacency)
+- **All-different / visibility / reachability** constraints
+
+This repo builds those constraints in Python and uses SAT/CP-SAT (e.g., OR-Tools) to search efficiently. It both demonstrates the modeling and provides usable solvers.
+
+---
+
+## What’s Inside
+
+Each chapter directory targets a different puzzle type:
+
+* `chapter10_nonograms` — Picross/Griddlers (run-length constraints). ([Chapter 10][1])
+* `chapter11_sudoku` — Sudoku (rows/cols/blocks all-different). ([Chapter 11][2])
+* `chapter21_light_up` — *Akari* / Light Up (lighting & adjacency). ([Chapter 21][3])
+* `chapter25_tents` — Tents (tree-tent matching). ([Chapter 25][4])
+* `chapter31_towers` — Skyscrapers (permutation + visibility). ([Chapter 31][5])
+* `chapter33_magnets` — Magnets (polarized dominoes + counts). ([Chapter 33][6])
+* `chapter35_range` — Range (rays & totals). ([Chapter 35][7])
+* `chapter37_undead` — UnDead (Vampires/Zombies/Ghosts). ([Chapter 37][8])
+* `chapter38_unruly` — Unruly (no triples + balance). ([Chapter 38][9])
+* `chapter42_mosaic` — Mosaic (Tapa-like tiling). ([Chapter 42][10])
+
+---
 
 ## Puzzles
 
@@ -16,11 +71,11 @@ Only a few puzzles in the website have solvers implemented here. Here we list th
 
 Called "Pattern" in the website.
 
-Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/pattern.html
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/pattern.html)
 
-Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/pattern.html#pattern
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/pattern.html#pattern)
 
-Unsolved puzzle:
+**Unsolved puzzle**
 
 <img src="./images/nonogram_unsolved.png" alt="Nonogram unsolved" width="500">
 
@@ -64,7 +119,7 @@ side_numbers = [
 binst = board.Board(top=top_numbers, side=side_numbers)
 solutions = binst.solve_and_print()
 ```
-Output:
+**Script Output**
 ```
 Solution found
 B B B B B B B . B B B . . . .
@@ -86,19 +141,21 @@ Solutions found: 1
 status: OPTIMAL
 ```
 
-True solutions:
+**Solved puzzle**
 
 <img src="./images/nonogram_solved.png" alt="Nonogram solved" width="500">
+
+---
 
 ### Sudoku (Puzzle Type #2)
 
 Called "Solo" in the website.
 
-Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/solo.html
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/solo.html)
 
-Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/solo.html#solo
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/solo.html#solo)
 
-Unsolved puzzle:
+**Unsolved puzzle**
 
 <img src="./images/sudoku_unsolved.png" alt="Sudoku unsolved" width="500">
 
@@ -131,7 +188,7 @@ binst = board.Board(board=bor)
 solutions = binst.solve_and_print()
 assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
 ```
-Output:
+**Script Output**
 ```
 Solution found
 [['g' '7' '5' '4' '9' '1' 'c' 'e' 'd' 'f' 'b' '8' '2' '6' '3' 'a']
@@ -154,17 +211,19 @@ Solutions found: 1
 status: OPTIMAL
 ```
 
-True solutions:
+**Solved puzzle**
 
 <img src="./images/sudoku_solved.png" alt="Sudoku solved" width="500">
 
+---
+
 ### Light Up (Puzzle Type #3)
 
-Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/lightup.html
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/lightup.html)
 
-Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/lightup.html#lightup
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/lightup.html#lightup)
 
-Unsolved puzzle:
+**Unsolved puzzle**
 
 <img src="./images/lightup_unsolved.png" alt="Light Up unsolved" width="500">
 
@@ -188,7 +247,7 @@ bor = np.array([
 binst = board.Board(board=bor)
 solutions = binst.solve_and_print()
 ```
-Output:
+**Script Output**
 ```
 Solution found
 [[' ' '0' ' ' ' ' ' ' 'L' 'W' ' ' ' ' 'L']
@@ -205,17 +264,21 @@ Solutions found: 1
 status: OPTIMAL
 ```
 
+**Solved puzzle**
+
 Which exactly matches the true solutions (Remember, the goal of the puzzle is to find where to place the lights, marked as 'L' in the solution above):
 
 <img src="./images/lightup_solved.png" alt="Light Up solved" width="500">
 
+---
+
 ### Tents (Puzzle Type #4)
 
-Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/tents.html
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/tents.html)
 
-Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/tents.html#tents
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/tents.html#tents)
 
-Unsolved puzzle:
+**Unsolved puzzle**
 
 <img src="./images/tents_unsolved.png" alt="Tents unsolved" width="500">
 
@@ -246,7 +309,7 @@ top = np.array([4, 2, 4, 1, 3, 3, 3, 3, 3, 3, 2, 2, 6, 2, 4])
 binst = board.Board(board=bor, sides={'top': top, 'side': side})
 solutions = binst.solve_and_print()
 ```
-Output:
+**Script Output**
 ```
 Solution found
 [[' ' 'T' 'E' ' ' ' ' ' ' ' ' 'E' 'T' ' ' 'T' 'E' 'T' 'E' ' ']
@@ -268,17 +331,19 @@ Solutions found: 1
 status: OPTIMAL
 ```
 
-Which exactly matches the true solutions:
+**Solved puzzle**
 
 <img src="./images/tents_solved.png" alt="Tents solved" width="500">
 
+---
+
 ### Towers (Puzzle Type #5)
 
-Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/towers.html
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/towers.html)
 
-Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/towers.html#towers
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/towers.html#towers)
 
-Unsolved puzzle:
+**Unsolved puzzle**
 
 <img src="./images/towers_unsolved.png" alt="Towers unsolved" width="500">
 
@@ -301,7 +366,7 @@ l = np.array([-1, -1, -1, 2, -1, 4])
 binst = board.Board(board=bor, sides={'top': t, 'bottom': b, 'right': r, 'left': l})
 solutions = binst.solve_and_print()
 ```
-Output:
+**Script Output**
 ```
 Solution found
 [['5' '6' '4' '1' '2' '3']
@@ -314,17 +379,19 @@ Solutions found: 1
 status: OPTIMAL
 ```
 
-Which exactly matches the true solutions:
+**Solved puzzle**
 
 <img src="./images/towers_solved.png" alt="Towers solved" width="500">
 
+---
+
 ### Magnets (Puzzle Type #6)
 
-Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/magnets.html
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/magnets.html)
 
-Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/magnets.html#magnets
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/magnets.html#magnets)
 
-Unsolved puzzle:
+**Unsolved puzzle**
 
 <img src="./images/magnets_unsolved.png" alt="Magnets unsolved" width="500">
 
@@ -351,7 +418,7 @@ neg_h = np.array([4, -1, 4, -1, 5, 4, -1, 2, -1])
 binst = board.Board(board=bor, sides={'pos_v': pos_v, 'neg_v': neg_v, 'pos_h': pos_h, 'neg_h': neg_h})
 solutions = binst.solve_and_print()
 ```
-Output:
+**Script Output**
 ```
 Solution found
 [['-' '+' '-' '+' ' ' '+' '-' '+' '-' '+']
@@ -367,20 +434,22 @@ Solutions found: 1
 status: OPTIMAL
 ```
 
-Which exactly matches the true solutions:
+**Solved puzzle**
 
 <img src="./images/magnets_solved.png" alt="Magnets solved" width="500">
 
+
+---
 
 ### Range (Puzzle Type #7)
 
 (Note: The solver for this puzzle is slightly slower and could take several seconds to solve a 16x11 puzzle)
 
-Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/range.html
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/range.html)
 
-Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/range.html#range
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/range.html#range)
 
-Unsolved puzzle:
+**Unsolved puzzle**
 
 <img src="./images/range_unsolved.png" alt="Range unsolved" width="500">
 
@@ -404,7 +473,7 @@ clues = np.array([
 board = board.Board(clues)
 sols = board.solve_and_print()
 ```
-Output:
+**Script Output**
 ```
 Solution:
 B . . B . . B . B . B . B . . .
@@ -422,17 +491,19 @@ Solutions found: 1
 status: OPTIMAL
 ```
 
-Which exactly matches the true solutions:
+**Solved puzzle**
 
 <img src="./images/range_solved.png" alt="Range solved" width="500">
 
+---
+
 ### UnDead (Puzzle Type #8)
 
-Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/undead.html
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/undead.html)
 
-Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/undead.html#undead
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/undead.html#undead)
 
-Unsolved puzzle:
+**Unsolved puzzle**
 
 <img src="./images/undead_unsolved.png" alt="UnDead unsolved" width="500">
 
@@ -459,7 +530,7 @@ counts = {Monster.GHOST: 5, Monster.VAMPIRE: 12, Monster.ZOMBIE: 11}
 binst = board.Board(board=bor, sides={'top': t, 'bottom': b, 'right': r, 'left': l}, monster_count=counts)
 solutions = binst.solve_and_print()
 ```
-Output:
+**Script Output**
 ```
 Solution found
 [['VA' '//' 'GH' 'GH' 'ZO' 'GH' '\\']
@@ -473,17 +544,19 @@ Solutions found: 1
 status: OPTIMAL
 ```
 
-Which exactly matches the true solutions:
+**Solved puzzle**
 
 <img src="./images/undead_solved.png" alt="UnDead solved" width="500">
 
+---
+
 ### Unruly (Puzzle Type #9)
 
-Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/unruly.html
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/unruly.html)
 
-Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/unruly.html#unruly
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/unruly.html#unruly)
 
-Unsolved puzzle:
+**Unsolved puzzle**
 
 <img src="./images/unruly_unsolved.png" alt="Unruly unsolved" width="500">
 
@@ -510,7 +583,7 @@ bor = np.array([
 binst = board.Board(board=bor)
 solutions = binst.solve_and_print()
 ```
-Output:
+**Script Output**
 ```
 Solution found
 [['W' 'W' 'B' 'B' 'W' 'B' 'W' 'B' 'B' 'W' 'B' 'W' 'W' 'B']
@@ -531,17 +604,19 @@ Solutions found: 1
 status: OPTIMAL
 ```
 
-Which exactly matches the true solutions:
+**Solved puzzle**
 
 <img src="./images/unruly_solved.png" alt="Unruly solved" width="500">
 
+---
+
 ### Mosaic (Puzzle Type #10)
 
-Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/mosaic.html
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/mosaic.html)
 
-Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/mosaic.html#mosaic
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/mosaic.html#mosaic)
 
-Unsolved puzzle:
+**Unsolved puzzle**
 
 <img src="./images/mosaic_unsolved.png" alt="Mosaic unsolved" width="500">
 
@@ -569,7 +644,7 @@ bor = np.array([
 binst = board.Board(board=bor)
 solutions = binst.solve_and_print()
 ```
-Output:
+**Script Output**
 ```
 Solution found
 [[' ' 'B' ' ' ' ' ' ' ' ' ' ' ' ' 'B' ' ' 'B' ' ' ' ' 'B' 'B']
@@ -591,110 +666,59 @@ Solutions found: 1
 status: OPTIMAL
 ```
 
-Which exactly matches the true solutions:
+**Solved puzzle**
 
 <img src="./images/mosaic_solved.png" alt="Mosaic solved" width="500">
 
-## What’s inside
+---
 
-Each chapter directory targets a different puzzle type:
+---
 
-* `chapter10_nonograms` — Picross/Griddlers (paint-by-numbers) via run-length constraints per row/column. ([Chapter 10][1])
-* `chapter11_sudoku` — Sudoku (place numbers so every row, column, and block contains each number exactly once). ([Chapter 11][2])
-* `chapter21_light_up` — *Akari* / Light Up (place bulbs so every white cell is lit; numbered blacks constrain adjacency). ([chapter 21][3])
-* `chapter25_tents` — Tents (place tents so every tree is orthogonally adjacent to its own tent). ([chapter 25][4])
-* `chapter31_towers` — Skyscrapers (permutation rows/cols with “visible tower” counts). ([Chapter 31][5])
-* `chapter33_magnets` — Magnets (place polarized dominoes to satisfy row/column + polarity counts). ([Chapter 33][6])
-* `chapter35_range` — Range (logic with ray constraints). ([Chapter 35][7])
-* `chapter37_undead` — UnDead / Count Vampires, Zombies, Ghosts (logic with neighborhood constraints). ([Chapter 37][8])
-* `chapter38_unruly` — Unruly (logic with consecutive constraints). ([Chapter 38][9])
-* `chapter42_mosaic` — Mosaic / Tapa-like numeric tiling constraints. ([Chapter 42][10])
-
-## Why SAT / CP-SAT?
-
-Many pencil puzzles can be modeled as:
-
-* **Boolean decisions** (is this cell black/white? bulb/no-bulb?),
-* **Linear constraints** (counts, separations, adjacency),
-* **All-different / visibility / reachability** style constraints.
-
-This repo uses Python to build those constraints and calls a SAT/CP-SAT solver (e.g., OR-Tools) to search efficiently. This project partly aims at showing the versatility, power, and ease of use of SAT/CP-SAT solvers. It also provides the solvers themselves for any interested party to use.
-
-## Quick start
+## Quick Start
 
 ### 1) Install Python deps
 
-If you want to use this repo to solve puzzles (or for development) Then:
-
-Run the following to use a fresh virtualenv/conda env:
+Use a fresh conda environment:
 
 ```bash
 conda create -p ./env python=3.11
 conda activate ./env
 pip install -r requirements.txt
-```
+````
 
 ### 2) Explore a puzzle
 
-Each chapter folder contains Python scripts you can run directly or import as modules.
+Each chapter has runnable scripts and importable modules.
 
-Here is an example to the chapter10 puzzle solver:
-
-(instructions can be found here: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/pattern.html#pattern)
+Example: Nonograms (Pattern)
+Docs: [https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/pattern.html#pattern](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/pattern.html#pattern)
 
 ```bash
 cd chapter10_nonograms
 python test.py
 ```
 
-Which will run the following code:
+This runs code like:
+
 ```python
 from . import board
 top_numbers = [
   [8, 2],
   ...
   [1, 5],
-]  # top clues, ommited here for brevity
+]  # top clues, omitted here for brevity
 side_numbers = [
   [7, 3],
   ...
   [3, 2],
-]  # side clues, ommited here for brevity
+]  # side clues, omitted here for brevity
 binst = board.Board(top=top_numbers, side=side_numbers)
 solutions = binst.solve_and_print()
 ```
 
-And attempt to solve the following nonogram puzzle:
+You’ll see the solution grid and status in the terminal.
 
-<img src="./images/nonogram_unsolved.png" alt="Nonogram unsolved" width="500">
-
-And the output in the terminal will be:
-```bash
-$python .\test.py
-
-Solution found
-B B B B B B B . B B B . . . .
-B B B B B B B . . . . . B . B
-B B . . . . . . . . . B B B .
-B B . . . . . . . . . . B B B
-B B B . . . . . . . . . . B B
-B . . . B . B . . B . . . B B
-B . . . . . B B B B B B . . B
-B . . . . . B B B B B B B B B
-. . . . . B B B B B B B B B .
-. . . . . B B . B B B B . . .
-. . . . B B B B B B B B . . .
-B B B B B B B B B B B . . . .
-B B B B B B B . . B . B . . .
-. B B B B . . . . B B B . . .
-. B B B . . . . . . . B B . .
-Solutions found: 1
-status: OPTIMAL
-```
-
-Which correctly shows that the single unique solution to the puzzle is:
-
-<img src="./images/nonogram_solved.png" alt="Nonogram solved" width="500">
+---
 
 ## Testing
 
