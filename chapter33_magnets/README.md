@@ -51,6 +51,7 @@ Solution found
  ['+' ' ' ' ' '+' '-' ' ' '+' '-' '+' '-']]
 Solutions found: 1
 status: OPTIMAL
+Time taken: 0.02 seconds
 ```
 
 **Solved puzzle**

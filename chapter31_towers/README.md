@@ -36,14 +36,15 @@ solutions = binst.solve_and_print()
 **Script Output**
 ```
 Solution found
-[['5' '6' '4' '1' '2' '3']
- ['3' '4' '2' '6' '1' '5']
- ['4' '5' '3' '2' '6' '1']
- ['2' '1' '6' '5' '3' '4']
- ['6' '3' '1' '4' '5' '2']
- ['1' '2' '5' '3' '4' '6']]
+[[5 6 4 1 2 3]
+ [3 4 2 6 1 5]
+ [4 5 3 2 6 1]
+ [2 1 6 5 3 4]
+ [6 3 1 4 5 2]
+ [1 2 5 3 4 6]]
 Solutions found: 1
 status: OPTIMAL
+Time taken: 0.03 seconds
 ```
 
 **Solved puzzle**

@@ -52,6 +52,7 @@ B . . . B . B . . . . . B . . .
 B . . . . . . B . . . . B . . .
 Solutions found: 1
 status: OPTIMAL
+Time taken: 3.32 seconds
 ```
 
 **Solved puzzle**

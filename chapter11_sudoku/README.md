@@ -64,6 +64,7 @@ Solution found
  ['1' '3' '4' '9' '6' '7' 'f' '8' 'a' 'e' 'g' '5' 'b' 'c' 'd' '2']]
 Solutions found: 1
 status: OPTIMAL
+Time taken: 0.04 seconds
 ```
 
 **Solved puzzle**

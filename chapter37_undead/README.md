@@ -49,6 +49,7 @@ Solution found
  ['ZO' '//' 'VA' 'VA' 'ZO' 'VA' 'GH']]
 Solutions found: 1
 status: OPTIMAL
+Time taken: 0.01 seconds
 ```
 
 **Solved puzzle**

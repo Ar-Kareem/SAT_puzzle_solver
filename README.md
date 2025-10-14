@@ -143,6 +143,7 @@ B B B B B B B . . B . B . . .
 . B B B . . . . . . . B B . .
 Solutions found: 1
 status: OPTIMAL
+Time taken: 0.04 seconds
 ```
 
 **Solved puzzle**
@@ -213,6 +214,7 @@ Solution found
  ['1' '3' '4' '9' '6' '7' 'f' '8' 'a' 'e' 'g' '5' 'b' 'c' 'd' '2']]
 Solutions found: 1
 status: OPTIMAL
+Time taken: 0.04 seconds
 ```
 
 **Solved puzzle**
@@ -266,6 +268,7 @@ Solution found
  [' ' 'L' ' ' '2' 'L' ' ' ' ' ' ' 'W' 'L']]
 Solutions found: 1
 status: OPTIMAL
+Time taken: 0.01 seconds
 ```
 
 **Solved puzzle**
@@ -333,6 +336,7 @@ Solution found
  ['E' 'T' ' ' ' ' 'T' ' ' ' ' ' ' 'E' 'T' 'E' 'T' 'E' ' ' ' ']]
 Solutions found: 1
 status: OPTIMAL
+Time taken: 0.02 seconds
 ```
 
 **Solved puzzle**
@@ -380,6 +384,7 @@ Solution found
  [1 6 6 1 4 4 4]]
 Solutions found: 1
 status: OPTIMAL
+Time taken: 46.27 seconds
 ```
 
 **Solved puzzle**
@@ -420,14 +425,15 @@ solutions = binst.solve_and_print()
 **Script Output**
 ```
 Solution found
-[['5' '6' '4' '1' '2' '3']
- ['3' '4' '2' '6' '1' '5']
- ['4' '5' '3' '2' '6' '1']
- ['2' '1' '6' '5' '3' '4']
- ['6' '3' '1' '4' '5' '2']
- ['1' '2' '5' '3' '4' '6']]
+[[5 6 4 1 2 3]
+ [3 4 2 6 1 5]
+ [4 5 3 2 6 1]
+ [2 1 6 5 3 4]
+ [6 3 1 4 5 2]
+ [1 2 5 3 4 6]]
 Solutions found: 1
 status: OPTIMAL
+Time taken: 0.03 seconds
 ```
 
 **Solved puzzle**
@@ -484,6 +490,7 @@ Solution found
  ['B' ' ' ' ' 'B' ' ' ' ' ' ' 'B' ' ' ' ' 'B' ' ']]
 Solutions found: 1
 status: OPTIMAL
+Time taken: 2.14 seconds
 ```
 
 **Solved puzzle**
@@ -539,6 +546,7 @@ Solution found
  ['+' ' ' ' ' '+' '-' ' ' '+' '-' '+' '-']]
 Solutions found: 1
 status: OPTIMAL
+Time taken: 0.02 seconds
 ```
 
 **Solved puzzle**
@@ -596,6 +604,7 @@ B . . . B . B . . . . . B . . .
 B . . . . . . B . . . . B . . .
 Solutions found: 1
 status: OPTIMAL
+Time taken: 3.32 seconds
 ```
 
 **Solved puzzle**
@@ -649,6 +658,7 @@ Solution found
  ['ZO' '//' 'VA' 'VA' 'ZO' 'VA' 'GH']]
 Solutions found: 1
 status: OPTIMAL
+Time taken: 0.01 seconds
 ```
 
 **Solved puzzle**
@@ -709,6 +719,7 @@ Solution found
  ['W' 'B' 'W' 'B' 'W' 'B' 'W' 'B' 'B' 'W' 'W' 'B' 'B' 'W']]
 Solutions found: 1
 status: OPTIMAL
+Time taken: 0.01 seconds
 ```
 
 **Solved puzzle**
@@ -771,6 +782,7 @@ Solution found
  ['B' ' ' 'B' ' ' ' ' 'B' 'B' ' ' ' ' ' ' ' ' ' ' 'B' 'B' 'B']]
 Solutions found: 1
 status: OPTIMAL
+Time taken: 0.01 seconds
 ```
 
 **Solved puzzle**

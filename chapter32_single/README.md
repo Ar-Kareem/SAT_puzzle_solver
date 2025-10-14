@@ -52,6 +52,7 @@ Solution found
  ['B' ' ' ' ' 'B' ' ' ' ' ' ' 'B' ' ' ' ' 'B' ' ']]
 Solutions found: 1
 status: OPTIMAL
+Time taken: 2.14 seconds
 ```
 
 **Solved puzzle**

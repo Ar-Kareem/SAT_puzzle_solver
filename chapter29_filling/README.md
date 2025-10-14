@@ -43,6 +43,7 @@ Solution found
  [1 6 6 1 4 4 4]]
 Solutions found: 1
 status: OPTIMAL
+Time taken: 46.27 seconds
 ```
 
 **Solved puzzle**

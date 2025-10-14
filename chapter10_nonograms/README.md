@@ -74,6 +74,7 @@ B B B B B B B . . B . B . . .
 . B B B . . . . . . . B B . .
 Solutions found: 1
 status: OPTIMAL
+Time taken: 0.04 seconds
 ```
 
 **Solved puzzle**

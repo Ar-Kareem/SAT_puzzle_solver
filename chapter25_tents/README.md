@@ -61,6 +61,7 @@ Solution found
  ['E' 'T' ' ' ' ' 'T' ' ' ' ' ' ' 'E' 'T' 'E' 'T' 'E' ' ' ' ']]
 Solutions found: 1
 status: OPTIMAL
+Time taken: 0.02 seconds
 ```
 
 **Solved puzzle**
