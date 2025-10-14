@@ -53,7 +53,7 @@ This repo builds those constraints in Python and uses SAT/CP-SAT (e.g., OR-Tools
 
 Each chapter directory targets a different puzzle type:
 
-* `chapter10_nonograms` — Picross/Griddlers (run-length constraints). ([Chapter 10][1])
+* `chapter10_nonograms` — Picross/Griddlers (run-length constraints). ()
 * `chapter11_sudoku` — Sudoku (rows/cols/blocks all-different). ([Chapter 11][2])
 * `chapter21_light_up` — *Akari* / Light Up (lighting & adjacency). ([Chapter 21][3])
 * `chapter25_tents` — Tents (tree-tent matching). ([Chapter 25][4])
@@ -80,6 +80,8 @@ Called "Pattern" in the website.
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/pattern.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/pattern.html#pattern)
+
+* [**Solver Code**][1]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -167,6 +169,8 @@ Called "Solo" in the website.
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/solo.html#solo)
 
+* [**Solver Code**][2]
+
 <details>
   <summary><strong>Rules</strong></summary>
 You have a square grid, which is divided into as many equally sized sub-blocks as the grid has rows. Each square must be filled in with a digit from 1 to the size of the grid, in such a way that
@@ -247,6 +251,8 @@ Time taken: 0.04 seconds
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/lightup.html#lightup)
 
+* [**Solver Code**][3]
+
 <details>
   <summary><strong>Rules</strong></summary>
 You have a grid of squares. Some are filled in black; some of the black squares are numbered. Your aim is to ‘light up’ all the empty squares by placing light bulbs in some of them.
@@ -317,6 +323,8 @@ Which exactly matches the true solutions (Remember, the goal of the puzzle is to
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/tents.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/tents.html#tents)
+
+* [**Solver Code**][4]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -394,6 +402,8 @@ Time taken: 0.02 seconds
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/filling.html#filling)
 
+* [**Solver Code**][5]
+
 <details>
   <summary><strong>Rules</strong></summary>
 You have a grid of squares, some of which contain digits, and the rest of which are empty. Your job is to fill in digits in the empty squares, in such a way that each connected region of squares all containing the same digit has an area equal to that digit.
@@ -450,6 +460,8 @@ Time taken: 46.27 seconds
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/keen.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/keen.html#keen)
+
+* [**Solver Code**][6]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -529,6 +541,8 @@ Time taken: 0.02 seconds
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/towers.html#towers)
 
+* [**Solver Code**][7]
+
 <details>
   <summary><strong>Rules</strong></summary>
 You have a square grid. On each square of the grid you can build a tower, with its height ranging from 1 to the size of the grid. Around the edge of the grid are some numeric clues.
@@ -590,6 +604,8 @@ Time taken: 0.03 seconds
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/singles.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/singles.html#singles)
+
+* [**Solver Code**][8]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -657,6 +673,8 @@ Time taken: 2.14 seconds
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/magnets.html#magnets)
 
+* [**Solver Code**][9]
+
 <details>
   <summary><strong>Rules</strong></summary>
 A rectangular grid has been filled with a mixture of magnets (that is, dominoes with one positive end and one negative end) and blank dominoes (that is, dominoes with two neutral poles). These dominoes are initially only seen in silhouette. Around the grid are placed a number of clues indicating the number of positive and negative poles contained in certain columns and rows.
@@ -720,6 +738,8 @@ Time taken: 0.02 seconds
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/range.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/range.html#range)
+
+* [**Solver Code**][10]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -790,6 +810,8 @@ Time taken: 3.32 seconds
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/undead.html#undead)
 
+* [**Solver Code**][11]
+
 <details>
   <summary><strong>Rules</strong></summary>
 You are given a grid of squares, some of which contain diagonal mirrors. Every square which is not a mirror must be filled with one of three types of undead monster: a ghost, a vampire, or a zombie.
@@ -852,6 +874,8 @@ Time taken: 0.01 seconds
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/unruly.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/unruly.html#unruly)
+
+* [**Solver Code**][12]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -918,6 +942,8 @@ Time taken: 0.01 seconds
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/mosaic.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/mosaic.html#mosaic)
+
+* [**Solver Code**][13]
 
 <details>
   <summary><strong>Rules</strong></summary>
