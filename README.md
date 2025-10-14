@@ -20,12 +20,13 @@ All the solvers in this repo use the CP-SAT solver from Google OR-Tools.
   - [Sudoku (Puzzle Type #2)](#sudoku-puzzle-type-2)
   - [Light Up (Puzzle Type #3)](#light-up-puzzle-type-3)
   - [Tents (Puzzle Type #4)](#tents-puzzle-type-4)
-  - [Towers (Puzzle Type #5)](#towers-puzzle-type-5)
-  - [Magnets (Puzzle Type #6)](#magnets-puzzle-type-6)
-  - [Range (Puzzle Type #7)](#range-puzzle-type-7)
-  - [UnDead (Puzzle Type #8)](#undead-puzzle-type-8)
-  - [Unruly (Puzzle Type #9)](#unruly-puzzle-type-9)
-  - [Mosaic (Puzzle Type #10)](#mosaic-puzzle-type-10)
+  - [Filling (Puzzle Type #5)](#filling-puzzle-type-5)
+  - [Towers (Puzzle Type #6)](#towers-puzzle-type-6)
+  - [Magnets (Puzzle Type #7)](#magnets-puzzle-type-7)
+  - [Range (Puzzle Type #8)](#range-puzzle-type-8)
+  - [UnDead (Puzzle Type #9)](#undead-puzzle-type-9)
+  - [Unruly (Puzzle Type #10)](#unruly-puzzle-type-10)
+  - [Mosaic (Puzzle Type #11)](#mosaic-puzzle-type-11)
   - [Quick Start](#quick-start)
     - [1) Install Python deps](#1-install-python-deps)
     - [2) Explore a puzzle](#2-explore-a-puzzle)
@@ -54,12 +55,13 @@ Each chapter directory targets a different puzzle type:
 * `chapter11_sudoku` — Sudoku (rows/cols/blocks all-different). ([Chapter 11][2])
 * `chapter21_light_up` — *Akari* / Light Up (lighting & adjacency). ([Chapter 21][3])
 * `chapter25_tents` — Tents (tree-tent matching). ([Chapter 25][4])
-* `chapter31_towers` — Skyscrapers (permutation + visibility). ([Chapter 31][5])
-* `chapter33_magnets` — Magnets (polarized dominoes + counts). ([Chapter 33][6])
-* `chapter35_range` — Range (rays & totals). ([Chapter 35][7])
-* `chapter37_undead` — UnDead (Vampires/Zombies/Ghosts). ([Chapter 37][8])
-* `chapter38_unruly` — Unruly (no triples + balance). ([Chapter 38][9])
-* `chapter42_mosaic` — Mosaic (Tapa-like tiling). ([Chapter 42][10])
+* `chapter29_filling` — Filling (Fillomino-style), region sizes. ([Chapter 29][5])
+* `chapter31_towers` — Skyscrapers (permutation + visibility). ([Chapter 31][6])
+* `chapter33_magnets` — Magnets (polarized dominoes + counts). ([Chapter 33][7])
+* `chapter35_range` — Range (rays & totals). ([Chapter 35][8])
+* `chapter37_undead` — UnDead (Vampires/Zombies/Ghosts). ([Chapter 37][9])
+* `chapter38_unruly` — Unruly (no triples + balance). ([Chapter 38][10])
+* `chapter42_mosaic` — Mosaic (Tapa-like tiling). ([Chapter 42][11])
 
 ---
 
@@ -337,7 +339,54 @@ status: OPTIMAL
 
 ---
 
-## Towers (Puzzle Type #5)
+## Filling (Puzzle Type #5)
+
+(Note: The solver for this puzzle is only extremely slow one in this repo and will take a minute to solve a simple 6x7 puzzle)
+
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/filling.html)
+
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/filling.html#filling)
+
+**Unsolved puzzle**
+
+<img src="./images/filling_unsolved.png" alt="Filling unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+```python
+import numpy as np
+from . import board
+bor = np.array([
+  ['*', '4', '2', '*', '*', '2', '*'],
+  ['*', '*', '7', '*', '*', '3', '*'],
+  ['*', '*', '*', '*', '4', '*', '3'],
+  ['*', '6', '6', '*', '3', '*', '*'],
+  ['*', '7', '*', '6', '4', '5', '*'],
+  ['*', '6', '*', '*', '*', '*', '4'],
+])
+binst = board.Board(board=bor)
+solutions = binst.solve_and_print()
+assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+```
+**Script Output**
+```
+Solution found
+[[4 4 2 2 4 2 2]
+ [4 4 7 4 4 3 3]
+ [7 7 7 3 4 5 3]
+ [7 6 6 3 3 5 5]
+ [7 7 6 6 4 5 5]
+ [1 6 6 1 4 4 4]]
+Solutions found: 1
+status: OPTIMAL
+```
+
+**Solved puzzle**
+
+<img src="./images/filling_solved.png" alt="Filling solved" width="500">
+
+---
+
+## Towers (Puzzle Type #6)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/towers.html)
 
@@ -385,7 +434,7 @@ status: OPTIMAL
 
 ---
 
-## Magnets (Puzzle Type #6)
+## Magnets (Puzzle Type #7)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/magnets.html)
 
@@ -441,7 +490,7 @@ status: OPTIMAL
 
 ---
 
-## Range (Puzzle Type #7)
+## Range (Puzzle Type #8)
 
 (Note: The solver for this puzzle is slightly slower and could take several seconds to solve a 16x11 puzzle)
 
@@ -497,7 +546,7 @@ status: OPTIMAL
 
 ---
 
-## UnDead (Puzzle Type #8)
+## UnDead (Puzzle Type #9)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/undead.html)
 
@@ -550,7 +599,7 @@ status: OPTIMAL
 
 ---
 
-## Unruly (Puzzle Type #9)
+## Unruly (Puzzle Type #10)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/unruly.html)
 
@@ -610,7 +659,7 @@ status: OPTIMAL
 
 ---
 
-## Mosaic (Puzzle Type #10)
+## Mosaic (Puzzle Type #11)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/mosaic.html)
 
@@ -694,8 +743,7 @@ Example: Nonograms (Pattern)
 Docs: [https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/pattern.html#pattern](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/pattern.html#pattern)
 
 ```bash
-cd chapter10_nonograms
-python test.py
+python -m chapter10_nonograms.test_solve
 ```
 
 This runs code like:
@@ -745,9 +793,10 @@ Issues and PRs welcome!
 [2]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter11_sudoku "SAT_puzzle_solver/chapter11_sudoku at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [3]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter21_light_up "SAT_puzzle_solver/chapter21_light_up at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [4]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter25_tents "SAT_puzzle_solver/chapter25_tents at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[5]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter31_towers "SAT_puzzle_solver/chapter31_towers at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[6]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter33_magnets "SAT_puzzle_solver/chapter33_magnets at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[7]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter35_range "SAT_puzzle_solver/chapter35_range at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[8]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter37_undead "SAT_puzzle_solver/chapter37_undead at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[9]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter38_unruly "SAT_puzzle_solver/chapter38_unruly at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[10]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter42_mosaic "SAT_puzzle_solver/chapter42_mosaic at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[5]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter29_filling "SAT_puzzle_solver/chapter29_filling at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[6]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter31_towers "SAT_puzzle_solver/chapter31_towers at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[7]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter33_magnets "SAT_puzzle_solver/chapter33_magnets at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[8]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter35_range "SAT_puzzle_solver/chapter35_range at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[9]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter37_undead "SAT_puzzle_solver/chapter37_undead at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[10]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter38_unruly "SAT_puzzle_solver/chapter38_unruly at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[11]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter42_mosaic "SAT_puzzle_solver/chapter42_mosaic at master · Ar-Kareem/SAT_puzzle_solver · GitHub"

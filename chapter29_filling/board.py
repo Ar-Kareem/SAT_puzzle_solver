@@ -6,7 +6,7 @@ import numpy as np
 from ortools.sat.python import cp_model
 
 sys.path.append(str(Path(__file__).parent.parent))
-from core.utils import Pos, get_all_pos, get_char, set_char, get_neighbors4
+from core.utils import Pos, get_all_pos, get_char, get_pos, set_char, get_neighbors4
 from core.utils_ortools import generic_solve_all, SingleSolution, and_constraint
 
 
@@ -185,7 +185,6 @@ class Board:
     # ----- Solve/print --------------------------------------------------------
     def solve_and_print(self):
         def board_to_assignment(board: "Board", solver: cp_model.CpSolverSolutionCallback):
-            print('raw sol')
             # Return Pos -> digit
             digits = {}
             for p in get_all_pos(board.V, board.H):
@@ -194,10 +193,11 @@ class Board:
 
         def callback(single_res: SingleSolution):
             print("Solution found")
-            digits = single_res.assignment
-            out = np.full((self.V, self.H), ' ', dtype=object)
-            for p in get_all_pos(self.V, self.H):
-                out[p.y][p.x] = str(digits[p])
-            print(out)
+            res = np.full((self.V, self.H), ' ', dtype=object)
+            for pos in get_all_pos(self.V, self.H):
+                c = get_char(self.board, pos)
+                c = single_res.assignment[pos]
+                set_char(res, pos, c)
+            print(res)
 
         return generic_solve_all(self, board_to_assignment, callback=callback)

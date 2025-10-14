@@ -2,6 +2,27 @@ import numpy as np
 
 from . import board
 
+# print('\n\nshould have 1 solution')
+# binst = board.Board(board=np.array([
+#   ['1', '3', '*'],
+#   ['3', '3', '*'],
+# ]))
+# solutions = binst.solve_and_print()
+
+# print('\n\nshould have 1 solution')
+# binst = board.Board(board=np.array([
+#   ['4', '4', '*'],
+#   ['4', '4', '*'],
+# ]))
+# solutions = binst.solve_and_print()
+
+# print('\n\nshould have 2 solutions')
+# binst = board.Board(board=np.array([
+#   ['1', '*', '*'],
+#   ['3', '3', '*'],
+# ]))
+# solutions = binst.solve_and_print()
+
 # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/filling.html#17x13%23390801013916720
 # bor = np.array([
 #   ['*', '*', '*', '*', '*', '4', '*', '*', '*', '5', '*', '*', '*', '3', '2', '*', '*'],
@@ -31,43 +52,31 @@ from . import board
 #   ['*', '*', '*', '4', '*', '4', '*', '*', '3', '5', '*', '2', '2'],
 # ])
 
-print('\n\nshould have 1 solution')
-binst = board.Board(board=np.array([
-  ['1', '3', '*'],
-  ['3', '3', '*'],
-]))
-solutions = binst.solve_and_print()
-
-print('\n\nshould have 1 solution')
-binst = board.Board(board=np.array([
-  ['4', '4', '*'],
-  ['4', '4', '*'],
-]))
-solutions = binst.solve_and_print()
-
-print('\n\nshould have 2 solutions')
-binst = board.Board(board=np.array([
-  ['1', '*', '*'],
-  ['3', '3', '*'],
-]))
-solutions = binst.solve_and_print()
-
-# https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/filling.html#9x7%23656829517556831
+# # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/filling.html#9x7%23656829517556831
+# bor = np.array([
+#   ['*', '9', '4', '8', '*', '*', '8', '*', '*'],
+#   ['*', '*', '*', '*', '*', '8', '8', '*', '4'],
+#   ['*', '*', '2', '*', '*', '*', '*', '*', '3'],
+#   ['*', '*', '*', '*', '*', '4', '*', '7', '*'],
+#   ['*', '9', '4', '*', '*', '4', '8', '*', '7'],
+#   ['9', '*', '*', '3', '*', '8', '*', '*', '4'],
+#   ['*', '3', '3', '*', '*', '*', '8', '*', '*'],
+# ])
+# https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/filling.html#7x6%23266555745914427
 bor = np.array([
-  ['*', '9', '4', '8', '*', '*', '8', '*', '*'],
-  ['*', '*', '*', '*', '*', '8', '8', '*', '4'],
-  ['*', '*', '2', '*', '*', '*', '*', '*', '3'],
-  ['*', '*', '*', '*', '*', '4', '*', '7', '*'],
-  ['*', '9', '4', '*', '*', '4', '8', '*', '7'],
-  ['9', '*', '*', '3', '*', '8', '*', '*', '4'],
-  ['*', '3', '3', '*', '*', '*', '8', '*', '*'],
+  ['*', '4', '2', '*', '*', '2', '*'],
+  ['*', '*', '7', '*', '*', '3', '*'],
+  ['*', '*', '*', '*', '4', '*', '3'],
+  ['*', '6', '6', '*', '3', '*', '*'],
+  ['*', '7', '*', '6', '4', '5', '*'],
+  ['*', '6', '*', '*', '*', '*', '4'],
 ])
 # bor = np.array([
-#   ['2', '5', '5', '5', '5'],
-#   ['2', '1', '5', '3', '3'],
-#   ['1', '*', '2', '3', '*'],
-#   ['2', '*', '2', '*', '*'],
-#   ['2', '*', '6', '6', '*'],
+#   ['5', '4', '*', '*', '4'],
+#   ['*', '5', '*', '*', '*'],
+#   ['5', '*', '*', '2', '2'],
+#   ['3', '*', '3', '*', '*'],
+#   ['2', '*', '*', '*', '5'],
 # ])
 # bor = np.array([
 #   ['1', '3', '*'],
@@ -76,12 +85,18 @@ bor = np.array([
 binst = board.Board(board=bor)
 solutions = binst.solve_and_print()
 
-# def test_ground():
-#   ground = np.array([
-#   ])
-#   assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
-#   solution = solutions[0].assignment
-#   ground_assignment = {board.get_pos(x=x, y=y): 1 if ground[y][x] == 'E' else 0 for x in range(ground.shape[1]) for y in range(ground.shape[0]) if ground[y][x] in [' ', 'E']}
-#   assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
-#   for pos in solution.keys():
-#     assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
+def test_ground():
+  ground = np.array([
+    ['4', '4', '2', '2', '4', '2', '2'],
+    ['4', '4', '7', '4', '4', '3', '3'],
+    ['7', '7', '7', '3', '4', '5', '3'],
+    ['7', '6', '6', '3', '3', '5', '5'],
+    ['7', '7', '6', '6', '4', '5', '5'],
+    ['1', '6', '6', '1', '4', '4', '4'],
+  ])
+  assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+  solution = solutions[0].assignment
+  ground_assignment = {board.get_pos(x=x, y=y): int(ground[y][x]) for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+  assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
+  for pos in solution.keys():
+    assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
