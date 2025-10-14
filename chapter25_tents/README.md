@@ -10,6 +10,13 @@ Below are the details of how to utilize the solver. In addition, the solver give
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/tents.html#tents)
 
+You have a grid of squares, some of which contain trees. Your aim is to place tents in some of the remaining squares, in such a way that the following conditions are met:
+
+  There are exactly as many tents as trees.
+  The tents and trees can be matched up in such a way that each tent is directly adjacent (horizontally or vertically, but not diagonally) to its own tree. However, a tent may be adjacent to other trees as well as its own.
+  No two tents are adjacent horizontally, vertically or diagonally.
+  The number of tents in each row, and in each column, matches the numbers given round the sides of the grid.
+
 **Unsolved puzzle**
 
 <img src="../images/tents_unsolved.png" alt="Tents unsolved" width="500">

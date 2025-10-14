@@ -10,6 +10,8 @@ Below are the details of how to utilize the solver. In addition, the solver give
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/unruly.html#unruly)
 
+You are given a grid of squares, which you must colour either black or white. Some squares are provided as clues; the rest are left for you to fill in. Each row and column must contain the same number of black and white squares, and no row or column may contain three consecutive squares of the same colour. 
+
 **Unsolved puzzle**
 
 <img src="../images/unruly_unsolved.png" alt="Unruly unsolved" width="500">

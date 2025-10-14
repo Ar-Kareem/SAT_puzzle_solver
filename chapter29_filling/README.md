@@ -6,11 +6,17 @@ Below are the details of how to utilize the solver. In addition, the solver give
 
 (The solver mainly utilizes the CP-SAT solver from Google OR-Tools)
 
-(Note: The solver for this puzzle is the only extremely slow solver in this repo and will take a minute to solve a simple 6x7 puzzle)
-
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/filling.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/filling.html#filling)
+
+You have a grid of squares, some of which contain digits, and the rest of which are empty. Your job is to fill in digits in the empty squares, in such a way that each connected region of squares all containing the same digit has an area equal to that digit.
+
+(‘Connected region’, for the purposes of this game, does not count diagonally separated squares as adjacent.)
+
+For example, it follows that no square can contain a zero, and that two adjacent squares can not both contain a one. No region has an area greater than 9 (because then its area would not be a single digit).
+
+(Note: The solver for this puzzle is the only extremely slow solver in this repo and will take a minute to solve a simple 6x7 puzzle)
 
 **Unsolved puzzle**
 

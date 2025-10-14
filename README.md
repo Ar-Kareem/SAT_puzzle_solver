@@ -71,7 +71,7 @@ Each chapter directory targets a different puzzle type:
 
 # Puzzles
 
-Only a few puzzles in the website have solvers implemented here. Here we list them:
+The puzzles that have solvers implemented are listed below:
 
 ## Nonograms (Puzzle Type #1)
 
@@ -80,6 +80,11 @@ Called "Pattern" in the website.
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/pattern.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/pattern.html#pattern)
+
+<details>
+  <summary><strong>Rules</strong></summary>
+You have a grid of squares, which must all be filled in either black or white. Beside each row of the grid are listed, in order, the lengths of the runs of black squares on that row; above each column are listed, in order, the lengths of the runs of black squares in that column. Your aim is to fill in the entire grid black or white. 
+</details>
 
 **Unsolved puzzle**
 
@@ -162,6 +167,17 @@ Called "Solo" in the website.
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/solo.html#solo)
 
+<details>
+  <summary><strong>Rules</strong></summary>
+You have a square grid, which is divided into as many equally sized sub-blocks as the grid has rows. Each square must be filled in with a digit from 1 to the size of the grid, in such a way that
+
+  every row contains only one occurrence of each digit
+  every column contains only one occurrence of each digit
+  every block contains only one occurrence of each digit.
+
+You are given some of the numbers as clues; your aim is to place the rest of the numbers correctly.
+</details>
+
 **Unsolved puzzle**
 
 <img src="./images/sudoku_unsolved.png" alt="Sudoku unsolved" width="500">
@@ -231,6 +247,21 @@ Time taken: 0.04 seconds
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/lightup.html#lightup)
 
+<details>
+  <summary><strong>Rules</strong></summary>
+You have a grid of squares. Some are filled in black; some of the black squares are numbered. Your aim is to ‘light up’ all the empty squares by placing light bulbs in some of them.
+
+Each light bulb illuminates the square it is on, plus all squares in line with it horizontally or vertically unless a black square is blocking the way.
+
+To win the game, you must satisfy the following conditions:
+
+    All non-black squares are lit.
+    No light is lit by another light.
+    All numbered black squares have exactly that number of lights adjacent to them (in the four squares above, below, and to the side).
+
+Non-numbered black squares may have any number of lights adjacent to them. 
+</details>
+
 **Unsolved puzzle**
 
 <img src="./images/lightup_unsolved.png" alt="Light Up unsolved" width="500">
@@ -286,6 +317,16 @@ Which exactly matches the true solutions (Remember, the goal of the puzzle is to
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/tents.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/tents.html#tents)
+
+<details>
+  <summary><strong>Rules</strong></summary>
+You have a grid of squares, some of which contain trees. Your aim is to place tents in some of the remaining squares, in such a way that the following conditions are met:
+
+  There are exactly as many tents as trees.
+  The tents and trees can be matched up in such a way that each tent is directly adjacent (horizontally or vertically, but not diagonally) to its own tree. However, a tent may be adjacent to other trees as well as its own.
+  No two tents are adjacent horizontally, vertically or diagonally.
+  The number of tents in each row, and in each column, matches the numbers given round the sides of the grid.
+</details>
 
 **Unsolved puzzle**
 
@@ -349,11 +390,20 @@ Time taken: 0.02 seconds
 
 ## Filling (Puzzle Type #5)
 
-(Note: The solver for this puzzle is the only extremely slow solver in this repo and will take a minute to solve a simple 6x7 puzzle)
-
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/filling.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/filling.html#filling)
+
+<details>
+  <summary><strong>Rules</strong></summary>
+You have a grid of squares, some of which contain digits, and the rest of which are empty. Your job is to fill in digits in the empty squares, in such a way that each connected region of squares all containing the same digit has an area equal to that digit.
+
+(‘Connected region’, for the purposes of this game, does not count diagonally separated squares as adjacent.)
+
+For example, it follows that no square can contain a zero, and that two adjacent squares can not both contain a one. No region has an area greater than 9 (because then its area would not be a single digit).
+</details>
+
+(Note: The solver for this puzzle is the only extremely slow solver in this repo and will take a minute to solve a simple 6x7 puzzle)
 
 **Unsolved puzzle**
 
@@ -400,6 +450,21 @@ Time taken: 46.27 seconds
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/keen.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/keen.html#keen)
+
+<details>
+  <summary><strong>Rules</strong></summary>
+You have a square grid; each square may contain a digit from 1 to the size of the grid. The grid is divided into blocks of varying shape and size, with arithmetic clues written in them. Your aim is to fully populate the grid with digits such that:
+
+  Each row contains only one occurrence of each digit
+  Each column contains only one occurrence of each digit
+  The digits in each block can be combined to form the number stated in the clue, using the arithmetic operation given in the clue. That is:
+      An addition clue means that the sum of the digits in the block must be the given number. For example, ‘15+’ means the contents of the block adds up to fifteen.
+      A multiplication clue (e.g. ‘60×’), similarly, means that the product of the digits in the block must be the given number.
+      A subtraction clue will always be written in a block of size two, and it means that one of the digits in the block is greater than the other by the given amount. For example, ‘2−’ means that one of the digits in the block is 2 more than the other, or equivalently that one digit minus the other one is 2. The two digits could be either way round, though.
+      A division clue (e.g. ‘3÷’), similarly, is always in a block of size two and means that one digit divided by the other is equal to the given amount.
+
+  Note that a block may contain the same digit more than once (provided the identical ones are not in the same row and column). This rule is precisely the opposite of the rule in Solo's ‘Killer’ mode (see chapter 11).
+</details>
 
 **Unsolved puzzle**
 
@@ -464,6 +529,19 @@ Time taken: 0.02 seconds
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/towers.html#towers)
 
+<details>
+  <summary><strong>Rules</strong></summary>
+You have a square grid. On each square of the grid you can build a tower, with its height ranging from 1 to the size of the grid. Around the edge of the grid are some numeric clues.
+
+Your task is to build a tower on every square, in such a way that:
+
+    Each row contains every possible height of tower once
+    Each column contains every possible height of tower once
+    Each numeric clue describes the number of towers that can be seen if you look into the square from that direction, assuming that shorter towers are hidden behind taller ones. For example, in a 5×5 grid, a clue marked ‘5’ indicates that the five tower heights must appear in increasing order (otherwise you would not be able to see all five towers), whereas a clue marked ‘1’ indicates that the tallest tower (the one marked 5) must come first.
+
+In harder or larger puzzles, some towers will be specified for you as well as the clues round the edge, and some edge clues may be missing. 
+</details>
+
 **Unsolved puzzle**
 
 <img src="./images/towers_unsolved.png" alt="Towers unsolved" width="500">
@@ -512,6 +590,15 @@ Time taken: 0.03 seconds
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/singles.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/singles.html#singles)
+
+<details>
+  <summary><strong>Rules</strong></summary>
+You have a grid of white squares, all of which contain numbers. Your task is to colour some of the squares black (removing the number) so as to satisfy all of the following conditions:
+
+  No number occurs more than once in any row or column.
+  No black square is horizontally or vertically adjacent to any other black square.
+  The remaining white squares must all form one contiguous region (connected by edges, not just touching at corners).
+</details>
 
 **Unsolved puzzle**
 
@@ -570,6 +657,13 @@ Time taken: 2.14 seconds
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/magnets.html#magnets)
 
+<details>
+  <summary><strong>Rules</strong></summary>
+A rectangular grid has been filled with a mixture of magnets (that is, dominoes with one positive end and one negative end) and blank dominoes (that is, dominoes with two neutral poles). These dominoes are initially only seen in silhouette. Around the grid are placed a number of clues indicating the number of positive and negative poles contained in certain columns and rows.
+
+Your aim is to correctly place the magnets and blank dominoes such that all the clues are satisfied, with the additional constraint that no two similar magnetic poles may be orthogonally adjacent (since they repel). Neutral poles do not repel, and can be adjacent to any other pole. 
+</details>
+
 **Unsolved puzzle**
 
 <img src="./images/magnets_unsolved.png" alt="Magnets unsolved" width="500">
@@ -623,11 +717,23 @@ Time taken: 0.02 seconds
 
 ## Range (Puzzle Type #10)
 
-(Note: The solver for this puzzle is slightly slower and could take several seconds to solve a 16x11 puzzle)
-
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/range.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/range.html#range)
+
+<details>
+  <summary><strong>Rules</strong></summary>
+You have a grid of squares; some squares contain numbers. Your job is to colour some of the squares black, such that several criteria are satisfied:
+
+  no square with a number is coloured black.
+  no two black squares are adjacent (horizontally or vertically).
+  for any two white squares, there is a path between them using only white squares.
+  for each square with a number, that number denotes the total number of white squares reachable from that square going in a straight line in any horizontal or vertical direction until hitting a wall or a black square; the square with the number is included in the total (once).
+
+For instance, a square containing the number one must have four black squares as its neighbours by the last criterion; but then it's impossible for it to be connected to any outside white square, which violates the second to last criterion. So no square will contain the number one. 
+</details>
+
+(Note: The solver for this puzzle is slightly slower and could take several seconds to solve a 16x11 puzzle)
 
 **Unsolved puzzle**
 
@@ -684,6 +790,15 @@ Time taken: 3.32 seconds
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/undead.html#undead)
 
+<details>
+  <summary><strong>Rules</strong></summary>
+You are given a grid of squares, some of which contain diagonal mirrors. Every square which is not a mirror must be filled with one of three types of undead monster: a ghost, a vampire, or a zombie.
+
+Vampires can be seen directly, but are invisible when reflected in mirrors. Ghosts are the opposite way round: they can be seen in mirrors, but are invisible when looked at directly. Zombies are visible by any means.
+
+You are also told the total number of each type of monster in the grid. Also around the edge of the grid are written numbers, which indicate how many monsters can be seen if you look into the grid along a row or column starting from that position. (The diagonal mirrors are reflective on both sides. If your reflected line of sight crosses the same monster more than once, the number will count it each time it is visible, not just once.) 
+</details>
+
 **Unsolved puzzle**
 
 <img src="./images/undead_unsolved.png" alt="UnDead unsolved" width="500">
@@ -737,6 +852,11 @@ Time taken: 0.01 seconds
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/unruly.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/unruly.html#unruly)
+
+<details>
+  <summary><strong>Rules</strong></summary>
+You are given a grid of squares, which you must colour either black or white. Some squares are provided as clues; the rest are left for you to fill in. Each row and column must contain the same number of black and white squares, and no row or column may contain three consecutive squares of the same colour. 
+</details>
 
 **Unsolved puzzle**
 
@@ -798,6 +918,13 @@ Time taken: 0.01 seconds
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/mosaic.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/mosaic.html#mosaic)
+
+<details>
+  <summary><strong>Rules</strong></summary>
+You are given a grid of squares, which you must colour either black or white.
+
+Some squares contain clue numbers. Each clue tells you the number of black squares in the 3×3 region surrounding the clue – including the clue square itself. 
+</details>
 
 **Unsolved puzzle**
 

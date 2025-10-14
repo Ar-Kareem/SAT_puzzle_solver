@@ -10,6 +10,18 @@ Below are the details of how to utilize the solver. In addition, the solver give
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/lightup.html#lightup)
 
+You have a grid of squares. Some are filled in black; some of the black squares are numbered. Your aim is to ‘light up’ all the empty squares by placing light bulbs in some of them.
+
+Each light bulb illuminates the square it is on, plus all squares in line with it horizontally or vertically unless a black square is blocking the way.
+
+To win the game, you must satisfy the following conditions:
+
+    All non-black squares are lit.
+    No light is lit by another light.
+    All numbered black squares have exactly that number of lights adjacent to them (in the four squares above, below, and to the side).
+
+Non-numbered black squares may have any number of lights adjacent to them. 
+
 **Unsolved puzzle**
 
 <img src="../images/lightup_unsolved.png" alt="Light Up unsolved" width="500">
