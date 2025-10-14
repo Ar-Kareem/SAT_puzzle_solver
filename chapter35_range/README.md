@@ -19,7 +19,7 @@ Unsolved puzzle:
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-import board
+from . import board
 clues = np.array([
     [-1, 4, 2, -1, -1, 3, -1, -1, -1, 8, -1, -1, -1, -1, 6, -1],
     [-1, -1, -1, -1, -1, 13, -1, 18, -1, -1, 14, -1, -1, 22, -1, -1],

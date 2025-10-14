@@ -4,6 +4,8 @@ This is a simple project solves classic logic puzzles by encoding them as SAT/CP
 
 This repo collects small, focused solvers for different puzzle families, each living in its own folder with self-contained examples.
 
+If you have one of the puzzles below and need a python solver, then this repo is perfect for you!
+
 You can play the puzzles online here: https://www.chiark.greenend.org.uk/~sgtatham/puzzles
 
 ## Puzzles
@@ -24,7 +26,7 @@ Unsolved puzzle:
 
 Code to utilize this package and solve the puzzle:
 ```python
-import board
+from . import board
 top_numbers = [
   [8, 2],
   [5, 4],
@@ -103,7 +105,7 @@ Unsolved puzzle:
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-import board
+from . import board
 bor = np.array([
   ['*', '7', '5', '4',  '9', '1', 'c', 'e',  'd', 'f', '*', '*',  '2', '*', '3', '*'],
   ['*', '*', '*', '*',  'f', 'a', '*', '*',  '*', '6', '*', 'c',  '*', '*', '8', 'b'],
@@ -169,7 +171,7 @@ Unsolved puzzle:
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-import board
+from . import board
 bor = np.array([
   ['*', '0', '*', '*', '*', '*', 'W', '*', '*', '*'],
   ['*', '*', '*', '0', '*', '*', '*', '*', '*', '1'],
@@ -220,7 +222,7 @@ Unsolved puzzle:
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-import board
+from . import board
 bor = np.array([
   ['*', 'T', '*', '*', '*', '*', '*', '*', 'T', '*', 'T', '*', 'T', '*', '*'],
   ['*', '*', '*', '*', 'T', '*', '*', 'T', '*', 'T', '*', '*', 'T', '*', '*'],
@@ -283,7 +285,7 @@ Unsolved puzzle:
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-import board
+from . import board
 bor = np.array([
   ['*', '*', '*', '*', '*', '*'],
   ['*', '*', '*', '*', '*', '*'],
@@ -329,7 +331,7 @@ Unsolved puzzle:
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-import board
+from . import board
 bor = np.array([
   ['H', 'H', 'H', 'H', 'V', 'V', 'V', 'V', 'H', 'H'],
   ['H', 'H', 'H', 'H', 'V', 'V', 'V', 'V', 'V', 'V'],
@@ -385,7 +387,7 @@ Unsolved puzzle:
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-import board
+from . import board
 clues = np.array([
     [-1, 4, 2, -1, -1, 3, -1, -1, -1, 8, -1, -1, -1, -1, 6, -1],
     [-1, -1, -1, -1, -1, 13, -1, 18, -1, -1, 14, -1, -1, 22, -1, -1],
@@ -437,7 +439,7 @@ Unsolved puzzle:
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-import board
+from . import board
 bor = np.array([
   ['**', '//', '**', '**', '**', '**', '\\'],
   ['**', '**', '**', '//', '**', '**', '**'],
@@ -488,7 +490,7 @@ Unsolved puzzle:
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-import board
+from . import board
 bor = np.array([
   ['W', 'W', '*', 'B', '*', '*', '*', '*', 'B', '*', '*', '*', '*', '*'],
   ['*', '*', '*', '*', '*', '*', '*', 'W', '*', '*', '*', '*', '*', 'W'],
@@ -546,7 +548,7 @@ Unsolved puzzle:
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-import board
+from . import board
 bor = np.array([
   ['*', '*', '2', '1', '*', '*', '*', '3', '*', '4', '2', '2', '*', '*', '4'],
   ['3', '*', '*', '*', '4', '*', '*', '*', '*', '*', '4', '*', '2', '*', '*'],
@@ -597,15 +599,16 @@ Which exactly matches the true solutions:
 
 Each chapter directory targets a different puzzle type:
 
-* `chapter10_nonograms` — Picross/Griddlers (paint-by-numbers) via run-length constraints per row/column. ([Chapter 10][2])
-* `chapter11_sudoku` — Sudoku (place numbers so every row, column, and block contains each number exactly once). ([Chapter 11][11])
+* `chapter10_nonograms` — Picross/Griddlers (paint-by-numbers) via run-length constraints per row/column. ([Chapter 10][1])
+* `chapter11_sudoku` — Sudoku (place numbers so every row, column, and block contains each number exactly once). ([Chapter 11][2])
 * `chapter21_light_up` — *Akari* / Light Up (place bulbs so every white cell is lit; numbered blacks constrain adjacency). ([chapter 21][3])
-* `chapter25_tents` — Tents (place tents so every tree is orthogonally adjacent to its own tent). ([chapter 25][8])
-* `chapter31_towers` — Skyscrapers (permutation rows/cols with “visible tower” counts). ([Chapter 31][4])
-* `chapter33_magnets` — Magnets (place polarized dominoes to satisfy row/column + polarity counts). ([Chapter 33][5])
-* `chapter37_undead` — UnDead / Count Vampires, Zombies, Ghosts (logic with neighborhood constraints). ([Chapter 37][6])
+* `chapter25_tents` — Tents (place tents so every tree is orthogonally adjacent to its own tent). ([chapter 25][4])
+* `chapter31_towers` — Skyscrapers (permutation rows/cols with “visible tower” counts). ([Chapter 31][5])
+* `chapter33_magnets` — Magnets (place polarized dominoes to satisfy row/column + polarity counts). ([Chapter 33][6])
+* `chapter35_range` — Range (logic with ray constraints). ([Chapter 35][7])
+* `chapter37_undead` — UnDead / Count Vampires, Zombies, Ghosts (logic with neighborhood constraints). ([Chapter 37][8])
 * `chapter38_unruly` — Unruly (logic with consecutive constraints). ([Chapter 38][9])
-* `chapter42_mosaic` — Mosaic / Tapa-like numeric tiling constraints. ([Chapter 42][7])
+* `chapter42_mosaic` — Mosaic / Tapa-like numeric tiling constraints. ([Chapter 42][10])
 
 ## Why SAT / CP-SAT?
 
@@ -615,7 +618,7 @@ Many pencil puzzles can be modeled as:
 * **Linear constraints** (counts, separations, adjacency),
 * **All-different / visibility / reachability** style constraints.
 
-This repo uses Python to build those constraints and calls a SAT/CP-SAT solver (e.g., OR-Tools) to search efficiently.
+This repo uses Python to build those constraints and calls a SAT/CP-SAT solver (e.g., OR-Tools) to search efficiently. This project partly aims at showing the versatility, power, and ease of use of SAT/CP-SAT solvers. It also provides the solvers themselves for any interested party to use.
 
 ## Quick start
 
@@ -644,7 +647,7 @@ python test.py
 
 Which will run the following code:
 ```python
-import board
+from . import board
 top_numbers = [
   [8, 2],
   ...
@@ -712,12 +715,13 @@ Issues and PRs welcome!
   3. Document the modeling in code comments,
 
 
-[2]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter10_nonograms "SAT_puzzle_solver/chapter10_nonograms at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[10]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter11_sudoku "SAT_puzzle_solver/chapter11_sudoku at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[1]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter10_nonograms "SAT_puzzle_solver/chapter10_nonograms at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[2]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter11_sudoku "SAT_puzzle_solver/chapter11_sudoku at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [3]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter21_light_up "SAT_puzzle_solver/chapter21_light_up at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[8]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter25_tents "SAT_puzzle_solver/chapter25_tents at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[4]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter31_towers "SAT_puzzle_solver/chapter31_towers at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[5]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter33_magnets "SAT_puzzle_solver/chapter33_magnets at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[6]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter37_undead "SAT_puzzle_solver/chapter37_undead at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[7]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter42_mosaic "SAT_puzzle_solver/chapter42_mosaic at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[4]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter25_tents "SAT_puzzle_solver/chapter25_tents at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[5]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter31_towers "SAT_puzzle_solver/chapter31_towers at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[6]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter33_magnets "SAT_puzzle_solver/chapter33_magnets at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[7]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter35_range "SAT_puzzle_solver/chapter35_range at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[8]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter37_undead "SAT_puzzle_solver/chapter37_undead at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [9]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter38_unruly "SAT_puzzle_solver/chapter38_unruly at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[10]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter42_mosaic "SAT_puzzle_solver/chapter42_mosaic at master · Ar-Kareem/SAT_puzzle_solver · GitHub"

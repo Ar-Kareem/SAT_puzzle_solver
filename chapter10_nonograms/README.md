@@ -16,7 +16,7 @@ Unsolved puzzle:
 
 Code to utilize this package and solve the puzzle:
 ```python
-import board
+from . import board
 top_numbers = [
   [8, 2],
   ...

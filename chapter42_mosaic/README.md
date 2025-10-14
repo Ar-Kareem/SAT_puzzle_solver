@@ -17,7 +17,7 @@ Unsolved puzzle:
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-import board
+from . import board
 bor = np.array([
   ['*', '*', '2', '1', '*', '*', '*', '3', '*', '4', '2', '2', '*', '*', '4'],
   ['3', '*', '*', '*', '4', '*', '*', '*', '*', '*', '4', '*', '2', '*', '*'],
