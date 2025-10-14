@@ -6,11 +6,11 @@ Below are the details of how to utilize the solver. In addition, the solver give
 
 (The solver mainly utilizes the CP-SAT solver from Google OR-Tools)
 
-Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/undead.html
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/undead.html)
 
-Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/undead.html#undead
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/undead.html#undead)
 
-Unsolved puzzle:
+**Unsolved puzzle**
 
 <img src="../images/undead_unsolved.png" alt="UnDead unsolved" width="500">
 
@@ -37,7 +37,7 @@ counts = {Monster.GHOST: 5, Monster.VAMPIRE: 12, Monster.ZOMBIE: 11}
 binst = board.Board(board=bor, sides={'top': t, 'bottom': b, 'right': r, 'left': l}, monster_count=counts)
 solutions = binst.solve_and_print()
 ```
-Output:
+**Script Output**
 ```
 Solution found
 [['VA' '//' 'GH' 'GH' 'ZO' 'GH' '\\']
@@ -51,6 +51,6 @@ Solutions found: 1
 status: OPTIMAL
 ```
 
-Which exactly matches the true solutions:
+**Solved puzzle**
 
 <img src="../images/undead_solved.png" alt="UnDead solved" width="500">

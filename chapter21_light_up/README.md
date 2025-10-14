@@ -6,11 +6,11 @@ Below are the details of how to utilize the solver. In addition, the solver give
 
 (The solver mainly utilizes the CP-SAT solver from Google OR-Tools)
 
-Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/lightup.html
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/lightup.html)
 
-Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/lightup.html#lightup
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/lightup.html#lightup)
 
-Unsolved puzzle:
+**Unsolved puzzle**
 
 <img src="../images/lightup_unsolved.png" alt="Light Up unsolved" width="500">
 
@@ -34,7 +34,7 @@ bor = np.array([
 binst = board.Board(board=bor)
 solutions = binst.solve_and_print()
 ```
-Output:
+**Script Output**
 ```
 Solution found
 [[' ' '0' ' ' ' ' ' ' 'L' 'W' ' ' ' ' 'L']
@@ -50,6 +50,8 @@ Solution found
 Solutions found: 1
 status: OPTIMAL
 ```
+
+**Solved puzzle**
 
 Which exactly matches the true solutions (Remember, the goal of the puzzle is to find where to place the lights, marked as 'L' in the solution above):
 

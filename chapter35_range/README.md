@@ -8,13 +8,13 @@ Below are the details of how to utilize the solver. In addition, the solver give
 
 (Note: The solver for this puzzle is slightly slower and could take several seconds to solve a 16x11 puzzle)
 
-Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/range.html
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/range.html)
 
-Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/range.html#range
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/range.html#range)
 
-Unsolved puzzle:
+**Unsolved puzzle**
 
-<img src="./images/range_unsolved.png" alt="Range unsolved" width="500">
+<img src="../images/range_unsolved.png" alt="Range unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -36,7 +36,7 @@ clues = np.array([
 board = board.Board(clues)
 sols = board.solve_and_print()
 ```
-Output:
+**Script Output**
 ```
 Solution:
 B . . B . . B . B . B . B . . .
@@ -54,6 +54,6 @@ Solutions found: 1
 status: OPTIMAL
 ```
 
-Which exactly matches the true solutions:
+**Solved puzzle**
 
-<img src="./images/range_solved.png" alt="Range solved" width="500">
+<img src="../images/range_solved.png" alt="Range solved" width="500">

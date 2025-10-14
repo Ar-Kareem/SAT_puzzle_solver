@@ -6,11 +6,11 @@ Below are the details of how to utilize the solver. In addition, the solver give
 
 (The solver mainly utilizes the CP-SAT solver from Google OR-Tools)
 
-Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/unruly.html
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/unruly.html)
 
-Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/unruly.html#unruly
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/unruly.html#unruly)
 
-Unsolved puzzle:
+**Unsolved puzzle**
 
 <img src="../images/unruly_unsolved.png" alt="Unruly unsolved" width="500">
 
@@ -37,7 +37,7 @@ bor = np.array([
 binst = board.Board(board=bor)
 solutions = binst.solve_and_print()
 ```
-Output:
+**Script Output**
 ```
 Solution found
 [['W' 'W' 'B' 'B' 'W' 'B' 'W' 'B' 'B' 'W' 'B' 'W' 'W' 'B']
@@ -58,6 +58,6 @@ Solutions found: 1
 status: OPTIMAL
 ```
 
-Which exactly matches the true solutions:
+**Solved puzzle**
 
 <img src="../images/unruly_solved.png" alt="Unruly solved" width="500">

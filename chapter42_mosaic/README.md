@@ -6,11 +6,11 @@ Below are the details of how to utilize the solver. In addition, the solver give
 
 (The solver mainly utilizes the CP-SAT solver from Google OR-Tools)
 
-Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/mosaic.html
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/mosaic.html)
 
-Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/mosaic.html#mosaic
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/mosaic.html#mosaic)
 
-Unsolved puzzle:
+**Unsolved puzzle**
 
 <img src="../images/mosaic_unsolved.png" alt="Mosaic unsolved" width="500">
 
@@ -38,7 +38,7 @@ bor = np.array([
 binst = board.Board(board=bor)
 solutions = binst.solve_and_print()
 ```
-Output:
+**Script Output**
 ```
 Solution found
 [[' ' 'B' ' ' ' ' ' ' ' ' ' ' ' ' 'B' ' ' 'B' ' ' ' ' 'B' 'B']
@@ -60,6 +60,6 @@ Solutions found: 1
 status: OPTIMAL
 ```
 
-Which exactly matches the true solutions:
+**Solved puzzle**
 
 <img src="../images/mosaic_solved.png" alt="Mosaic solved" width="500">

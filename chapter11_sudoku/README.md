@@ -6,11 +6,11 @@ Below are the details of how to utilize the solver. In addition, the solver give
 
 (The solver mainly utilizes the CP-SAT solver from Google OR-Tools)
 
-Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/solo.html
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/solo.html)
 
-Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/solo.html#solo
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/solo.html#solo)
 
-Unsolved puzzle:
+**Unsolved puzzle**
 
 <img src="../images/sudoku_unsolved.png" alt="Sudoku unsolved" width="500">
 
@@ -43,7 +43,7 @@ binst = board.Board(board=bor)
 solutions = binst.solve_and_print()
 assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
 ```
-Output:
+**Script Output**
 ```
 Solution found
 [['g' '7' '5' '4' '9' '1' 'c' 'e' 'd' 'f' 'b' '8' '2' '6' '3' 'a']
@@ -66,6 +66,6 @@ Solutions found: 1
 status: OPTIMAL
 ```
 
-True solutions:
+**Solved puzzle**
 
 <img src="../images/sudoku_solved.png" alt="Sudoku solved" width="500">

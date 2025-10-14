@@ -6,11 +6,11 @@ Below are the details of how to utilize the solver. In addition, the solver give
 
 (The solver mainly utilizes the CP-SAT solver from Google OR-Tools)
 
-Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/magnets.html
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/magnets.html)
 
-Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/magnets.html#magnets
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/magnets.html#magnets)
 
-Unsolved puzzle:
+**Unsolved puzzle**
 
 <img src="../images/magnets_unsolved.png" alt="Magnets unsolved" width="500">
 
@@ -37,7 +37,7 @@ neg_h = np.array([4, -1, 4, -1, 5, 4, -1, 2, -1])
 binst = board.Board(board=bor, sides={'pos_v': pos_v, 'neg_v': neg_v, 'pos_h': pos_h, 'neg_h': neg_h})
 solutions = binst.solve_and_print()
 ```
-Output:
+**Script Output**
 ```
 Solution found
 [['-' '+' '-' '+' ' ' '+' '-' '+' '-' '+']
@@ -53,6 +53,6 @@ Solutions found: 1
 status: OPTIMAL
 ```
 
-Which exactly matches the true solutions:
+**Solved puzzle**
 
 <img src="../images/magnets_solved.png" alt="Magnets solved" width="500">

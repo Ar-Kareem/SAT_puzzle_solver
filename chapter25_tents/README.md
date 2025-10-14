@@ -6,11 +6,11 @@ Below are the details of how to utilize the solver. In addition, the solver give
 
 (The solver mainly utilizes the CP-SAT solver from Google OR-Tools)
 
-Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/tents.html
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/tents.html)
 
-Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/tents.html#tents
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/tents.html#tents)
 
-Unsolved puzzle:
+**Unsolved puzzle**
 
 <img src="../images/tents_unsolved.png" alt="Tents unsolved" width="500">
 
@@ -41,7 +41,7 @@ top = np.array([4, 2, 4, 1, 3, 3, 3, 3, 3, 3, 2, 2, 6, 2, 4])
 binst = board.Board(board=bor, sides={'top': top, 'side': side})
 solutions = binst.solve_and_print()
 ```
-Output:
+**Script Output**
 ```
 Solution found
 [[' ' 'T' 'E' ' ' ' ' ' ' ' ' 'E' 'T' ' ' 'T' 'E' 'T' 'E' ' ']
@@ -63,6 +63,6 @@ Solutions found: 1
 status: OPTIMAL
 ```
 
-Which exactly matches the true solutions:
+**Solved puzzle**
 
 <img src="../images/tents_solved.png" alt="Tents solved" width="500">

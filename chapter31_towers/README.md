@@ -6,11 +6,11 @@ Below are the details of how to utilize the solver. In addition, the solver give
 
 (The solver mainly utilizes the CP-SAT solver from Google OR-Tools)
 
-Game: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/towers.html
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/towers.html)
 
-Instructions: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/towers.html#towers
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/towers.html#towers)
 
-Unsolved puzzle:
+**Unsolved puzzle**
 
 <img src="../images/towers_unsolved.png" alt="Towers unsolved" width="500">
 
@@ -33,7 +33,7 @@ l = np.array([-1, -1, -1, 2, -1, 4])
 binst = board.Board(board=bor, sides={'top': t, 'bottom': b, 'right': r, 'left': l})
 solutions = binst.solve_and_print()
 ```
-Output:
+**Script Output**
 ```
 Solution found
 [['5' '6' '4' '1' '2' '3']
@@ -46,6 +46,6 @@ Solutions found: 1
 status: OPTIMAL
 ```
 
-Which exactly matches the true solutions:
+**Solved puzzle**
 
 <img src="../images/towers_solved.png" alt="Towers solved" width="500">
