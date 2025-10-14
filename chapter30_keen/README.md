@@ -1,0 +1,64 @@
+# Keen (Puzzle Type #6)
+
+This is a dedicated solver for Keen
+
+Below are the details of how to utilize the solver. In addition, the solver gives all possible solutions to the input thus it can be utilized to figure out if a single output has multiple possible solutions.
+
+(The solver mainly utilizes the CP-SAT solver from Google OR-Tools)
+
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/keen.html)
+
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/keen.html#keen)
+
+**Unsolved puzzle**
+
+<img src="../images/keen_unsolved.png" alt="Keen unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+```python
+import numpy as np
+from . import board
+bor = np.array([
+  ['d01', 'd01', 'd03', 'd03', 'd05', 'd05', 'd08', 'd08', 'd10'],
+  ['d02', 'd02', 'd03', 'd04', 'd06', 'd06', 'd09', 'd09', 'd10'],
+  ['d12', 'd13', 'd14', 'd04', 'd07', 'd07', 'd07', 'd11', 'd11'],
+  ['d12', 'd13', 'd14', 'd14', 'd15', 'd16', 'd11', 'd11', 'd18'],
+  ['d19', 'd20', 'd24', 'd26', 'd15', 'd16', 'd16', 'd17', 'd18'],
+  ['d19', 'd20', 'd24', 'd26', 'd28', 'd28', 'd29', 'd17', 'd33'],
+  ['d21', 'd21', 'd24', 'd27', 'd30', 'd30', 'd29', 'd33', 'd33'],
+  ['d22', 'd23', 'd25', 'd27', 'd31', 'd32', 'd34', 'd34', 'd36'],
+  ['d22', 'd23', 'd25', 'd25', 'd31', 'd32', 'd35', 'd35', 'd36'],
+])
+block_results = {
+  'd01': ('-', 1), 'd02': ('-', 1), 'd03': ('*', 378), 'd04': ('/', 4), 'd05': ('/', 2),
+  'd06': ('-', 2), 'd07': ('*', 6), 'd08': ('+', 9), 'd09': ('/', 2), 'd10': ('+', 9),
+  'd11': ('+', 22), 'd12': ('-', 1), 'd13': ('*', 30), 'd14': ('+', 12), 'd15': ('-', 1),
+  'd16': ('*', 196), 'd17': ('*', 63), 'd18': ('-', 1), 'd19': ('/', 3), 'd20': ('/', 3),
+  'd21': ('*', 21), 'd22': ('/', 4), 'd23': ('-', 7), 'd24': ('*', 64), 'd25': ('+', 15),
+  'd26': ('-', 1), 'd27': ('+', 11), 'd28': ('-', 4), 'd29': ('/', 4), 'd30': ('*', 54),
+  'd31': ('+', 11), 'd32': ('/', 4), 'd33': ('+', 16), 'd34': ('+', 15), 'd35': ('*', 30),
+  'd36': ('-', 7),
+}
+binst = board.Board(board=bor, block_results=block_results)
+solutions = binst.solve_and_print()
+```
+**Script Output**
+```
+Solution found
+[[5 4 7 9 3 6 8 1 2]
+ [9 8 6 1 5 3 2 4 7]
+ [7 5 9 4 2 1 3 8 6]
+ [8 6 1 2 9 7 5 3 4]
+ [6 1 2 5 8 4 7 9 3]
+ [2 3 8 6 1 5 4 7 9]
+ [3 7 4 8 6 9 1 2 5]
+ [4 2 5 3 7 8 9 6 1]
+ [1 9 3 7 4 2 6 5 8]]
+Solutions found: 1
+status: OPTIMAL
+Time taken: 0.02 seconds
+```
+
+**Solved puzzle**
+
+<img src="../images/keen_solved.png" alt="Keen solved" width="500">

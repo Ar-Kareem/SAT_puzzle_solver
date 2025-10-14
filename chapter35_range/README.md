@@ -1,4 +1,4 @@
-# Range (Puzzle Type #9)
+# Range (Puzzle Type #10)
 
 This is a dedicated solver for Range
 

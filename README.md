@@ -21,13 +21,14 @@ All the solvers in this repo use the CP-SAT solver from Google OR-Tools.
   - [Light Up (Puzzle Type #3)](#light-up-puzzle-type-3)
   - [Tents (Puzzle Type #4)](#tents-puzzle-type-4)
   - [Filling (Puzzle Type #5)](#filling-puzzle-type-5)
-  - [Towers (Puzzle Type #6)](#towers-puzzle-type-6)
-  - [Singles (Puzzle Type #7)](#singles-puzzle-type-7)
-  - [Magnets (Puzzle Type #8)](#magnets-puzzle-type-8)
-  - [Range (Puzzle Type #9)](#range-puzzle-type-9)
-  - [UnDead (Puzzle Type #10)](#undead-puzzle-type-10)
-  - [Unruly (Puzzle Type #11)](#unruly-puzzle-type-11)
-  - [Mosaic (Puzzle Type #12)](#mosaic-puzzle-type-12)
+  - [Keen (Puzzle Type #6)](#keen-puzzle-type-6)
+  - [Towers (Puzzle Type #7)](#towers-puzzle-type-7)
+  - [Singles (Puzzle Type #8)](#singles-puzzle-type-8)
+  - [Magnets (Puzzle Type #9)](#magnets-puzzle-type-9)
+  - [Range (Puzzle Type #10)](#range-puzzle-type-10)
+  - [UnDead (Puzzle Type #11)](#undead-puzzle-type-11)
+  - [Unruly (Puzzle Type #12)](#unruly-puzzle-type-12)
+  - [Mosaic (Puzzle Type #13)](#mosaic-puzzle-type-13)
   - [Quick Start](#quick-start)
     - [1) Install Python deps](#1-install-python-deps)
     - [2) Explore a puzzle](#2-explore-a-puzzle)
@@ -57,13 +58,14 @@ Each chapter directory targets a different puzzle type:
 * `chapter21_light_up` — *Akari* / Light Up (lighting & adjacency). ([Chapter 21][3])
 * `chapter25_tents` — Tents (tree-tent matching). ([Chapter 25][4])
 * `chapter29_filling` — Filling (Fillomino-style), region sizes. ([Chapter 29][5])
-* `chapter31_towers` — Skyscrapers (permutation + visibility). ([Chapter 31][6])
-* `chapter32_single` — Singles (hiding numbers). ([Chapter 32][7])
-* `chapter33_magnets` — Magnets (polarized dominoes + counts). ([Chapter 33][8])
-* `chapter35_range` — Range (rays & totals). ([Chapter 35][9])
-* `chapter37_undead` — UnDead (Vampires/Zombies/Ghosts). ([Chapter 37][10])
-* `chapter38_unruly` — Unruly (no triples + balance). ([Chapter 38][11])
-* `chapter42_mosaic` — Mosaic (Tapa-like tiling). ([Chapter 42][12])
+* `chapter30_keen` — Keen (arithmetic operations). ([Chapter 30][6])
+* `chapter31_towers` — Skyscrapers (permutation + visibility). ([Chapter 31][7])
+* `chapter32_single` — Singles (hiding numbers). ([Chapter 32][8])
+* `chapter33_magnets` — Magnets (polarized dominoes + counts). ([Chapter 33][9])
+* `chapter35_range` — Range (rays & totals). ([Chapter 35][10])
+* `chapter37_undead` — UnDead (Vampires/Zombies/Ghosts). ([Chapter 37][11])
+* `chapter38_unruly` — Unruly (no triples + balance). ([Chapter 38][12])
+* `chapter42_mosaic` — Mosaic (Tapa-like tiling). ([Chapter 42][13])
 
 ---
 
@@ -393,7 +395,68 @@ Time taken: 46.27 seconds
 
 ---
 
-## Towers (Puzzle Type #6)
+## Keen (Puzzle Type #6)
+
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/keen.html)
+
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/keen.html#keen)
+
+**Unsolved puzzle**
+
+<img src="./images/keen_unsolved.png" alt="Keen unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+```python
+import numpy as np
+from . import board
+bor = np.array([
+  ['d01', 'd01', 'd03', 'd03', 'd05', 'd05', 'd08', 'd08', 'd10'],
+  ['d02', 'd02', 'd03', 'd04', 'd06', 'd06', 'd09', 'd09', 'd10'],
+  ['d12', 'd13', 'd14', 'd04', 'd07', 'd07', 'd07', 'd11', 'd11'],
+  ['d12', 'd13', 'd14', 'd14', 'd15', 'd16', 'd11', 'd11', 'd18'],
+  ['d19', 'd20', 'd24', 'd26', 'd15', 'd16', 'd16', 'd17', 'd18'],
+  ['d19', 'd20', 'd24', 'd26', 'd28', 'd28', 'd29', 'd17', 'd33'],
+  ['d21', 'd21', 'd24', 'd27', 'd30', 'd30', 'd29', 'd33', 'd33'],
+  ['d22', 'd23', 'd25', 'd27', 'd31', 'd32', 'd34', 'd34', 'd36'],
+  ['d22', 'd23', 'd25', 'd25', 'd31', 'd32', 'd35', 'd35', 'd36'],
+])
+block_results = {
+  'd01': ('-', 1), 'd02': ('-', 1), 'd03': ('*', 378), 'd04': ('/', 4), 'd05': ('/', 2),
+  'd06': ('-', 2), 'd07': ('*', 6), 'd08': ('+', 9), 'd09': ('/', 2), 'd10': ('+', 9),
+  'd11': ('+', 22), 'd12': ('-', 1), 'd13': ('*', 30), 'd14': ('+', 12), 'd15': ('-', 1),
+  'd16': ('*', 196), 'd17': ('*', 63), 'd18': ('-', 1), 'd19': ('/', 3), 'd20': ('/', 3),
+  'd21': ('*', 21), 'd22': ('/', 4), 'd23': ('-', 7), 'd24': ('*', 64), 'd25': ('+', 15),
+  'd26': ('-', 1), 'd27': ('+', 11), 'd28': ('-', 4), 'd29': ('/', 4), 'd30': ('*', 54),
+  'd31': ('+', 11), 'd32': ('/', 4), 'd33': ('+', 16), 'd34': ('+', 15), 'd35': ('*', 30),
+  'd36': ('-', 7),
+}
+binst = board.Board(board=bor, block_results=block_results)
+solutions = binst.solve_and_print()
+```
+**Script Output**
+```
+Solution found
+[[5 4 7 9 3 6 8 1 2]
+ [9 8 6 1 5 3 2 4 7]
+ [7 5 9 4 2 1 3 8 6]
+ [8 6 1 2 9 7 5 3 4]
+ [6 1 2 5 8 4 7 9 3]
+ [2 3 8 6 1 5 4 7 9]
+ [3 7 4 8 6 9 1 2 5]
+ [4 2 5 3 7 8 9 6 1]
+ [1 9 3 7 4 2 6 5 8]]
+Solutions found: 1
+status: OPTIMAL
+Time taken: 0.02 seconds
+```
+
+**Solved puzzle**
+
+<img src="./images/keen_solved.png" alt="Keen solved" width="500">
+
+---
+
+## Towers (Puzzle Type #7)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/towers.html)
 
@@ -442,7 +505,7 @@ Time taken: 0.03 seconds
 
 ---
 
-## Singles (Puzzle Type #7)
+## Singles (Puzzle Type #8)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/single.html)
 
@@ -499,7 +562,7 @@ Time taken: 2.14 seconds
 
 ---
 
-## Magnets (Puzzle Type #8)
+## Magnets (Puzzle Type #9)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/magnets.html)
 
@@ -556,7 +619,7 @@ Time taken: 0.02 seconds
 
 ---
 
-## Range (Puzzle Type #9)
+## Range (Puzzle Type #10)
 
 (Note: The solver for this puzzle is slightly slower and could take several seconds to solve a 16x11 puzzle)
 
@@ -613,7 +676,7 @@ Time taken: 3.32 seconds
 
 ---
 
-## UnDead (Puzzle Type #10)
+## UnDead (Puzzle Type #11)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/undead.html)
 
@@ -667,7 +730,7 @@ Time taken: 0.01 seconds
 
 ---
 
-## Unruly (Puzzle Type #11)
+## Unruly (Puzzle Type #12)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/unruly.html)
 
@@ -728,7 +791,7 @@ Time taken: 0.01 seconds
 
 ---
 
-## Mosaic (Puzzle Type #12)
+## Mosaic (Puzzle Type #13)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/mosaic.html)
 
@@ -864,10 +927,11 @@ Issues and PRs welcome!
 [3]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter21_light_up "SAT_puzzle_solver/chapter21_light_up at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [4]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter25_tents "SAT_puzzle_solver/chapter25_tents at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [5]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter29_filling "SAT_puzzle_solver/chapter29_filling at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[6]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter31_towers "SAT_puzzle_solver/chapter31_towers at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[7]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter32_single "SAT_puzzle_solver/chapter32_single at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[8]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter33_magnets "SAT_puzzle_solver/chapter33_magnets at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[9]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter35_range "SAT_puzzle_solver/chapter35_range at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[10]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter37_undead "SAT_puzzle_solver/chapter37_undead at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[11]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter38_unruly "SAT_puzzle_solver/chapter38_unruly at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[12]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter42_mosaic "SAT_puzzle_solver/chapter42_mosaic at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[6]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter30_keen "SAT_puzzle_solver/chapter30_keen at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[7]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter31_towers "SAT_puzzle_solver/chapter31_towers at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[8]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter32_single "SAT_puzzle_solver/chapter32_single at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[9]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter33_magnets "SAT_puzzle_solver/chapter33_magnets at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[10]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter35_range "SAT_puzzle_solver/chapter35_range at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[11]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter37_undead "SAT_puzzle_solver/chapter37_undead at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[12]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter38_unruly "SAT_puzzle_solver/chapter38_unruly at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[13]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter42_mosaic "SAT_puzzle_solver/chapter42_mosaic at master · Ar-Kareem/SAT_puzzle_solver · GitHub"

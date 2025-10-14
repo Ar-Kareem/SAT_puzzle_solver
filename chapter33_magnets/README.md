@@ -1,4 +1,4 @@
-# Magnets (Puzzle Type #8)
+# Magnets (Puzzle Type #9)
 
 This is a dedicated solver for Magnets
 

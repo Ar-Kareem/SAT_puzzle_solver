@@ -1,4 +1,4 @@
-# Towers (Puzzle Type #6)
+# Towers (Puzzle Type #7)
 
 This is a dedicated solver for Towers
 
