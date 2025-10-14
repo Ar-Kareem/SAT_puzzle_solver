@@ -1,4 +1,6 @@
 import board
+import numpy as np
+
 # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/pattern.html#15x15%23697217620427463
 top_numbers = [
   [8, 2],
@@ -46,4 +48,28 @@ side_numbers = [
 # ]
 binst = board.Board(top=top_numbers, side=side_numbers)
 solutions = binst.solve_and_print()
-assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+
+def test_ground():
+  ground = np.array([
+    ['B', 'B', 'B', 'B', 'B', 'B', 'B', ' ', 'B', 'B', 'B', ' ', ' ', ' ', ' '],
+    ['B', 'B', 'B', 'B', 'B', 'B', 'B', ' ', ' ', ' ', ' ', ' ', 'B', ' ', 'B'],
+    ['B', 'B', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'B', 'B', 'B', ' '],
+    ['B', 'B', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'B', 'B', 'B'],
+    ['B', 'B', 'B', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'B', 'B'],
+    ['B', ' ', ' ', ' ', 'B', ' ', 'B', ' ', ' ', 'B', ' ', ' ', ' ', 'B', 'B'],
+    ['B', ' ', ' ', ' ', ' ', ' ', 'B', 'B', 'B', 'B', 'B', 'B', ' ', ' ', 'B'],
+    ['B', ' ', ' ', ' ', ' ', ' ', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'],
+    [' ', ' ', ' ', ' ', ' ', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', ' '],
+    [' ', ' ', ' ', ' ', ' ', 'B', 'B', ' ', 'B', 'B', 'B', 'B', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', ' ', ' ', ' '],
+    ['B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', ' ', ' ', ' ', ' '],
+    ['B', 'B', 'B', 'B', 'B', 'B', 'B', ' ', ' ', 'B', ' ', 'B', ' ', ' ', ' '],
+    [' ', 'B', 'B', 'B', 'B', ' ', ' ', ' ', ' ', 'B', 'B', 'B', ' ', ' ', ' '],
+    [' ', 'B', 'B', 'B', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'B', 'B', ' ', ' '],
+  ], dtype=object)
+
+  assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+  solution = solutions[0].assignment
+  ground_assignment = {board.get_pos(x=x, y=y): 1 if ground[y][x] == 'B' else 0 for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+  assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys())} != {set(ground_assignment.keys())}'
+  assert all(solution[pos] == ground_assignment[pos] for pos in solution.keys()), f'solution != ground assignment, {solution} != {ground_assignment}'
