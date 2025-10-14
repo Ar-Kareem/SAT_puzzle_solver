@@ -1,4 +1,4 @@
-# UnDead (Puzzle Type #9)
+# UnDead (Puzzle Type #10)
 
 This is a dedicated solver for UnDead
 
