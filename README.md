@@ -347,7 +347,7 @@ Time taken: 0.02 seconds
 
 ## Filling (Puzzle Type #5)
 
-(Note: The solver for this puzzle is only extremely slow one in this repo and will take a minute to solve a simple 6x7 puzzle)
+(Note: The solver for this puzzle is the only extremely slow solver in this repo and will take a minute to solve a simple 6x7 puzzle)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/filling.html)
 
