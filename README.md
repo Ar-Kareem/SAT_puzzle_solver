@@ -15,17 +15,17 @@ All the solvers in this repo use the CP-SAT solver from Google OR-Tools.
   - [Table of Contents](#table-of-contents)
   - [Why SAT / CP-SAT?](#why-sat--cp-sat)
   - [What’s Inside](#whats-inside)
-  - [Puzzles](#puzzles)
-    - [Nonograms (Puzzle Type #1)](#nonograms-puzzle-type-1)
-    - [Sudoku (Puzzle Type #2)](#sudoku-puzzle-type-2)
-    - [Light Up (Puzzle Type #3)](#light-up-puzzle-type-3)
-    - [Tents (Puzzle Type #4)](#tents-puzzle-type-4)
-    - [Towers (Puzzle Type #5)](#towers-puzzle-type-5)
-    - [Magnets (Puzzle Type #6)](#magnets-puzzle-type-6)
-    - [Range (Puzzle Type #7)](#range-puzzle-type-7)
-    - [UnDead (Puzzle Type #8)](#undead-puzzle-type-8)
-    - [Unruly (Puzzle Type #9)](#unruly-puzzle-type-9)
-    - [Mosaic (Puzzle Type #10)](#mosaic-puzzle-type-10)
+- [Puzzles](#puzzles)
+  - [Nonograms (Puzzle Type #1)](#nonograms-puzzle-type-1)
+  - [Sudoku (Puzzle Type #2)](#sudoku-puzzle-type-2)
+  - [Light Up (Puzzle Type #3)](#light-up-puzzle-type-3)
+  - [Tents (Puzzle Type #4)](#tents-puzzle-type-4)
+  - [Towers (Puzzle Type #5)](#towers-puzzle-type-5)
+  - [Magnets (Puzzle Type #6)](#magnets-puzzle-type-6)
+  - [Range (Puzzle Type #7)](#range-puzzle-type-7)
+  - [UnDead (Puzzle Type #8)](#undead-puzzle-type-8)
+  - [Unruly (Puzzle Type #9)](#unruly-puzzle-type-9)
+  - [Mosaic (Puzzle Type #10)](#mosaic-puzzle-type-10)
   - [Quick Start](#quick-start)
     - [1) Install Python deps](#1-install-python-deps)
     - [2) Explore a puzzle](#2-explore-a-puzzle)
@@ -63,11 +63,11 @@ Each chapter directory targets a different puzzle type:
 
 ---
 
-## Puzzles
+# Puzzles
 
 Only a few puzzles in the website have solvers implemented here. Here we list them:
 
-### Nonograms (Puzzle Type #1)
+## Nonograms (Puzzle Type #1)
 
 Called "Pattern" in the website.
 
@@ -147,7 +147,7 @@ status: OPTIMAL
 
 ---
 
-### Sudoku (Puzzle Type #2)
+## Sudoku (Puzzle Type #2)
 
 Called "Solo" in the website.
 
@@ -217,7 +217,7 @@ status: OPTIMAL
 
 ---
 
-### Light Up (Puzzle Type #3)
+## Light Up (Puzzle Type #3)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/lightup.html)
 
@@ -272,7 +272,7 @@ Which exactly matches the true solutions (Remember, the goal of the puzzle is to
 
 ---
 
-### Tents (Puzzle Type #4)
+## Tents (Puzzle Type #4)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/tents.html)
 
@@ -337,7 +337,7 @@ status: OPTIMAL
 
 ---
 
-### Towers (Puzzle Type #5)
+## Towers (Puzzle Type #5)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/towers.html)
 
@@ -385,7 +385,7 @@ status: OPTIMAL
 
 ---
 
-### Magnets (Puzzle Type #6)
+## Magnets (Puzzle Type #6)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/magnets.html)
 
@@ -441,7 +441,7 @@ status: OPTIMAL
 
 ---
 
-### Range (Puzzle Type #7)
+## Range (Puzzle Type #7)
 
 (Note: The solver for this puzzle is slightly slower and could take several seconds to solve a 16x11 puzzle)
 
@@ -497,7 +497,7 @@ status: OPTIMAL
 
 ---
 
-### UnDead (Puzzle Type #8)
+## UnDead (Puzzle Type #8)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/undead.html)
 
@@ -550,7 +550,7 @@ status: OPTIMAL
 
 ---
 
-### Unruly (Puzzle Type #9)
+## Unruly (Puzzle Type #9)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/unruly.html)
 
@@ -610,7 +610,7 @@ status: OPTIMAL
 
 ---
 
-### Mosaic (Puzzle Type #10)
+## Mosaic (Puzzle Type #10)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/mosaic.html)
 
