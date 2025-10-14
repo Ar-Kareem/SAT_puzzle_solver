@@ -6,7 +6,7 @@ from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
 
 sys.path.append(str(Path(__file__).parent.parent))
-from core.utils import Pos, get_all_pos, set_char, get_char, get_neighbors8
+from core.utils import Pos, get_pos, get_all_pos, set_char, get_char, get_neighbors8
 from core.utils_ortools import generic_solve_all, SingleSolution
 
 

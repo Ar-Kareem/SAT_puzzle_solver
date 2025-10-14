@@ -1,5 +1,6 @@
-import board
 import numpy as np
+
+from . import board
 
 # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/pattern.html#15x15%23697217620427463
 top_numbers = [
@@ -72,4 +73,5 @@ def test_ground():
   solution = solutions[0].assignment
   ground_assignment = {board.get_pos(x=x, y=y): 1 if ground[y][x] == 'B' else 0 for x in range(ground.shape[1]) for y in range(ground.shape[0])}
   assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys())} != {set(ground_assignment.keys())}'
-  assert all(solution[pos] == ground_assignment[pos] for pos in solution.keys()), f'solution != ground assignment, {solution} != {ground_assignment}'
+  for pos in solution.keys():
+    assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'

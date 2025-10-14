@@ -1,5 +1,7 @@
 import numpy as np
-import board
+
+from . import board
+
 # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/tents.html#15x15dt%23727673714482646
 bor = np.array([
   ['*', 'T', '*', '*', '*', '*', '*', '*', 'T', '*', 'T', '*', 'T', '*', '*'],
@@ -23,4 +25,28 @@ top = np.array([4, 2, 4, 1, 3, 3, 3, 3, 3, 3, 2, 2, 6, 2, 4])
 
 binst = board.Board(board=bor, sides={'top': top, 'side': side})
 solutions = binst.solve_and_print()
-assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+
+def test_ground():
+  ground = np.array([
+    [' ', 'T', 'E', ' ', ' ', ' ', ' ', 'E', 'T', ' ', 'T', 'E', 'T', 'E', ' '],
+    [' ', ' ', ' ', ' ', 'T', 'E', ' ', 'T', ' ', 'T', ' ', ' ', 'T', ' ', ' '],
+    ['E', 'T', 'E', 'T', ' ', ' ', ' ', 'E', ' ', 'E', ' ', ' ', 'E', ' ', 'E'],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', ' ', ' ', ' ', 'T', ' ', 'T'],
+    [' ', 'E', ' ', ' ', 'E', ' ', 'E', ' ', 'E', ' ', ' ', ' ', 'E', ' ', ' '],
+    [' ', 'T', ' ', ' ', 'T', ' ', 'T', ' ', ' ', 'T', 'E', ' ', 'T', 'T', 'E'],
+    [' ', 'T', ' ', ' ', 'T', 'E', ' ', 'E', 'T', ' ', ' ', ' ', 'E', ' ', ' '],
+    [' ', 'E', ' ', ' ', ' ', ' ', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', 'E', 'T', 'E', ' ', ' ', 'E', 'T', ' ', 'E', 'T', 'E'],
+    ['E', ' ', 'E', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', ' ', 'T'],
+    ['T', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'E', ' ', ' ', 'T', 'E', ' ', 'E'],
+    ['T', ' ', ' ', 'E', 'T', 'E', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    ['E', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'E', 'T', 'E', ' ', 'E', 'T'],
+    [' ', 'T', 'E', ' ', 'E', 'T', 'E', ' ', ' ', ' ', ' ', ' ', 'T', ' ', ' '],
+    ['E', 'T', ' ', ' ', 'T', ' ', ' ', ' ', 'E', 'T', 'E', 'T', 'E', ' ', ' '],
+  ])
+  assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+  solution = solutions[0].assignment
+  ground_assignment = {board.get_pos(x=x, y=y): 1 if ground[y][x] == 'E' else 0 for x in range(ground.shape[1]) for y in range(ground.shape[0]) if ground[y][x] in [' ', 'E']}
+  assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
+  for pos in solution.keys():
+    assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'

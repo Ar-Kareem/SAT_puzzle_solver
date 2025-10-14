@@ -691,7 +691,16 @@ Which correctly shows that the single unique solution to the puzzle is:
 
 <img src="./images/nonogram_solved.png" alt="Nonogram solved" width="500">
 
-## Developing
+## Testing
+
+To run the tests, simply follow the instructions in Install Python deps section ([here](#1-install-python-deps)) and then run:
+
+```python -m pytest --import-mode=importlib```
+
+## Contributing
+
+Issues and PRs welcome!
+
 
 * Python 3.11 recommended.
 * Keep puzzle folders self-contained (inputs, solver, simple demo/CLI).
@@ -699,16 +708,9 @@ Which correctly shows that the single unique solution to the puzzle is:
 * If you add a new puzzle:
 
   1. Create `chapterXX_<name>/`,
-  2. Add a minimal demo script,
+  2. Add a minimal test script,
   3. Document the modeling in code comments,
 
-## Contributing
-
-Issues and PRs welcome! Please:
-
-* Include a short description of your modeling approach,
-* Provide at least one example instance,
-* Keep dependencies minimal (ideally `ortools`, `numpy`).
 
 [2]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter10_nonograms "SAT_puzzle_solver/chapter10_nonograms at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [10]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter11_sudoku "SAT_puzzle_solver/chapter11_sudoku at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
