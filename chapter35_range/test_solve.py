@@ -16,10 +16,10 @@ clues = np.array([
   [-1, -1, 10, -1, -1, 7, -1, -1, 13, -1, 10, -1, -1, -1, -1, -1],
   [-1, 7, -1, -1, -1, -1, 6, -1, -1, -1, 6, -1, -1, 13, 5, -1],
 ])
-binst = solver.Board(clues)
-solutions = binst.solve_and_print()
 
 def test_ground():
+  binst = solver.Board(clues)
+  solutions = binst.solve_and_print()
   ground = np.array([
     ['B', ' ', ' ', 'B', ' ', ' ', 'B', ' ', 'B', ' ', 'B', ' ', 'B', ' ', ' ', ' '],
     [' ', ' ', 'B', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'B'],
@@ -39,3 +39,6 @@ def test_ground():
   assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
   for pos in solution.keys():
     assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
+
+if __name__ == '__main__':
+  test_ground()

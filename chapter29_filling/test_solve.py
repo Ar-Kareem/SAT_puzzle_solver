@@ -82,10 +82,10 @@ bor = np.array([
 #   ['1', '3', '*'],
 #   ['3', '3', '*'],
 # ])
-binst = solver.Board(board=bor)
-solutions = binst.solve_and_print()
 
 def test_ground():
+  binst = solver.Board(board=bor)
+  solutions = binst.solve_and_print()
   ground = np.array([
     ['4', '4', '2', '2', '4', '2', '2'],
     ['4', '4', '7', '4', '4', '3', '3'],
@@ -100,3 +100,6 @@ def test_ground():
   assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
   for pos in solution.keys():
     assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
+
+if __name__ == '__main__':
+  test_ground()

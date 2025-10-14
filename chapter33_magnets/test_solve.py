@@ -32,10 +32,10 @@ neg_v = np.array([-1, 2, 3, 4, -1, 3, 4, 3, 4, 4])
 pos_h = np.array([5, -1, -1, -1, 5, -1, 3, 1, -1])
 neg_h = np.array([4, -1, 4, -1, 5, 4, -1, 2, -1])
 
-binst = solver.Board(board=bor, sides={'pos_v': pos_v, 'neg_v': neg_v, 'pos_h': pos_h, 'neg_h': neg_h})
-solutions = binst.solve_and_print()
 
 def test_ground():
+  binst = solver.Board(board=bor, sides={'pos_v': pos_v, 'neg_v': neg_v, 'pos_h': pos_h, 'neg_h': neg_h})
+  solutions = binst.solve_and_print()
   ground = np.array([
     ['-', '+', '-', '+', ' ', '+', '-', '+', '-', '+'],
     [' ', ' ', '+', '-', ' ', '-', '+', '-', '+', '-'],
@@ -53,3 +53,6 @@ def test_ground():
   assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
   for pos in solution.keys():
     assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
+
+if __name__ == '__main__':
+  test_ground()

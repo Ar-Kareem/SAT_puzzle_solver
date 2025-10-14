@@ -19,10 +19,10 @@ l = np.array([1, 4, 8, 0, 0, 2, 2])
 counts = {solver.Monster.GHOST: 5, solver.Monster.VAMPIRE: 12, solver.Monster.ZOMBIE: 11}
 
 # create board and solve
-binst = solver.Board(board=bor, sides={'top': t, 'bottom': b, 'right': r, 'left': l}, monster_count=counts)
-solutions = binst.solve_and_print()
 
 def test_ground():
+  binst = solver.Board(board=bor, sides={'top': t, 'bottom': b, 'right': r, 'left': l}, monster_count=counts)
+  solutions = binst.solve_and_print()
   ground = np.array([
     ['VA', '//', 'GH', 'GH', 'ZO', 'GH', '\\'],
     ['VA', 'VA', 'VA', '//', 'ZO', 'ZO', 'ZO'],
@@ -38,3 +38,6 @@ def test_ground():
   assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
   for pos in solution.keys():
     assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
+
+if __name__ == '__main__':
+  test_ground()
