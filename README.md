@@ -171,9 +171,9 @@ Called "Solo" in the website.
   <summary><strong>Rules</strong></summary>
 You have a square grid, which is divided into as many equally sized sub-blocks as the grid has rows. Each square must be filled in with a digit from 1 to the size of the grid, in such a way that
 
-  every row contains only one occurrence of each digit
-  every column contains only one occurrence of each digit
-  every block contains only one occurrence of each digit.
+  - every row contains only one occurrence of each digit
+  - every column contains only one occurrence of each digit
+  - every block contains only one occurrence of each digit.
 
 You are given some of the numbers as clues; your aim is to place the rest of the numbers correctly.
 </details>
@@ -255,9 +255,9 @@ Each light bulb illuminates the square it is on, plus all squares in line with i
 
 To win the game, you must satisfy the following conditions:
 
-    All non-black squares are lit.
-    No light is lit by another light.
-    All numbered black squares have exactly that number of lights adjacent to them (in the four squares above, below, and to the side).
+  - All non-black squares are lit.
+  - No light is lit by another light.
+  - All numbered black squares have exactly that number of lights adjacent to them (in the four squares above, below, and to the side).
 
 Non-numbered black squares may have any number of lights adjacent to them. 
 </details>
@@ -322,10 +322,10 @@ Which exactly matches the true solutions (Remember, the goal of the puzzle is to
   <summary><strong>Rules</strong></summary>
 You have a grid of squares, some of which contain trees. Your aim is to place tents in some of the remaining squares, in such a way that the following conditions are met:
 
-  There are exactly as many tents as trees.
-  The tents and trees can be matched up in such a way that each tent is directly adjacent (horizontally or vertically, but not diagonally) to its own tree. However, a tent may be adjacent to other trees as well as its own.
-  No two tents are adjacent horizontally, vertically or diagonally.
-  The number of tents in each row, and in each column, matches the numbers given round the sides of the grid.
+  - There are exactly as many tents as trees.
+  - The tents and trees can be matched up in such a way that each tent is directly adjacent (horizontally or vertically, but not diagonally) to its own tree. However, a tent may be adjacent to other trees as well as its own.
+  - No two tents are adjacent horizontally, vertically or diagonally.
+  - The number of tents in each row, and in each column, matches the numbers given round the sides of the grid.
 </details>
 
 **Unsolved puzzle**
@@ -455,13 +455,13 @@ Time taken: 46.27 seconds
   <summary><strong>Rules</strong></summary>
 You have a square grid; each square may contain a digit from 1 to the size of the grid. The grid is divided into blocks of varying shape and size, with arithmetic clues written in them. Your aim is to fully populate the grid with digits such that:
 
-  Each row contains only one occurrence of each digit
-  Each column contains only one occurrence of each digit
-  The digits in each block can be combined to form the number stated in the clue, using the arithmetic operation given in the clue. That is:
-      An addition clue means that the sum of the digits in the block must be the given number. For example, ‘15+’ means the contents of the block adds up to fifteen.
-      A multiplication clue (e.g. ‘60×’), similarly, means that the product of the digits in the block must be the given number.
-      A subtraction clue will always be written in a block of size two, and it means that one of the digits in the block is greater than the other by the given amount. For example, ‘2−’ means that one of the digits in the block is 2 more than the other, or equivalently that one digit minus the other one is 2. The two digits could be either way round, though.
-      A division clue (e.g. ‘3÷’), similarly, is always in a block of size two and means that one digit divided by the other is equal to the given amount.
+  - Each row contains only one occurrence of each digit
+  - Each column contains only one occurrence of each digit
+  - The digits in each block can be combined to form the number stated in the clue, using the arithmetic operation given in the clue. That is:
+      - An addition clue means that the sum of the digits in the block must be the given number. For example, ‘15+’ means the contents of the block adds up to fifteen.
+      - A multiplication clue (e.g. ‘60×’), similarly, means that the product of the digits in the block must be the given number.
+      - A subtraction clue will always be written in a block of size two, and it means that one of the digits in the block is greater than the other by the given amount. For example, ‘2−’ means that one of the digits in the block is 2 more than the other, or equivalently that one digit minus the other one is 2. The two digits could be either way round, though.
+      - A division clue (e.g. ‘3÷’), similarly, is always in a block of size two and means that one digit divided by the other is equal to the given amount.
 
   Note that a block may contain the same digit more than once (provided the identical ones are not in the same row and column). This rule is precisely the opposite of the rule in Solo's ‘Killer’ mode (see chapter 11).
 </details>
@@ -535,9 +535,9 @@ You have a square grid. On each square of the grid you can build a tower, with i
 
 Your task is to build a tower on every square, in such a way that:
 
-    Each row contains every possible height of tower once
-    Each column contains every possible height of tower once
-    Each numeric clue describes the number of towers that can be seen if you look into the square from that direction, assuming that shorter towers are hidden behind taller ones. For example, in a 5×5 grid, a clue marked ‘5’ indicates that the five tower heights must appear in increasing order (otherwise you would not be able to see all five towers), whereas a clue marked ‘1’ indicates that the tallest tower (the one marked 5) must come first.
+  - Each row contains every possible height of tower once
+  - Each column contains every possible height of tower once
+  - Each numeric clue describes the number of towers that can be seen if you look into the square from that direction, assuming that shorter towers are hidden behind taller ones. For example, in a 5×5 grid, a clue marked ‘5’ indicates that the five tower heights must appear in increasing order (otherwise you would not be able to see all five towers), whereas a clue marked ‘1’ indicates that the tallest tower (the one marked 5) must come first.
 
 In harder or larger puzzles, some towers will be specified for you as well as the clues round the edge, and some edge clues may be missing. 
 </details>
@@ -595,9 +595,9 @@ Time taken: 0.03 seconds
   <summary><strong>Rules</strong></summary>
 You have a grid of white squares, all of which contain numbers. Your task is to colour some of the squares black (removing the number) so as to satisfy all of the following conditions:
 
-  No number occurs more than once in any row or column.
-  No black square is horizontally or vertically adjacent to any other black square.
-  The remaining white squares must all form one contiguous region (connected by edges, not just touching at corners).
+  - No number occurs more than once in any row or column.
+  - No black square is horizontally or vertically adjacent to any other black square.
+  - The remaining white squares must all form one contiguous region (connected by edges, not just touching at corners).
 </details>
 
 **Unsolved puzzle**
@@ -725,10 +725,10 @@ Time taken: 0.02 seconds
   <summary><strong>Rules</strong></summary>
 You have a grid of squares; some squares contain numbers. Your job is to colour some of the squares black, such that several criteria are satisfied:
 
-  no square with a number is coloured black.
-  no two black squares are adjacent (horizontally or vertically).
-  for any two white squares, there is a path between them using only white squares.
-  for each square with a number, that number denotes the total number of white squares reachable from that square going in a straight line in any horizontal or vertical direction until hitting a wall or a black square; the square with the number is included in the total (once).
+  - no square with a number is coloured black.
+  - no two black squares are adjacent (horizontally or vertically).
+  - for any two white squares, there is a path between them using only white squares.
+  - for each square with a number, that number denotes the total number of white squares reachable from that square going in a straight line in any horizontal or vertical direction until hitting a wall or a black square; the square with the number is included in the total (once).
 
 For instance, a square containing the number one must have four black squares as its neighbours by the last criterion; but then it's impossible for it to be connected to any outside white square, which violates the second to last criterion. So no square will contain the number one. 
 </details>

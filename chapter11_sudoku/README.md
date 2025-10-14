@@ -12,9 +12,9 @@ Below are the details of how to utilize the solver. In addition, the solver give
 
 You have a square grid, which is divided into as many equally sized sub-blocks as the grid has rows. Each square must be filled in with a digit from 1 to the size of the grid, in such a way that
 
-  every row contains only one occurrence of each digit
-  every column contains only one occurrence of each digit
-  every block contains only one occurrence of each digit.
+  - every row contains only one occurrence of each digit
+  - every column contains only one occurrence of each digit
+  - every block contains only one occurrence of each digit.
 
 You are given some of the numbers as clues; your aim is to place the rest of the numbers correctly.
 

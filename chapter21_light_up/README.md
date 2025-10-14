@@ -16,9 +16,9 @@ Each light bulb illuminates the square it is on, plus all squares in line with i
 
 To win the game, you must satisfy the following conditions:
 
-    All non-black squares are lit.
-    No light is lit by another light.
-    All numbered black squares have exactly that number of lights adjacent to them (in the four squares above, below, and to the side).
+  - All non-black squares are lit.
+  - No light is lit by another light.
+  - All numbered black squares have exactly that number of lights adjacent to them (in the four squares above, below, and to the side).
 
 Non-numbered black squares may have any number of lights adjacent to them. 
 

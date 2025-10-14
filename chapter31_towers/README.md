@@ -14,9 +14,9 @@ You have a square grid. On each square of the grid you can build a tower, with i
 
 Your task is to build a tower on every square, in such a way that:
 
-    Each row contains every possible height of tower once
-    Each column contains every possible height of tower once
-    Each numeric clue describes the number of towers that can be seen if you look into the square from that direction, assuming that shorter towers are hidden behind taller ones. For example, in a 5×5 grid, a clue marked ‘5’ indicates that the five tower heights must appear in increasing order (otherwise you would not be able to see all five towers), whereas a clue marked ‘1’ indicates that the tallest tower (the one marked 5) must come first.
+  - Each row contains every possible height of tower once
+  - Each column contains every possible height of tower once
+  - Each numeric clue describes the number of towers that can be seen if you look into the square from that direction, assuming that shorter towers are hidden behind taller ones. For example, in a 5×5 grid, a clue marked ‘5’ indicates that the five tower heights must appear in increasing order (otherwise you would not be able to see all five towers), whereas a clue marked ‘1’ indicates that the tallest tower (the one marked 5) must come first.
 
 In harder or larger puzzles, some towers will be specified for you as well as the clues round the edge, and some edge clues may be missing. 
 

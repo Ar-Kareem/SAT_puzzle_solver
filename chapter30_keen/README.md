@@ -12,13 +12,13 @@ Below are the details of how to utilize the solver. In addition, the solver give
 
 You have a square grid; each square may contain a digit from 1 to the size of the grid. The grid is divided into blocks of varying shape and size, with arithmetic clues written in them. Your aim is to fully populate the grid with digits such that:
 
-  Each row contains only one occurrence of each digit
-  Each column contains only one occurrence of each digit
-  The digits in each block can be combined to form the number stated in the clue, using the arithmetic operation given in the clue. That is:
-      An addition clue means that the sum of the digits in the block must be the given number. For example, ‘15+’ means the contents of the block adds up to fifteen.
-      A multiplication clue (e.g. ‘60×’), similarly, means that the product of the digits in the block must be the given number.
-      A subtraction clue will always be written in a block of size two, and it means that one of the digits in the block is greater than the other by the given amount. For example, ‘2−’ means that one of the digits in the block is 2 more than the other, or equivalently that one digit minus the other one is 2. The two digits could be either way round, though.
-      A division clue (e.g. ‘3÷’), similarly, is always in a block of size two and means that one digit divided by the other is equal to the given amount.
+  - Each row contains only one occurrence of each digit
+  - Each column contains only one occurrence of each digit
+  - The digits in each block can be combined to form the number stated in the clue, using the arithmetic operation given in the clue. That is:
+      - An addition clue means that the sum of the digits in the block must be the given number. For example, ‘15+’ means the contents of the block adds up to fifteen.
+      - A multiplication clue (e.g. ‘60×’), similarly, means that the product of the digits in the block must be the given number.
+      - A subtraction clue will always be written in a block of size two, and it means that one of the digits in the block is greater than the other by the given amount. For example, ‘2−’ means that one of the digits in the block is 2 more than the other, or equivalently that one digit minus the other one is 2. The two digits could be either way round, though.
+      - A division clue (e.g. ‘3÷’), similarly, is always in a block of size two and means that one digit divided by the other is equal to the given amount.
 
   Note that a block may contain the same digit more than once (provided the identical ones are not in the same row and column). This rule is precisely the opposite of the rule in Solo's ‘Killer’ mode (see chapter 11).
 

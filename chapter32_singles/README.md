@@ -12,9 +12,9 @@ Below are the details of how to utilize the solver. In addition, the solver give
 
 You have a grid of white squares, all of which contain numbers. Your task is to colour some of the squares black (removing the number) so as to satisfy all of the following conditions:
 
-  No number occurs more than once in any row or column.
-  No black square is horizontally or vertically adjacent to any other black square.
-  The remaining white squares must all form one contiguous region (connected by edges, not just touching at corners).
+  - No number occurs more than once in any row or column.
+  - No black square is horizontally or vertically adjacent to any other black square.
+  - The remaining white squares must all form one contiguous region (connected by edges, not just touching at corners).
 
 **Unsolved puzzle**
 
