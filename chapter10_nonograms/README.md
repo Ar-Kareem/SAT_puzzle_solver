@@ -18,7 +18,7 @@ You have a grid of squares, which must all be filled in either black or white. B
 
 Code to utilize this package and solve the puzzle:
 ```python
-from . import board
+from . import solver
 top_numbers = [
   [8, 2],
   [5, 4],
@@ -53,7 +53,7 @@ side_numbers = [
   [4, 3],
   [3, 2],
 ]
-binst = board.Board(top=top_numbers, side=side_numbers)
+binst = solver.Board(top=top_numbers, side=side_numbers)
 solutions = binst.solve_and_print()
 ```
 **Script Output**

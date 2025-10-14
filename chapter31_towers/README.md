@@ -27,7 +27,7 @@ In harder or larger puzzles, some towers will be specified for you as well as th
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import board
+from . import solver
 bor = np.array([
   ['*', '*', '*', '*', '*', '*'],
   ['*', '*', '*', '*', '*', '*'],
@@ -40,7 +40,7 @@ t = np.array([2, -1, 2, 2, 2, 3])
 b = np.array([2, 4, -1, 4, -1, -1])
 r = np.array([3, -1, 2, -1, -1, -1])
 l = np.array([-1, -1, -1, 2, -1, 4])
-binst = board.Board(board=bor, sides={'top': t, 'bottom': b, 'right': r, 'left': l})
+binst = solver.Board(board=bor, sides={'top': t, 'bottom': b, 'right': r, 'left': l})
 solutions = binst.solve_and_print()
 ```
 **Script Output**

@@ -19,7 +19,7 @@ You are given a grid of squares, which you must colour either black or white. So
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import board
+from . import solver
 bor = np.array([
   ['W', 'W', '*', 'B', '*', '*', '*', '*', 'B', '*', '*', '*', '*', '*'],
   ['*', '*', '*', '*', '*', '*', '*', 'W', '*', '*', '*', '*', '*', 'W'],
@@ -36,7 +36,7 @@ bor = np.array([
   ['*', '*', '*', '*', 'B', '*', '*', '*', '*', '*', '*', '*', '*', '*'],
   ['W', '*', '*', '*', 'W', '*', '*', '*', 'B', '*', 'W', '*', 'B', '*'],
 ])
-binst = board.Board(board=bor)
+binst = solver.Board(board=bor)
 solutions = binst.solve_and_print()
 ```
 **Script Output**

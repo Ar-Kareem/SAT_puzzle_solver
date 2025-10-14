@@ -28,7 +28,7 @@ For instance, a square containing the number one must have four black squares as
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import board
+from . import solver
 clues = np.array([
     [-1, 4, 2, -1, -1, 3, -1, -1, -1, 8, -1, -1, -1, -1, 6, -1],
     [-1, -1, -1, -1, -1, 13, -1, 18, -1, -1, 14, -1, -1, 22, -1, -1],
@@ -42,8 +42,8 @@ clues = np.array([
     [-1, -1, 10, -1, -1, 7, -1, -1, 13, -1, 10, -1, -1, -1, -1, -1],
     [-1, 7, -1, -1, -1, -1, 6, -1, -1, -1, 6, -1, -1, 13, 5, -1],
 ])
-board = board.Board(clues)
-sols = board.solve_and_print()
+binst = solver.Board(clues)
+solutions = binst.solve_and_print()
 ```
 **Script Output**
 ```

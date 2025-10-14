@@ -21,7 +21,7 @@ Some squares contain clue numbers. Each clue tells you the number of black squar
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import board
+from . import solver
 bor = np.array([
   ['*', '*', '2', '1', '*', '*', '*', '3', '*', '4', '2', '2', '*', '*', '4'],
   ['3', '*', '*', '*', '4', '*', '*', '*', '*', '*', '4', '*', '2', '*', '*'],
@@ -39,7 +39,7 @@ bor = np.array([
   ['1', '*', '*', '5', '*', '*', '*', '5', '*', '*', '*', '6', '*', '6', '*'],
   ['*', '*', '3', '*', '2', '*', '3', '*', '2', '*', '*', '*', '*', '*', '*']
 ])
-binst = board.Board(board=bor)
+binst = solver.Board(board=bor)
 solutions = binst.solve_and_print()
 ```
 **Script Output**

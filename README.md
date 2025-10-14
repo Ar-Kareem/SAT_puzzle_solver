@@ -94,7 +94,7 @@ You have a grid of squares, which must all be filled in either black or white. B
 
 Code to utilize this package and solve the puzzle:
 ```python
-from . import board
+from . import solver
 top_numbers = [
   [8, 2],
   [5, 4],
@@ -129,7 +129,7 @@ side_numbers = [
   [4, 3],
   [3, 2],
 ]
-binst = board.Board(top=top_numbers, side=side_numbers)
+binst = solver.Board(top=top_numbers, side=side_numbers)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
@@ -189,7 +189,7 @@ You are given some of the numbers as clues; your aim is to place the rest of the
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import board
+from . import solver
 bor = np.array([
   ['*', '7', '5', '4',  '9', '1', 'c', 'e',  'd', 'f', '*', '*',  '2', '*', '3', '*'],
   ['*', '*', '*', '*',  'f', 'a', '*', '*',  '*', '6', '*', 'c',  '*', '*', '8', 'b'],
@@ -211,7 +211,7 @@ bor = np.array([
   ['e', '8', '*', '*',  '1', '*', '4', '*',  '*', '*', '6', '7',  '*', '*', '*', '*'],
   ['*', '3', '*', '9',  '*', '*', 'f', '8',  'a', 'e', 'g', '5',  'b', 'c', 'd', '*'],
 ])
-binst = board.Board(board=bor)
+binst = solver.Board(board=bor)
 solutions = binst.solve_and_print()
 assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
 ```
@@ -275,7 +275,7 @@ Non-numbered black squares may have any number of lights adjacent to them.
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import board
+from . import solver
 bor = np.array([
   ['*', '0', '*', '*', '*', '*', 'W', '*', '*', '*'],
   ['*', '*', '*', '0', '*', '*', '*', '*', '*', '1'],
@@ -289,7 +289,7 @@ bor = np.array([
   ['*', '*', '*', '2', '*', '*', '*', '*', 'W', '*'],
 ])  # W is wall, * is space, # is number
 
-binst = board.Board(board=bor)
+binst = solver.Board(board=bor)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
@@ -343,7 +343,7 @@ You have a grid of squares, some of which contain trees. Your aim is to place te
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import board
+from . import solver
 bor = np.array([
   ['*', 'T', '*', '*', '*', '*', '*', '*', 'T', '*', 'T', '*', 'T', '*', '*'],
   ['*', '*', '*', '*', 'T', '*', '*', 'T', '*', 'T', '*', '*', 'T', '*', '*'],
@@ -364,7 +364,7 @@ bor = np.array([
 side = np.array([4, 1, 6, 0, 5, 2, 3, 1, 5, 2, 3, 2, 4, 3, 4])
 top = np.array([4, 2, 4, 1, 3, 3, 3, 3, 3, 3, 2, 2, 6, 2, 4])
 
-binst = board.Board(board=bor, sides={'top': top, 'side': side})
+binst = solver.Board(board=bor, sides={'top': top, 'side': side})
 solutions = binst.solve_and_print()
 ```
 **Script Output**
@@ -422,7 +422,7 @@ For example, it follows that no square can contain a zero, and that two adjacent
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import board
+from . import solver
 bor = np.array([
   ['*', '4', '2', '*', '*', '2', '*'],
   ['*', '*', '7', '*', '*', '3', '*'],
@@ -431,7 +431,7 @@ bor = np.array([
   ['*', '7', '*', '6', '4', '5', '*'],
   ['*', '6', '*', '*', '*', '*', '4'],
 ])
-binst = board.Board(board=bor)
+binst = solver.Board(board=bor)
 solutions = binst.solve_and_print()
 assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
 ```
@@ -485,7 +485,7 @@ You have a square grid; each square may contain a digit from 1 to the size of th
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import board
+from . import solver
 # tells the api the shape of the blocks in the board
 bor = np.array([
   ['d01', 'd01', 'd03', 'd03', 'd05', 'd05', 'd08', 'd08', 'd10'],
@@ -509,7 +509,7 @@ block_results = {
   'd31': ('+', 11), 'd32': ('/', 4), 'd33': ('+', 16), 'd34': ('+', 15), 'd35': ('*', 30),
   'd36': ('-', 7),
 }
-binst = board.Board(board=bor, block_results=block_results)
+binst = solver.Board(board=bor, block_results=block_results)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
@@ -563,7 +563,7 @@ In harder or larger puzzles, some towers will be specified for you as well as th
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import board
+from . import solver
 bor = np.array([
   ['*', '*', '*', '*', '*', '*'],
   ['*', '*', '*', '*', '*', '*'],
@@ -576,7 +576,7 @@ t = np.array([2, -1, 2, 2, 2, 3])
 b = np.array([2, 4, -1, 4, -1, -1])
 r = np.array([3, -1, 2, -1, -1, -1])
 l = np.array([-1, -1, -1, 2, -1, 4])
-binst = board.Board(board=bor, sides={'top': t, 'bottom': b, 'right': r, 'left': l})
+binst = solver.Board(board=bor, sides={'top': t, 'bottom': b, 'right': r, 'left': l})
 solutions = binst.solve_and_print()
 ```
 **Script Output**
@@ -623,7 +623,7 @@ You have a grid of white squares, all of which contain numbers. Your task is to 
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import board
+from . import solver
 bor = np.array([
   [1, 6, 5, 4, 9, 8, 9, 3, 5, 1, 3, 7],
   [2, 8, 5, 7, 1, 1, 4, 3, 6, 3, 10, 7],
@@ -638,7 +638,7 @@ bor = np.array([
   [5, 1, 6, 10, 9, 4, 8, 4, 8, 3, 2, 12],
   [11, 2, 12, 10, 8, 3, 5, 4, 10, 4, 8, 11],
 ])
-binst = board.Board(board=bor)
+binst = solver.Board(board=bor)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
@@ -689,7 +689,7 @@ Your aim is to correctly place the magnets and blank dominoes such that all the 
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import board
+from . import solver
 bor = np.array([
   ['H', 'H', 'H', 'H', 'V', 'V', 'V', 'V', 'H', 'H'],
   ['H', 'H', 'H', 'H', 'V', 'V', 'V', 'V', 'V', 'V'],
@@ -706,7 +706,7 @@ neg_v = np.array([-1, 2, 3, 4, -1, 3, 4, 3, 4, 4])
 pos_h = np.array([5, -1, -1, -1, 5, -1, 3, 1, -1])
 neg_h = np.array([4, -1, 4, -1, 5, 4, -1, 2, -1])
 
-binst = board.Board(board=bor, sides={'pos_v': pos_v, 'neg_v': neg_v, 'pos_h': pos_h, 'neg_h': neg_h})
+binst = solver.Board(board=bor, sides={'pos_v': pos_v, 'neg_v': neg_v, 'pos_h': pos_h, 'neg_h': neg_h})
 solutions = binst.solve_and_print()
 ```
 **Script Output**
@@ -762,7 +762,7 @@ For instance, a square containing the number one must have four black squares as
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import board
+from . import solver
 clues = np.array([
     [-1, 4, 2, -1, -1, 3, -1, -1, -1, 8, -1, -1, -1, -1, 6, -1],
     [-1, -1, -1, -1, -1, 13, -1, 18, -1, -1, 14, -1, -1, 22, -1, -1],
@@ -776,8 +776,8 @@ clues = np.array([
     [-1, -1, 10, -1, -1, 7, -1, -1, 13, -1, 10, -1, -1, -1, -1, -1],
     [-1, 7, -1, -1, -1, -1, 6, -1, -1, -1, 6, -1, -1, 13, 5, -1],
 ])
-board = board.Board(clues)
-sols = board.solve_and_print()
+binst = solver.Board(clues)
+solutions = binst.solve_and_print()
 ```
 **Script Output**
 ```
@@ -828,7 +828,7 @@ You are also told the total number of each type of monster in the grid. Also aro
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import board
+from . import solver
 bor = np.array([
   ['**', '//', '**', '**', '**', '**', '\\'],
   ['**', '**', '**', '//', '**', '**', '**'],
@@ -845,7 +845,7 @@ l = np.array([1, 4, 8, 0, 0, 2, 2])
 counts = {Monster.GHOST: 5, Monster.VAMPIRE: 12, Monster.ZOMBIE: 11}
 
 # create board and solve
-binst = board.Board(board=bor, sides={'top': t, 'bottom': b, 'right': r, 'left': l}, monster_count=counts)
+binst = solver.Board(board=bor, sides={'top': t, 'bottom': b, 'right': r, 'left': l}, monster_count=counts)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
@@ -889,7 +889,7 @@ You are given a grid of squares, which you must colour either black or white. So
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import board
+from . import solver
 bor = np.array([
   ['W', 'W', '*', 'B', '*', '*', '*', '*', 'B', '*', '*', '*', '*', '*'],
   ['*', '*', '*', '*', '*', '*', '*', 'W', '*', '*', '*', '*', '*', 'W'],
@@ -906,7 +906,7 @@ bor = np.array([
   ['*', '*', '*', '*', 'B', '*', '*', '*', '*', '*', '*', '*', '*', '*'],
   ['W', '*', '*', '*', 'W', '*', '*', '*', 'B', '*', 'W', '*', 'B', '*'],
 ])
-binst = board.Board(board=bor)
+binst = solver.Board(board=bor)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
@@ -959,7 +959,7 @@ Some squares contain clue numbers. Each clue tells you the number of black squar
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import board
+from . import solver
 bor = np.array([
   ['*', '*', '2', '1', '*', '*', '*', '3', '*', '4', '2', '2', '*', '*', '4'],
   ['3', '*', '*', '*', '4', '*', '*', '*', '*', '*', '4', '*', '2', '*', '*'],
@@ -977,7 +977,7 @@ bor = np.array([
   ['1', '*', '*', '5', '*', '*', '*', '5', '*', '*', '*', '6', '*', '6', '*'],
   ['*', '*', '3', '*', '2', '*', '3', '*', '2', '*', '*', '*', '*', '*', '*']
 ])
-binst = board.Board(board=bor)
+binst = solver.Board(board=bor)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
@@ -1037,7 +1037,7 @@ python -m chapter10_nonograms.test_solve
 This runs code like:
 
 ```python
-from . import board
+from . import solver
 top_numbers = [
   [8, 2],
   ...
@@ -1048,7 +1048,7 @@ side_numbers = [
   ...
   [3, 2],
 ]  # side clues, omitted here for brevity
-binst = board.Board(top=top_numbers, side=side_numbers)
+binst = solver.Board(top=top_numbers, side=side_numbers)
 solutions = binst.solve_and_print()
 ```
 

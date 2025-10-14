@@ -29,7 +29,7 @@ Non-numbered black squares may have any number of lights adjacent to them.
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import board
+from . import solver
 bor = np.array([
   ['*', '0', '*', '*', '*', '*', 'W', '*', '*', '*'],
   ['*', '*', '*', '0', '*', '*', '*', '*', '*', '1'],
@@ -43,7 +43,7 @@ bor = np.array([
   ['*', '*', '*', '2', '*', '*', '*', '*', 'W', '*'],
 ])  # W is wall, * is space, # is number
 
-binst = board.Board(board=bor)
+binst = solver.Board(board=bor)
 solutions = binst.solve_and_print()
 ```
 **Script Output**

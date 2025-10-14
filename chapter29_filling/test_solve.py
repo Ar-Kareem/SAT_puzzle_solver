@@ -1,23 +1,23 @@
 import numpy as np
 
-from . import board
+from . import solver
 
 # print('\n\nshould have 1 solution')
-# binst = board.Board(board=np.array([
+# binst = solver.Board(board=np.array([
 #   ['1', '3', '*'],
 #   ['3', '3', '*'],
 # ]))
 # solutions = binst.solve_and_print()
 
 # print('\n\nshould have 1 solution')
-# binst = board.Board(board=np.array([
+# binst = solver.Board(board=np.array([
 #   ['4', '4', '*'],
 #   ['4', '4', '*'],
 # ]))
 # solutions = binst.solve_and_print()
 
 # print('\n\nshould have 2 solutions')
-# binst = board.Board(board=np.array([
+# binst = solver.Board(board=np.array([
 #   ['1', '*', '*'],
 #   ['3', '3', '*'],
 # ]))
@@ -82,7 +82,7 @@ bor = np.array([
 #   ['1', '3', '*'],
 #   ['3', '3', '*'],
 # ])
-binst = board.Board(board=bor)
+binst = solver.Board(board=bor)
 solutions = binst.solve_and_print()
 
 def test_ground():
@@ -96,7 +96,7 @@ def test_ground():
   ])
   assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
   solution = solutions[0].assignment
-  ground_assignment = {board.get_pos(x=x, y=y): int(ground[y][x]) for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+  ground_assignment = {solver.get_pos(x=x, y=y): int(ground[y][x]) for x in range(ground.shape[1]) for y in range(ground.shape[0])}
   assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
   for pos in solution.keys():
     assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'

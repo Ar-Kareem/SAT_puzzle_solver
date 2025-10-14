@@ -1,6 +1,6 @@
 import numpy as np
 
-from . import board
+from . import solver
 
 # The link takes a few seconds to load
 # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/solo.html#4x4du%23149435502448981
@@ -25,7 +25,7 @@ bor = np.array([
   ['e', '8', '*', '*',  '1', '*', '4', '*',  '*', '*', '6', '7',  '*', '*', '*', '*'],
   ['*', '3', '*', '9',  '*', '*', 'f', '8',  'a', 'e', 'g', '5',  'b', 'c', 'd', '*'],
 ])
-binst = board.Board(board=bor)
+binst = solver.Board(board=bor)
 solutions = binst.solve_and_print()
 
 def test_ground():
@@ -49,7 +49,7 @@ def test_ground():
   ])
   assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
   solution = solutions[0].assignment
-  ground_assignment = {board.get_pos(x=x, y=y): ord(ground[y][x]) - ord('a') + 10 if ground[y][x].isalpha() else int(ground[y][x]) for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+  ground_assignment = {solver.get_pos(x=x, y=y): ord(ground[y][x]) - ord('a') + 10 if ground[y][x].isalpha() else int(ground[y][x]) for x in range(ground.shape[1]) for y in range(ground.shape[0])}
   assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys())} != {set(ground_assignment.keys())}'
   for pos in solution.keys():
     assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'

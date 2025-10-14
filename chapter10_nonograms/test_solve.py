@@ -1,6 +1,6 @@
 import numpy as np
 
-from . import board
+from . import solver
 
 # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/pattern.html#15x15%23697217620427463
 top_numbers = [
@@ -47,7 +47,7 @@ side_numbers = [
 # side_numbers = [
 #   [2, 2],
 # ]
-binst = board.Board(top=top_numbers, side=side_numbers)
+binst = solver.Board(top=top_numbers, side=side_numbers)
 solutions = binst.solve_and_print()
 
 def test_ground():
@@ -71,7 +71,7 @@ def test_ground():
 
   assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
   solution = solutions[0].assignment
-  ground_assignment = {board.get_pos(x=x, y=y): 1 if ground[y][x] == 'B' else 0 for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+  ground_assignment = {solver.get_pos(x=x, y=y): 1 if ground[y][x] == 'B' else 0 for x in range(ground.shape[1]) for y in range(ground.shape[0])}
   assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys())} != {set(ground_assignment.keys())}'
   for pos in solution.keys():
     assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
