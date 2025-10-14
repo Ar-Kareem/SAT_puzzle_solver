@@ -18,7 +18,7 @@ You have a grid of white squares, all of which contain numbers. Your task is to 
 
 **Unsolved puzzle**
 
-<img src="../images/singles_unsolved.png" alt="Single unsolved" width="500">
+<img src="../images/singles_unsolved.png" alt="Singles unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -63,4 +63,4 @@ Time taken: 2.14 seconds
 
 **Solved puzzle**
 
-<img src="../images/singles_solved.png" alt="Single solved" width="500">
+<img src="../images/singles_solved.png" alt="Singles solved" width="500">

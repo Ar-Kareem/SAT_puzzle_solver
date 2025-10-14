@@ -60,7 +60,7 @@ Each chapter directory targets a different puzzle type:
 * `chapter29_filling` — Filling (Fillomino-style), region sizes. ([Chapter 29][5])
 * `chapter30_keen` — Keen (arithmetic operations). ([Chapter 30][6])
 * `chapter31_towers` — Skyscrapers (permutation + visibility). ([Chapter 31][7])
-* `chapter32_single` — Singles (hiding numbers). ([Chapter 32][8])
+* `chapter32_singles` — Singles (hiding numbers). ([Chapter 32][8])
 * `chapter33_magnets` — Magnets (polarized dominoes + counts). ([Chapter 33][9])
 * `chapter35_range` — Range (rays & totals). ([Chapter 35][10])
 * `chapter37_undead` — UnDead (Vampires/Zombies/Ghosts). ([Chapter 37][11])
@@ -602,7 +602,7 @@ You have a grid of white squares, all of which contain numbers. Your task is to 
 
 **Unsolved puzzle**
 
-<img src="./images/singles_unsolved.png" alt="Single unsolved" width="500">
+<img src="./images/singles_unsolved.png" alt="Singles unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -647,7 +647,7 @@ Time taken: 2.14 seconds
 
 **Solved puzzle**
 
-<img src="./images/singles_solved.png" alt="Single solved" width="500">
+<img src="./images/singles_solved.png" alt="Singles solved" width="500">
 
 ---
 
@@ -1058,7 +1058,7 @@ Issues and PRs welcome!
 [5]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter29_filling "SAT_puzzle_solver/chapter29_filling at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [6]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter30_keen "SAT_puzzle_solver/chapter30_keen at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [7]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter31_towers "SAT_puzzle_solver/chapter31_towers at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[8]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter32_single "SAT_puzzle_solver/chapter32_single at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[8]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter32_singles "SAT_puzzle_solver/chapter32_singles at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [9]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter33_magnets "SAT_puzzle_solver/chapter33_magnets at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [10]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter35_range "SAT_puzzle_solver/chapter35_range at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [11]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter37_undead "SAT_puzzle_solver/chapter37_undead at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
