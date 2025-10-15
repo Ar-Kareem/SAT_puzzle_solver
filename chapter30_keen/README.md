@@ -1,4 +1,4 @@
-# Keen (Puzzle Type #6)
+# Keen (Puzzle Type #7)
 
 This is a dedicated solver for Keen
 

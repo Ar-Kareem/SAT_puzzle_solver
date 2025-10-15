@@ -1,4 +1,4 @@
-# Light Up (Puzzle Type #3)
+# Light Up (Puzzle Type #4)
 
 This is a dedicated solver for Light Up
 

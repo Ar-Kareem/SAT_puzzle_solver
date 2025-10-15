@@ -1,4 +1,4 @@
-# Singles (Puzzle Type #8)
+# Singles (Puzzle Type #9)
 
 This is a dedicated solver for Singles
 

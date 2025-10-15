@@ -1,4 +1,4 @@
-# Tents (Puzzle Type #4)
+# Tents (Puzzle Type #5)
 
 This is a dedicated solver for Tents
 
