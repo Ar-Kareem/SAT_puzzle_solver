@@ -1,7 +1,8 @@
 # SAT Puzzle Solver
 
-Solve classic logic puzzles problems in Python.  
-Each puzzle family lives in its own folder with a minimal, self-contained example.
+Solve classic logic puzzles automatically in Python.
+
+If you happen to have a puzzle similar to the ones below and want to solve it (or see how many potential solutions it has), then this repo is perfect for you
 
 Play the original puzzles online: https://www.chiark.greenend.org.uk/~sgtatham/puzzles
 
@@ -13,8 +14,6 @@ All the solvers in this repo use the CP-SAT solver from Google OR-Tools.
 
 - [SAT Puzzle Solver](#sat-puzzle-solver)
   - [Table of Contents](#table-of-contents)
-  - [Why SAT / CP-SAT?](#why-sat--cp-sat)
-  - [What’s Inside](#whats-inside)
 - [Puzzles](#puzzles)
   - [Nonograms (Puzzle Type #1)](#nonograms-puzzle-type-1)
   - [Sudoku (Puzzle Type #2)](#sudoku-puzzle-type-2)
@@ -32,40 +31,10 @@ All the solvers in this repo use the CP-SAT solver from Google OR-Tools.
   - [Quick Start](#quick-start)
     - [1) Install Python deps](#1-install-python-deps)
     - [2) Explore a puzzle](#2-explore-a-puzzle)
+  - [Why SAT / CP-SAT?](#why-sat--cp-sat)
+  - [What’s Inside](#whats-inside)
   - [Testing](#testing)
   - [Contributing](#contributing)
-
----
-
-## Why SAT / CP-SAT?
-
-Many pencil puzzles can be modeled with:
-
-- **Boolean decisions** (e.g., black/white, bulb/no-bulb)
-- **Linear constraints** (counts, separations, adjacency)
-- **All-different / visibility / reachability** constraints
-
-This repo builds those constraints in Python and uses SAT/CP-SAT (e.g., OR-Tools) to search efficiently. It both demonstrates the modeling and provides usable solvers.
-
----
-
-## What’s Inside
-
-Each chapter directory targets a different puzzle type:
-
-* `chapter10_nonograms` — Picross/Griddlers (run-length constraints). ()
-* `chapter11_sudoku` — Sudoku (rows/cols/blocks all-different). ([Chapter 11][2])
-* `chapter21_light_up` — *Akari* / Light Up (lighting & adjacency). ([Chapter 21][3])
-* `chapter25_tents` — Tents (tree-tent matching). ([Chapter 25][4])
-* `chapter29_filling` — Filling (Fillomino-style), region sizes. ([Chapter 29][5])
-* `chapter30_keen` — Keen (arithmetic operations). ([Chapter 30][6])
-* `chapter31_towers` — Skyscrapers (permutation + visibility). ([Chapter 31][7])
-* `chapter32_singles` — Singles (hiding numbers). ([Chapter 32][8])
-* `chapter33_magnets` — Magnets (polarized dominoes + counts). ([Chapter 33][9])
-* `chapter35_range` — Range (rays & totals). ([Chapter 35][10])
-* `chapter37_undead` — UnDead (Vampires/Zombies/Ghosts). ([Chapter 37][11])
-* `chapter38_unruly` — Unruly (no triples + balance). ([Chapter 38][12])
-* `chapter42_mosaic` — Mosaic (Tapa-like tiling). ([Chapter 42][13])
 
 ---
 
@@ -1053,6 +1022,38 @@ solutions = binst.solve_and_print()
 ```
 
 You’ll see the solution grid and status in the terminal.
+
+---
+
+## Why SAT / CP-SAT?
+
+Many pencil puzzles can be modeled with:
+
+- **Boolean decisions** (e.g., black/white, bulb/no-bulb)
+- **Linear constraints** (counts, separations, adjacency)
+- **All-different / visibility / reachability** constraints
+
+This repo builds those constraints in Python and uses SAT/CP-SAT (e.g., OR-Tools) to search efficiently. It both demonstrates the modeling and provides usable solvers.
+
+---
+
+## What’s Inside
+
+Each chapter directory targets a different puzzle type:
+
+* `chapter10_nonograms` — Picross/Griddlers (run-length constraints). ()
+* `chapter11_sudoku` — Sudoku (rows/cols/blocks all-different). ([Chapter 11][2])
+* `chapter21_light_up` — *Akari* / Light Up (lighting & adjacency). ([Chapter 21][3])
+* `chapter25_tents` — Tents (tree-tent matching). ([Chapter 25][4])
+* `chapter29_filling` — Filling (Fillomino-style), region sizes. ([Chapter 29][5])
+* `chapter30_keen` — Keen (arithmetic operations). ([Chapter 30][6])
+* `chapter31_towers` — Skyscrapers (permutation + visibility). ([Chapter 31][7])
+* `chapter32_singles` — Singles (hiding numbers). ([Chapter 32][8])
+* `chapter33_magnets` — Magnets (polarized dominoes + counts). ([Chapter 33][9])
+* `chapter35_range` — Range (rays & totals). ([Chapter 35][10])
+* `chapter37_undead` — UnDead (Vampires/Zombies/Ghosts). ([Chapter 37][11])
+* `chapter38_unruly` — Unruly (no triples + balance). ([Chapter 38][12])
+* `chapter42_mosaic` — Mosaic (Tapa-like tiling). ([Chapter 42][13])
 
 ---
 
