@@ -32,11 +32,11 @@ class Board:
             self.model.Add(lxp.sum(neighbour_vars) == int(c))
 
     def solve_and_print(self):
-        def board_to_assignment(board: Board, solver: cp_model.CpSolverSolutionCallback) -> dict[Pos, str|int]:
+        def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
             assignment: dict[Pos, int] = {}
             for pos, var in board.model_vars.items():
                 assignment[pos] = solver.Value(var)
-            return assignment
+            return SingleSolution(assignment=assignment)
         def callback(single_res: SingleSolution):
             print("Solution found")
             res = np.full((self.N, self.N), ' ', dtype=object)
@@ -45,4 +45,4 @@ class Board:
                 c = 'B' if single_res.assignment[pos] == 1 else ' '
                 set_char(res, pos, c)
             print(res)
-        return generic_solve_all(self, board_to_assignment, callback=callback)
+        return generic_solve_all(self, board_to_solution, callback=callback)

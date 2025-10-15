@@ -83,13 +83,11 @@ class Board:
             add_opcode_constraint(self.model, block_vars, op, result)
 
     def solve_and_print(self):
-        def board_to_assignment(board: "Board", solver: cp_model.CpSolverSolutionCallback):
-            # Return Pos -> digit
-            digits = {}
+        def board_to_solution(board: "Board", solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
+            assignment: dict[Pos, int] = {}
             for p in get_all_pos(board.N):
-                digits[p] = solver.Value(board.model_vars[p])
-            return digits
-
+                assignment[p] = solver.Value(board.model_vars[p])
+            return SingleSolution(assignment=assignment)
         def callback(single_res: SingleSolution):
             print("Solution found")
             res = np.full((self.N, self.N), ' ', dtype=object)
@@ -98,5 +96,4 @@ class Board:
                 c = single_res.assignment[pos]
                 set_char(res, pos, c)
             print(res)
-
-        return generic_solve_all(self, board_to_assignment, callback=callback, max_solutions=10)
+        return generic_solve_all(self, board_to_solution, callback=callback, max_solutions=10)

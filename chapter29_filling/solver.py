@@ -177,15 +177,12 @@ class Board:
             # Inactive root id -> size 0
             m.Add(size_k == 0).OnlyEnforceIf(self.is_root[root_pos].Not())
 
-    # ----- Solve/print --------------------------------------------------------
     def solve_and_print(self):
-        def board_to_assignment(board: "Board", solver: cp_model.CpSolverSolutionCallback):
-            # Return Pos -> digit
-            digits = {}
+        def board_to_solution(board: "Board", solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
+            assignment: dict[Pos, int] = {}
             for p in get_all_pos(board.V, board.H):
-                digits[p] = solver.Value(board.val[p])
-            return digits
-
+                assignment[p] = solver.Value(board.val[p])
+            return SingleSolution(assignment=assignment)
         def callback(single_res: SingleSolution):
             print("Solution found")
             res = np.full((self.V, self.H), ' ', dtype=object)
@@ -194,5 +191,4 @@ class Board:
                 c = single_res.assignment[pos]
                 set_char(res, pos, c)
             print(res)
-
-        return generic_solve_all(self, board_to_assignment, callback=callback)
+        return generic_solve_all(self, board_to_solution, callback=callback)

@@ -139,11 +139,11 @@ class Board:
             self.model.Add(1 + sum(vis_vars) == k)
 
     def solve_and_print(self):
-        def board_to_assignment(board: Board, solver: cp_model.CpSolverSolutionCallback) -> dict[Pos, str|int]:
+        def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
             assignment: dict[Pos, int] = {}
             for pos, var in board.b.items():
                 assignment[pos] = solver.Value(var)
-            return assignment
+            return SingleSolution(assignment=assignment)
         def callback(single_res: SingleSolution):
             print("Solution:")
             res = np.full((self.V, self.H), ' ', dtype=object)
@@ -151,4 +151,4 @@ class Board:
                 c = 'B' if single_res.assignment[pos] == 1 else ' '
                 set_char(res, pos, c)
             print(res)
-        return generic_solve_all(self, board_to_assignment, callback=callback)
+        return generic_solve_all(self, board_to_solution, callback=callback)

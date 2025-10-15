@@ -36,13 +36,13 @@ def get_hashable_solution(solution: SingleSolution) -> str:
 class AllSolutionsCollector(CpSolverSolutionCallback):
     def __init__(self,
             board: Any,
-            board_to_assignment: Callable[Any, dict[Pos, str|int]],
+            board_to_solution: Callable[Any, SingleSolution],
             max_solutions: Optional[int] = None,
             callback: Optional[Callable[SingleSolution, None]] = None
         ):
         super().__init__()
         self.board = board
-        self.board_to_assignment = board_to_assignment
+        self.board_to_solution = board_to_solution
         self.max_solutions = max_solutions
         self.callback = callback
         self.solutions = []
@@ -50,8 +50,7 @@ class AllSolutionsCollector(CpSolverSolutionCallback):
 
     def on_solution_callback(self):
         try:
-            assignment = self.board_to_assignment(self.board, self)
-            result = SingleSolution(assignment=assignment)
+            result = self.board_to_solution(self.board, self)
             result_json = get_hashable_solution(result)
             if result_json in self.unique_solutions:
                 return
@@ -65,10 +64,10 @@ class AllSolutionsCollector(CpSolverSolutionCallback):
             print(e)
             raise e
 
-def generic_solve_all(board: Any, board_to_assignment: Callable[Any, dict[Pos, str|int]], max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None) -> list[SingleSolution]:
+def generic_solve_all(board: Any, board_to_solution: Callable[Any, SingleSolution], max_solutions: Optional[int] = None, callback: Optional[Callable[[SingleSolution], None]] = None) -> list[SingleSolution]:
     solver = cp_model.CpSolver()
     solver.parameters.enumerate_all_solutions = True
-    collector = AllSolutionsCollector(board, board_to_assignment, max_solutions=max_solutions, callback=callback)
+    collector = AllSolutionsCollector(board, board_to_solution, max_solutions=max_solutions, callback=callback)
     tic = time.time()
     solver.solve(board.model, collector)
     print("Solutions found:", len(collector.solutions))
