@@ -1,6 +1,6 @@
 # SAT Puzzle Solver
 
-Solve classic logic puzzles automatically in Python.
+Solve classic logic puzzles automatically in Python. This repo solves many popular pencil logic puzzles like Nonograms, Sudoku, Minesweeper, and many more lesser known ones.
 
 If you happen to have a puzzle similar to the ones below and want to solve it (or see how many potential solutions it has), then this repo is perfect for you
 
@@ -17,20 +17,21 @@ All the solvers in this repo use the CP-SAT solver from Google OR-Tools.
 - [Puzzles](#puzzles)
   - [Nonograms (Puzzle Type #1)](#nonograms-puzzle-type-1)
   - [Sudoku (Puzzle Type #2)](#sudoku-puzzle-type-2)
-  - [Dominosa (Puzzle Type #3)](#dominosa-puzzle-type-3)
-  - [Light Up (Puzzle Type #4)](#light-up-puzzle-type-4)
-  - [Tents (Puzzle Type #5)](#tents-puzzle-type-5)
-  - [Filling (Puzzle Type #6)](#filling-puzzle-type-6)
-  - [Keen (Puzzle Type #7)](#keen-puzzle-type-7)
-  - [Towers (Puzzle Type #8)](#towers-puzzle-type-8)
-  - [Singles (Puzzle Type #9)](#singles-puzzle-type-9)
-  - [Magnets (Puzzle Type #10)](#magnets-puzzle-type-10)
-  - [Signpost (Puzzle Type #11)](#signpost-puzzle-type-11)
-  - [Range (Puzzle Type #12)](#range-puzzle-type-12)
-  - [UnDead (Puzzle Type #13)](#undead-puzzle-type-13)
-  - [Unruly (Puzzle Type #14)](#unruly-puzzle-type-14)
-  - [Tracks (Puzzle Type #15)](#tracks-puzzle-type-15)
-  - [Mosaic (Puzzle Type #16)](#mosaic-puzzle-type-16)
+  - [Minesweeper (Puzzle Type #3)](#minesweeper-puzzle-type-3)
+  - [Dominosa (Puzzle Type #4)](#dominosa-puzzle-type-4)
+  - [Light Up (Puzzle Type #5)](#light-up-puzzle-type-5)
+  - [Tents (Puzzle Type #6)](#tents-puzzle-type-6)
+  - [Filling (Puzzle Type #7)](#filling-puzzle-type-7)
+  - [Keen (Puzzle Type #8)](#keen-puzzle-type-8)
+  - [Towers (Puzzle Type #9)](#towers-puzzle-type-9)
+  - [Singles (Puzzle Type #10)](#singles-puzzle-type-10)
+  - [Magnets (Puzzle Type #11)](#magnets-puzzle-type-11)
+  - [Signpost (Puzzle Type #12)](#signpost-puzzle-type-12)
+  - [Range (Puzzle Type #13)](#range-puzzle-type-13)
+  - [UnDead (Puzzle Type #14)](#undead-puzzle-type-14)
+  - [Unruly (Puzzle Type #15)](#unruly-puzzle-type-15)
+  - [Tracks (Puzzle Type #16)](#tracks-puzzle-type-16)
+  - [Mosaic (Puzzle Type #17)](#mosaic-puzzle-type-17)
   - [Quick Start](#quick-start)
     - [1) Install Python deps](#1-install-python-deps)
     - [2) Explore a puzzle](#2-explore-a-puzzle)
@@ -217,13 +218,88 @@ Time taken: 0.04 seconds
 
 ---
 
-## Dominosa (Puzzle Type #3)
+## Minesweeper (Puzzle Type #3)
+
+This Minesweeper solver is a bit different from the other solvers in this repo because in Minesweeper is a uniquely different type of puzzle. 
+
+In Minesweeper, you don't solve the puzzle in one go. You need to partially solve the puzzle and get new information to continue. Thus the solver is designed to take the state of the board at any timestep and always gives the most amount of garunteed next steps to take (i.e. garunteed safe positions, garunteed mine positions, and even warns you if you placed a flag in a potentially wrong position).
+
+Then obviously, once the you act upon the guesses and get the new information, you simply put that new info back into the solver and repeat the process until the puzzle is fully solved. 
+
+Below is an example of how to utilize the solver while in the middle of a puzzle. (notice how there's an intentionally placed incorrect flag in the example and the solver will warn you about it)
+
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/mines.html)
+
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/mines.html#mines)
+
+* [**Solver Code**][3]
+
+<details>
+  <summary><strong>Rules</strong></summary>
+You have a grid of covered squares, some of which contain mines, but you don't know which. Your job is to uncover every square which does not contain a mine. If you uncover a square containing a mine, you lose. If you uncover a square which does not contain a mine, you are told how many mines are contained within the eight surrounding squares.
+
+This game needs no introduction; popularised by Windows, it is perhaps the single best known desktop puzzle game in existence.
+
+This version of it has an unusual property. By default, it will generate its mine positions in such a way as to ensure that you never need to guess where a mine is: you will always be able to deduce it somehow. So you will never, as can happen in other versions, get to the last four squares and discover that there are two mines left but you have no way of knowing for sure where they are. 
+</details>
+
+**Partially solved puzzle**
+
+<img src="./images/minesweeper_pre.png" alt="Minesweeper partially solved" width="500">
+
+Code to utilize this package and solve the puzzle:
+```python
+import numpy as np
+from . import solver
+bor = np.array([
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '1', '1', '1', '3', 'F', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '2', '2', '1', 'F', '4', 'F', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'F', '2', '1', '3', 'F', '5', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '2', '4', 'F', '3', '0', '3', 'F', 'F', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '3', '4', 'F', '3', '0', '2', 'F', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'F', '4', 'F', '2', '0', '2', '3', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'F', '4', '1', '1', '0', '1', 'F', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'F', '4', '2', '1', '1', '2', '2', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+])
+mine_count = 30
+safe_positions, new_garuneed_mine_positions, wrong_flag_positions = solver.give_next_guess(board=bor, mine_count=mine_count)
+```
+**Script Output**
+```
+Found 8 new guaranteed safe positions
+{Pos(x=9, y=0), Pos(x=15, y=8), Pos(x=15, y=7), Pos(x=9, y=2), Pos(x=15, y=6), Pos(x=7, y=2), Pos(x=9, y=1), Pos(x=12, y=8)}
+----------
+Found 4 new guaranteed mine positions
+{Pos(x=8, y=2), Pos(x=7, y=5), Pos(x=10, y=0), Pos(x=9, y=8)}
+----------
+WARNING | WARNING | WARNING | WARNING | WARNING
+Found 1 wrong flag positions
+{Pos(x=15, y=3)}
+----------
+Time taken: 0.92 seconds
+```
+
+**Progressed puzzle**
+
+<img src="./images/minesweeper_post.png" alt="Minesweeper progressed" width="500">
+
+---
+
+## Dominosa (Puzzle Type #4)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/dominosa.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/dominosa.html#dominosa)
 
-* [**Solver Code**][3]
+* [**Solver Code**][4]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -280,13 +356,13 @@ Time taken: 0.02 seconds
 
 ---
 
-## Light Up (Puzzle Type #4)
+## Light Up (Puzzle Type #5)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/lightup.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/lightup.html#lightup)
 
-* [**Solver Code**][4]
+* [**Solver Code**][5]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -353,13 +429,13 @@ Which exactly matches the true solutions (Remember, the goal of the puzzle is to
 
 ---
 
-## Tents (Puzzle Type #5)
+## Tents (Puzzle Type #6)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/tents.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/tents.html#tents)
 
-* [**Solver Code**][5]
+* [**Solver Code**][6]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -431,13 +507,13 @@ Time taken: 0.02 seconds
 
 ---
 
-## Filling (Puzzle Type #6)
+## Filling (Puzzle Type #7)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/filling.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/filling.html#filling)
 
-* [**Solver Code**][6]
+* [**Solver Code**][7]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -490,13 +566,13 @@ Time taken: 46.27 seconds
 
 ---
 
-## Keen (Puzzle Type #7)
+## Keen (Puzzle Type #8)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/keen.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/keen.html#keen)
 
-* [**Solver Code**][7]
+* [**Solver Code**][8]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -570,13 +646,13 @@ Time taken: 0.02 seconds
 
 ---
 
-## Towers (Puzzle Type #8)
+## Towers (Puzzle Type #9)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/towers.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/towers.html#towers)
 
-* [**Solver Code**][8]
+* [**Solver Code**][9]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -634,13 +710,13 @@ Time taken: 0.03 seconds
 
 ---
 
-## Singles (Puzzle Type #9)
+## Singles (Puzzle Type #10)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/singles.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/singles.html#singles)
 
-* [**Solver Code**][9]
+* [**Solver Code**][10]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -702,13 +778,13 @@ Time taken: 2.14 seconds
 
 ---
 
-## Magnets (Puzzle Type #10)
+## Magnets (Puzzle Type #11)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/magnets.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/magnets.html#magnets)
 
-* [**Solver Code**][10]
+* [**Solver Code**][11]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -768,13 +844,13 @@ Time taken: 0.02 seconds
 
 ---
 
-## Signpost (Puzzle Type #11)
+## Signpost (Puzzle Type #12)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/signpost.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/signpost.html#signpost)
 
-* [**Solver Code**][11]
+* [**Solver Code**][12]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -836,13 +912,13 @@ Time taken: 0.03 seconds
 
 ---
 
-## Range (Puzzle Type #12)
+## Range (Puzzle Type #13)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/range.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/range.html#range)
 
-* [**Solver Code**][12]
+* [**Solver Code**][13]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -907,13 +983,13 @@ Time taken: 3.32 seconds
 
 ---
 
-## UnDead (Puzzle Type #13)
+## UnDead (Puzzle Type #14)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/undead.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/undead.html#undead)
 
-* [**Solver Code**][13]
+* [**Solver Code**][14]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -972,13 +1048,13 @@ Time taken: 0.01 seconds
 
 ---
 
-## Unruly (Puzzle Type #14)
+## Unruly (Puzzle Type #15)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/unruly.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/unruly.html#unruly)
 
-* [**Solver Code**][14]
+* [**Solver Code**][15]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -1040,13 +1116,13 @@ Time taken: 0.01 seconds
 
 ---
 
-## Tracks (Puzzle Type #15)
+## Tracks (Puzzle Type #16)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/tracks.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/tracks.html#tracks)
 
-* [**Solver Code**][15]
+* [**Solver Code**][16]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -1114,13 +1190,13 @@ Time taken: 9.42 seconds
 
 ---
 
-## Mosaic (Puzzle Type #16)
+## Mosaic (Puzzle Type #17)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/mosaic.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/mosaic.html#mosaic)
 
-* [**Solver Code**][16]
+* [**Solver Code**][17]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -1292,17 +1368,18 @@ Issues and PRs welcome!
 
 [1]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter10_nonograms "SAT_puzzle_solver/chapter10_nonograms at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [2]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter11_sudoku "SAT_puzzle_solver/chapter11_sudoku at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[3]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter17_dominosa "SAT_puzzle_solver/chapter17_dominosa at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[4]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter21_light_up "SAT_puzzle_solver/chapter21_light_up at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[5]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter25_tents "SAT_puzzle_solver/chapter25_tents at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[6]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter29_filling "SAT_puzzle_solver/chapter29_filling at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[7]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter30_keen "SAT_puzzle_solver/chapter30_keen at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[8]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter31_towers "SAT_puzzle_solver/chapter31_towers at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[9]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter32_singles "SAT_puzzle_solver/chapter32_singles at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[10]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter33_magnets "SAT_puzzle_solver/chapter33_magnets at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[11]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter34_signpost "SAT_puzzle_solver/chapter34_signpost at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[12]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter35_range "SAT_puzzle_solver/chapter35_range at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[13]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter37_undead "SAT_puzzle_solver/chapter37_undead at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[14]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter38_unruly "SAT_puzzle_solver/chapter38_unruly at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[15]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter40_tracks "SAT_puzzle_solver/chapter40_tracks at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[16]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter42_mosaic "SAT_puzzle_solver/chapter42_mosaic at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[3]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter12_minesweeper "SAT_puzzle_solver/chapter12_minesweeper at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[4]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter17_dominosa "SAT_puzzle_solver/chapter17_dominosa at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[5]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter21_light_up "SAT_puzzle_solver/chapter21_light_up at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[6]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter25_tents "SAT_puzzle_solver/chapter25_tents at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[7]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter29_filling "SAT_puzzle_solver/chapter29_filling at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[8]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter30_keen "SAT_puzzle_solver/chapter30_keen at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[9]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter31_towers "SAT_puzzle_solver/chapter31_towers at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[10]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter32_singles "SAT_puzzle_solver/chapter32_singles at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[11]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter33_magnets "SAT_puzzle_solver/chapter33_magnets at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[12]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter34_signpost "SAT_puzzle_solver/chapter34_signpost at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[13]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter35_range "SAT_puzzle_solver/chapter35_range at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[14]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter37_undead "SAT_puzzle_solver/chapter37_undead at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[15]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter38_unruly "SAT_puzzle_solver/chapter38_unruly at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[16]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter40_tracks "SAT_puzzle_solver/chapter40_tracks at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[17]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter42_mosaic "SAT_puzzle_solver/chapter42_mosaic at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
