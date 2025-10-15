@@ -1,4 +1,4 @@
-# Mosaic (Puzzle Type #14)
+# Mosaic (Puzzle Type #15)
 
 This is a dedicated solver for Mosaic
 

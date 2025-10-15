@@ -83,6 +83,19 @@ def in_bounds(pos: Pos, V: int, H: int = None) -> bool:
     return 0 <= pos.y < V and 0 <= pos.x < H
 
 
+def get_opposite_direction(direction: Direction) -> Direction:
+    if direction == Direction.RIGHT:
+        return Direction.LEFT
+    elif direction == Direction.LEFT:
+        return Direction.RIGHT
+    elif direction == Direction.DOWN:
+        return Direction.UP
+    elif direction == Direction.UP:
+        return Direction.DOWN
+    else:
+        raise ValueError
+
+
 def get_deltas(direction: Direction) -> Tuple[int, int]:
     if direction == Direction.RIGHT:
         return +1, 0

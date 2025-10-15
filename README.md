@@ -28,7 +28,8 @@ All the solvers in this repo use the CP-SAT solver from Google OR-Tools.
   - [Range (Puzzle Type #11)](#range-puzzle-type-11)
   - [UnDead (Puzzle Type #12)](#undead-puzzle-type-12)
   - [Unruly (Puzzle Type #13)](#unruly-puzzle-type-13)
-  - [Mosaic (Puzzle Type #14)](#mosaic-puzzle-type-14)
+  - [Tracks (Puzzle Type #14)](#tracks-puzzle-type-14)
+  - [Mosaic (Puzzle Type #15)](#mosaic-puzzle-type-15)
   - [Quick Start](#quick-start)
     - [1) Install Python deps](#1-install-python-deps)
     - [2) Explore a puzzle](#2-explore-a-puzzle)
@@ -970,13 +971,87 @@ Time taken: 0.01 seconds
 
 ---
 
-## Mosaic (Puzzle Type #14)
+## Tracks (Puzzle Type #14)
+
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/tracks.html)
+
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/tracks.html#tracks)
+
+* [**Solver Code**][14]
+
+<details>
+  <summary><strong>Rules</strong></summary>
+Complete the track from A to B so that the rows and columns contain the same number of track segments as are indicated in the clues to the top and right of the grid. There are only straight and 90-degree curved rail sections, and the track may not cross itself. 
+
+</details>
+
+(Note: The solver for this puzzle is slightly slower and could take several seconds to solve a large 15x15 puzzle)
+
+**Unsolved puzzle**
+
+<img src="./images/tracks_unsolved.png" alt="Tracks unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+```python
+import numpy as np
+from . import solver
+bor = np.array([
+  ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', 'LD', '  ', '  ', ], 
+  ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', 'LD', '  ', '  ', '  ', '  ', ], 
+  ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', ], 
+  ['  ', '  ', '  ', '  ', '  ', 'LD', 'UD', 'DR', '  ', '  ', '  ', '  ', '  ', '  ', '  ', ], 
+  ['DR', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', ], 
+  ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', 'DR', '  ', '  ', ], 
+  ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', 'DR', '  ', '  ', '  ', '  ', '  ', '  ', ], 
+  ['  ', '  ', 'UL', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', ], 
+  ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', 'LR', '  ', '  ', '  ', '  ', ], 
+  ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', 'LD', '  ', '  ', '  ', 'UD', ], 
+  ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', 'UR', '  ', '  ', '  ', '  ', 'UD', 'UD', ], 
+  ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', 'LR', '  ', '  ', '  ', '  ', '  ', ], 
+  ['UL', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', 'LR', 'LR', '  ', '  ', '  ', ], 
+  ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', ], 
+  ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', 'DR', '  ', ], 
+])
+side = np.array([9, 7, 7, 7, 11, 10, 9, 8, 9, 10, 7, 9, 9, 2, 2])
+top = np.array([6, 5, 7, 3, 3, 2, 7, 8, 13, 8, 9, 8, 10, 13, 14])
+binst = solver.Board(board=bor, top=top, side=side)
+solutions = binst.solve_and_print()
+```
+**Script Output**
+```
+[['  ' '  ' '  ' '  ' '  ' '  ' '┏━' '━━' '━━' '━━' '━━' '━━' '━┒' '┏━' '━┒']
+ ['  ' '  ' '  ' '  ' '  ' '  ' '┃ ' '  ' '┏━' '━━' '━┒' '  ' '┗━' '━┛' '┃ ']
+ ['  ' '  ' '  ' '  ' '  ' '  ' '┃ ' '  ' '┃ ' '  ' '┗━' '━━' '━━' '━━' '━┛']
+ ['  ' '  ' '┏━' '━┒' '┏━' '━┒' '┃ ' '┏━' '━┛' '  ' '  ' '  ' '  ' '  ' '  ']
+ ['┏━' '━━' '━┛' '┃ ' '┃ ' '┗━' '━┛' '┗━' '━┒' '  ' '  ' '  ' '  ' '┏━' '━┒']
+ ['┗━' '━━' '━┒' '┗━' '━┛' '  ' '  ' '┏━' '━┛' '  ' '  ' '  ' '┏━' '━┛' '┃ ']
+ ['  ' '  ' '┃ ' '  ' '  ' '  ' '┏━' '━┛' '┏━' '━━' '━━' '━━' '━┛' '  ' '┃ ']
+ ['  ' '┏━' '━┛' '  ' '  ' '  ' '┗━' '━━' '━┛' '  ' '  ' '  ' '┏━' '━━' '━┛']
+ ['  ' '┗━' '━┒' '  ' '  ' '  ' '  ' '  ' '┏━' '━━' '━━' '━┒' '┃ ' '┏━' '━┒']
+ ['┏━' '━━' '━┛' '  ' '  ' '  ' '  ' '  ' '┃ ' '┏━' '━┒' '┗━' '━┛' '┃ ' '┃ ']
+ ['┃ ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '┗━' '━┛' '┗━' '━┒' '  ' '┃ ' '┃ ']
+ ['┃ ' '  ' '  ' '  ' '  ' '  ' '  ' '┏━' '━━' '━━' '━━' '━┛' '┏━' '━┛' '┃ ']
+ ['━┛' '  ' '  ' '  ' '  ' '  ' '  ' '┗━' '━━' '━━' '━━' '━━' '━┛' '┏━' '━┛']
+ ['  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '┗━' '━┒']
+ ['  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '┏━' '━┛']]
+Solutions found: 1
+status: OPTIMAL
+Time taken: 9.42 seconds
+```
+
+**Solved puzzle**
+
+<img src="./images/tracks_solved.png" alt="Tracks solved" width="500">
+
+---
+
+## Mosaic (Puzzle Type #15)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/mosaic.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/mosaic.html#mosaic)
 
-* [**Solver Code**][14]
+* [**Solver Code**][15]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -1118,7 +1193,8 @@ Each chapter directory targets a different puzzle type:
 * `chapter35_range` — Range (rays & totals). ([Chapter 35][11])
 * `chapter37_undead` — UnDead (Vampires/Zombies/Ghosts). ([Chapter 37][12])
 * `chapter38_unruly` — Unruly (no triples + balance). ([Chapter 38][13])
-* `chapter42_mosaic` — Mosaic (Tapa-like tiling). ([Chapter 42][14])
+* `chapter40_tracks` — Tracks (connected components). ([Chapter 40][14])
+* `chapter42_mosaic` — Mosaic (Tapa-like tiling). ([Chapter 42][15])
 
 ---
 
@@ -1158,4 +1234,5 @@ Issues and PRs welcome!
 [11]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter35_range "SAT_puzzle_solver/chapter35_range at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [12]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter37_undead "SAT_puzzle_solver/chapter37_undead at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [13]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter38_unruly "SAT_puzzle_solver/chapter38_unruly at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[14]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter42_mosaic "SAT_puzzle_solver/chapter42_mosaic at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[14]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter40_tracks "SAT_puzzle_solver/chapter40_tracks at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[15]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter42_mosaic "SAT_puzzle_solver/chapter42_mosaic at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
