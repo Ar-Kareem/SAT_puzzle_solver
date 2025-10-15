@@ -23,7 +23,7 @@ def get_pos(x: int, y: int) -> Pos:
 
 def get_next_pos(cur_pos: Pos, direction: Direction) -> Pos:
     delta_x, delta_y = get_deltas(direction)
-    return Pos(cur_pos.x+delta_x, cur_pos.y+delta_y)
+    return get_pos(cur_pos.x+delta_x, cur_pos.y+delta_y)
 
 
 def get_neighbors4(pos: Pos, V: int, H: int) -> Iterable[Pos]:
@@ -40,7 +40,7 @@ def get_neighbors8(pos: Pos, V: int, H: int = None, include_self: bool = False) 
         for dy in [-1, 0, 1]:
             if not include_self and (dx, dy) == (0, 0):
                 continue
-            d_pos = Pos(x=pos.x+dx, y=pos.y+dy)
+            d_pos = get_pos(x=pos.x+dx, y=pos.y+dy)
             if in_bounds(d_pos, V, H):
                 yield d_pos
 
