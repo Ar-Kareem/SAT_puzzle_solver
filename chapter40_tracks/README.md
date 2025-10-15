@@ -1,4 +1,4 @@
-# Tracks (Puzzle Type #14)
+# Tracks (Puzzle Type #15)
 
 This is a dedicated solver for Tracks
 

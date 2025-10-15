@@ -1,4 +1,4 @@
-# Unruly (Puzzle Type #13)
+# Unruly (Puzzle Type #14)
 
 This is a dedicated solver for Unruly
 
