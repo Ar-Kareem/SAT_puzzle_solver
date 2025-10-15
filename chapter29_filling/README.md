@@ -1,4 +1,4 @@
-# Filling (Puzzle Type #6)
+# Filling (Puzzle Type #7)
 
 This is a dedicated solver for Tents
 

@@ -1,4 +1,4 @@
-# Dominosa (Puzzle Type #3)
+# Dominosa (Puzzle Type #4)
 
 This is a dedicated solver for Dominosa
 
