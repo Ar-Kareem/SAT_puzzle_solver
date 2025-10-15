@@ -1,7 +1,7 @@
 import numpy as np
 from ortools.sat.python import cp_model
 
-from core.utils import Pos, get_pos, get_all_pos, get_char, set_char
+from core.utils import Pos, get_pos, get_all_pos, get_char, set_char, get_row_pos, get_col_pos
 from core.utils_ortools import generic_solve_all, SingleSolution
 
 
@@ -60,11 +60,11 @@ class Board:
         # every number appears exactly once in each row, each column and each block
         # each row
         for row in range(self.N):
-            row_vars = [self.model_vars[get_pos(x=x, y=row)] for x in range(self.N)]
+            row_vars = [self.model_vars[pos] for pos in get_row_pos(row, self.N)]
             self.model.AddAllDifferent(row_vars)
         # each column
         for col in range(self.N):
-            col_vars = [self.model_vars[get_pos(x=col, y=y)] for y in range(self.N)]
+            col_vars = [self.model_vars[pos] for pos in get_col_pos(col, self.N)]
             self.model.AddAllDifferent(col_vars)
         # each block
         for block_i in range(self.N):

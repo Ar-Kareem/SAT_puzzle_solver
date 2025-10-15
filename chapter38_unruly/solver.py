@@ -2,8 +2,25 @@ import numpy as np
 from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
 
-from core.utils import Pos, get_all_pos, set_char, get_pos, get_char
+from core.utils import Pos, get_all_pos, set_char, get_char, get_row_pos, get_col_pos, in_bounds, Direction, get_next_pos
 from core.utils_ortools import generic_solve_all, SingleSolution
+
+
+def get_3_consecutive_horiz_and_vert(pos: Pos, V: int, H: int) -> tuple[list[Pos], list[Pos]]:
+    """Get 3 consecutive squares, horizontally and vertically, from the given position."""
+    horiz = []
+    vert = []
+    cur_pos = pos
+    for _ in range(3):
+        if in_bounds(cur_pos, V, H):
+            horiz.append(cur_pos)
+        cur_pos = get_next_pos(cur_pos, Direction.RIGHT)
+    cur_pos = pos
+    for _ in range(3):
+        if in_bounds(cur_pos, V, H):
+            vert.append(cur_pos)
+        cur_pos = get_next_pos(cur_pos, Direction.DOWN)
+    return horiz, vert
 
 
 class Board:
@@ -33,22 +50,22 @@ class Board:
             v = 1 if c == 'B' else 0
             self.model.Add(self.model_vars[pos] == v)
         # no three consecutive squares, horizontally or vertically, are the same colour 
-        for col in range(self.H):
-            for i in range(self.V - 2):
-                var_list = [self.model_vars[get_pos(x=col, y=j)] for j in range(i, i+3)]
-                self.model.Add(lxp.Sum(var_list) != 0)
-                self.model.Add(lxp.Sum(var_list) != 3)
-        for row in range(self.V):
-            for i in range(self.H - 2):
-                var_list = [self.model_vars[get_pos(x=j, y=row)] for j in range(i, i+3)]
-                self.model.Add(lxp.Sum(var_list) != 0)
-                self.model.Add(lxp.Sum(var_list) != 3)
+        for pos in get_all_pos(self.V, self.H):
+            horiz, vert = get_3_consecutive_horiz_and_vert(pos, self.V, self.H)
+            if len(horiz) == 3:
+                horiz = [self.model_vars[h] for h in horiz]
+                self.model.Add(lxp.Sum(horiz) != 0)
+                self.model.Add(lxp.Sum(horiz) != 3)
+            if len(vert) == 3:
+                vert = [self.model_vars[v] for v in vert]
+                self.model.Add(lxp.Sum(vert) != 0)
+                self.model.Add(lxp.Sum(vert) != 3)
         # each row and column contains the same number of black and white squares.
         for col in range(self.H):
-            var_list = [self.model_vars[get_pos(x=col, y=row)] for row in range(self.V)]
+            var_list = [self.model_vars[pos] for pos in get_col_pos(col, self.V)]
             self.model.Add(lxp.Sum(var_list) == self.V // 2)
         for row in range(self.V):
-            var_list = [self.model_vars[get_pos(x=col, y=row)] for col in range(self.H)]
+            var_list = [self.model_vars[pos] for pos in get_row_pos(row, self.H)]
             self.model.Add(lxp.Sum(var_list) == self.H // 2)
 
     def solve_and_print(self):

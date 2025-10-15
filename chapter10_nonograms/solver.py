@@ -1,7 +1,7 @@
 import numpy as np
 from ortools.sat.python import cp_model
 
-from core.utils import Pos, get_pos, get_all_pos, set_char
+from core.utils import Pos, get_all_pos, set_char, get_row_pos, get_col_pos
 from core.utils_ortools import generic_solve_all, SingleSolution
 
 
@@ -29,13 +29,13 @@ class Board:
             ground_sequence = self.side[i]
             if ground_sequence == -1:
                 continue
-            current_sequence = [self.model_vars[get_pos(x=x, y=i)] for x in range(self.H)]
+            current_sequence = [self.model_vars[pos] for pos in get_row_pos(i, self.H)]
             self.constrain_nonogram_sequence(ground_sequence, current_sequence, f'ngm_side_{i}')
         for i in range(self.H):
             ground_sequence = self.top[i]
             if ground_sequence == -1:
                 continue
-            current_sequence = [self.model_vars[get_pos(x=i, y=y)] for y in range(self.V)]
+            current_sequence = [self.model_vars[pos] for pos in get_col_pos(i, self.V)]
             self.constrain_nonogram_sequence(ground_sequence, current_sequence, f'ngm_top_{i}')
 
     def constrain_nonogram_sequence(self, clues: list[int], current_sequence: list[cp_model.IntVar], ns: str):

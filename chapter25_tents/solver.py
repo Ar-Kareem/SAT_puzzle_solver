@@ -4,7 +4,7 @@ import numpy as np
 from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
 
-from core.utils import Pos, get_all_pos, get_char, set_char, get_neighbors8, get_next_pos, Direction, get_pos
+from core.utils import Pos, get_all_pos, get_char, set_char, get_neighbors8, get_next_pos, Direction, get_row_pos, get_col_pos
 from core.utils_ortools import generic_solve_all, SingleSolution
 
 
@@ -47,10 +47,10 @@ class Board:
                 self.model.Add(self.is_tent[neighbour] == 0).OnlyEnforceIf(self.is_tent[pos])
         # - the number of tents in each row and column matches the numbers around the edge of the grid 
         for row in range(self.N):
-            row_vars = [self.is_tent[get_pos(x=i, y=row)] for i in range(self.N)]
+            row_vars = [self.is_tent[pos] for pos in get_row_pos(row, self.N)]
             self.model.Add(lxp.sum(row_vars) == self.sides['side'][row])
         for col in range(self.N):
-            col_vars = [self.is_tent[get_pos(x=col, y=i)] for i in range(self.N)]
+            col_vars = [self.is_tent[pos] for pos in get_col_pos(col, self.N)]
             self.model.Add(lxp.sum(col_vars) == self.sides['top'][col])
         # - it is possible to match tents to trees so that each tree is orthogonally adjacent to its own tent (but may also be adjacent to other tents). 
         # for each tree, one of the following must be true:

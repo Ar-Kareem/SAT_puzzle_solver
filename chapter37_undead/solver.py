@@ -6,7 +6,7 @@ import numpy as np
 from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
 
-from core.utils import Pos, get_all_pos, set_char, get_pos, get_next_pos, in_bounds, get_char, Direction
+from core.utils import Pos, get_all_pos, set_char, get_pos, get_next_pos, in_bounds, get_char, Direction, get_row_pos, get_col_pos
 from core.utils_ortools import generic_solve_all, SingleSolution
 
 
@@ -44,7 +44,6 @@ def beam(board, start_pos: Pos, direction: Direction) -> list[SingleBeamResult]:
     reflect_count = 0
     cur_pos = start_pos
     while True:
-        cur_pos = get_next_pos(cur_pos, direction)
         if not in_bounds(cur_pos, N):
             break
         cur_pos_char = get_char(board, cur_pos)
@@ -67,6 +66,7 @@ def beam(board, start_pos: Pos, direction: Direction) -> list[SingleBeamResult]:
         else:
             # not a mirror
             cur_result.append(SingleBeamResult(cur_pos, reflect_count))
+        cur_pos = get_next_pos(cur_pos, direction)
     return cur_result
 
 
@@ -104,7 +104,7 @@ class Board:
         for i, ground in zip(range(self.N), self.sides['top']):
             if ground == -1:
                 continue
-            pos = get_pos(x=i, y=-1)
+            pos = get_pos(x=i, y=0)
             beam_result = beam(self.board, pos, Direction.DOWN)
             self.model.add(self.get_var(beam_result) == ground)
 
@@ -112,7 +112,7 @@ class Board:
         for i, ground in zip(range(self.N), self.sides['left']):
             if ground == -1:
                 continue
-            pos = get_pos(x=-1, y=i)
+            pos = get_pos(x=0, y=i)
             beam_result = beam(self.board, pos, Direction.RIGHT)
             self.model.add(self.get_var(beam_result) == ground)
 
@@ -120,7 +120,7 @@ class Board:
         for i, ground in zip(range(self.N), self.sides['right']):
             if ground == -1:
                 continue
-            pos = get_pos(x=self.N, y=i)
+            pos = get_pos(x=self.N-1, y=i)
             beam_result = beam(self.board, pos, Direction.LEFT)
             self.model.add(self.get_var(beam_result) == ground)
 
@@ -128,7 +128,7 @@ class Board:
         for i, ground in zip(range(self.N), self.sides['bottom']):
             if ground == -1:
                 continue
-            pos = get_pos(x=i, y=self.N)
+            pos = get_pos(x=i, y=self.N-1)
             beam_result = beam(self.board, pos, Direction.UP)
             self.model.add(self.get_var(beam_result) == ground)
         

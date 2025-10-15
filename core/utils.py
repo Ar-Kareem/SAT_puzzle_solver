@@ -45,6 +45,16 @@ def get_neighbors8(pos: Pos, V: int, H: int = None, include_self: bool = False) 
                 yield d_pos
 
 
+def get_row_pos(row_idx: int, H: int) -> Iterable[Pos]:
+    for x in range(H):
+        yield get_pos(x=x, y=row_idx)
+
+
+def get_col_pos(col_idx: int, V: int) -> Iterable[Pos]:
+    for y in range(V):
+        yield get_pos(x=col_idx, y=y)
+
+
 def get_all_pos(V, H=None):
     if H is None:
         H = V

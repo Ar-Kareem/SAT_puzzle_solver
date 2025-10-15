@@ -2,7 +2,7 @@ import numpy as np
 from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
 
-from core.utils import Pos, get_all_pos, get_char, set_char, get_pos
+from core.utils import Pos, get_all_pos, get_char, set_char, get_pos, get_row_pos, get_col_pos
 from core.utils_ortools import generic_solve_all, SingleSolution
 
 
@@ -41,11 +41,11 @@ class Board:
                 self.model.Add(self.model_vars[pos] == int(v))
         # all different for rows
         for row_i in range(self.N):
-            row_vars = [self.model_vars[get_pos(x=i, y=row_i)] for i in range(self.N)]
+            row_vars = [self.model_vars[pos] for pos in get_row_pos(row_i, self.N)]
             self.model.AddAllDifferent(row_vars)
         # all different for cols
         for col_i in range(self.N):
-            col_vars = [self.model_vars[get_pos(x=col_i, y=i)] for i in range(self.N)]
+            col_vars = [self.model_vars[pos] for pos in get_col_pos(col_i, self.N)]
             self.model.AddAllDifferent(col_vars)
         # constrain number of viewable towers
         # top
@@ -97,7 +97,19 @@ class Board:
                 previous_towers.append(current_tower)
             self.model.add(lxp.sum(can_see_variables) == real)
 
-    def can_see_tower(self, blocks: list[cp_model.IntVar], tower: cp_model.IntVar, name: str):
+    def can_see_tower(self, blocks: list[cp_model.IntVar], tower: cp_model.IntVar, name: str) -> cp_model.IntVar:
+        """
+        Returns a boolean variable of whether a position BEFORE the blocks can see the "tower" parameter.
+        i.e., is the tower taller than all the blocks?
+
+        Args:
+            blocks (list[cp_model.IntVar]): blocks that possibly block the view of the tower
+            tower (cp_model.IntVar): tower to check if can be seen
+            name (str): name of the constraint
+
+        Returns:
+            cp_model.IntVar: boolean variable of whether the tower can be seen
+        """
         if len(blocks) == 0:
             return True
         # I can see "tower" if it's larger that all the blocks

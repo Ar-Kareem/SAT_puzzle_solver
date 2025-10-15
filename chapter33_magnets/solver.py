@@ -4,7 +4,7 @@ import numpy as np
 from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
 
-from core.utils import Pos, get_all_pos, get_char, set_char, get_pos, in_bounds, get_next_pos, Direction
+from core.utils import Pos, get_all_pos, get_char, set_char, in_bounds, get_next_pos, Direction, get_row_pos, get_col_pos
 from core.utils_ortools import generic_solve_all, SingleSolution
 
 
@@ -65,26 +65,24 @@ class Board:
             self.model.add(self.model_vars[(a, State.POSITIVE)] == self.model_vars[(b, State.NEGATIVE)])
             self.model.add(self.model_vars[(a, State.NEGATIVE)] == self.model_vars[(b, State.POSITIVE)])
         # no orthoginal matching poles
-        for x in range(self.H):
-            for y in range(self.V):
-                pos = get_pos(x=x, y=y)
-                right_pos = get_pos(x=x+1, y=y)
-                down_pos = get_pos(x=x, y=y+1)
-                if in_bounds(right_pos, H=self.H, V=self.V):
-                    self.model.add(self.model_vars[(pos, State.POSITIVE)] == 0).OnlyEnforceIf(self.model_vars[(right_pos, State.POSITIVE)])
-                    self.model.add(self.model_vars[(right_pos, State.POSITIVE)] == 0).OnlyEnforceIf(self.model_vars[(pos, State.POSITIVE)])
-                    self.model.add(self.model_vars[(pos, State.NEGATIVE)] == 0).OnlyEnforceIf(self.model_vars[(right_pos, State.NEGATIVE)])
-                    self.model.add(self.model_vars[(right_pos, State.NEGATIVE)] == 0).OnlyEnforceIf(self.model_vars[(pos, State.NEGATIVE)])
-                if in_bounds(down_pos, H=self.H, V=self.V):
-                    self.model.add(self.model_vars[(pos, State.POSITIVE)] == 0).OnlyEnforceIf(self.model_vars[(down_pos, State.POSITIVE)])
-                    self.model.add(self.model_vars[(down_pos, State.POSITIVE)] == 0).OnlyEnforceIf(self.model_vars[(pos, State.POSITIVE)])
-                    self.model.add(self.model_vars[(pos, State.NEGATIVE)] == 0).OnlyEnforceIf(self.model_vars[(down_pos, State.NEGATIVE)])
-                    self.model.add(self.model_vars[(down_pos, State.NEGATIVE)] == 0).OnlyEnforceIf(self.model_vars[(pos, State.NEGATIVE)])
+        for pos in get_all_pos(V=self.V, H=self.H):
+            right_pos = get_next_pos(pos, Direction.RIGHT)
+            down_pos = get_next_pos(pos, Direction.DOWN)
+            if in_bounds(right_pos, H=self.H, V=self.V):
+                self.model.add(self.model_vars[(pos, State.POSITIVE)] == 0).OnlyEnforceIf(self.model_vars[(right_pos, State.POSITIVE)])
+                self.model.add(self.model_vars[(right_pos, State.POSITIVE)] == 0).OnlyEnforceIf(self.model_vars[(pos, State.POSITIVE)])
+                self.model.add(self.model_vars[(pos, State.NEGATIVE)] == 0).OnlyEnforceIf(self.model_vars[(right_pos, State.NEGATIVE)])
+                self.model.add(self.model_vars[(right_pos, State.NEGATIVE)] == 0).OnlyEnforceIf(self.model_vars[(pos, State.NEGATIVE)])
+            if in_bounds(down_pos, H=self.H, V=self.V):
+                self.model.add(self.model_vars[(pos, State.POSITIVE)] == 0).OnlyEnforceIf(self.model_vars[(down_pos, State.POSITIVE)])
+                self.model.add(self.model_vars[(down_pos, State.POSITIVE)] == 0).OnlyEnforceIf(self.model_vars[(pos, State.POSITIVE)])
+                self.model.add(self.model_vars[(pos, State.NEGATIVE)] == 0).OnlyEnforceIf(self.model_vars[(down_pos, State.NEGATIVE)])
+                self.model.add(self.model_vars[(down_pos, State.NEGATIVE)] == 0).OnlyEnforceIf(self.model_vars[(pos, State.NEGATIVE)])
 
         # sides counts must equal actual count
         for row_i in range(self.V):
-            sum_pos = lxp.sum([self.model_vars[(get_pos(x=i, y=row_i), State.POSITIVE)] for i in range(self.H)])
-            sum_neg = lxp.sum([self.model_vars[(get_pos(x=i, y=row_i), State.NEGATIVE)] for i in range(self.H)])
+            sum_pos = lxp.sum([self.model_vars[(pos, State.POSITIVE)] for pos in get_row_pos(row_i, self.H)])
+            sum_neg = lxp.sum([self.model_vars[(pos, State.NEGATIVE)] for pos in get_row_pos(row_i, self.H)])
             ground_pos = self.sides['pos_h'][row_i]
             ground_neg = self.sides['neg_h'][row_i]
             if ground_pos != -1:
@@ -92,8 +90,8 @@ class Board:
             if ground_neg != -1:
                 self.model.Add(sum_neg == ground_neg)
         for col_i in range(self.H):
-            sum_pos = lxp.sum([self.model_vars[(get_pos(x=col_i, y=i), State.POSITIVE)] for i in range(self.V)])
-            sum_neg = lxp.sum([self.model_vars[(get_pos(x=col_i, y=i), State.NEGATIVE)] for i in range(self.V)])
+            sum_pos = lxp.sum([self.model_vars[(pos, State.POSITIVE)] for pos in get_col_pos(col_i, self.V)])
+            sum_neg = lxp.sum([self.model_vars[(pos, State.NEGATIVE)] for pos in get_col_pos(col_i, self.V)])
             ground_pos = self.sides['pos_v'][col_i]
             ground_neg = self.sides['neg_v'][col_i]
             if ground_pos != -1:

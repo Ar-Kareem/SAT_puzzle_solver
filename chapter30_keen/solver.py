@@ -3,7 +3,7 @@ from typing import Optional
 import numpy as np
 from ortools.sat.python import cp_model
 
-from core.utils import Pos, get_all_pos, get_char, get_pos, set_char
+from core.utils import Pos, get_all_pos, get_char, set_char, get_row_pos, get_col_pos
 from core.utils_ortools import generic_solve_all, SingleSolution
 
 
@@ -51,7 +51,7 @@ class Board:
         self.add_all_constraints()
 
     def get_block_pos(self, block: str):
-        return [get_pos(x=x, y=y) for x in range(self.N) for y in range(self.N) if self.board[y][x] == block]
+        return [p for p in get_all_pos(self.N) if get_char(self.board, p) == block]
 
     def create_vars(self):
         for pos in get_all_pos(self.N):
@@ -69,11 +69,11 @@ class Board:
     def unique_digits(self):
         # Each row contains only one occurrence of each digit
         for row in range(self.N):
-            row_vars = [self.model_vars[get_pos(x=x, y=row)] for x in range(self.N)]
+            row_vars = [self.model_vars[pos] for pos in get_row_pos(row, self.N)]
             self.model.AddAllDifferent(row_vars)
         # Each column contains only one occurrence of each digit
         for col in range(self.N):
-            col_vars = [self.model_vars[get_pos(x=col, y=y)] for y in range(self.N)]
+            col_vars = [self.model_vars[pos] for pos in get_col_pos(col, self.N)]
             self.model.AddAllDifferent(col_vars)
     
     def constrain_block_results(self):

@@ -1,7 +1,7 @@
 import numpy as np
 from ortools.sat.python import cp_model
 
-from core.utils import Pos, get_all_pos, get_char, set_char, get_pos, get_neighbors4, get_all_pos_to_idx_dict
+from core.utils import Pos, get_all_pos, get_char, set_char, get_neighbors4, get_all_pos_to_idx_dict, get_row_pos, get_col_pos
 from core.utils_ortools import generic_solve_all, SingleSolution, and_constraint, or_constraint
 
 
@@ -55,10 +55,10 @@ class Board:
     def no_number_appears_twice(self):
         # no number appears twice in any row or column (numbers are ignored if black)
         for row in range(self.V):
-            var_list = [self.Num[get_pos(x=col, y=row)] for col in range(self.H)]
+            var_list = [self.Num[pos] for pos in get_row_pos(row, self.H)]
             self.model.AddAllDifferent(var_list)
         for col in range(self.H):
-            var_list = [self.Num[get_pos(x=col, y=row)] for row in range(self.V)]
+            var_list = [self.Num[pos] for pos in get_col_pos(col, self.V)]
             self.model.AddAllDifferent(var_list)
 
     def white_connectivity_percolation(self):

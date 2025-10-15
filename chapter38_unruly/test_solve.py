@@ -23,6 +23,7 @@ bor = np.array([
 
 def test_ground():
   binst = solver.Board(board=bor)
+  # assert False
   solutions = binst.solve_and_print()
   ground = np.array([
     ['W', 'W', 'B', 'B', 'W', 'B', 'W', 'B', 'B', 'W', 'B', 'W', 'W', 'B'],
