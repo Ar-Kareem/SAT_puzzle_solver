@@ -1,13 +1,9 @@
-import sys
-import time
-from pathlib import Path
 from enum import Enum
 
 import numpy as np
 from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
 
-sys.path.append(str(Path(__file__).parent.parent))
 from core.utils import Pos, get_all_pos, get_char, set_char, get_pos, in_bounds, get_next_pos, Direction
 from core.utils_ortools import generic_solve_all, SingleSolution
 

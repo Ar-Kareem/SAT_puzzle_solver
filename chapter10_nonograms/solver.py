@@ -1,10 +1,6 @@
-import sys
-from pathlib import Path
-
 import numpy as np
 from ortools.sat.python import cp_model
 
-sys.path.append(str(Path(__file__).parent.parent))
 from core.utils import Pos, get_pos, get_all_pos, set_char
 from core.utils_ortools import generic_solve_all, SingleSolution
 

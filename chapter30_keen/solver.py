@@ -1,14 +1,11 @@
-# <chapter29_filling/board.py>
-import sys
-from pathlib import Path
 from typing import Optional
 
 import numpy as np
 from ortools.sat.python import cp_model
 
-sys.path.append(str(Path(__file__).parent.parent))
 from core.utils import Pos, get_all_pos, get_char, get_pos, set_char
 from core.utils_ortools import generic_solve_all, SingleSolution
+
 
 def add_opcode_constraint(model: cp_model.CpModel, vlist: list[cp_model.IntVar], opcode: str, result: int):
     assert opcode in ['+', '-', '*', '/'], "Invalid opcode"

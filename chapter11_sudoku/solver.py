@@ -1,12 +1,9 @@
-import sys
-from pathlib import Path
-
 import numpy as np
 from ortools.sat.python import cp_model
 
-sys.path.append(str(Path(__file__).parent.parent))
 from core.utils import Pos, get_pos, get_all_pos, get_char, set_char
 from core.utils_ortools import generic_solve_all, SingleSolution
+
 
 def get_value(board: np.array, pos: Pos) -> int|str:
     c = get_char(board, pos)

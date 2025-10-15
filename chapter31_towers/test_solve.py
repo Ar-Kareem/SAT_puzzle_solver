@@ -1,6 +1,7 @@
 import numpy as np
 
 from . import solver
+from core.utils import get_pos
 
 # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/towers.html#6:2//2/2/2/3/2/4//4//////2//4/3//2///,n3u
 bor = np.array([
@@ -39,7 +40,7 @@ def test_ground():
   ])
   assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
   solution = solutions[0].assignment
-  ground_assignment = {solver.get_pos(x=x, y=y): ground[y][x] for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+  ground_assignment = {get_pos(x=x, y=y): ground[y][x] for x in range(ground.shape[1]) for y in range(ground.shape[0])}
   assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
   for pos in solution.keys():
     assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
