@@ -11,6 +11,16 @@ class Direction(Enum):
     LEFT = 3
     RIGHT = 4
 
+class Direction8(Enum):
+    UP = 1
+    DOWN = 2
+    LEFT = 3
+    RIGHT = 4
+    UP_LEFT = 5
+    UP_RIGHT = 6
+    DOWN_LEFT = 7
+    DOWN_RIGHT = 8
+
 @dataclass(frozen=True)
 class Pos:
     x: int
@@ -21,7 +31,7 @@ def get_pos(x: int, y: int) -> Pos:
     return Pos(x=x, y=y)
 
 
-def get_next_pos(cur_pos: Pos, direction: Direction) -> Pos:
+def get_next_pos(cur_pos: Pos, direction: Direction|Direction8) -> Pos:
     delta_x, delta_y = get_deltas(direction)
     return get_pos(cur_pos.x+delta_x, cur_pos.y+delta_y)
 
@@ -93,17 +103,25 @@ def get_opposite_direction(direction: Direction) -> Direction:
     elif direction == Direction.UP:
         return Direction.DOWN
     else:
-        raise ValueError
+        raise ValueError(f'invalid direction: {direction}')
 
 
-def get_deltas(direction: Direction) -> Tuple[int, int]:
-    if direction == Direction.RIGHT:
+def get_deltas(direction: Direction|Direction8) -> Tuple[int, int]:
+    if direction == Direction.RIGHT or direction == Direction8.RIGHT:
         return +1, 0
-    elif direction == Direction.LEFT:
+    elif direction == Direction.LEFT or direction == Direction8.LEFT:
         return -1, 0
-    elif direction == Direction.DOWN:
+    elif direction == Direction.DOWN or direction == Direction8.DOWN:
         return 0, +1
-    elif direction == Direction.UP:
+    elif direction == Direction.UP or direction == Direction8.UP:
         return 0, -1
+    elif direction == Direction8.UP_LEFT:
+        return -1, -1
+    elif direction == Direction8.UP_RIGHT:
+        return +1, -1
+    elif direction == Direction8.DOWN_LEFT:
+        return -1, +1
+    elif direction == Direction8.DOWN_RIGHT:
+        return +1, +1
     else:
-        raise ValueError
+        raise ValueError(f'invalid direction: {direction}')
