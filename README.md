@@ -17,17 +17,18 @@ All the solvers in this repo use the CP-SAT solver from Google OR-Tools.
 - [Puzzles](#puzzles)
   - [Nonograms (Puzzle Type #1)](#nonograms-puzzle-type-1)
   - [Sudoku (Puzzle Type #2)](#sudoku-puzzle-type-2)
-  - [Light Up (Puzzle Type #3)](#light-up-puzzle-type-3)
-  - [Tents (Puzzle Type #4)](#tents-puzzle-type-4)
-  - [Filling (Puzzle Type #5)](#filling-puzzle-type-5)
-  - [Keen (Puzzle Type #6)](#keen-puzzle-type-6)
-  - [Towers (Puzzle Type #7)](#towers-puzzle-type-7)
-  - [Singles (Puzzle Type #8)](#singles-puzzle-type-8)
-  - [Magnets (Puzzle Type #9)](#magnets-puzzle-type-9)
-  - [Range (Puzzle Type #10)](#range-puzzle-type-10)
-  - [UnDead (Puzzle Type #11)](#undead-puzzle-type-11)
-  - [Unruly (Puzzle Type #12)](#unruly-puzzle-type-12)
-  - [Mosaic (Puzzle Type #13)](#mosaic-puzzle-type-13)
+  - [Dominosa (Puzzle Type #3)](#dominosa-puzzle-type-3)
+  - [Light Up (Puzzle Type #4)](#light-up-puzzle-type-4)
+  - [Tents (Puzzle Type #5)](#tents-puzzle-type-5)
+  - [Filling (Puzzle Type #6)](#filling-puzzle-type-6)
+  - [Keen (Puzzle Type #7)](#keen-puzzle-type-7)
+  - [Towers (Puzzle Type #8)](#towers-puzzle-type-8)
+  - [Singles (Puzzle Type #9)](#singles-puzzle-type-9)
+  - [Magnets (Puzzle Type #10)](#magnets-puzzle-type-10)
+  - [Range (Puzzle Type #11)](#range-puzzle-type-11)
+  - [UnDead (Puzzle Type #12)](#undead-puzzle-type-12)
+  - [Unruly (Puzzle Type #13)](#unruly-puzzle-type-13)
+  - [Mosaic (Puzzle Type #14)](#mosaic-puzzle-type-14)
   - [Quick Start](#quick-start)
     - [1) Install Python deps](#1-install-python-deps)
     - [2) Explore a puzzle](#2-explore-a-puzzle)
@@ -214,13 +215,76 @@ Time taken: 0.04 seconds
 
 ---
 
-## Light Up (Puzzle Type #3)
+## Dominosa (Puzzle Type #3)
+
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/dominosa.html)
+
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/dominosa.html#dominosa)
+
+* [**Solver Code**][3]
+
+<details>
+  <summary><strong>Rules</strong></summary>
+A normal set of dominoes – that is, one instance of every (unordered) pair of numbers from 0 to N – has been arranged irregularly into a rectangle; then the number in each square has been written down and the dominoes themselves removed. 
+
+Your task is to reconstruct the pattern by arranging the set of dominoes to match the provided array of numbers. 
+</details>
+
+**Unsolved puzzle**
+
+<img src="./images/dominosa_unsolved.png" alt="Dominosa unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+```python
+import numpy as np
+from . import solver
+bor = np.array([
+  [6, 8, 2, 7, 1, 3, 3, 4, 6, 6, 0],
+  [4, 9, 5, 6, 1, 0, 6, 1, 2, 2, 4],
+  [8, 2, 8, 9, 1, 9, 3, 3, 8, 8, 5],
+  [1, 1, 7, 3, 4, 7, 0, 8, 7, 7, 7],
+  [4, 5, 3, 9, 9, 3, 0, 1, 6, 1, 5],
+  [6, 9, 5, 8, 9, 2, 1, 2, 6, 7, 9],
+  [2, 7, 4, 3, 5, 5, 9, 6, 4, 0, 9],
+  [0, 7, 8, 0, 5, 4, 2, 7, 6, 7, 3],
+  [0, 4, 5, 2, 8, 6, 1, 0, 9, 0, 4],
+  [0, 8, 8, 3, 2, 1, 3, 2, 5, 5, 4],
+])
+binst = solver.Board(board=bor)
+solutions = binst.solve_and_print()
+assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+```
+**Script Output**
+```
+Solution found
+[['R' 'L' 'R' 'L' 'D' 'R' 'L' 'R' 'L' 'R' 'L']
+ ['D' 'D' 'R' 'L' 'U' 'D' 'D' 'D' 'R' 'L' 'D']
+ ['U' 'U' 'D' 'R' 'L' 'U' 'U' 'U' 'R' 'L' 'U']
+ ['D' 'D' 'U' 'D' 'D' 'R' 'L' 'D' 'R' 'L' 'D']
+ ['U' 'U' 'D' 'U' 'U' 'R' 'L' 'U' 'D' 'D' 'U']
+ ['D' 'D' 'U' 'R' 'L' 'D' 'R' 'L' 'U' 'U' 'D']
+ ['U' 'U' 'R' 'L' 'D' 'U' 'R' 'L' 'R' 'L' 'U']
+ ['D' 'D' 'D' 'D' 'U' 'R' 'L' 'R' 'L' 'R' 'L']
+ ['U' 'U' 'U' 'U' 'D' 'D' 'R' 'L' 'D' 'D' 'D']
+ ['R' 'L' 'R' 'L' 'U' 'U' 'R' 'L' 'U' 'U' 'U']]
+Solutions found: 1
+status: OPTIMAL
+Time taken: 0.02 seconds
+```
+
+**Solved puzzle**
+
+<img src="./images/dominosa_solved.png" alt="Dominosa solved" width="500">
+
+---
+
+## Light Up (Puzzle Type #4)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/lightup.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/lightup.html#lightup)
 
-* [**Solver Code**][3]
+* [**Solver Code**][4]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -287,13 +351,13 @@ Which exactly matches the true solutions (Remember, the goal of the puzzle is to
 
 ---
 
-## Tents (Puzzle Type #4)
+## Tents (Puzzle Type #5)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/tents.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/tents.html#tents)
 
-* [**Solver Code**][4]
+* [**Solver Code**][5]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -365,13 +429,13 @@ Time taken: 0.02 seconds
 
 ---
 
-## Filling (Puzzle Type #5)
+## Filling (Puzzle Type #6)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/filling.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/filling.html#filling)
 
-* [**Solver Code**][5]
+* [**Solver Code**][6]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -424,13 +488,13 @@ Time taken: 46.27 seconds
 
 ---
 
-## Keen (Puzzle Type #6)
+## Keen (Puzzle Type #7)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/keen.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/keen.html#keen)
 
-* [**Solver Code**][6]
+* [**Solver Code**][7]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -504,13 +568,13 @@ Time taken: 0.02 seconds
 
 ---
 
-## Towers (Puzzle Type #7)
+## Towers (Puzzle Type #8)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/towers.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/towers.html#towers)
 
-* [**Solver Code**][7]
+* [**Solver Code**][8]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -568,13 +632,13 @@ Time taken: 0.03 seconds
 
 ---
 
-## Singles (Puzzle Type #8)
+## Singles (Puzzle Type #9)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/singles.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/singles.html#singles)
 
-* [**Solver Code**][8]
+* [**Solver Code**][9]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -636,13 +700,13 @@ Time taken: 2.14 seconds
 
 ---
 
-## Magnets (Puzzle Type #9)
+## Magnets (Puzzle Type #10)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/magnets.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/magnets.html#magnets)
 
-* [**Solver Code**][9]
+* [**Solver Code**][10]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -702,13 +766,13 @@ Time taken: 0.02 seconds
 
 ---
 
-## Range (Puzzle Type #10)
+## Range (Puzzle Type #11)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/range.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/range.html#range)
 
-* [**Solver Code**][10]
+* [**Solver Code**][11]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -773,13 +837,13 @@ Time taken: 3.32 seconds
 
 ---
 
-## UnDead (Puzzle Type #11)
+## UnDead (Puzzle Type #12)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/undead.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/undead.html#undead)
 
-* [**Solver Code**][11]
+* [**Solver Code**][12]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -838,13 +902,13 @@ Time taken: 0.01 seconds
 
 ---
 
-## Unruly (Puzzle Type #12)
+## Unruly (Puzzle Type #13)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/unruly.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/unruly.html#unruly)
 
-* [**Solver Code**][12]
+* [**Solver Code**][13]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -906,13 +970,13 @@ Time taken: 0.01 seconds
 
 ---
 
-## Mosaic (Puzzle Type #13)
+## Mosaic (Puzzle Type #14)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/mosaic.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/mosaic.html#mosaic)
 
-* [**Solver Code**][13]
+* [**Solver Code**][14]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -1041,19 +1105,20 @@ This repo builds those constraints in Python and uses SAT/CP-SAT (e.g., OR-Tools
 
 Each chapter directory targets a different puzzle type:
 
-* `chapter10_nonograms` — Picross/Griddlers (run-length constraints). ()
+* `chapter10_nonograms` — Picross/Griddlers (run-length constraints). ([Chapter 10][1])
 * `chapter11_sudoku` — Sudoku (rows/cols/blocks all-different). ([Chapter 11][2])
-* `chapter21_light_up` — *Akari* / Light Up (lighting & adjacency). ([Chapter 21][3])
-* `chapter25_tents` — Tents (tree-tent matching). ([Chapter 25][4])
-* `chapter29_filling` — Filling (Fillomino-style), region sizes. ([Chapter 29][5])
-* `chapter30_keen` — Keen (arithmetic operations). ([Chapter 30][6])
-* `chapter31_towers` — Skyscrapers (permutation + visibility). ([Chapter 31][7])
-* `chapter32_singles` — Singles (hiding numbers). ([Chapter 32][8])
-* `chapter33_magnets` — Magnets (polarized dominoes + counts). ([Chapter 33][9])
-* `chapter35_range` — Range (rays & totals). ([Chapter 35][10])
-* `chapter37_undead` — UnDead (Vampires/Zombies/Ghosts). ([Chapter 37][11])
-* `chapter38_unruly` — Unruly (no triples + balance). ([Chapter 38][12])
-* `chapter42_mosaic` — Mosaic (Tapa-like tiling). ([Chapter 42][13])
+* `chapter17_dominosa` — Dominosa (dominoes + counts). ([Chapter 17][3])
+* `chapter21_light_up` — *Akari* / Light Up (lighting & adjacency). ([Chapter 21][4])
+* `chapter25_tents` — Tents (tree-tent matching). ([Chapter 25][5])
+* `chapter29_filling` — Filling (Fillomino-style), region sizes. ([Chapter 29][6])
+* `chapter30_keen` — Keen (arithmetic operations). ([Chapter 30][7])
+* `chapter31_towers` — Skyscrapers (permutation + visibility). ([Chapter 31][8])
+* `chapter32_singles` — Singles (hiding numbers). ([Chapter 32][9])
+* `chapter33_magnets` — Magnets (polarized dominoes + counts). ([Chapter 33][10])
+* `chapter35_range` — Range (rays & totals). ([Chapter 35][11])
+* `chapter37_undead` — UnDead (Vampires/Zombies/Ghosts). ([Chapter 37][12])
+* `chapter38_unruly` — Unruly (no triples + balance). ([Chapter 38][13])
+* `chapter42_mosaic` — Mosaic (Tapa-like tiling). ([Chapter 42][14])
 
 ---
 
@@ -1082,14 +1147,15 @@ Issues and PRs welcome!
 
 [1]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter10_nonograms "SAT_puzzle_solver/chapter10_nonograms at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [2]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter11_sudoku "SAT_puzzle_solver/chapter11_sudoku at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[3]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter21_light_up "SAT_puzzle_solver/chapter21_light_up at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[4]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter25_tents "SAT_puzzle_solver/chapter25_tents at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[5]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter29_filling "SAT_puzzle_solver/chapter29_filling at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[6]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter30_keen "SAT_puzzle_solver/chapter30_keen at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[7]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter31_towers "SAT_puzzle_solver/chapter31_towers at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[8]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter32_singles "SAT_puzzle_solver/chapter32_singles at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[9]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter33_magnets "SAT_puzzle_solver/chapter33_magnets at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[10]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter35_range "SAT_puzzle_solver/chapter35_range at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[11]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter37_undead "SAT_puzzle_solver/chapter37_undead at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[12]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter38_unruly "SAT_puzzle_solver/chapter38_unruly at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[13]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter42_mosaic "SAT_puzzle_solver/chapter42_mosaic at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[3]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter17_dominosa "SAT_puzzle_solver/chapter17_dominosa at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[4]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter21_light_up "SAT_puzzle_solver/chapter21_light_up at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[5]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter25_tents "SAT_puzzle_solver/chapter25_tents at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[6]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter29_filling "SAT_puzzle_solver/chapter29_filling at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[7]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter30_keen "SAT_puzzle_solver/chapter30_keen at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[8]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter31_towers "SAT_puzzle_solver/chapter31_towers at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[9]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter32_singles "SAT_puzzle_solver/chapter32_singles at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[10]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter33_magnets "SAT_puzzle_solver/chapter33_magnets at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[11]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter35_range "SAT_puzzle_solver/chapter35_range at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[12]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter37_undead "SAT_puzzle_solver/chapter37_undead at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[13]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter38_unruly "SAT_puzzle_solver/chapter38_unruly at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[14]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter42_mosaic "SAT_puzzle_solver/chapter42_mosaic at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
