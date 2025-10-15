@@ -1,17 +1,17 @@
 import numpy as np
 from ortools.sat.python import cp_model
 
-from core.utils import Pos, get_pos, get_all_pos, set_char, get_neighbors4
+from core.utils import Pos, get_all_pos, set_char, get_neighbors4, in_bounds, Direction, get_next_pos, get_char
 from core.utils_ortools import and_constraint, or_constraint, generic_solve_all, SingleSolution
 
 
-def get_ray(pos: Pos, V: int, H: int, dx: int, dy: int) -> list[Pos]:
+def get_ray(pos: Pos, V: int, H: int, direction: Direction) -> list[Pos]:
     out = []
-    x, y = pos.x + dx, pos.y + dy
-    while 0 <= y < V and 0 <= x < H:
-        out.append(get_pos(x=x, y=y))
-        x += dx
-        y += dy
+    while True:
+        pos = get_next_pos(pos, direction)
+        if not in_bounds(pos, V, H):
+            break
+        out.append(pos)
     return out
 
 
@@ -37,20 +37,20 @@ class Board:
     def create_vars(self):
         # Cell color vars
         for pos in get_all_pos(self.V, self.H):
-            self.b[pos] = self.model.NewBoolVar(f"b[{pos.x},{pos.y}]")
-            self.w[pos] = self.model.NewBoolVar(f"w[{pos.x},{pos.y}]")
+            self.b[pos] = self.model.NewBoolVar(f"b[{pos}]")
+            self.w[pos] = self.model.NewBoolVar(f"w[{pos}]")
             self.model.AddExactlyOne([self.b[pos], self.w[pos]])
 
         # Root
         for pos in get_all_pos(self.V, self.H):
-            self.root[pos] = self.model.NewBoolVar(f"root[{pos.x},{pos.y}]")
+            self.root[pos] = self.model.NewBoolVar(f"root[{pos}]")
 
         # Percolation layers R_t (monotone flood fill)
         T = self.V * self.H  # large enough to cover whole board
         for t in range(T + 1):
             Rt: dict[Pos, cp_model.IntVar] = {}
             for pos in get_all_pos(self.V, self.H):
-                Rt[pos] = self.model.NewBoolVar(f"R[{t}][{pos.x},{pos.y}]")
+                Rt[pos] = self.model.NewBoolVar(f"R[{t}][{pos}]")
             self.reach_layers.append(Rt)
 
     def add_all_constraints(self):
@@ -95,7 +95,7 @@ class Board:
                 # Create helper (white[p] & Rt_prev[neighbour #X]) for each neighbor q
                 neigh_helpers: list[cp_model.IntVar] = []
                 for q in get_neighbors4(p, self.V, self.H):
-                    a = self.model.NewBoolVar(f"A[{t}][{p.x},{p.y}]<-({q.x},{q.y})")
+                    a = self.model.NewBoolVar(f"A[{t}][{p}]<-({q})")
                     and_constraint(self.model, target=a, cs=[self.w[p], Rt_prev[q]])
                     neigh_helpers.append(a)
                 or_constraint(self.model, target=Rt[p], cs=[Rt_prev[p]] + neigh_helpers)
@@ -110,36 +110,33 @@ class Board:
         #   - Force it white (cannot be black)
         #   - Build visibility chains in four directions (excluding the cell itself)
         #   - Sum of visible whites = 1 (itself) + sum(chains) == k
-        dirs = [(1,0), (-1,0), (0,1), (0,-1)]
-        for y in range(self.V):
-            for x in range(self.H):
-                k = self.clues[y][x]
-                if k == -1:
+        for pos in get_all_pos(self.V, self.H):
+            k = get_char(self.clues, pos)
+            if k == -1:
+                continue
+            # Numbered cell must be white
+            self.model.Add(self.b[pos] == 0)
+
+            # Build visibility chains per direction (exclude self)
+            vis_vars: list[cp_model.IntVar] = []
+            for direction in Direction:
+                ray = get_ray(pos, self.V, self.H, direction)  # cells outward
+                if not ray:
                     continue
-                p = get_pos(x=x, y=y)
-                # Numbered cell must be white
-                self.model.Add(self.b[p] == 0)
+                # Chain: v0 = w[ray[0]]; vt = w[ray[t]] & vt-1
+                prev = None
+                for idx, cell in enumerate(ray):
+                    v = self.model.NewBoolVar(f"vis[{pos}]->({direction.name})[{idx}]")
+                    vis_vars.append(v)
+                    if idx == 0:
+                        # v0 == w[cell]
+                        self.model.Add(v == self.w[cell])
+                    else:
+                        and_constraint(self.model, target=v, cs=[self.w[cell], prev])
+                    prev = v
 
-                # Build visibility chains per direction (exclude self)
-                vis_vars: list[cp_model.IntVar] = []
-                for (dx, dy) in dirs:
-                    ray = get_ray(p, self.V, self.H, dx, dy)  # cells outward
-                    if not ray:
-                        continue
-                    # Chain: v0 = w[ray[0]]; vt = w[ray[t]] & vt-1
-                    prev = None
-                    for idx, cell in enumerate(ray):
-                        v = self.model.NewBoolVar(f"vis[{x},{y}]->({dx},{dy})[{idx}]")
-                        if idx == 0:
-                            # v0 == w[cell]
-                            self.model.Add(v == self.w[cell])
-                        else:
-                            and_constraint(self.model, target=v, cs=[self.w[cell], prev])
-                        vis_vars.append(v)
-                        prev = v
-
-                # 1 (self) + sum(vis_vars) == k
-                self.model.Add(1 + sum(vis_vars) == k)
+            # 1 (self) + sum(vis_vars) == k
+            self.model.Add(1 + sum(vis_vars) == k)
 
     def solve_and_print(self):
         def board_to_assignment(board: Board, solver: cp_model.CpSolverSolutionCallback) -> dict[Pos, str|int]:

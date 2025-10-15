@@ -1,7 +1,7 @@
 import numpy as np
 from ortools.sat.python import cp_model
 
-from core.utils import Pos, get_all_pos, get_char, set_char, get_pos, get_neighbors4
+from core.utils import Pos, get_all_pos, get_char, set_char, get_pos, get_neighbors4, get_all_pos_to_idx_dict
 from core.utils_ortools import generic_solve_all, SingleSolution, and_constraint, or_constraint
 
 
@@ -13,7 +13,7 @@ class Board:
         self.V = board.shape[0]
         self.H = board.shape[1]
         self.N = self.V * self.H
-        self.idx_of: dict[Pos, int] = {pos: (pos.y * self.H + pos.x) for pos in get_all_pos(self.V, self.H)}
+        self.idx_of: dict[Pos, int] = get_all_pos_to_idx_dict(self.V, self.H)
 
         self.model = cp_model.CpModel()
         self.B = {} # black squares
@@ -33,12 +33,12 @@ class Board:
             self.model.Add(self.Num[pos] == int(get_char(self.board, pos))).OnlyEnforceIf(self.B[pos].Not())
         # Root
         for pos in get_all_pos(self.V, self.H):
-            self.root[pos] = self.model.NewBoolVar(f"root[{pos.x},{pos.y}]")
+            self.root[pos] = self.model.NewBoolVar(f"root[{pos}]")
         # Percolation layers R_t (monotone flood fill)
         for t in range(self.N + 1):
             Rt: dict[Pos, cp_model.IntVar] = {}
             for pos in get_all_pos(self.V, self.H):
-                Rt[pos] = self.model.NewBoolVar(f"R[{t}][{pos.x},{pos.y}]")
+                Rt[pos] = self.model.NewBoolVar(f"R[{t}][{pos}]")
             self.reach_layers.append(Rt)
 
     def add_all_constraints(self):
@@ -88,7 +88,7 @@ class Board:
                 # Create helper (white[p] & Rt_prev[neighbour #X]) for each neighbor q
                 neigh_helpers: list[cp_model.IntVar] = []
                 for q in get_neighbors4(p, self.V, self.H):
-                    a = self.model.NewBoolVar(f"A[{t}][{p.x},{p.y}]<-({q.x},{q.y})")
+                    a = self.model.NewBoolVar(f"A[{t}][{p}]<-({q})")
                     and_constraint(self.model, target=a, cs=[self.B[p].Not(), Rt_prev[q]])
                     neigh_helpers.append(a)
                 or_constraint(self.model, target=Rt[p], cs=[Rt_prev[p]] + neigh_helpers)

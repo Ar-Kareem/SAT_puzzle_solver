@@ -1,4 +1,3 @@
-import json
 from dataclasses import dataclass
 from typing import Tuple, Iterable
 from enum import Enum
@@ -52,6 +51,12 @@ def get_all_pos(V, H=None):
     for y in range(V):
         for x in range(H):
             yield get_pos(x=x, y=y)
+
+
+def get_all_pos_to_idx_dict(V, H=None) -> dict[Pos, int]:
+    if H is None:
+        H = V
+    return {get_pos(x=x, y=y): y*H+x for y in range(V) for x in range(H)}
 
 
 def get_char(board: np.array, pos: Pos) -> str:

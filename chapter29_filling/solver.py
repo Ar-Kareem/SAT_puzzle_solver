@@ -1,7 +1,7 @@
 import numpy as np
 from ortools.sat.python import cp_model
 
-from core.utils import Pos, get_all_pos, get_char, set_char, get_neighbors4
+from core.utils import Pos, get_all_pos, get_char, set_char, get_neighbors4, get_all_pos_to_idx_dict
 from core.utils_ortools import generic_solve_all, SingleSolution, and_constraint
 
 
@@ -44,7 +44,7 @@ class Board:
         self.INF = self.N + 1  # a safe "infinity" upper bound for distances
 
         # Linear index maps (keyed by Pos; do NOT construct tuples)
-        self.idx_of: dict[Pos, int] = {pos: (pos.y * self.H + pos.x) for pos in get_all_pos(self.V, self.H)}
+        self.idx_of: dict[Pos, int] = get_all_pos_to_idx_dict(self.V, self.H)
         self.pos_of: list[Pos] = [None] * self.N
         for pos, idx in self.idx_of.items():
             self.pos_of[idx] = pos

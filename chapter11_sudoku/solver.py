@@ -26,8 +26,9 @@ def set_value(board: np.array, pos: Pos, value: int|str):
 
 
 def get_block_pos(i: int, B: int) -> list[Pos]:
-    top_left = Pos(x=(i%B)*B, y=(i//B)*B)
-    return [Pos(x=top_left.x + x, y=top_left.y + y) for x in range(B) for y in range(B)]
+    top_left_x = (i%B)*B
+    top_left_y = (i//B)*B
+    return [get_pos(x=top_left_x + x, y=top_left_y + y) for x in range(B) for y in range(B)]
 
 
 class Board:
