@@ -34,6 +34,7 @@ All the solvers in this repo use the CP-SAT solver from Google OR-Tools.
   - [Mosaic (Puzzle Type #17)](#mosaic-puzzle-type-17)
   - [Map (Puzzle Type #18)](#map-puzzle-type-18)
   - [Pearl (Puzzle Type #19)](#pearl-puzzle-type-19)
+  - [Bridges (Puzzle Type #20)](#bridges-puzzle-type-20)
   - [Quick Start](#quick-start)
     - [1) Install Python deps](#1-install-python-deps)
     - [2) Explore a puzzle](#2-explore-a-puzzle)
@@ -1388,6 +1389,101 @@ Time taken: 0.98 seconds
 
 ---
 
+## Bridges (Puzzle Type #20)
+
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/bridges.html)
+
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/bridges.html#bridges)
+
+* [**Solver Code**][20]
+
+<details>
+  <summary><strong>Rules</strong></summary>
+You have a set of islands distributed across the playing area. Each island contains a number. Your aim is to connect the islands together with bridges, in such a way that:
+
+  - Bridges run horizontally or vertically.
+  - The number of bridges terminating at any island is equal to the number written in that island.
+  - Two bridges may run in parallel between the same two islands, but no more than two may do so.
+  - No bridge crosses another bridge.
+  - All the islands are connected together.
+
+There are some configurable alternative modes, which involve changing the parallel-bridge limit to something other than 2
+</details>
+
+**Unsolved puzzle**
+
+<img src="./images/bridges_unsolved.png" alt="Bridges unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+```python
+import numpy as np
+from . import solver
+bor = np.array([
+  [' ', ' ', ' ', ' ', ' ', '1', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '3'],
+  ['2', ' ', ' ', ' ', ' ', ' ', ' ', '4', ' ', ' ', '4', ' ', ' ', '2', ' '],
+  [' ', ' ', ' ', '2', ' ', '4', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', '1', ' ', ' ', ' ', ' ', ' ', ' ', '1', ' ', '2', ' ', ' ', ' ', '4'],
+  [' ', '2', ' ', '3', ' ', '6', ' ', '4', ' ', ' ', '3', ' ', '1', ' ', ' '],
+  ['2', ' ', ' ', ' ', '2', ' ', ' ', ' ', '1', ' ', ' ', '2', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  ['2', ' ', ' ', ' ', ' ', ' ', '5', ' ', ' ', '3', ' ', '4', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', '3', ' ', ' ', ' ', '3', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', '2', ' ', '2', ' ', ' ', ' ', ' ', ' ', ' ', '5', ' ', ' ', '4'],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', '1', ' ', ' ', '2', ' ', ' ', ' ', '1', ' ', '2', ' ', ' ', ' '],
+  [' ', '4', ' ', ' ', '4', ' ', '3', ' ', ' ', ' ', '4', ' ', ' ', ' ', '4'],
+])
+binst = solver.Board(bor)
+solutions = binst.solve_and_print()
+```
+**Script Output**
+
+Note that the four numbers indicate how many bridges in the 4 directions (right, left, down, up) respectively.
+```
+Solution found
+|    |    |    |    |    |1000|    |    |    |    |    |    |    |    |0120|
+
+|1010|    |    |    |    |    |    |2110|    |    |2200|    |    |0200|    |
+
+|    |    |    |2000|    |0220|    |    |    |    |    |    |    |    |    |
+
+|    |0010|    |    |    |    |    |    |1000|    |1100|    |    |    |0112|
+
+|    |1001|    |2100|    |2202|    |1201|    |    |1110|    |0100|    |    |
+
+|1001|    |    |    |1100|    |    |    |0100|    |    |0020|    |    |    |
+
+|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+
+|2000|    |    |    |    |    |2210|    |    |0210|    |0022|    |    |    |
+
+|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+
+|    |1020|    |    |    |0120|    |    |    |    |    |    |    |    |    |
+
+|    |    |1010|    |0110|    |    |    |    |    |    |1022|    |    |0121|
+
+|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+
+|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+
+|    |    |0001|    |    |0002|    |    |    |0001|    |0002|    |    |    |
+
+|    |2002|    |    |1201|    |1101|    |    |    |2101|    |    |    |0202|
+
+Solutions found: 1
+status: OPTIMAL
+Time taken: 0.01 seconds
+```
+
+**Solved puzzle**
+
+<img src="./images/bridges_solved.png" alt="Bridges solved" width="500">
+
+---
+
 ---
 
 ## Quick Start
@@ -1458,6 +1554,7 @@ Each chapter directory targets a different puzzle type:
 * `chapter21_light_up` — *Akari* / Light Up (lighting & adjacency). ([Chapter 21][5])
 * `chapter22_map` — Map (region coloring). ([Chapter 22][18])
 * `chapter25_tents` — Tents (tree-tent matching). ([Chapter 25][6])
+* `chapter26_bridges` — Bridges (island connections). ([Chapter 26][20])
 * `chapter29_filling` — Filling (Fillomino-style), region sizes. ([Chapter 29][7])
 * `chapter30_keen` — Keen (arithmetic operations). ([Chapter 30][8])
 * `chapter31_towers` — Skyscrapers (permutation + visibility). ([Chapter 31][9])
@@ -1506,6 +1603,7 @@ Issues and PRs welcome!
 [5]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter21_light_up "SAT_puzzle_solver/chapter21_light_up at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [18]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter22_map "SAT_puzzle_solver/chapter22_map at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [6]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter25_tents "SAT_puzzle_solver/chapter25_tents at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[20]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter26_bridges "SAT_puzzle_solver/chapter26_bridges at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [7]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter29_filling "SAT_puzzle_solver/chapter29_filling at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [8]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter30_keen "SAT_puzzle_solver/chapter30_keen at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [9]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter31_towers "SAT_puzzle_solver/chapter31_towers at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
