@@ -136,10 +136,6 @@ class Board:
                     a = self.model.NewBoolVar(f"A[{t}][{p}]<-({q})")
                     and_constraint(self.model, target=a, cs=[self.cell_active[p], Rt_prev[q], self.cell_direction[(q, get_opposite_direction(direction))]])
                     neigh_helpers.append(a)
-                # for q in get_neighbors4(p, self.V, self.H):
-                    # a = self.model.NewBoolVar(f"A[{t}][{p}]<-({q})")
-                    # and_constraint(self.model, target=a, cs=[self.cell_active[p], Rt_prev[q]])
-                    # neigh_helpers.append(a)
                 or_constraint(self.model, target=Rt[p], cs=[Rt_prev[p]] + neigh_helpers)
         # every avtive track must be reachible -> single connected component
         for pos in get_all_pos(self.V, self.H):
