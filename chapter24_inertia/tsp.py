@@ -46,7 +46,6 @@ def solve_optimal_walk(start_pos: Pos, edges: Set[Tuple[Pos, Pos]], gems_to_edge
             if u not in adj or v not in adj or (v not in adj[u]):
                 raise ValueError(f"Edge {(u, v)} for gem {gem_id} does not exist in base graph.")
             idx_uv = len(states); states.append((u, v)); state_group.append(gem_id); group_to_state_indices[gem_id].append(idx_uv)
-            idx_vu = len(states); states.append((v, u)); state_group.append(gem_id); group_to_state_indices[gem_id].append(idx_vu)
 
     # Add a depot representing the start (not part of any gem cluster)
     DEPOT = len(states)
