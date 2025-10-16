@@ -1379,7 +1379,7 @@ Solution found
  ['┗━' '━━' '━━' '━━' '━━' '━┛' '┗━' '━━' '━━' '━━' '━━' '━┛']]
 Solutions found: 1
 status: OPTIMAL
-Time taken: 1.12 seconds
+Time taken: 0.98 seconds
 ```
 
 **Solved puzzle**
