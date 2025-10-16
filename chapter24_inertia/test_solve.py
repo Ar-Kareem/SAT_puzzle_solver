@@ -6,7 +6,7 @@ from core.utils import Direction8
 
 
 # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/inertia.html#15x12%23919933974949365
-bor = np.array([
+bor1 = np.array([
   ["M", "W", " ", "M", "O", "O", "W", "O", "W", "O", "O", " ", "W", " ", "M"],
   ["M", " ", "O", "M", "W", "O", " ", "M", "W", "G", "W", " ", "M", "W", "G"],
   ["M", "O", " ", "M", " ", "G", " ", "M", "M", "O", "G", " ", "O", "O", "W"],
@@ -20,36 +20,14 @@ bor = np.array([
   ["G", " ", "M", "O", "O", "G", "G", " ", "O", " ", "W", "G", " ", "M", " "],
   ["G", " ", "G", "M", "M", "W", "W", " ", "O", "O", "M", " ", "W", "W", " "]
 ])
-start_pos, edges, edges_to_direction, gems_to_edges = solver.parse_nodes_and_edges(bor)
-optimal_walk = tsp.solve_optimal_walk(start_pos, edges, gems_to_edges)
-moves = solver.get_moves_from_walk(optimal_walk, edges_to_direction)
 
-# def test_ground():
-#   binst = solver.Board(board=bor, sides={'top': top, 'side': side})
-#   solutions = binst.solve_and_print()
-#   ground = np.array([
-#     [' ', 'T', 'E', ' ', ' ', ' ', ' ', 'E', 'T', ' ', 'T', 'E', 'T', 'E', ' '],
-#     [' ', ' ', ' ', ' ', 'T', 'E', ' ', 'T', ' ', 'T', ' ', ' ', 'T', ' ', ' '],
-#     ['E', 'T', 'E', 'T', ' ', ' ', ' ', 'E', ' ', 'E', ' ', ' ', 'E', ' ', 'E'],
-#     [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', ' ', ' ', ' ', 'T', ' ', 'T'],
-#     [' ', 'E', ' ', ' ', 'E', ' ', 'E', ' ', 'E', ' ', ' ', ' ', 'E', ' ', ' '],
-#     [' ', 'T', ' ', ' ', 'T', ' ', 'T', ' ', ' ', 'T', 'E', ' ', 'T', 'T', 'E'],
-#     [' ', 'T', ' ', ' ', 'T', 'E', ' ', 'E', 'T', ' ', ' ', ' ', 'E', ' ', ' '],
-#     [' ', 'E', ' ', ' ', ' ', ' ', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-#     [' ', ' ', ' ', ' ', 'E', 'T', 'E', ' ', ' ', 'E', 'T', ' ', 'E', 'T', 'E'],
-#     ['E', ' ', 'E', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', ' ', 'T'],
-#     ['T', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'E', ' ', ' ', 'T', 'E', ' ', 'E'],
-#     ['T', ' ', ' ', 'E', 'T', 'E', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-#     ['E', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'E', 'T', 'E', ' ', 'E', 'T'],
-#     [' ', 'T', 'E', ' ', 'E', 'T', 'E', ' ', ' ', ' ', ' ', ' ', 'T', ' ', ' '],
-#     ['E', 'T', ' ', ' ', 'T', ' ', ' ', ' ', 'E', 'T', 'E', 'T', 'E', ' ', ' '],
-#   ])
-#   assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
-#   solution = solutions[0].assignment
-#   ground_assignment = {get_pos(x=x, y=y): 1 if ground[y][x] == 'E' else 0 for x in range(ground.shape[1]) for y in range(ground.shape[0]) if ground[y][x] in [' ', 'E']}
-#   assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
-#   for pos in solution.keys():
-#     assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
+def test_ground_1():
+  start_pos, edges, edges_to_direction, gems_to_edges = solver.parse_nodes_and_edges(bor1)
+  optimal_walk = tsp.solve_optimal_walk(start_pos, edges, gems_to_edges)
+  moves = solver.get_moves_from_walk(optimal_walk, edges_to_direction)
+  assert solver.is_board_completed(bor1, moves)
+  assert len(moves) <= 61, 'website solves it in 61 moves'
 
-# if __name__ == '__main__':
-#   test_ground()
+
+if __name__ == '__main__':
+  test_ground_1()

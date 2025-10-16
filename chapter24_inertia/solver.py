@@ -74,11 +74,36 @@ def get_moves_from_walk(walk: list[tuple[Pos, Pos]], edges_to_direction: dict[tu
     direction_to_str = {Direction8.UP: '↑', Direction8.DOWN: '↓', Direction8.LEFT: '←', Direction8.RIGHT: '→', Direction8.UP_LEFT: '↖', Direction8.UP_RIGHT: '↗', Direction8.DOWN_LEFT: '↙', Direction8.DOWN_RIGHT: '↘'}
     for edge in walk:
         assert edge in edges_to_direction, f'edge {edge} not valid yet was in walk'
-    walk_directions = [direction_to_str[edges_to_direction[edge]] for edge in walk]
+    walk_directions = [edges_to_direction[edge] for edge in walk]
+    walk_directions_printable = [direction_to_str[x] for x in walk_directions]
     print("number of moves", len(walk_directions))
-    for i, direction in enumerate(walk_directions):
+    for i, direction in enumerate(walk_directions_printable):
         print(f"{direction}", end=' ')
         if i % 5 == 4:
             print()
     print()
     return walk_directions
+
+def simulate_moves(board: np.array, moves: list[str]) -> bool:
+    V, H = board.shape
+    start_pos = [p for p in get_all_pos(V, H) if get_char(board, p) == 'B']
+    assert len(start_pos) == 1, 'board must have exactly one start position'
+    gems_collected_so_far = set()
+    start_pos = start_pos[0]
+    current_pos = start_pos
+    for move in moves:
+        next_pos, gems = _jump(board, current_pos, move)
+        if next_pos is None:
+            print(f'invalid move {move} from {current_pos}. Either hit a wall (considered illegal here) or a mine (dead)')
+            return gems_collected_so_far
+        current_pos = next_pos
+        gems_collected_so_far.update(gems)
+    return gems_collected_so_far
+
+
+def is_board_completed(board: np.array, moves: list[str]) -> bool:
+    V, H = board.shape
+    all_gems = set(p for p in get_all_pos(V, H) if get_char(board, p) == 'G')
+    gems_collected = simulate_moves(board, moves)
+    assert gems_collected.issubset(all_gems), f'collected gems that are not on the board??? should not happen, {gems_collected - all_gems}'
+    return gems_collected == all_gems
