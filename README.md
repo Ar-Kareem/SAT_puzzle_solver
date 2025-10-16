@@ -1411,9 +1411,12 @@ Each chapter directory targets a different puzzle type:
 
 To run the tests, simply follow the instructions in Install Python deps section ([here](#1-install-python-deps)) and then run:
 
-```python -m pytest --import-mode=importlib -n 4```
+```bash
+conda activate ./env
+python -m pytest
+```
 
-where `-n 4` is the number of workers to use and `--import-mode=importlib` is to not complain about attempted relative import with no known parent package.
+the `pytest.ini` file is used to configure the pytest command to use `-n 4` to have 4 workers and `--import-mode=importlib` to not complain about attempted relative import with no known parent package.
 
 ## Contributing
 
