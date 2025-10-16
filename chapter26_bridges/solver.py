@@ -11,12 +11,13 @@ from core.utils_ortools import generic_solve_all, SingleSolution
 
 
 class Board:
-    def __init__(self, board: np.array):
+    def __init__(self, board: np.array, max_bridges_per_direction: int = 2):
         assert board.ndim == 2, f'board must be 2d, got {board.ndim}'
-        assert all(c.item() in [' ', '1', '2', '3', '4', '5', '6', '7', '8'] for c in np.nditer(board)), 'board must contain only 1-8 or space'
+        assert all(c.item() == ' ' or str(c.item()).isdecimal() for c in np.nditer(board)), 'board must contain only spaces or digits'
         self.board = board
         self.V = board.shape[0]
         self.H = board.shape[1]
+        self.max_bridges_per_direction = max_bridges_per_direction
         self.horiz_bridges: set[tuple[Pos, Pos]] = set()
         self.vert_bridges: set[tuple[Pos, Pos]] = set()
 
@@ -40,7 +41,7 @@ class Board:
 
     def create_vars(self):
         for bridge in self.horiz_bridges | self.vert_bridges:
-            self.model_vars[bridge] = self.model.NewIntVar(0, 2, f'{bridge}')
+            self.model_vars[bridge] = self.model.NewIntVar(0, self.max_bridges_per_direction, f'{bridge}')
             self.is_bridge_active[bridge] = self.model.NewBoolVar(f'{bridge}:is_active')
             self.model.Add(self.model_vars[bridge] == 0).OnlyEnforceIf(self.is_bridge_active[bridge].Not())
             self.model.Add(self.model_vars[bridge] > 0).OnlyEnforceIf(self.is_bridge_active[bridge])
