@@ -5,6 +5,8 @@ import numpy as np
 from core.utils import Direction8, Pos, get_all_pos, get_char, in_bounds, get_next_pos
 
 
+
+
 def _jump(board: np.array, pos: Pos, direction: Direction8) -> tuple[Pos, list[Pos]]:
     # jump from pos in direction, return the next position and the positions of the gems that would be achieved (mostly likely None)
     initial_pos = pos
@@ -65,4 +67,18 @@ def parse_nodes_and_edges(board: np.array):
                 todo_nodes.add(next_pos)
         completed_nodes.add(pos)
     assert len(gems_to_edges) == len([p for p in get_all_pos(V, H) if get_char(board, p) == 'G']), 'some gems are not reachable'
-    return start_pos, edges_to_direction, gems_to_edges
+    edges = set(edges_to_direction.keys())
+    return start_pos, edges, edges_to_direction, gems_to_edges
+
+def get_moves_from_walk(walk: list[tuple[Pos, Pos]], edges_to_direction: dict[tuple[Pos, Pos], Direction8], verbose: bool = True) -> list[str]:
+    direction_to_str = {Direction8.UP: '↑', Direction8.DOWN: '↓', Direction8.LEFT: '←', Direction8.RIGHT: '→', Direction8.UP_LEFT: '↖', Direction8.UP_RIGHT: '↗', Direction8.DOWN_LEFT: '↙', Direction8.DOWN_RIGHT: '↘'}
+    for edge in walk:
+        assert edge in edges_to_direction, f'edge {edge} not valid yet was in walk'
+    walk_directions = [direction_to_str[edges_to_direction[edge]] for edge in walk]
+    print("number of moves", len(walk_directions))
+    for i, direction in enumerate(walk_directions):
+        print(f"{direction}", end=' ')
+        if i % 5 == 4:
+            print()
+    print()
+    return walk_directions

@@ -327,64 +327,100 @@ def solve_optimal_walk(start_pos: Pos, edges: Set[Tuple[Pos, Pos]], gems_to_edge
     #    then head_i -> tail_{i+1} + edge(...)
     # ----------------------------
     # ---------- Build a coverage-aware compressed walk ----------
-    # Map each directed edge to the set of gems it satisfies
     edge_to_gems: Dict[Tuple[Pos, Pos], Set[Pos]] = defaultdict(set)
     for g, elist in gems_to_edges.items():
         for e in elist:
             edge_to_gems[e].add(g)
 
-    def mark_covered_along_node_path(path_nodes: List[Pos], covered: Set[Pos]) -> None:
-        """Given a node path [n0,n1,...], mark any gems whose directed edges appear in it."""
-        for i in range(len(path_nodes) - 1):
-            e = (path_nodes[i], path_nodes[i+1])
+    def mark_covered_on_path(nodes_path: List[Pos], covered: Set[Pos]) -> None:
+        for i in range(len(nodes_path) - 1):
+            e = (nodes_path[i], nodes_path[i+1])
             if e in edge_to_gems:
                 covered.update(edge_to_gems[e])
 
-    # We will build a compressed sequence of representatives,
-    # skipping any whose gems are already covered by what we've walked so far.
     compressed_reps: List[Tuple[Pos, Tuple[Pos, Pos]]] = []
-
     covered: Set[Pos] = set()
     cur = start_pos
-    walked_nodes: List[Pos] = [start_pos]  # we’ll accumulate here as we compress
+    walk_nodes: List[Pos] = [start_pos]
 
     for gem_id, (tail, head) in chosen_states_in_order:
         if gem_id in covered:
-            # This gem already satisfied incidentally; skip this representative
             continue
 
-        # 1) Move cur -> tail (directed shortest path); mark any gems satisfied en route
         if cur != tail:
             path_ct = reconstruct_path(cur, tail)  # directed
-            # mark coverage on that connector path
-            mark_covered_along_node_path(path_ct, covered)
-            # append connector path to walked_nodes (without duplicating cur)
-            walked_nodes.extend(path_ct[1:])
+            mark_covered_on_path(path_ct, covered)
+            walk_nodes.extend(path_ct[1:])
             cur = tail
 
-        # If after moving to tail we accidentally satisfied this gem already (e.g., its edge occurred on the connector), skip
         if gem_id in covered:
             continue
 
-        # 2) Traverse the representative edge tail->head; mark coverage
-        if walked_nodes[-1] != tail:
+        # traverse representative edge
+        if walk_nodes[-1] != tail:
             raise RuntimeError(f"Continuity broken before traversing {tail}->{head}")
-        walked_nodes.append(head)
+        walk_nodes.append(head)
         cur = head
         if (tail, head) in edge_to_gems:
             covered.update(edge_to_gems[(tail, head)])
-
-        # Keep it in the compressed list only if it actually contributed (not strictly required, but nice to return)
         compressed_reps.append((gem_id, (tail, head)))
 
-        # Optional early exit: if all gems are covered, we could stop here.
-        # (Uncomment for speed)
-        # if len(covered) == len(gems_to_edges):
-        #     break
+    # ---------- Local simplification: remove 2-edge ping-pongs that add no coverage ----------
+    def walk_edges(nodes_seq: List[Pos]) -> List[Tuple[Pos, Pos]]:
+        return [(nodes_seq[i], nodes_seq[i+1]) for i in range(len(nodes_seq)-1)]
 
-    # At this point, `walked_nodes` is the compressed actual walk.
-    # Build edge list and verify every step is a valid directed input edge.
-    edge_walk: List[Tuple[Pos, Pos]] = [(walked_nodes[i], walked_nodes[i+1]) for i in range(len(walked_nodes)-1)]
+    # Precompute per-edge gem sets for quick coverage diffs
+    def covered_gems_of_edges(edges_seq: List[Tuple[Pos, Pos]]) -> Set[Pos]:
+        s: Set[Pos] = set()
+        for e in edges_seq:
+            if e in edge_to_gems:
+                s.update(edge_to_gems[e])
+        return s
+
+    all_gems: Set[Pos] = set(gems_to_edges.keys())
+
+    def simplify_ping_pongs(nodes_seq: List[Pos]) -> List[Pos]:
+        changed = True
+        ns = list(nodes_seq)
+        while changed:
+            changed = False
+            i = 0
+            while i + 3 < len(ns):
+                u, v, w, z = ns[i], ns[i+1], ns[i+2], ns[i+3]
+                # Look for pattern u->v, v->u (i.e., ns[i+2] == u)
+                if w == u:
+                    e1 = (u, v)
+                    e2 = (v, u)
+                    # If we drop e1 and e2, coverage lost equals gems covered ONLY by these two edges
+                    edges_before = walk_edges(ns[:i+1])          # up to u
+                    edges_removed = [e1, e2]
+                    edges_after  = walk_edges([u] + ns[i+3:])    # resume at u -> ...
+
+                    gems_before = covered_gems_of_edges(edges_before)
+                    gems_removed = covered_gems_of_edges(edges_removed)
+                    gems_after = covered_gems_of_edges(edges_after)
+
+                    # Total gems after removal:
+                    gems_total_after = gems_before | gems_after
+                    # If all required gems remain covered, it's safe to remove the ping-pong
+                    if all_gems.issubset(gems_total_after):
+                        # remove v and w (=u) from the nodes list between positions i and i+3
+                        # ns: [..., u, v, u, z, ...] => [..., u, z, ...]
+                        del ns[i+1:i+3]
+                        changed = True
+                        # Do not increment i: re-check at the same index after removal
+                        continue
+                i += 1
+        return ns
+
+    walk_nodes = simplify_ping_pongs(walk_nodes)
+
+    # ---------- Build final edge list & validate ----------
+    edge_walk: List[Tuple[Pos, Pos]] = [(walk_nodes[i], walk_nodes[i+1]) for i in range(len(walk_nodes)-1)]
     assert all(e in edges for e in edge_walk), "Output contains an edge not in the input directed edges."
+    # Ensure all gems are covered
+    final_covered = covered_gems_of_edges(edge_walk)
+    missing = all_gems - final_covered
+    assert not missing, f"Walk lost coverage for gems: {missing}"
 
     return edge_walk

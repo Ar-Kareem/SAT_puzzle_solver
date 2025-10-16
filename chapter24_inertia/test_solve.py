@@ -4,6 +4,7 @@ from . import solver
 from . import tsp
 from core.utils import Direction8
 
+
 # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/inertia.html#15x12%23919933974949365
 bor = np.array([
   ["M", "W", " ", "M", "O", "O", "W", "O", "W", "O", "O", " ", "W", " ", "M"],
@@ -19,26 +20,9 @@ bor = np.array([
   ["G", " ", "M", "O", "O", "G", "G", " ", "O", " ", "W", "G", " ", "M", " "],
   ["G", " ", "G", "M", "M", "W", "W", " ", "O", "O", "M", " ", "W", "W", " "]
 ])
-start_pos, edges_to_direction, gems_to_edges = solver.parse_nodes_and_edges(bor)
-print("# gems_to_edges")
-print(gems_to_edges)
-# print("edges_to_direction", edges_to_direction)
-edges = set(edges_to_direction.keys())
-
+start_pos, edges, edges_to_direction, gems_to_edges = solver.parse_nodes_and_edges(bor)
 optimal_walk = tsp.solve_optimal_walk(start_pos, edges, gems_to_edges)
-
-cost = len(optimal_walk) - 1
-for edge in optimal_walk:
-  assert edge in edges_to_direction, f'edge {edge} not valid yet was in optimal_walk'
-direction_to_str = {Direction8.UP: '↑', Direction8.DOWN: '↓', Direction8.LEFT: '←', Direction8.RIGHT: '→', Direction8.UP_LEFT: '↖', Direction8.UP_RIGHT: '↗', Direction8.DOWN_LEFT: '↙', Direction8.DOWN_RIGHT: '↘'}
-print("optimal_walk")
-print(optimal_walk)
-optimal_walk_directions = [direction_to_str[edges_to_direction[edge]] for edge in optimal_walk]
-print("cost", cost)
-for i, direction in enumerate(optimal_walk_directions):
-  print(f"{direction}", end=' ')
-  if i % 5 == 4:
-    print()
+moves = solver.get_moves_from_walk(optimal_walk, edges_to_direction)
 
 # def test_ground():
 #   binst = solver.Board(board=bor, sides={'top': top, 'side': side})
