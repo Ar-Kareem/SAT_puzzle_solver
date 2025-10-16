@@ -33,6 +33,7 @@ All the solvers in this repo use the CP-SAT solver from Google OR-Tools.
   - [Tracks (Puzzle Type #16)](#tracks-puzzle-type-16)
   - [Mosaic (Puzzle Type #17)](#mosaic-puzzle-type-17)
   - [Map (Puzzle Type #18)](#map-puzzle-type-18)
+  - [Pearl (Puzzle Type #19)](#pearl-puzzle-type-19)
   - [Quick Start](#quick-start)
     - [1) Install Python deps](#1-install-python-deps)
     - [2) Explore a puzzle](#2-explore-a-puzzle)
@@ -1323,6 +1324,70 @@ Time taken: 0.01 seconds
 
 ---
 
+## Pearl (Puzzle Type #19)
+
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/pearl.html)
+
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/pearl.html#pearl)
+
+* [**Solver Code**][19]
+
+<details>
+  <summary><strong>Rules</strong></summary>
+You have a grid of squares. Your job is to draw lines between the centres of horizontally or vertically adjacent squares, so that the lines form a single closed loop. In the resulting grid, some of the squares that the loop passes through will contain corners, and some will be straight horizontal or vertical lines. (And some squares can be completely empty – the loop doesn't have to pass through every square.)
+
+Some of the squares contain black and white circles, which are clues that the loop must satisfy.
+
+A black circle in a square indicates that that square is a corner, but neither of the squares adjacent to it in the loop is also a corner.
+
+A white circle indicates that the square is a straight edge, but at least one of the squares adjacent to it in the loop is a corner.
+
+(In both cases, the clue only constrains the two squares adjacent in the loop, that is, the squares that the loop passes into after leaving the clue square. The squares that are only adjacent in the grid are not constrained.)
+</details>
+
+**Unsolved puzzle**
+
+<img src="./images/pearl_unsolved.png" alt="Pearl unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+```python
+import numpy as np
+from . import solver
+bor = np.array([
+  ['B', ' ', ' ', 'W', ' ', ' ', 'W', ' ', 'B', ' ', ' ', 'B'],
+  [' ', ' ', ' ', 'B', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'B', ' ', ' ', ' '],
+  [' ', 'B', ' ', 'B', ' ', 'W', ' ', 'B', ' ', 'B', 'W', ' '],
+  [' ', ' ', 'B', ' ', 'B', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'W', 'W', ' ', ' ', 'B'],
+  [' ', ' ', 'B', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  ['B', ' ', ' ', ' ', ' ', 'B', 'B', ' ', ' ', ' ', ' ', 'B'],
+])
+binst = solver.Board(bor)
+solutions = binst.solve_and_print()
+```
+**Script Output**
+```
+Solution found
+[['┏━' '━━' '━━' '━━' '━┒' '┏━' '━━' '━┒' '┏━' '━━' '━━' '━┒']
+ ['┃ ' '┏━' '━━' '━┒' '┗━' '━┛' '┏━' '━┛' '┃ ' '┏━' '━┒' '┃ ']
+ ['┗━' '━┛' '  ' '┃ ' '┏━' '━┒' '┗━' '━━' '━┛' '┃ ' '┃ ' '┃ ']
+ ['  ' '┏━' '━━' '━┛' '┃ ' '┃ ' '  ' '┏━' '━━' '━┛' '┃ ' '┃ ']
+ ['  ' '┃ ' '┏━' '━━' '━┛' '┗━' '━┒' '┃ ' '┏━' '━┒' '┗━' '━┛']
+ ['┏━' '━┛' '┃ ' '  ' '┏━' '━┒' '┃ ' '┃ ' '┃ ' '┗━' '━━' '━┒']
+ ['┃ ' '  ' '┗━' '━━' '━┛' '┃ ' '┃ ' '┗━' '━┛' '  ' '  ' '┃ ']
+ ['┗━' '━━' '━━' '━━' '━━' '━┛' '┗━' '━━' '━━' '━━' '━━' '━┛']]
+Solutions found: 1
+status: OPTIMAL
+Time taken: 1.12 seconds
+```
+
+**Solved puzzle**
+
+<img src="./images/pearl_solved.png" alt="Pearl solved" width="500">
+
+---
+
 ---
 
 ## Quick Start
@@ -1400,6 +1465,7 @@ Each chapter directory targets a different puzzle type:
 * `chapter33_magnets` — Magnets (polarized dominoes + counts). ([Chapter 33][11])
 * `chapter34_signpost` — Signpost (visible dominoes + counts). ([Chapter 34][12])
 * `chapter35_range` — Range (rays & totals). ([Chapter 35][13])
+* `chapter36_pearl` — Pearl (pearl game). ([Chapter 36][18])
 * `chapter37_undead` — UnDead (Vampires/Zombies/Ghosts). ([Chapter 37][14])
 * `chapter38_unruly` — Unruly (no triples + balance). ([Chapter 38][15])
 * `chapter40_tracks` — Tracks (connected components). ([Chapter 40][16])
@@ -1447,6 +1513,7 @@ Issues and PRs welcome!
 [11]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter33_magnets "SAT_puzzle_solver/chapter33_magnets at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [12]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter34_signpost "SAT_puzzle_solver/chapter34_signpost at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [13]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter35_range "SAT_puzzle_solver/chapter35_range at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[19]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter36_pearl "SAT_puzzle_solver/chapter36_pearl at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [14]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter37_undead "SAT_puzzle_solver/chapter37_undead at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [15]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter38_unruly "SAT_puzzle_solver/chapter38_unruly at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [16]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter40_tracks "SAT_puzzle_solver/chapter40_tracks at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
