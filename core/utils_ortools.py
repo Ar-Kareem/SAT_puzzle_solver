@@ -13,6 +13,12 @@ from core.utils import Pos
 class SingleSolution:
     assignment: dict[Pos, str|int]
 
+    def get_hashable_solution(self) -> str:
+        result = []
+        for pos, v in self.assignment.items():
+            result.append((pos.x, pos.y, v))
+        return json.dumps(result, sort_keys=True)
+
 
 def and_constraint(model: cp_model.CpModel, target: cp_model.IntVar, cs: list[cp_model.IntVar]):
     for c in cs:
@@ -25,12 +31,6 @@ def or_constraint(model: cp_model.CpModel, target: cp_model.IntVar, cs: list[cp_
         model.Add(target >= c)
     model.Add(target <= sum(cs))
 
-
-def get_hashable_solution(solution: SingleSolution) -> str:
-    result = []
-    for pos, v in solution.assignment.items():
-        result.append((pos.x, pos.y, v))
-    return json.dumps(result, sort_keys=True)
 
 
 class AllSolutionsCollector(CpSolverSolutionCallback):
@@ -51,7 +51,7 @@ class AllSolutionsCollector(CpSolverSolutionCallback):
     def on_solution_callback(self):
         try:
             result = self.board_to_solution(self.board, self)
-            result_json = get_hashable_solution(result)
+            result_json = result.get_hashable_solution()
             if result_json in self.unique_solutions:
                 return
             self.unique_solutions.add(result_json)

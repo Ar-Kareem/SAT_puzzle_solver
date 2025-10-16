@@ -32,6 +32,7 @@ All the solvers in this repo use the CP-SAT solver from Google OR-Tools.
   - [Unruly (Puzzle Type #15)](#unruly-puzzle-type-15)
   - [Tracks (Puzzle Type #16)](#tracks-puzzle-type-16)
   - [Mosaic (Puzzle Type #17)](#mosaic-puzzle-type-17)
+  - [Map (Puzzle Type #18)](#map-puzzle-type-18)
   - [Quick Start](#quick-start)
     - [1) Install Python deps](#1-install-python-deps)
     - [2) Explore a puzzle](#2-explore-a-puzzle)
@@ -1262,6 +1263,66 @@ Time taken: 0.01 seconds
 
 ---
 
+## Map (Puzzle Type #18)
+
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/map.html)
+
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/map.html#map)
+
+* [**Solver Code**][18]
+
+<details>
+  <summary><strong>Rules</strong></summary>
+You are given a map consisting of a number of regions. Your task is to colour each region with one of four colours, in such a way that no two regions sharing a boundary have the same colour. You are provided with some regions already coloured, sufficient to make the remainder of the solution unique, and these cannot be changed.
+
+Only regions which share a length of border are required to be different colours. Two regions which meet at only one point (i.e. are diagonally separated) may be the same colour. 
+</details>
+
+**Unsolved puzzle**
+
+<img src="./images/map_unsolved.png" alt="Map unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+```python
+from . import solver
+regions = {
+  0: {1, 11, 12, 27},
+  1: {11, 12, 13, 6, 2},
+  2: {3, 4, 6, 7, 9, 10},
+  # ...
+  # ...
+  37: {38, 46, 49, 51, 54, 59, 60, 61},
+  38: {44, 45, 49, 51, 53, 58, 59},
+  39: {40, 46},
+  40: {55, 56},
+  41: {42, 47},
+  42: {48},
+  # ...
+  # ...
+  # ommited for brevity ; this was a pain to type out by hand
+}
+fixed_colors = {
+  0: 'Y', 3: 'R', 7: 'Y', 14: 'Y', 15: 'R', 16: 'Y', 20: 'G', 32: 'B', 33: 'Y', 34: 'R', 35: 'G',
+  36: 'B', 39: 'G', 43: 'G', 47: 'R', 55: 'B', 60: 'R', 64: 'G', 66: 'Y', 67: 'G', 73: 'G', 74: 'G',
+}
+binst = solver.Board(regions=regions, fixed_colors=fixed_colors)
+solutions = binst.solve_and_print()
+```
+**Script Output**
+```
+Solution found
+{0: 'Y', 1: 'R', 2: 'G', 3: 'R', 4: 'B', 5: 'G', 6: 'B', 7: 'Y', 8: 'R', 9: 'Y', 10: 'B', 11: 'G', 12: 'B', 13: 'G', 14: 'Y', 15: 'R', 16: 'Y', 17: 'R', 18: 'G', 19: 'B', 20: 'G', 21: 'Y', 22: 'R', 23: 'Y', 24: 'Y', 25: 'B', 26: 'R', 27: 'G', 28: 'G', 29: 'B', 30: 'B', 31: 'R', 32: 'B', 33: 'Y', 34: 'R', 35: 'G', 36: 'B', 37: 'G', 38: 'B', 39: 'G', 40: 'Y', 41: 'Y', 42: 'R', 43: 'G', 44: 'R', 45: 'Y', 46: 'Y', 47: 'R', 48: 'Y', 49: 'Y', 50: 'G', 51: 'R', 52: 'R', 53: 'Y', 54: 'B', 55: 'B', 56: 'G', 57: 'B', 58: 'R', 59: 'Y', 60: 'R', 61: 'B', 62: 'B', 63: 'Y', 64: 'G', 65: 'R', 66: 'Y', 67: 'G', 68: 'B', 69: 'R', 70: 'Y', 71: 'R', 72: 'B', 73: 'G', 74: 'G'}
+Solutions found: 1
+status: OPTIMAL
+Time taken: 0.01 seconds
+```
+
+**Solved puzzle**
+
+<img src="./images/map_solved.png" alt="Map solved" width="500">
+
+---
+
 ---
 
 ## Quick Start
@@ -1330,6 +1391,7 @@ Each chapter directory targets a different puzzle type:
 * `chapter12_minesweeper` — Minesweeper (mines + counts). ([Chapter 12][3])
 * `chapter17_dominosa` — Dominosa (dominoes + counts). ([Chapter 17][4])
 * `chapter21_light_up` — *Akari* / Light Up (lighting & adjacency). ([Chapter 21][5])
+* `chapter22_map` — Map (region coloring). ([Chapter 22][18])
 * `chapter25_tents` — Tents (tree-tent matching). ([Chapter 25][6])
 * `chapter29_filling` — Filling (Fillomino-style), region sizes. ([Chapter 29][7])
 * `chapter30_keen` — Keen (arithmetic operations). ([Chapter 30][8])
@@ -1373,6 +1435,7 @@ Issues and PRs welcome!
 [3]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter12_minesweeper "SAT_puzzle_solver/chapter12_minesweeper at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [4]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter17_dominosa "SAT_puzzle_solver/chapter17_dominosa at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [5]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter21_light_up "SAT_puzzle_solver/chapter21_light_up at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[18]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter22_map "SAT_puzzle_solver/chapter22_map at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [6]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter25_tents "SAT_puzzle_solver/chapter25_tents at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [7]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter29_filling "SAT_puzzle_solver/chapter29_filling at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
 [8]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter30_keen "SAT_puzzle_solver/chapter30_keen at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
