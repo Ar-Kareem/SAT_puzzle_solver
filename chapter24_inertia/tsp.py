@@ -326,28 +326,65 @@ def solve_optimal_walk(start_pos: Pos, edges: Set[Tuple[Pos, Pos]], gems_to_edge
     #    start_pos -> tail_0  +  edge(tail_0, head_0)
     #    then head_i -> tail_{i+1} + edge(...)
     # ----------------------------
-    walk: List[Pos] = [start_pos]
+    # ---------- Build a coverage-aware compressed walk ----------
+    # Map each directed edge to the set of gems it satisfies
+    edge_to_gems: Dict[Tuple[Pos, Pos], Set[Pos]] = defaultdict(set)
+    for g, elist in gems_to_edges.items():
+        for e in elist:
+            edge_to_gems[e].add(g)
 
-    def extend_with_path(a: Pos, b: Pos):
-        nonlocal walk
-        path = reconstruct_path(a, b)
-        # append without duplicating 'a'
-        walk.extend(path[1:])
+    def mark_covered_along_node_path(path_nodes: List[Pos], covered: Set[Pos]) -> None:
+        """Given a node path [n0,n1,...], mark any gems whose directed edges appear in it."""
+        for i in range(len(path_nodes) - 1):
+            e = (path_nodes[i], path_nodes[i+1])
+            if e in edge_to_gems:
+                covered.update(edge_to_gems[e])
 
-    def traverse_edge(u: Pos, v: Pos):
-        nonlocal walk
-        if walk[-1] != u:
-            raise RuntimeError(f"Walk continuity broken: at {walk[-1]} but need to traverse ({u}->{v}).")
-        walk.append(v)
+    # We will build a compressed sequence of representatives,
+    # skipping any whose gems are already covered by what we've walked so far.
+    compressed_reps: List[Tuple[Pos, Tuple[Pos, Pos]]] = []
 
+    covered: Set[Pos] = set()
     cur = start_pos
-    for _, (tail, head) in chosen_states_in_order:
-        if cur != tail:
-            extend_with_path(cur, tail)
-        traverse_edge(tail, head)
-        cur = head
+    walked_nodes: List[Pos] = [start_pos]  # we’ll accumulate here as we compress
 
-    edge_walk: List[Tuple[Pos, Pos]] = []
-    for i in range(len(walk) - 1):
-        edge_walk.append((walk[i], walk[i+1]))
+    for gem_id, (tail, head) in chosen_states_in_order:
+        if gem_id in covered:
+            # This gem already satisfied incidentally; skip this representative
+            continue
+
+        # 1) Move cur -> tail (directed shortest path); mark any gems satisfied en route
+        if cur != tail:
+            path_ct = reconstruct_path(cur, tail)  # directed
+            # mark coverage on that connector path
+            mark_covered_along_node_path(path_ct, covered)
+            # append connector path to walked_nodes (without duplicating cur)
+            walked_nodes.extend(path_ct[1:])
+            cur = tail
+
+        # If after moving to tail we accidentally satisfied this gem already (e.g., its edge occurred on the connector), skip
+        if gem_id in covered:
+            continue
+
+        # 2) Traverse the representative edge tail->head; mark coverage
+        if walked_nodes[-1] != tail:
+            raise RuntimeError(f"Continuity broken before traversing {tail}->{head}")
+        walked_nodes.append(head)
+        cur = head
+        if (tail, head) in edge_to_gems:
+            covered.update(edge_to_gems[(tail, head)])
+
+        # Keep it in the compressed list only if it actually contributed (not strictly required, but nice to return)
+        compressed_reps.append((gem_id, (tail, head)))
+
+        # Optional early exit: if all gems are covered, we could stop here.
+        # (Uncomment for speed)
+        # if len(covered) == len(gems_to_edges):
+        #     break
+
+    # At this point, `walked_nodes` is the compressed actual walk.
+    # Build edge list and verify every step is a valid directed input edge.
+    edge_walk: List[Tuple[Pos, Pos]] = [(walked_nodes[i], walked_nodes[i+1]) for i in range(len(walked_nodes)-1)]
+    assert all(e in edges for e in edge_walk), "Output contains an edge not in the input directed edges."
+
     return edge_walk

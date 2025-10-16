@@ -20,6 +20,8 @@ bor = np.array([
   ["G", " ", "G", "M", "M", "W", "W", " ", "O", "O", "M", " ", "W", "W", " "]
 ])
 start_pos, edges_to_direction, gems_to_edges = solver.parse_nodes_and_edges(bor)
+print("# gems_to_edges")
+print(gems_to_edges)
 # print("edges_to_direction", edges_to_direction)
 edges = set(edges_to_direction.keys())
 
@@ -29,6 +31,8 @@ cost = len(optimal_walk) - 1
 for edge in optimal_walk:
   assert edge in edges_to_direction, f'edge {edge} not valid yet was in optimal_walk'
 direction_to_str = {Direction8.UP: '↑', Direction8.DOWN: '↓', Direction8.LEFT: '←', Direction8.RIGHT: '→', Direction8.UP_LEFT: '↖', Direction8.UP_RIGHT: '↗', Direction8.DOWN_LEFT: '↙', Direction8.DOWN_RIGHT: '↘'}
+print("optimal_walk")
+print(optimal_walk)
 optimal_walk_directions = [direction_to_str[edges_to_direction[edge]] for edge in optimal_walk]
 print("cost", cost)
 for i, direction in enumerate(optimal_walk_directions):
