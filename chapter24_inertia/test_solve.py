@@ -35,37 +35,54 @@ bor2 = np.array([
   ["G", " ", "O", "W", " ", "M", "O", "M", "O", "G", "G", "M", " ", " ", "G"],
   ["M", " ", "W", " ", "M", "M", "M", "W", "M", "G", "W", "M", "G", "G", "G"]
 ])
+# https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/inertia.html#20x16%23200992952951435
+bor3 = np.array([
+  ["O", "O", "M", " ", "G", "O", "G", "O", " ", " ", "M", " ", " ", "O", "G", "G", "W", "O", "O", "O"],
+  ["O", " ", "W", " ", "W", "O", "G", "M", " ", " ", " ", "G", "M", "O", "W", "G", " ", "M", "M", "O"],
+  ["O", "M", "O", "O", " ", "M", " ", "W", "W", "M", "G", "W", " ", " ", "G", " ", "W", "G", "O", "G"],
+  ["O", " ", "O", "M", "G", "O", "W", "G", "M", "O", " ", " ", "G", "G", "G", " ", "M", "W", "M", "O"],
+  ["M", "M", "O", "G", " ", "W", " ", " ", "O", "G", " ", "M", "M", " ", "W", "W", " ", "W", "W", "O"],
+  ["G", " ", "G", "W", "M", "W", "W", " ", "G", "G", "W", "M", "G", "G", " ", "G", "O", "O", "M", "M"],
+  ["M", " ", "M", " ", "W", "W", "M", "M", "M", "O", "M", "G", "O", "M", "M", "W", "B", "O", "W", "M"],
+  ["G", "G", " ", "W", "M", "M", "W", "O", "W", "G", "W", "O", "O", "M", " ", "W", "W", "G", "G", "M"],
+  [" ", "M", "M", " ", " ", " ", "G", "G", "M", "O", "M", "O", "M", "G", "W", "M", "W", " ", "O", " "],
+  ["G", " ", "M", " ", " ", " ", "W", "O", "W", "W", "M", "M", "G", "W", " ", " ", "W", "M", "G", "W"],
+  ["G", "O", "M", "M", "G", "M", "W", "O", "O", "G", "W", "M", "M", "G", "G", " ", "O", " ", "W", "W"],
+  ["G", "G", "W", "G", "M", " ", "G", "W", "W", " ", "G", " ", "O", "W", "G", "G", "O", " ", "M", "M"],
+  ["W", "M", "O", " ", "W", "O", "O", "M", "M", "O", "G", "W", " ", "G", "O", "G", "G", "O", "O", "W"],
+  ["W", "W", "W", " ", "W", "O", "W", "M", "O", "M", "G", "O", "O", " ", " ", "W", "W", "G", "W", "W"],
+  ["O", "W", "O", "M", "O", "G", " ", "O", "O", "M", "O", " ", "M", "M", "O", "G", "W", "G", "M", " "],
+  ["M", "G", "O", "G", "O", "G", "O", "G", " ", "W", "W", "G", "O", " ", "W", "M", "G", " ", "W", " "]
+])
+
+def _test_ground(bor: np.array, website_moves: int):
+  assert np.sum(bor == 'B') == 1, 'board must have exactly one start position'
+  print('" " count', np.sum(bor == ' '))
+  print('M count', np.sum(bor == 'M'))
+  print('G count', np.sum(bor == 'G'))
+  print('O count', np.sum(bor == 'O'))
+  print('W count', np.sum(bor == 'W'))
+  start_pos, edges, edges_to_direction, gems_to_edges = solver.parse_nodes_and_edges(bor)
+  optimal_walk = tsp.solve_optimal_walk(start_pos, edges, gems_to_edges)
+  moves = solver.get_moves_from_walk(optimal_walk, edges_to_direction)
+  assert solver.is_board_completed(bor, moves)
+  assert len(moves) <= website_moves, f'website solves it in {website_moves} moves. The optimal here is {len(moves)}'
+  print('#moves found is better than website')
 
 def test_ground_1():
   print('board 1:')
-  assert np.sum(bor1 == 'B') == 1, 'board must have exactly one start position'
-  print('" " count', np.sum(bor1 == ' '))
-  print('M count', np.sum(bor1 == 'M'))
-  print('G count', np.sum(bor1 == 'G'))
-  print('O count', np.sum(bor1 == 'O'))
-  print('W count', np.sum(bor1 == 'W'))
-  start_pos, edges, edges_to_direction, gems_to_edges = solver.parse_nodes_and_edges(bor1)
-  optimal_walk = tsp.solve_optimal_walk(start_pos, edges, gems_to_edges)
-  moves = solver.get_moves_from_walk(optimal_walk, edges_to_direction)
-  assert solver.is_board_completed(bor1, moves)
-  assert len(moves) <= 61, 'website solves it in 61 moves'
-  print('#moves found is better than website')
+  bor = bor1
+  _test_ground(bor, 61)
 
 def test_ground_2():
   print('board 2:')
-  assert np.sum(bor2 == 'B') == 1, 'board must have exactly one start position'
-  print(' count', np.sum(bor2 == ' '))
-  print('M count', np.sum(bor2 == 'M'))
-  print('G count', np.sum(bor2 == 'G'))
-  print('O count', np.sum(bor2 == 'O'))
-  print('W count', np.sum(bor2 == 'W'))
-  start_pos, edges, edges_to_direction, gems_to_edges = solver.parse_nodes_and_edges(bor2)
-  optimal_walk = tsp.solve_optimal_walk(start_pos, edges, gems_to_edges)
-  moves = solver.get_moves_from_walk(optimal_walk, edges_to_direction)
-  assert solver.is_board_completed(bor2, moves)
-  assert len(moves) <= 73, f'website solves it in 73 moves. The optimal here is {len(moves)}'
-  print('#moves found is better than website')
+  _test_ground(bor2, 73)
+
+def test_ground_3():
+  print('board 3:')
+  _test_ground(bor3, 121)
 
 if __name__ == '__main__':
   test_ground_1()
   test_ground_2()
+  test_ground_3()

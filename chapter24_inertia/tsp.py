@@ -28,7 +28,7 @@ def solve_optimal_walk(
     ]
     expected_runtime = time_limit_ms * restarts * len(meta_list)
     if verbose:
-        print(f'expected runtime: {expected_runtime/1000:.1f} seconds')
+        print(f'minimum runtime: {expected_runtime/1000:.1f} seconds')
     rng = random.Random(seed)
 
     assert start_pos is not None, 'start_pos is required'

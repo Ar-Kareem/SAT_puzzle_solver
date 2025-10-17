@@ -1,3 +1,8 @@
+"""
+    This file is a simple helper that parses the images from https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/inertia.html and converts them to a json file. 
+    Look at the ./input_output/ directory for examples of input images and output json files.
+    The output json is used in the test_solve.py file to test the solver.
+"""
 from pathlib import Path
 import numpy as np
 import cv2 as cv
@@ -192,3 +197,4 @@ def main(image):
 if __name__ == '__main__':
     main(Path(__file__).parent / 'input_output' / 'inertia.html#15x12%23919933974949365.png')
     main(Path(__file__).parent / 'input_output' / 'inertia.html#15x12%23518193627142459.png')
+    main(Path(__file__).parent / 'input_output' / 'inertia.html#20x16%23200992952951435.png')
