@@ -96,7 +96,7 @@ def simulate_moves(board: np.array, moves: list[str]) -> bool:
         next_pos, gems = _jump(board, current_pos, move)
         if next_pos is None:
             print(f'invalid move {move} from {current_pos}. Either hit a wall (considered illegal here) or a mine (dead)')
-            return gems_collected_so_far
+            return set()  # Running into a mine is fatal. Even if you picked up the last gem in the same move which then hit a mine, the game will count you as dead rather than victorious.
         current_pos = next_pos
         gems_collected_so_far.update(gems)
     return gems_collected_so_far
