@@ -33,7 +33,7 @@ Running into a mine is fatal. Even if you picked up the last gem in the same mov
 
 Code to utilize this package and solve the puzzle:
 
-(Note: there is a script that parses a screenshot of the board and outputs the below array that the solver uses. The script is called `parse_map.py`)
+(Note: there is a script that parses a screenshot of the board and outputs the below array that the solver uses. The script uses classical computer vision techniques and is called `parse_map.py`)
 ```python
 import numpy as np
 from . import solver
