@@ -1,34 +1,18 @@
-import time
-import numpy as np
-
 from . import solver
-from core.utils import get_pos
 
 assert solver.get_triplets(guess=((0, 'Y'), (1, 'R'), (2, 'R'), (3, 'R')), ground_truth=((0, 'Y'), (1, 'Y'), (2, 'R'), (3, 'R'))) == (3, 0, 1)
 assert solver.get_triplets(guess=((0, 'R'), (1, 'Y'), (2, 'Y'), (3, 'Y')), ground_truth=((0, 'Y'), (1, 'Y'), (2, 'R'), (3, 'R'))) == (1, 2, 1)
+assert solver.get_triplets(guess=((0, 'Y'), (1, 'Y'), (2, 'Y'), (3, 'R'), (4, 'R'), (5, 'R')), ground_truth=((0, 'R'), (1, 'G'), (2, 'B'), (3, 'Y'), (4, 'B'), (5, 'P'))) == (0, 2, 4)
+assert solver.get_triplets(guess=((0, 'B'), (1, 'B'), (2, 'B'), (3, 'G'), (4, 'G'), (5, 'G')), ground_truth=((0, 'R'), (1, 'G'), (2, 'B'), (3, 'Y'), (4, 'B'), (5, 'P'))) == (1, 2, 3)
+assert solver.get_triplets(guess=((0, 'P'), (1, 'P'), (2, 'P'), (3, 'O'), (4, 'O'), (5, 'O')), ground_truth=((0, 'R'), (1, 'G'), (2, 'B'), (3, 'Y'), (4, 'B'), (5, 'P'))) == (0, 1, 5)
 
 
 all_colors = ['R', 'Y', 'G', 'B', 'O', 'P']
-int_to_color = {i: c for i, c in enumerate(all_colors)}
-
-guess=((0, 'R'), (1, 'Y'), (2, 'Y'), (3, 'G'))
-n = len(guess)
-POSSIBLE_TRIPLETS = set((i, j, n-i-j) for i in range(n+1) for j in range(n+1-i))
-possible_ground_truths=set(
-  (int_to_color[i], int_to_color[j], int_to_color[k], int_to_color[l]) for i in range(len(all_colors)) for j in range(len(all_colors)) for k in range(len(all_colors)) for l in range(len(all_colors))
-)
-possible_ground_truths = tuple({(i, color) for i, color in enumerate(ground_truth)} for ground_truth in possible_ground_truths)
-print('# possible ground truths:', len(possible_ground_truths))
-print('# possible triplets:', len(POSSIBLE_TRIPLETS))
-
-r = solver.slow_information_gain(guess=guess, possible_ground_truths=possible_ground_truths, possible_triplets=POSSIBLE_TRIPLETS)
-print(sorted(r.items()))
-
-
-tic = time.time()
-N = 10**3
-for _ in range(N):
-  r = solver.slow_information_gain(guess=guess, possible_ground_truths=possible_ground_truths, possible_triplets=POSSIBLE_TRIPLETS)
-toc = time.time()
-ttaken = ((toc - tic)*1000) / N # milliseconds
-print(f'Time taken: {ttaken:.2f} ms')
+num_pegs = 4
+previous_guesses = [
+  (('R', 'Y', 'G', 'B'), (0, 2, 2)),
+  (('Y', 'G', 'O', 'P'), (0, 2, 2)),
+  (('G', 'P', 'B', 'P'), (1, 3, 0)),
+]
+best_next_guess = solver.best_next_guess(previous_guesses=previous_guesses, num_pegs=num_pegs, all_colors=all_colors)
+assert tuple(best_next_guess) == ('B', 'P', 'P', 'G')

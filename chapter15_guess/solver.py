@@ -1,4 +1,49 @@
 from collections import defaultdict
+import numpy as np
+from collections import Counter
+from itertools import product
+
+
+def best_next_guess(previous_guesses: list[tuple[tuple[str, ...], tuple[int, int, int]]], num_pegs: int, all_colors: list[str], verbose: bool = False):
+    if verbose:
+        from tqdm import tqdm
+    POSSIBLE_TRIPLETS = set((i, j, num_pegs-i-j) for i in range(num_pegs+1) for j in range(num_pegs+1-i))
+    int_to_color = {i: c for i, c in enumerate(all_colors)}
+    possible_ground_truths = tuple({(i, int_to_color[int_]) for i, int_ in enumerate(ints)} for ints in product(range(len(all_colors)), repeat=num_pegs))
+    all_guesses = possible_ground_truths
+    # filter possible ground truths based on previous guesses
+    pair_mask = np.full((len(possible_ground_truths), ), True, dtype=bool)
+    for previous_guess, guess_result in previous_guesses:
+        previous_guess = tuple(tuple((i, c) for i, c in enumerate(previous_guess)))
+        # print(f'previous_guess: {previous_guess}')
+        _, _, pairs = np_information_gain(guess=previous_guess, possible_ground_truths=possible_ground_truths, possible_triplets=POSSIBLE_TRIPLETS, return_pairs=True)
+        mask = np.all(pairs == guess_result, axis=1)
+        pair_mask &= mask
+        # _cur = tuple({(i, c) for i, c in possible_ground_truths[i]} for i in range(len(possible_ground_truths)) if pair_mask[i])
+        # print(f'guess {previous_guess} with result {guess_result} reduces # possible ground truths to {pair_mask.sum()} ; they are: {_cur}')
+        # print(f'pairs: {pairs[pair_mask]} ')
+    possible_ground_truths = tuple(possible_ground_truths[i] for i in range(len(possible_ground_truths)) if pair_mask[i])
+    if len(possible_ground_truths) == 0:
+        print('No possible ground truths found. This should not happen in a real game, please check your inputted guesses.')
+        return None
+    if len(possible_ground_truths) == 1:
+        answer = [c for i, c in sorted(possible_ground_truths[0], key=lambda x: x[0])]
+        print(f'Solution found! The solution is: {answer}')
+        return answer
+    print(f'# possible ground truths: {len(possible_ground_truths)}')
+
+    if verbose:
+        guesses = tqdm(all_guesses)
+    else:
+        guesses = all_guesses
+    guess_entropy = []
+    possible_ground_truths_set = set(tuple((i, c) for i, c in guess) for guess in possible_ground_truths)
+    for guess in guesses:
+        r, e = np_information_gain(guess=guess, possible_ground_truths=possible_ground_truths, possible_triplets=POSSIBLE_TRIPLETS)
+        is_possible = tuple(guess) in possible_ground_truths_set
+        guess_entropy.append((guess, e, is_possible))
+    best_guess = max(guess_entropy, key=lambda x: (x[1], x[2]))
+    return best_guess
 
 
 def get_triplets(guess, ground_truth, verbose=False):
@@ -38,7 +83,97 @@ def get_triplets(guess, ground_truth, verbose=False):
     return matching_color_and_location, matching_color_but_not_location, not_matching
 
 def slow_information_gain(guess: set[tuple[int, str]], possible_ground_truths: set[set[tuple[int, str]]], possible_triplets: set[tuple[int, int, int]]):
+    # safe but slow solution used as a reference
     counts = {triplet: 0 for triplet in possible_triplets}
     for ground_truth in possible_ground_truths:
         counts[tuple(get_triplets(guess, ground_truth))] += 1
-    return counts
+    px = {triplet: count / len(possible_ground_truths) for triplet, count in counts.items()}
+    entropy = -sum(px[triplet] * np.log2(px[triplet]) for triplet in possible_triplets if px[triplet] > 0)
+    return counts, entropy
+
+
+def np_information_gain(guess: tuple[tuple[int, str]], possible_ground_truths: tuple[set[tuple[int, str]]], possible_triplets: set[tuple[int, int, int]], return_pairs: bool = False):
+    # my attempt of a vectorized np solution
+    n = len(guess)
+    all_colors = set()
+    for _, color in guess:
+        all_colors.add(color)
+    for gt in possible_ground_truths:
+        for _, color in gt:
+            all_colors.add(color)
+    guess_mask = {c: np.full((n, 1), 0, dtype=np.int8) for c in all_colors}
+    for loc, color in guess:
+        guess_mask[color][loc] = 1
+    guess_mask_repeated = {c: np.repeat(guess_mask[c].T, len(possible_ground_truths), axis=0) for c in all_colors}
+
+    color_matrices = {c: np.full((len(possible_ground_truths), n), 0, dtype=np.int8) for c in all_colors}
+    for i, gt in enumerate(possible_ground_truths):
+        for loc, color in gt:
+            color_matrices[color][i, loc] = 1
+
+    pair_1 = sum(color_matrices[c] @ guess_mask[c] for c in all_colors)
+
+    pair_2_diff = {c: guess_mask_repeated[c] - color_matrices[c] for c in all_colors}
+    pos_mask = {c: pair_2_diff[c] > 0 for c in all_colors}
+    pair_2_extra_guess = {c: pair_2_diff[c].copy() for c in all_colors}
+    pair_2_extra_ground = {c: pair_2_diff[c].copy() for c in all_colors}
+    pair_2 = {}
+    for c in all_colors:
+        pair_2_extra_guess[c][~pos_mask[c]] = 0
+        pair_2_extra_guess[c] = np.sum(pair_2_extra_guess[c], axis=1)
+        pair_2_extra_ground[c][pos_mask[c]] = 0
+        pair_2_extra_ground[c] = np.abs(np.sum(pair_2_extra_ground[c], axis=1))
+        pair_2[c] = np.minimum(pair_2_extra_guess[c], pair_2_extra_ground[c])
+
+    pair_2 = sum(pair_2[c] for c in all_colors)
+    pair_2 = pair_2[:, None]
+
+    pair_3 = n - pair_1 - pair_2
+
+    pair = np.concatenate([pair_1, pair_2, pair_3], axis=1)
+    pair_counter = Counter(tuple(t) for t in pair)
+    counts = {triplet: pair_counter[triplet] for triplet in possible_triplets}
+    px = {triplet: count / len(possible_ground_truths) for triplet, count in counts.items()}
+    entropy = -sum(px[triplet] * np.log2(px[triplet]) for triplet in possible_triplets if px[triplet] > 0)
+    if return_pairs:
+        return counts, entropy, pair
+    else:
+        return counts, entropy
+
+
+
+
+
+
+def fast_information_gain(guess: set[tuple[int, str]],
+                          possible_ground_truths: set[set[tuple[int, str]]],
+                          possible_triplets: set[tuple[int, int, int]]):
+    # chatgpt fast solution + many modifications by me
+    counts = {t: 0 for t in possible_triplets}
+
+    for gt in possible_ground_truths:
+        color_count = {}
+        for _, c in gt:
+            color_count[c] = color_count.get(c, 0) + 1
+
+        H = 0
+        for loc, c in guess:
+            if (loc, c) in gt:
+                H += 1
+                color_count[c] -= 1  # safe: gt contributes this occurrence
+
+        color_only = 0
+        for loc, c in guess:
+            if (loc, c) in gt:
+                continue
+            remain = color_count.get(c, 0)
+            if remain > 0:
+                color_only += 1
+                color_count[c] = remain - 1
+
+        triplet = (H, color_only, len(guess) - H - color_only)
+        counts[triplet] += 1
+
+    px = {triplet: count / len(possible_ground_truths) for triplet, count in counts.items()}
+    entropy = -sum(px[triplet] * np.log2(px[triplet]) for triplet in possible_triplets if px[triplet] > 0)
+    return counts, entropy
