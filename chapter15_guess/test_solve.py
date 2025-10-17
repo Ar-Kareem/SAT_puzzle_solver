@@ -11,60 +11,45 @@ assert solver.get_triplets(guess=((0, 'P'), (1, 'P'), (2, 'P'), (3, 'O'), (4, 'O
 
 
 def test_ground_1():
-  all_colors=['R', 'Y', 'G', 'B', 'O', 'P']
-  num_pegs = 4
-  previous_guesses = [
-    (('R', 'Y', 'G', 'B'), (0, 2, 2)),
-  ]
-  best_next_guess = solver.best_next_guess(previous_guesses=previous_guesses, num_pegs=num_pegs, all_colors=all_colors, verbose=True)
+  binst = solver.Board()
+  binst.add_guess(('R', 'Y', 'G', 'B'), (0, 2, 2))  
+  best_next_guess = binst.best_next_guess()
   assert round(best_next_guess[1], 4) == 3.2269  # entropy of best next guess
 
 def test_ground_2():
-  all_colors=['R', 'Y', 'G', 'B', 'O', 'P']
-  num_pegs = 4
-  previous_guesses = [
-    (('R', 'Y', 'G', 'B'), (0, 2, 2)),
-    (('Y', 'G', 'O', 'P'), (0, 2, 2)),
-  ]
-  best_next_guess = solver.best_next_guess(previous_guesses=previous_guesses, num_pegs=num_pegs, all_colors=all_colors, verbose=True)
+  binst = solver.Board()
+  binst.add_guess(('R', 'Y', 'G', 'B'), (0, 2, 2))
+  binst.add_guess(('Y', 'G', 'O', 'P'), (0, 2, 2))
+  best_next_guess = binst.best_next_guess()
   assert round(best_next_guess[1], 4) == 3.3037  # entropy of best next guess
 
 def test_ground_3():
-  all_colors=['R', 'Y', 'G', 'B', 'O', 'P']
-  num_pegs = 4
-  previous_guesses = [
-    (('R', 'Y', 'G', 'B'), (0, 2, 2)),
-    (('Y', 'G', 'O', 'P'), (0, 2, 2)),
-    (('G', 'P', 'B', 'P'), (1, 3, 0)),
-  ]
-  best_next_guess = solver.best_next_guess(previous_guesses=previous_guesses, num_pegs=num_pegs, all_colors=all_colors, verbose=True)
+  binst = solver.Board()
+  binst.add_guess(('R', 'Y', 'G', 'B'), (0, 2, 2))
+  binst.add_guess(('Y', 'G', 'O', 'P'), (0, 2, 2))
+  binst.add_guess(('G', 'P', 'B', 'P'), (1, 3, 0))
+  best_next_guess = binst.best_next_guess()
   assert isinstance(best_next_guess, list), 'when solution is found, best_next_guess should simply be a list of the solution'
   assert tuple(best_next_guess) == ('B', 'P', 'P', 'G')
 
 def test_ground_4():
-  all_colors=['R', 'Y', 'G', 'B', 'O', 'P', 'Br', 'Cy']
-  num_pegs = 5
-  previous_guesses = [
-    (('R', 'Y', 'G', 'B', 'O'), (0, 2, 3)),
-    (('P', 'P', 'Br', 'Br', 'Cy'), (1, 1, 3)),
-    (('G', 'Cy', 'Cy', 'Br', 'R'), (0, 1, 4)),
-    (('Br', 'Br', 'B', 'Y', 'B'), (0, 1, 4)),
-    (('P', 'R', 'Y', 'P', 'P'), (0, 3, 2)),
-  ]
-  best_next_guess = solver.best_next_guess(previous_guesses=previous_guesses, num_pegs=num_pegs, all_colors=all_colors, verbose=True, show_progress=True)
+  binst = solver.Board(num_pegs=5, all_colors=['R', 'Y', 'G', 'B', 'O', 'P', 'Br', 'Cy'])
+  binst.add_guess(('R', 'Y', 'G', 'B', 'O'), (0, 2, 3))
+  binst.add_guess(('P', 'P', 'Br', 'Br', 'Cy'), (1, 1, 3))
+  binst.add_guess(('G', 'Cy', 'Cy', 'Br', 'R'), (0, 1, 4))
+  binst.add_guess(('Br', 'Br', 'B', 'Y', 'B'), (0, 1, 4))
+  binst.add_guess(('P', 'R', 'Y', 'P', 'P'), (0, 3, 2))
+  best_next_guess = binst.best_next_guess()
   assert round(best_next_guess[1], 4) == 1.0000, 'only 2 possible ground truths left, so next guess cuts that in half (i.e. entropy is 1.0000)'
 
 def test_ground_4():
-  all_colors=['R', 'Y', 'G', 'B', 'O', 'P', 'Br', 'Cy']
-  num_pegs = 5
-  previous_guesses = [
-    (('R', 'Y', 'G', 'B', 'O'), (0, 2, 3)),
-    (('P', 'P', 'Br', 'Br', 'Cy'), (1, 1, 3)),
-    (('G', 'Cy', 'Cy', 'Br', 'R'), (1, 0, 4)),
-    (('Br', 'Br', 'B', 'Y', 'B'), (0, 1, 4)),
-    (('P', 'R', 'Y', 'P', 'P'), (0, 3, 2)),
-  ]
-  best_next_guess = solver.best_next_guess(previous_guesses=previous_guesses, num_pegs=num_pegs, all_colors=all_colors, verbose=True, show_progress=True)
+  binst = solver.Board(num_pegs=5, all_colors=['R', 'Y', 'G', 'B', 'O', 'P', 'Br', 'Cy'])
+  binst.add_guess(('R', 'Y', 'G', 'B', 'O'), (0, 2, 3))
+  binst.add_guess(('P', 'P', 'Br', 'Br', 'Cy'), (1, 1, 3))
+  binst.add_guess(('G', 'Cy', 'Cy', 'Br', 'R'), (1, 0, 4))
+  binst.add_guess(('Br', 'Br', 'B', 'Y', 'B'), (0, 1, 4))
+  binst.add_guess(('P', 'R', 'Y', 'P', 'P'), (0, 3, 2))
+  best_next_guess = binst.best_next_guess()
   assert round(best_next_guess[1], 4) == 1.0000, 'only 2 possible ground truths left, so next guess cuts that in half (i.e. entropy is 1.0000)'
 
 

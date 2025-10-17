@@ -3,74 +3,79 @@ import numpy as np
 from collections import Counter
 from itertools import product
 
+class Board:
+    def __init__(self, num_pegs: int = 4, all_colors: list[str] = ['R', 'Y', 'G', 'B', 'O', 'P'], show_warnings: bool = True):
+        self.previous_guesses = []
+        self.num_pegs = num_pegs
+        self.all_colors = all_colors
+        assert num_pegs >= 1, 'num_pegs must be at least 1'
+        assert len(all_colors) == len(set(all_colors)), 'all_colors must contain only unique colors'
 
-def best_next_guess(
-    previous_guesses: list[tuple[tuple[str, ...], tuple[int, int, int]]],
-    num_pegs: int,
-    all_colors: list[str],
-    # optional
-    return_guess_entropy: bool = False,
-    verbose: bool = False,
-    show_warnings: bool = True,
-    show_progress: bool = False,
-):
-    """
-    Returns the best next guess that would maximize the Shannon entropy of the next guess.
-    """
-    # assertions
-    assert num_pegs >= 1, 'num_pegs must be at least 1'
-    assert len(all_colors) == len(set(all_colors)), 'all_colors must contain only unique colors'
-    for i, (previous_guess, guess_result) in enumerate(previous_guesses):
-        assert len(previous_guess) == num_pegs, 'previous guess must have the same number of pegs as the game'
-        assert not set(previous_guess) - set(all_colors), f'previous guess must contain only colors in all_colors; invalid colors: {set(previous_guess) - set(all_colors)}'
-        assert sum(guess_result) == num_pegs, 'guess result must sum to num_pegs'
-    if show_progress:
-        from tqdm import tqdm
-    POSSIBLE_TRIPLETS = set((i, j, num_pegs-i-j) for i in range(num_pegs+1) for j in range(num_pegs+1-i))
-    int_to_color = {i: c for i, c in enumerate(all_colors)}
-    c = len(all_colors)**num_pegs
-    if c > 10**5 and show_warnings:
-        print(f'Warning: len(all_colors)**num_pegs is too large (= {c:,}). The solver may take infinitely long to run.')
-    all_possible_pairs = tuple({(i, int_to_color[int_]) for i, int_ in enumerate(ints)} for ints in product(range(len(all_colors)), repeat=num_pegs))
+        self.possible_triplets = set((i, j, num_pegs-i-j) for i in range(num_pegs+1) for j in range(num_pegs+1-i))
+        int_to_color = {i: c for i, c in enumerate(all_colors)}
+        c = len(all_colors)**num_pegs
+        if c > 10**5 and show_warnings:
+            print(f'Warning: len(all_colors)**num_pegs is too large (= {c:,}). The solver may take infinitely long to run.')
+        self.all_possible_pegs = tuple({(i, int_to_color[int_]) for i, int_ in enumerate(ints)} for ints in product(range(len(all_colors)), repeat=num_pegs))
 
-    if show_progress:
-        previous_guesses = tqdm(previous_guesses, desc='Step 1/2: Filtering possible ground truths')
-    # filter possible ground truths based on previous guesses
-    pair_mask = np.full((len(all_possible_pairs), ), True, dtype=bool)
-    for previous_guess, guess_result in previous_guesses:
-        previous_guess = tuple(tuple((i, c) for i, c in enumerate(previous_guess)))
-        pairs = np_information_gain(guess=previous_guess, possible_ground_truths=all_possible_pairs, possible_triplets=POSSIBLE_TRIPLETS, return_pairs=True)
-        mask = np.all(pairs == guess_result, axis=1)
-        pair_mask &= mask
-    possible_ground_truths = tuple(all_possible_pairs[i] for i in range(len(all_possible_pairs)) if pair_mask[i])
-    if len(possible_ground_truths) == 0:
-        print('No possible ground truths found. This should not happen in a real game, please check your inputted guesses.')
-        return None
-    if len(possible_ground_truths) == 1:
-        answer = [c for i, c in sorted(possible_ground_truths[0], key=lambda x: x[0])]
+    def add_guess(self, guess: tuple[tuple[int, str]], guess_result: tuple[int, int, int]):
+        assert len(guess) == self.num_pegs, 'previous guess must have the same number of pegs as the game'
+        assert not set(guess) - set(self.all_colors), f'previous guess must contain only colors in all_colors; invalid colors: {set(guess) - set(self.all_colors)}'
+        assert sum(guess_result) == self.num_pegs, 'guess result must sum to num_pegs'
+        self.previous_guesses.append((guess, guess_result))
+
+    def best_next_guess(
+        self,
+        return_guess_entropy: bool = False,
+        verbose: bool = True,
+        show_progress: bool = False,
+    ):
+        """
+        Returns the best next guess that would maximize the Shannon entropy of the next guess.
+        """
+        previous_guesses = self.previous_guesses
+        possible_triplets = self.possible_triplets
+        all_possible_pegs = self.all_possible_pegs
+        if show_progress:
+            from tqdm import tqdm
+        if show_progress:
+            previous_guesses = tqdm(previous_guesses, desc='Step 1/2: Filtering possible ground truths')
+        # filter possible ground truths based on previous guesses
+        pair_mask = np.full((len(all_possible_pegs), ), True, dtype=bool)
+        for previous_guess, guess_result in previous_guesses:
+            previous_guess = tuple(tuple((i, c) for i, c in enumerate(previous_guess)))
+            pairs = np_information_gain(guess=previous_guess, possible_ground_truths=all_possible_pegs, possible_triplets=possible_triplets, return_pairs=True)
+            mask = np.all(pairs == guess_result, axis=1)
+            pair_mask &= mask
+        possible_ground_truths = tuple(all_possible_pegs[i] for i in range(len(all_possible_pegs)) if pair_mask[i])
+        if len(possible_ground_truths) == 0:
+            print('No possible ground truths found. This should not happen in a real game, please check your inputted guesses.')
+            return None
+        if len(possible_ground_truths) == 1:
+            answer = [c for i, c in sorted(possible_ground_truths[0], key=lambda x: x[0])]
+            if verbose:
+                print(f'Solution found! The solution is: {answer}')
+            return answer
         if verbose:
-            print(f'Solution found! The solution is: {answer}')
-        return answer
-    if verbose:
-        print(f'out of {len(all_possible_pairs)} possible ground truths, only {len(possible_ground_truths)} are still possible.')
+            print(f'out of {len(all_possible_pegs)} possible ground truths, only {len(possible_ground_truths)} are still possible.')
 
-    if show_progress:
-        all_possible_pairs = tqdm(all_possible_pairs, desc='Step 2/2: Calculating entropy for each guess')
-    guess_entropy = []
-    possible_ground_truths_set = set(tuple((i, c) for i, c in guess) for guess in possible_ground_truths)
-    for guess in all_possible_pairs:
-        entropy = np_information_gain(guess=guess, possible_ground_truths=possible_ground_truths, possible_triplets=POSSIBLE_TRIPLETS)
-        is_possible = tuple(guess) in possible_ground_truths_set
-        guess_entropy.append((guess, entropy, is_possible))
-    guess_entropy = sorted(guess_entropy, key=lambda x: (x[1], x[2]), reverse=True)
-    max_entropy_guess = guess_entropy[0]
-    if verbose:
-        answer = [c for i, c in sorted(max_entropy_guess[0], key=lambda x: x[0])]
-        print(f'max entropy guess is: {answer} with entropy {max_entropy_guess[1]:.4f}')
-    if return_guess_entropy:
-        return max_entropy_guess, guess_entropy
-    else:
-        return max_entropy_guess
+        if show_progress:
+            all_possible_pegs = tqdm(all_possible_pegs, desc='Step 2/2: Calculating entropy for each guess')
+        guess_entropy = []
+        possible_ground_truths_set = set(tuple((i, c) for i, c in guess) for guess in possible_ground_truths)
+        for guess in all_possible_pegs:
+            entropy = np_information_gain(guess=guess, possible_ground_truths=possible_ground_truths, possible_triplets=possible_triplets)
+            is_possible = tuple(guess) in possible_ground_truths_set
+            guess_entropy.append((guess, entropy, is_possible))
+        guess_entropy = sorted(guess_entropy, key=lambda x: (x[1], x[2]), reverse=True)
+        max_entropy_guess = guess_entropy[0]
+        if verbose:
+            answer = [c for i, c in sorted(max_entropy_guess[0], key=lambda x: x[0])]
+            print(f'max entropy guess is: {answer} with entropy {max_entropy_guess[1]:.4f}')
+        if return_guess_entropy:
+            return max_entropy_guess, guess_entropy
+        else:
+            return max_entropy_guess
 
 
 
