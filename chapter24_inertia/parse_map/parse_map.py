@@ -191,3 +191,4 @@ def main(image):
 
 if __name__ == '__main__':
     main(Path(__file__).parent / 'input_output' / 'inertia.html#15x12%23919933974949365.png')
+    main(Path(__file__).parent / 'input_output' / 'inertia.html#15x12%23518193627142459.png')
