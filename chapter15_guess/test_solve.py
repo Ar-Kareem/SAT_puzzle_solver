@@ -14,5 +14,11 @@ previous_guesses = [
   (('Y', 'G', 'O', 'P'), (0, 2, 2)),
   (('G', 'P', 'B', 'P'), (1, 3, 0)),
 ]
+
+best_next_guess = solver.best_next_guess(previous_guesses=previous_guesses[:1], num_pegs=num_pegs, all_colors=all_colors)
+assert round(best_next_guess[1], 4) == 3.2269  # entropy of best next guess
+best_next_guess = solver.best_next_guess(previous_guesses=previous_guesses[:2], num_pegs=num_pegs, all_colors=all_colors)
+assert round(best_next_guess[1], 4) == 3.3037  # entropy of best next guess
 best_next_guess = solver.best_next_guess(previous_guesses=previous_guesses, num_pegs=num_pegs, all_colors=all_colors)
+assert isinstance(best_next_guess, list), 'when solution is found, best_next_guess should simply be a list of the solution'
 assert tuple(best_next_guess) == ('B', 'P', 'P', 'G')
