@@ -1,103 +1,107 @@
 from collections import deque, defaultdict
 from typing import Dict, List, Tuple, Set, Any, Optional
+import random
 from ortools.constraint_solver import pywrapcp, routing_enums_pb2
 
 Pos = Any  # Hashable node id
 
-def solve_optimal_walk(start_pos: Pos, edges: Set[Tuple[Pos, Pos]], gems_to_edges: defaultdict[Pos, List[Tuple[Pos, Pos]]]) -> List[Tuple[Pos, Pos]]:
+def solve_optimal_walk(
+    start_pos: Pos,
+    edges: Set[Tuple[Pos, Pos]],
+    gems_to_edges: "defaultdict[Pos, List[Tuple[Pos, Pos]]]",
+    *,
+    restarts: int = 1,          # try more for harder instances (e.g., 48–128)
+    time_limit_ms: int = 1000,   # per restart
+    seed: int = 0,
+    verbose: bool = True
+) -> List[Tuple[Pos, Pos]]:
     """
-    Solve: start at `start_pos` and walk a minimum-length route that traverses
-    at least one edge from each gem group in `gems_to_edges`.
-    Edges are undirected with unit weight (hop=1). Returns the chosen oriented
-    edges (one per group, in visiting order) and the full node-by-node walk.
+    Directed edges. For each gem (key in gems_to_edges), traverse >=1 of its directed edges.
+    Returns the actual directed walk (edge-by-edge) from start_pos.
+    Uses multi-start Noon–Bean + OR-Tools and post-optimizes the representative order.
+    """
+    # ---- Multi-start Noon–Bean + metaheuristic sweeps ----
+    meta_list = [
+        # routing_enums_pb2.LocalSearchMetaheuristic.GUIDED_LOCAL_SEARCH,
+        # routing_enums_pb2.LocalSearchMetaheuristic.SIMULATED_ANNEALING,
+        routing_enums_pb2.LocalSearchMetaheuristic.TABU_SEARCH,
+    ]
+    expected_runtime = time_limit_ms * restarts * len(meta_list)
+    if verbose:
+        print(f'expected runtime: {expected_runtime/1000:.1f} seconds')
+    rng = random.Random(seed)
 
-    Returns:
-        List[Tuple[Pos, Pos]]                            # edge to edge path from start to collect all gems in minimum number of moves
-    """
     assert start_pos is not None, 'start_pos is required'
-    assert edges is not None, 'edges are required'
-    assert gems_to_edges is not None, 'gems_to_edges are required'
-    assert len(edges) > 0, 'edges must be non-empty'
-    assert len(gems_to_edges) > 0, 'gems_to_edges must be non-empty'
-    assert all(all(edge in edges for edge in elist) for elist in gems_to_edges.values()), 'all edges in gems_to_edges must be in edges'
-    nodes = set([u for (u, v) in edges]) | set([v for (u, v) in edges])
+    assert edges, 'edges must be non-empty'
+    assert gems_to_edges, 'gems_to_edges must be non-empty'
+    assert all(all(e in edges for e in elist) for elist in gems_to_edges.values()), \
+        'all gem edges must be in edges'
+
+    nodes = set(u for (u, v) in edges) | set(v for (u, v) in edges)
     assert start_pos in nodes, 'start_pos must be in edges'
-    assert all(edge[0] in nodes and edge[1] in nodes for edge in edges), 'all edges must be in nodes'
-    # ----------------------------
-    # 0) Build the base graph (undirected, unit weights)
-    # ----------------------------
+    assert all(u in nodes and v in nodes for (u, v) in edges)
+
+    # ---------- Directed adjacency ----------
     adj: Dict[Pos, List[Pos]] = {u: [] for u in nodes}
     for (u, v) in edges:
-        if u not in adj: adj[u] = []
         adj[u].append(v)
 
-    # ----------------------------
-    # 1) Build oriented "states" from edges (u->v) and (v->u),
-    #    and cluster them by gem_id (group).
-    #    We *only* create states for edges that appear in gems_to_edges.
-    # ----------------------------
-    states: List[Tuple[Pos, Pos]] = []         # index -> (tail, head)
-    state_group: List[Pos] = []                # index -> gem_id
-    group_to_state_indices: Dict[Pos, List[int]] = defaultdict(list)
+    # ---------- States: ONLY the given directed gem edges ----------
+    states: List[Tuple[Pos, Pos]] = []   # index -> (tail, head)
+    state_group: List[Pos] = []          # index -> gem_id
+    group_to_state_indices_original: Dict[Pos, List[int]] = defaultdict(list)
 
     for gem_id, elist in gems_to_edges.items():
         for (u, v) in elist:
-            # Ensure edge exists in graph (robustness)
-            if u not in adj or v not in adj or (v not in adj[u]):
-                raise ValueError(f"Edge {(u, v)} for gem {gem_id} does not exist in base graph.")
-            idx_uv = len(states); states.append((u, v)); state_group.append(gem_id); group_to_state_indices[gem_id].append(idx_uv)
+            idx = len(states)
+            states.append((u, v))
+            state_group.append(gem_id)
+            group_to_state_indices_original[gem_id].append(idx)
 
-    # Add a depot representing the start (not part of any gem cluster)
+    # Depot node
     DEPOT = len(states)
     states.append((None, None))
     state_group.append("__DEPOT__")
 
-    # Quick helpers
     N_no_depot = DEPOT
     N = len(states)
-    groups = [g for g in group_to_state_indices.keys()]
+    gem_groups = list(group_to_state_indices_original.keys())
+    all_gems: Set[Pos] = set(gem_groups)
 
-    # ----------------------------
-    # 2) Precompute BFS shortest paths between all *relevant* nodes
-    #    (all distinct endpoints of states plus start_pos).
-    #    We also store predecessors to reconstruct paths later.
-    # ----------------------------
-    relevant_nodes: Set[Pos] = {start_pos}
+    # ---------- Directed shortest paths among relevant nodes ----------
+    relevant: Set[Pos] = {start_pos}
     for (tail, head) in states[:N_no_depot]:
-        relevant_nodes.add(tail)
-        relevant_nodes.add(head)
+        relevant.add(tail)
+        relevant.add(head)
 
-    # BFS from a single source on unweighted graph
-    def bfs(source: Pos) -> Tuple[Dict[Pos, int], Dict[Pos, Optional[Pos]]]:
+    def bfs_dir(src: Pos) -> Tuple[Dict[Pos, int], Dict[Pos, Optional[Pos]]]:
         dist = {n: float('inf') for n in nodes}
-        prev: Dict[Pos, Optional[Pos]] = {n: None for n in nodes}
-        if source not in adj:
+        prev = {n: None for n in nodes}
+        if src not in adj:
             return dist, prev
-        dq = deque([source])
-        dist[source] = 0
-        while dq:
-            u = dq.popleft()
+        from collections import deque
+        q = deque([src])
+        dist[src] = 0
+        while q:
+            u = q.popleft()
             for w in adj[u]:
                 if dist[w] == float('inf'):
                     dist[w] = dist[u] + 1
                     prev[w] = u
-                    dq.append(w)
+                    q.append(w)
         return dist, prev
 
-    # Run BFS from each relevant node
     sp_dist: Dict[Pos, Dict[Pos, int]] = {}
     sp_prev: Dict[Pos, Dict[Pos, Optional[Pos]]] = {}
-    for s in relevant_nodes:
-        d, p = bfs(s)
-        sp_dist[s] = d
-        sp_prev[s] = p
+    for s in relevant:
+        d, p = bfs_dir(s)
+        sp_dist[s], sp_prev[s] = d, p
 
     def reconstruct_path(a: Pos, b: Pos) -> List[Pos]:
-        """Return node sequence from a to b (inclusive) along a shortest path."""
         if a == b:
             return [a]
         if sp_dist[a][b] == float('inf'):
-            raise ValueError(f"No path between {a} and {b}.")
+            raise ValueError(f"No directed path {a} -> {b}.")
         path = [b]
         cur = b
         prev_map = sp_prev[a]
@@ -109,318 +113,284 @@ def solve_optimal_walk(start_pos: Pos, edges: Set[Tuple[Pos, Pos]], gems_to_edge
         path.reverse()
         return path
 
-    # ----------------------------
-    # 3) Base cost matrix on original states (pre-transform):
-    #    dist(i -> j) = shortest_path(head_i, tail_j) + 1;
-    #    dist(DEPOT -> j) = shortest_path(start_pos, tail_j) + 1;
-    #    dist(i -> DEPOT) = 0  (end anywhere; return to depot is free)
-    # ----------------------------
-    def base_cost(i: int, j: int) -> int:
-        if i == j:
-            return 0
-        if i == DEPOT and j == DEPOT:
-            return 0
-        if i == DEPOT:
-            tail_j, head_j = states[j]
-            return (0 if start_pos == tail_j else sp_dist[start_pos][tail_j]) + 1
-        if j == DEPOT:
-            # Ending anywhere: free return to depot
-            return 0
-        tail_i, head_i = states[i]
-        tail_j, head_j = states[j]
-        move = 0 if head_i == tail_j else sp_dist[head_i][tail_j]
-        return move + 1
+    BIG = 10**9
 
-    C = [[0]*N for _ in range(N)]
-    max_base = 0
-    for i in range(N):
-        for j in range(N):
-            c = base_cost(i, j)
-            C[i][j] = c
-            if i != j and i != DEPOT and j != DEPOT:
-                if c != float('inf'):
-                    max_base = max(max_base, c)
-
-    # ----------------------------
-    # 4) Noon–Bean transform (GTSP -> ATSP) on nodes 0..N-1, excluding DEPOT from the transform.
-    #    - Add big M to every inter-cluster (non-depot) arc
-    #    - Create a zero-cost "ring" in each cluster
-    #    - Shift outgoing arcs of each node to its predecessor in the ring
-    #    DEPOT arcs are left as-is (no M, no shifting).
-    # ----------------------------
-    # Choose M safely large: (max_base + 1) * (N + 5)
-    M = (max_base + 1) * (N + 5)
-
-    # Build per-cluster cyclic order (arbitrary but fixed)
-    cluster_orders: Dict[Pos, List[int]] = {}
-    for g in groups:
-        cluster_orders[g] = list(group_to_state_indices[g])
-
-    # Start from the base matrix
-    D = [row[:] for row in C]
-
-    # Add M to all inter-cluster arcs (i->j) where neither endpoint is DEPOT
-    for i in range(N_no_depot):
-        gi = state_group[i]
-        for j in range(N_no_depot):
-            if i == j:
-                continue
-            gj = state_group[j]
-            if gi != gj:
-                D[i][j] += M
-
-    # For each cluster, create a zero-cost ring and shift outgoing arcs
-    INF = 10**12  # effectively "forbidden" inside a cluster except ring
-    for g, order in cluster_orders.items():
-        k = len(order)
-        if k == 0:
-            continue
-        # Map node -> predecessor in the chosen ring order
-        pred = {}
-        succ = {}
-        for idx, v in enumerate(order):
-            pred[v] = order[(idx - 1) % k]
-            succ[v] = order[(idx + 1) % k]
-
-        # (a) Disable all intra-cluster arcs except ring arcs (set to INF)
-        for a in order:
-            for b in order:
-                if a == b:
-                    continue
-                D[a][b] = INF
-        # (b) Set ring arcs a -> succ[a] to 0
-        for a in order:
-            D[a][succ[a]] = 0
-
-        # (c) Shift ALL outgoing arcs to nodes in other clusters:
-        #     For each node v in cluster, for each t outside cluster (and non-depot treated separately):
-        #     move cost from v->t to pred[v]->t, and "block" v->t (set to INF).
-        for v in order:
-            pv = pred[v]
-            for t in range(N):
-                if t in order:  # skip intra-cluster; we already set ring
-                    continue
-                if v == t:
-                    continue
-                if v == DEPOT:
-                    continue  # (not in order anyway)
-                if state_group[t] == "__DEPOT__":
-                    # Do not add M to arcs into DEPOT and do not shift them,
-                    # but we still want all outgoing arcs from the cluster
-                    # to be available only from predecessor pv (to enforce the choice).
-                    # So: move v->DEPOT to pv->DEPOT, and block v->DEPOT.
-                    if D[v][t] < INF:
-                        # Keep the smallest if multiple map into pv->DEPOT
-                        D[pv][t] = min(D[pv][t], D[v][t])
-                    D[v][t] = INF
+    def build_base_cost_matrix() -> Tuple[List[List[int]], int]:
+        # dist(i->j) = sp(head_i, tail_j) + 1
+        # dist(DEPOT->j) = sp(start_pos, tail_j) + 1
+        # dist(i->DEPOT) = 0  (end anywhere)
+        C = [[0]*N for _ in range(N)]
+        max_base = 0
+        for i in range(N):
+            for j in range(N):
+                if i == j:
+                    c = 0
+                elif i == DEPOT and j == DEPOT:
+                    c = 0
+                elif i == DEPOT:
+                    tail_j, _ = states[j]
+                    d = 0 if start_pos == tail_j else sp_dist[start_pos][tail_j]
+                    c = BIG if d == float('inf') else d + 1
+                elif j == DEPOT:
+                    c = 0
                 else:
-                    # t is in a different cluster: the arc cost already has +M
-                    # Move it to predecessor
-                    if D[v][t] < INF:
-                        D[pv][t] = min(D[pv][t], D[v][t])
-                    D[v][t] = INF
+                    _, head_i = states[i]
+                    tail_j, _ = states[j]
+                    d = 0 if head_i == tail_j else sp_dist[head_i][tail_j]
+                    c = BIG if d == float('inf') else d + 1
+                C[i][j] = c
+                if i != j and i != DEPOT and j != DEPOT and c < BIG:
+                    if c > max_base:
+                        max_base = c
+        return C, max_base
 
-    # IMPORTANT: Leave all arcs touching DEPOT unchanged (they were never M-shifted).
-    # D[DEPOT][*] and D[*][DEPOT] are already in C and copied over at the start.
+    C_base, max_base = build_base_cost_matrix()
 
-    # ----------------------------
-    # 5) Solve ATSP with OR-Tools (single vehicle, start=end=DEPOT)
-    # ----------------------------
-    manager = pywrapcp.RoutingIndexManager(N, 1, DEPOT)
-    routing = pywrapcp.RoutingModel(manager)
-
-    # Transit callback from D
-    def transit_cb(from_index, to_index):
-        i = manager.IndexToNode(from_index)
-        j = manager.IndexToNode(to_index)
-        return int(D[i][j])
-
-    transit_cb_index = routing.RegisterTransitCallback(transit_cb)
-    routing.SetArcCostEvaluatorOfAllVehicles(transit_cb_index)
-
-    # First solution + local search
-    search_params = pywrapcp.DefaultRoutingSearchParameters()
-    search_params.first_solution_strategy = routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC
-    search_params.local_search_metaheuristic = routing_enums_pb2.LocalSearchMetaheuristic.GUIDED_LOCAL_SEARCH
-    search_params.time_limit.FromSeconds(10)
-
-    solution = routing.SolveWithParameters(search_params)
-    if solution is None:
-        raise RuntimeError("No solution found by OR-Tools.")
-
-    # Extract the tour (sequence of node indices)
-    route: List[int] = []
-    idx = routing.Start(0)
-    while not routing.IsEnd(idx):
-        node = manager.IndexToNode(idx)
-        route.append(node)
-        idx = solution.Value(routing.NextVar(idx))
-    route.append(manager.IndexToNode(idx))  # end (DEPOT)
-
-    # ----------------------------
-    # 6) Decode chosen representative per cluster (in visitation order)
-    #    Noon–Bean decoding: when the tour leaves a cluster Ci from node p in Ci to a node in Ck (k!=i),
-    #    the selected representative for Ci is succ(p) in the ring.
-    # ----------------------------
-    # Build quick succ map again
-    succ_in_cluster: Dict[int, int] = {}
-    for g, order in cluster_orders.items():
-        k = len(order)
-        for idx, v in enumerate(order):
-            succ_in_cluster[v] = order[(idx + 1) % k]
-
-    visited_gems: List[Tuple[Pos, int]] = []  # [(gem_id, chosen_state_idx)]
-    seen_gems: Set[Pos] = set()
-
-    for a, b in zip(route, route[1:]):
-        ga = state_group[a]
-        gb = state_group[b]
-        if ga == "__DEPOT__" or ga == gb:
-            continue
-        # Leaving cluster ga -> gb
-        if ga in seen_gems:
-            # We only keep the first time we leave ga (we enter each cluster once ideally)
-            continue
-        if a not in succ_in_cluster:
-            continue  # leaving depot, ignore
-        rep = succ_in_cluster[a]  # chosen representative (tail->head)
-        visited_gems.append((ga, rep))
-        seen_gems.add(ga)
-
-    # Sanity: ensure every gem cluster chosen exactly once
-    all_gems = set(groups)
-    if all_gems != set(g for (g, _) in visited_gems):
-        # In rare degeneracies, we might need to sweep the whole route to capture all leaves.
-        # Fallback: collect last-in-cluster nodes and map via succ.
-        missing = all_gems - set(g for (g, _) in visited_gems)
-        if missing:
-            # One more pass: track last node seen for each cluster, then use the point where cluster changes
-            last_in_cluster: Dict[Pos, int] = {}
-            for a, b in zip(route, route[1:]):
-                ga = state_group[a]
-                gb = state_group[b]
-                if ga != "__DEPOT__":
-                    last_in_cluster[ga] = a
-                if ga != gb and ga in missing:
-                    rep = succ_in_cluster.get(last_in_cluster[ga], None)
-                    if rep is not None:
-                        visited_gems.append((ga, rep))
-            # Final filter (in order, unique)
-            picked = {}
-            ordered = []
-            for g, rep in visited_gems:
-                if g not in picked:
-                    picked[g] = rep
-                    ordered.append((g, rep))
-            visited_gems = ordered
-
-    # Order visited_gems in the actual traversal order they appear in the route
-    # (they already are, based on the leave events).
-    chosen_states_in_order: List[Tuple[Pos, Tuple[Pos, Pos]]] = []
-    for gem_id, st_idx in visited_gems:
-        tail, head = states[st_idx]
-        chosen_states_in_order.append((gem_id, (tail, head)))
-
-    # ----------------------------
-    # 7) Build the actual node-by-node walk
-    #    start_pos -> tail_0  +  edge(tail_0, head_0)
-    #    then head_i -> tail_{i+1} + edge(...)
-    # ----------------------------
-    # ---------- Build a coverage-aware compressed walk ----------
     edge_to_gems: Dict[Tuple[Pos, Pos], Set[Pos]] = defaultdict(set)
     for g, elist in gems_to_edges.items():
         for e in elist:
             edge_to_gems[e].add(g)
 
-    def mark_covered_on_path(nodes_path: List[Pos], covered: Set[Pos]) -> None:
-        for i in range(len(nodes_path) - 1):
-            e = (nodes_path[i], nodes_path[i+1])
-            if e in edge_to_gems:
-                covered.update(edge_to_gems[e])
+    # ---- Coverage-aware stitching cost for a sequence of representatives ----
+    def build_walk_from_reps(rep_seq: List[int]) -> Tuple[List[Pos], Set[Pos]]:
+        """Return (walk_nodes, covered_gems) for given representative state indices."""
+        covered: Set[Pos] = set()
+        walk_nodes: List[Pos] = [start_pos]
+        cur = start_pos
+        # map states idx -> (tail, head)
+        for st in rep_seq:
+            tail, head = states[st]
+            # skip if gem already covered
+            g = state_group[st]
+            if g in covered:
+                continue
+            # connector
+            if cur != tail:
+                path = reconstruct_path(cur, tail)
+                # mark gems on connector
+                for i in range(len(path)-1):
+                    e = (path[i], path[i+1])
+                    if e in edge_to_gems:
+                        covered.update(edge_to_gems[e])
+                walk_nodes.extend(path[1:])
+                cur = tail
+                if g in covered:
+                    continue
+            # traverse rep edge
+            walk_nodes.append(head)
+            cur = head
+            if (tail, head) in edge_to_gems:
+                covered.update(edge_to_gems[(tail, head)])
+        return walk_nodes, covered
 
-    compressed_reps: List[Tuple[Pos, Tuple[Pos, Pos]]] = []
-    covered: Set[Pos] = set()
-    cur = start_pos
-    walk_nodes: List[Pos] = [start_pos]
-
-    for gem_id, (tail, head) in chosen_states_in_order:
-        if gem_id in covered:
-            continue
-
-        if cur != tail:
-            path_ct = reconstruct_path(cur, tail)  # directed
-            mark_covered_on_path(path_ct, covered)
-            walk_nodes.extend(path_ct[1:])
-            cur = tail
-
-        if gem_id in covered:
-            continue
-
-        # traverse representative edge
-        if walk_nodes[-1] != tail:
-            raise RuntimeError(f"Continuity broken before traversing {tail}->{head}")
-        walk_nodes.append(head)
-        cur = head
-        if (tail, head) in edge_to_gems:
-            covered.update(edge_to_gems[(tail, head)])
-        compressed_reps.append((gem_id, (tail, head)))
-
-    # ---------- Local simplification: remove 2-edge ping-pongs that add no coverage ----------
     def walk_edges(nodes_seq: List[Pos]) -> List[Tuple[Pos, Pos]]:
         return [(nodes_seq[i], nodes_seq[i+1]) for i in range(len(nodes_seq)-1)]
 
-    # Precompute per-edge gem sets for quick coverage diffs
-    def covered_gems_of_edges(edges_seq: List[Tuple[Pos, Pos]]) -> Set[Pos]:
-        s: Set[Pos] = set()
-        for e in edges_seq:
-            if e in edge_to_gems:
-                s.update(edge_to_gems[e])
-        return s
-
-    all_gems: Set[Pos] = set(gems_to_edges.keys())
-
     def simplify_ping_pongs(nodes_seq: List[Pos]) -> List[Pos]:
-        changed = True
+        """Remove u->v->u pairs if they don't lose coverage."""
         ns = list(nodes_seq)
+        changed = True
         while changed:
             changed = False
             i = 0
             while i + 3 < len(ns):
                 u, v, w, z = ns[i], ns[i+1], ns[i+2], ns[i+3]
-                # Look for pattern u->v, v->u (i.e., ns[i+2] == u)
-                if w == u:
-                    e1 = (u, v)
-                    e2 = (v, u)
-                    # If we drop e1 and e2, coverage lost equals gems covered ONLY by these two edges
-                    edges_before = walk_edges(ns[:i+1])          # up to u
-                    edges_removed = [e1, e2]
-                    edges_after  = walk_edges([u] + ns[i+3:])    # resume at u -> ...
-
-                    gems_before = covered_gems_of_edges(edges_before)
-                    gems_removed = covered_gems_of_edges(edges_removed)
-                    gems_after = covered_gems_of_edges(edges_after)
-
-                    # Total gems after removal:
-                    gems_total_after = gems_before | gems_after
-                    # If all required gems remain covered, it's safe to remove the ping-pong
-                    if all_gems.issubset(gems_total_after):
-                        # remove v and w (=u) from the nodes list between positions i and i+3
-                        # ns: [..., u, v, u, z, ...] => [..., u, z, ...]
-                        del ns[i+1:i+3]
+                if w == u:  # u->v, v->u
+                    before_edges = walk_edges(ns[:i+1])
+                    removed_edges = [(u, v), (v, u)]
+                    after_edges = walk_edges([u] + ns[i+3:])
+                    covered_before = set()
+                    for e in before_edges:
+                        if e in edge_to_gems:
+                            covered_before.update(edge_to_gems[e])
+                    covered_removed = set()
+                    for e in removed_edges:
+                        if e in edge_to_gems:
+                            covered_removed.update(edge_to_gems[e])
+                    covered_after = set()
+                    for e in after_edges:
+                        if e in edge_to_gems:
+                            covered_after.update(edge_to_gems[e])
+                    if all_gems.issubset(covered_before | covered_after):
+                        del ns[i+1:i+3]   # drop v,u
                         changed = True
-                        # Do not increment i: re-check at the same index after removal
                         continue
                 i += 1
         return ns
 
-    walk_nodes = simplify_ping_pongs(walk_nodes)
+    def true_walk_cost(nodes_seq: List[Pos]) -> int:
+        # Number of edges (unit cost)
+        return len(nodes_seq) - 1
 
-    # ---------- Build final edge list & validate ----------
-    edge_walk: List[Tuple[Pos, Pos]] = [(walk_nodes[i], walk_nodes[i+1]) for i in range(len(walk_nodes)-1)]
+    # ---- Noon–Bean + OR-Tools single run (with given cluster ring orders and metaheuristic) ----
+    def solve_once(cluster_orders: Dict[Pos, List[int]], metaheuristic):
+        # Build Noon–Bean cost matrix from C_base
+        M = (max_base + 1) * (N + 5)
+        D = [row[:] for row in C_base]  # copy
+
+        # add M to inter-cluster (excluding depot)
+        for i in range(N_no_depot):
+            gi = state_group[i]
+            for j in range(N_no_depot):
+                if i == j: 
+                    continue
+                gj = state_group[j]
+                if gi != gj:
+                    D[i][j] += M
+
+        # ring + shift
+        INF = 10**12
+        succ_in_cluster: Dict[int, int] = {}
+        for g, order in cluster_orders.items():
+            k = len(order)
+            if k == 0: 
+                continue
+            pred = {}
+            for idx, v in enumerate(order):
+                pred[v] = order[(idx - 1) % k]
+                succ_in_cluster[v] = order[(idx + 1) % k]
+            # block intra except ring
+            for a in order:
+                for b in order:
+                    if a != b:
+                        D[a][b] = INF
+            # ring arcs
+            for a in order:
+                D[a][succ_in_cluster[a]] = 0
+            # shift outgoing to pred
+            for v in order:
+                pv = pred[v]
+                for t in range(N):
+                    if t in order or v == t or v == DEPOT:
+                        continue
+                    if state_group[t] == "__DEPOT__":
+                        if D[v][t] < INF:
+                            D[pv][t] = min(D[pv][t], D[v][t])
+                        D[v][t] = INF
+                    else:
+                        if D[v][t] < INF:
+                            D[pv][t] = min(D[pv][t], D[v][t])
+                        D[v][t] = INF
+
+        # OR-Tools
+        manager = pywrapcp.RoutingIndexManager(N, 1, DEPOT)
+        routing = pywrapcp.RoutingModel(manager)
+
+        def transit_cb(from_index, to_index):
+            i = manager.IndexToNode(from_index)
+            j = manager.IndexToNode(to_index)
+            return int(D[i][j])
+
+        transit_cb_index = routing.RegisterTransitCallback(transit_cb)
+        routing.SetArcCostEvaluatorOfAllVehicles(transit_cb_index)
+
+        params = pywrapcp.DefaultRoutingSearchParameters()
+        params.first_solution_strategy = routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC
+        params.local_search_metaheuristic = metaheuristic
+        params.time_limit.FromMilliseconds(max(0.01, time_limit_ms))
+        params.log_search = False
+
+        solution = routing.SolveWithParameters(params)
+        if solution is None:
+            return None, None, None, None
+
+        # decode tour
+        route: List[int] = []
+        idx = routing.Start(0)
+        while not routing.IsEnd(idx):
+            route.append(manager.IndexToNode(idx))
+            idx = solution.Value(routing.NextVar(idx))
+        route.append(manager.IndexToNode(idx))  # DEPOT
+
+        # representatives via leaving events (succ(p))
+        rep_idxs: List[int] = []
+        seen_gems: Set[Pos] = set()
+        for a, b in zip(route, route[1:]):
+            ga, gb = state_group[a], state_group[b]
+            if ga == "__DEPOT__" or ga == gb:
+                continue
+            if ga in seen_gems:
+                continue
+            # chosen representative is succ(a)
+            if a in cluster_orders.get(ga, []):
+                # find succ
+                order = cluster_orders[ga]
+                ai = order.index(a)
+                rep = order[(ai + 1) % len(order)]
+                rep_idxs.append(rep)
+                seen_gems.add(ga)
+
+        return rep_idxs, succ_in_cluster, D, route
+
+    best_nodes = None
+    best_cost = float('inf')
+    best_reps = None
+
+    # initial deterministic order as a baseline
+    def shuffled_cluster_orders():
+        orders = {}
+        for g, idxs in group_to_state_indices_original.items():
+            order = idxs[:]  # copy existing indexing order
+            rng.shuffle(order)  # randomize ring to mitigate Noon–Bean bias
+            orders[g] = order
+        return orders
+
+    attempts = max(1, restarts)
+    for attempt in range(attempts):
+        cluster_orders = shuffled_cluster_orders()
+        for meta in meta_list:
+            rep_idxs, _, _, _ = solve_once(cluster_orders, meta)
+            if rep_idxs is None:
+                continue
+
+            # -------- Local 2-opt on representative order (under true walk cost) --------
+            # Start from the order returned by the solver
+            reps = rep_idxs[:]
+
+            def reps_to_nodes_and_cost(rep_seq: List[int]) -> Tuple[List[Pos], int]:
+                nodes_seq, covered = build_walk_from_reps(rep_seq)
+                # ensure full coverage; otherwise penalize
+                if not all_gems.issubset(covered):
+                    return nodes_seq, len(nodes_seq) - 1 + 10**6
+                nodes_seq = simplify_ping_pongs(nodes_seq)
+                return nodes_seq, true_walk_cost(nodes_seq)
+
+            improved = True
+            nodes_seq, cost = reps_to_nodes_and_cost(reps)
+            while improved:
+                improved = False
+                n = len(reps)
+                # classic 2-opt swap on the order of representatives
+                for i in range(n):
+                    for j in range(i+1, n):
+                        new_reps = reps[:i] + reps[i:j+1][::-1] + reps[j+1:]
+                        new_nodes, new_cost = reps_to_nodes_and_cost(new_reps)
+                        if new_cost < cost:
+                            reps = new_reps
+                            nodes_seq, cost = new_nodes, new_cost
+                            improved = True
+                            break
+                    if improved:
+                        break
+
+            if cost < best_cost:
+                best_cost = cost
+                best_nodes = nodes_seq
+                best_reps = reps
+
+    if best_nodes is None:
+        raise RuntimeError("No solution found.")
+
+    # Final checks and edge list
+    edge_walk: List[Tuple[Pos, Pos]] = [(best_nodes[i], best_nodes[i+1]) for i in range(len(best_nodes)-1)]
     assert all(e in edges for e in edge_walk), "Output contains an edge not in the input directed edges."
-    # Ensure all gems are covered
-    final_covered = covered_gems_of_edges(edge_walk)
-    missing = all_gems - final_covered
+
+    # Ensure all gems covered
+    covered_final: Set[Pos] = set()
+    for e in edge_walk:
+        if e in edge_to_gems:
+            covered_final.update(edge_to_gems[e])
+    missing = all_gems - covered_final
     assert not missing, f"Walk lost coverage for gems: {missing}"
 
     return edge_walk
