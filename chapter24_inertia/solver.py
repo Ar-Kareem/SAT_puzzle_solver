@@ -76,12 +76,13 @@ def get_moves_from_walk(walk: list[tuple[Pos, Pos]], edges_to_direction: dict[tu
         assert edge in edges_to_direction, f'edge {edge} not valid yet was in walk'
     walk_directions = [edges_to_direction[edge] for edge in walk]
     walk_directions_printable = [direction_to_str[x] for x in walk_directions]
-    print("number of moves", len(walk_directions))
-    for i, direction in enumerate(walk_directions_printable):
-        print(f"{direction}", end=' ')
-        if i % 5 == 4:
-            print()
-    print()
+    if verbose:
+        print("number of moves", len(walk_directions))
+        for i, direction in enumerate(walk_directions_printable):
+            print(f"{direction}", end=' ')
+            if i % 5 == 4:
+                print()
+        print()
     return walk_directions
 
 def simulate_moves(board: np.array, moves: list[str]) -> bool:

@@ -39,30 +39,32 @@ bor2 = np.array([
 def test_ground_1():
   print('board 1:')
   assert np.sum(bor1 == 'B') == 1, 'board must have exactly one start position'
+  print('" " count', np.sum(bor1 == ' '))
   print('M count', np.sum(bor1 == 'M'))
   print('G count', np.sum(bor1 == 'G'))
   print('O count', np.sum(bor1 == 'O'))
   print('W count', np.sum(bor1 == 'W'))
-  print(' count', np.sum(bor1 == ' '))
   start_pos, edges, edges_to_direction, gems_to_edges = solver.parse_nodes_and_edges(bor1)
   optimal_walk = tsp.solve_optimal_walk(start_pos, edges, gems_to_edges)
   moves = solver.get_moves_from_walk(optimal_walk, edges_to_direction)
   assert solver.is_board_completed(bor1, moves)
   assert len(moves) <= 61, 'website solves it in 61 moves'
+  print('#moves found is better than website')
 
 def test_ground_2():
   print('board 2:')
   assert np.sum(bor2 == 'B') == 1, 'board must have exactly one start position'
+  print(' count', np.sum(bor2 == ' '))
   print('M count', np.sum(bor2 == 'M'))
   print('G count', np.sum(bor2 == 'G'))
   print('O count', np.sum(bor2 == 'O'))
   print('W count', np.sum(bor2 == 'W'))
-  print(' count', np.sum(bor2 == ' '))
   start_pos, edges, edges_to_direction, gems_to_edges = solver.parse_nodes_and_edges(bor2)
   optimal_walk = tsp.solve_optimal_walk(start_pos, edges, gems_to_edges)
   moves = solver.get_moves_from_walk(optimal_walk, edges_to_direction)
   assert solver.is_board_completed(bor2, moves)
   assert len(moves) <= 73, f'website solves it in 73 moves. The optimal here is {len(moves)}'
+  print('#moves found is better than website')
 
 if __name__ == '__main__':
   test_ground_1()
