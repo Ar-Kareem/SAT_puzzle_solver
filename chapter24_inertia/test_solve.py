@@ -1,8 +1,6 @@
 import numpy as np
-
+import time
 from . import solver
-from . import tsp
-from core.utils import Direction8
 
 
 # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/inertia.html#15x12%23919933974949365
@@ -56,6 +54,7 @@ bor3 = np.array([
 ])
 
 def _test_ground(bor: np.array, website_moves: int):
+  tic = time.time()
   assert np.sum(bor == 'B') == 1, 'board must have exactly one start position'
   print('" " count', np.sum(bor == ' '))
   print('M count', np.sum(bor == 'M'))
@@ -63,12 +62,12 @@ def _test_ground(bor: np.array, website_moves: int):
   print('O count', np.sum(bor == 'O'))
   print('W count', np.sum(bor == 'W'))
   start_pos, edges, edges_to_direction, gems_to_edges = solver.parse_nodes_and_edges(bor)
-  optimal_walk = tsp.solve_optimal_walk(start_pos, edges, gems_to_edges)
+  optimal_walk = solver.solve_optimal_walk(start_pos, edges, gems_to_edges)
   moves = solver.get_moves_from_walk(optimal_walk, edges_to_direction)
   assert solver.is_board_completed(bor, moves)
   assert len(moves) <= website_moves, f'website solves it in {website_moves} moves. The optimal here is {len(moves)}'
-  print('#moves found is better than website')
-
+  toc = time.time()
+  print(f'Time taken: {toc - tic:.2f} seconds')
 def test_ground_1():
   print('board 1:')
   bor = bor1

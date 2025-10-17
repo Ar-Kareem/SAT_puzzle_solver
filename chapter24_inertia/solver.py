@@ -4,7 +4,7 @@ import numpy as np
 
 from core.utils import Direction8, Pos, get_all_pos, get_char, in_bounds, get_next_pos
 
-
+from . import tsp
 
 
 def _jump(board: np.array, pos: Pos, direction: Direction8) -> tuple[Pos, list[Pos]]:
@@ -80,7 +80,7 @@ def get_moves_from_walk(walk: list[tuple[Pos, Pos]], edges_to_direction: dict[tu
         print("number of moves", len(walk_directions))
         for i, direction in enumerate(walk_directions_printable):
             print(f"{direction}", end=' ')
-            if i % 5 == 4:
+            if i % 10 == 9:
                 print()
         print()
     return walk_directions
@@ -108,3 +108,15 @@ def is_board_completed(board: np.array, moves: list[str]) -> bool:
     gems_collected = simulate_moves(board, moves)
     assert gems_collected.issubset(all_gems), f'collected gems that are not on the board??? should not happen, {gems_collected - all_gems}'
     return gems_collected == all_gems
+
+def solve_optimal_walk(
+    start_pos: Pos,
+    edges: set[tuple[Pos, Pos]],
+    gems_to_edges: defaultdict[Pos, list[tuple[Pos, Pos]]],
+    *,
+    restarts: int = 1,          # try more for harder instances (e.g., 48–128)
+    time_limit_ms: int = 1000,   # per restart
+    seed: int = 0,
+    verbose: bool = False
+) -> list[tuple[Pos, Pos]]:
+    return tsp.solve_optimal_walk(start_pos, edges, gems_to_edges, restarts=restarts, time_limit_ms=time_limit_ms, seed=seed, verbose=verbose)

@@ -10,15 +10,17 @@ def solve_optimal_walk(
     edges: Set[Tuple[Pos, Pos]],
     gems_to_edges: "defaultdict[Pos, List[Tuple[Pos, Pos]]]",
     *,
-    restarts: int = 1,          # try more for harder instances (e.g., 48–128)
-    time_limit_ms: int = 1000,   # per restart
-    seed: int = 0,
-    verbose: bool = True
+    restarts: int,          # try more for harder instances (e.g., 48–128)
+    time_limit_ms: int,   # per restart
+    seed: int,
+    verbose: bool
 ) -> List[Tuple[Pos, Pos]]:
     """
     Directed edges. For each gem (key in gems_to_edges), traverse >=1 of its directed edges.
     Returns the actual directed walk (edge-by-edge) from start_pos.
     Uses multi-start Noon–Bean + OR-Tools and post-optimizes the representative order.
+
+    I significantly used AI for the implementation of this function which is why it is a bit messy with useless comments.
     """
     # ---- Multi-start Noon–Bean + metaheuristic sweeps ----
     meta_list = [
