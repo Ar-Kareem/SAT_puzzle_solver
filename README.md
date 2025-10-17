@@ -1641,6 +1641,7 @@ Each chapter directory targets a different puzzle type:
 * `chapter17_dominosa` — Dominosa (dominoes + counts). ([Chapter 17][4])
 * `chapter21_light_up` — *Akari* / Light Up (lighting & adjacency). ([Chapter 21][5])
 * `chapter22_map` — Map (region coloring). ([Chapter 22][18])
+* `chapter24_inertia` — Inertia (collect all gems without dying (with least number of moves; my addition)). ([Chapter 24][21])
 * `chapter25_tents` — Tents (tree-tent matching). ([Chapter 25][6])
 * `chapter26_bridges` — Bridges (island connections). ([Chapter 26][20])
 * `chapter29_filling` — Filling (Fillomino-style), region sizes. ([Chapter 29][7])
