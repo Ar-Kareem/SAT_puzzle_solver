@@ -20,7 +20,7 @@ You have a square grid; each square may contain a digit from 1 to the size of th
       - A subtraction clue will always be written in a block of size two, and it means that one of the digits in the block is greater than the other by the given amount. For example, ‘2−’ means that one of the digits in the block is 2 more than the other, or equivalently that one digit minus the other one is 2. The two digits could be either way round, though.
       - A division clue (e.g. ‘3÷’), similarly, is always in a block of size two and means that one digit divided by the other is equal to the given amount.
 
-  Note that a block may contain the same digit more than once (provided the identical ones are not in the same row and column). This rule is precisely the opposite of the rule in Solo's ‘Killer’ mode (see chapter 11).
+  Note that a block may contain the same digit more than once (provided the identical ones are not in the same row and column).
 
 **Unsolved puzzle**
 

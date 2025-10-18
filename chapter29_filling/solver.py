@@ -7,8 +7,6 @@ from core.utils_ortools import generic_solve_all, SingleSolution, and_constraint
 
 class Board:
     """
-    Chapter 29: Filling (Fillomino-style), parent-free & canonical distances.
-
     Per cell p:
       val[p]    ∈ {1..9} (respect givens)
       region[p] ∈ {0..N-1}   # region id is the linear index of the region's root
