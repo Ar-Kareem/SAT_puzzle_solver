@@ -1,14 +1,46 @@
 # Python Puzzle Solver
 
-Solve classic logic puzzles automatically in Python. 
+Solve numerous classical logic puzzles automatically in Python. 
+
+## Quick Start
+
+Install
+
+```bash
+pip install multi-puzzle-solver
+```
+
+Use:
+
+```python
+from puzzle_solver import nonograms_solver
+solver = nonograms_solver.Board(top=[[2], [3], [1], [1, 1]], side=[[3], [1], [2, 1], [1]])
+solutions = solver.solve_and_print()
+```
+
+You’ll see the solution returned and printed:
+
+```python
+Solution found
+[[' ' 'B' 'B' 'B']
+ [' ' 'B' ' ' ' ']
+ ['B' 'B' ' ' 'B']
+ ['B' ' ' ' ' ' ']]
+Solutions found: 1
+status: OPTIMAL
+Time taken: 0.00 seconds
+```
+(Note: Printing can be turned off by setting `verbose=False`)
+
+## Introduction
 
 The aim of this repo is to provide very efficient solvers (i.e. not brute force solvers) for many popular pencil logic puzzles like Nonograms, Sudoku, Minesweeper, and many more lesser known ones.
 
 If you happen to have a puzzle similar to the ones listed below and want to solve it (or see how many potential solutions a partially covered board has), then this repo is perfect for you.
 
-The simple use-case of this repo is if you want to solve a puzzle given the state of the board. But other use-cases exist such as checking if removing a clue would still result in a unique solution or would make the puzzle ambiguous and have multiple solutions.
+The simple use-case of this repo is if you want to solve a puzzle given the state of the board. But the other interesting use-cases is if you want to check if removing a clue would still result in a unique solution or would make the puzzle ambiguous and have multiple solutions.
 
-**Why?** There are countless python packages that can solve popular puzzles like the ones below, so a valid question to ask is **why would I want to use this package and why did you create it?**. That is a fair question and the answer is that there are multiple problems with most of those packages that this package solves.
+**Why?** There are countless python packages that can solve the popular puzzles below, so a valid question to ask is **why would I want to use this package and why did you create it?**. The answer is that there are multiple problems with most of those packages which this package solves which are:
 
 1. **Sophisticated solvers:** A lot of available online solvers are incredibly inefficient as they implement naive algorithms that brute force and backtrack through all possible solutions. This package solves that issue as all the solvers included here never use naive algorithms and instead use a very efficient CP-SAT solver which is a more sophisticated solver than any one person could possibly write.
 2. **Numerous puzzles:** Most of the available python solvers are only designed for a single type of puzzle and each one requires a different way to encode the input and extract the solution. This package solves both those issues as this package provides solvers for many puzzles all with a similar interface that encodes the input and extracts the solution in a similar way.
@@ -158,6 +190,8 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
 ## Table of Contents
 
 - [Python Puzzle Solver](#python-puzzle-solver)
+  - [Quick Start](#quick-start)
+  - [Introduction](#introduction)
   - [🕹️ Puzzle Gallery](#️-puzzle-gallery)
   - [Table of Contents](#table-of-contents)
 - [Puzzles](#puzzles)
@@ -183,9 +217,6 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   - [Bridges (Puzzle Type #20)](#bridges-puzzle-type-20)
   - [Inertia (Puzzle Type #21)](#inertia-puzzle-type-21)
   - [Guess (Puzzle Type #22)](#guess-puzzle-type-22)
-  - [Quick Start](#quick-start)
-    - [1) Install package from PyPI](#1-install-package-from-pypi)
-    - [2) Solve a puzzle](#2-solve-a-puzzle)
   - [Why SAT / CP-SAT?](#why-sat--cp-sat)
   - [What’s Inside](#whats-inside)
   - [Testing](#testing)
@@ -1873,47 +1904,9 @@ In the case when there's only one possible choice left, the solver will inform y
 
 ---
 
-## Quick Start
-
-### 1) Install package from PyPI
-
-```bash
-pip install multi-puzzle-solver
-```
-
-### 2) Solve a puzzle
-
-Each puzzle has its own solver which can be imported directly.
-
-
-Example: Nonograms (Pattern)
-Docs: [https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/pattern.html#pattern](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/pattern.html#pattern)
-
-Use the API to solve the puzzle:
-
-```python
-from puzzle_solver import nonograms_solver as solver
-binst = solver.Board(top=[[2], [3], [1], [1, 1]], side=[[3], [1], [2, 1], [1]])
-solutions = binst.solve_and_print()
-```
-
-You’ll see the solution returned and printed :
-
-```python
-Solution found
-[[' ' 'B' 'B' 'B']
- [' ' 'B' ' ' ' ']
- ['B' 'B' ' ' 'B']
- ['B' ' ' ' ' ' ']]
-Solutions found: 1
-status: OPTIMAL
-Time taken: 0.00 seconds
-```
----
-
 ## Why SAT / CP-SAT?
 
-Many pencil puzzles can be modeled with:
+Because it is extremely faster than naive solutions and many pencil puzzles can be modeled with:
 
 - **Boolean decisions** (e.g., black/white, bulb/no-bulb)
 - **Linear constraints** (counts, separations, adjacency)
