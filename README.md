@@ -1737,13 +1737,14 @@ pip install -r requirements.txt
 
 ### 2) Explore a puzzle
 
-Each puzzle has runnable scripts and importable modules.
+Each puzzle has its own module which can be imported directly from the repo (i.e. `from puzzle_solver import minesweeper_solver`) or you can run the test scripts directly from the CLI.
+
 
 Example: Nonograms (Pattern)
 Docs: [https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/pattern.html#pattern](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/pattern.html#pattern)
 
 ```bash
-python -m chapter10_nonograms.test_solve
+python -m tests.test_nonograms
 ```
 
 This runs code like:
@@ -1782,30 +1783,30 @@ This repo builds those constraints in Python and uses SAT/CP-SAT (e.g., OR-Tools
 
 ## What’s Inside
 
-Each chapter directory targets a different puzzle type:
+Each sub directory in `src/puzzle_solver/puzzles/` targets a different puzzle type:
 
-* `chapter10_nonograms` — Picross/Griddlers (run-length constraints). ([Chapter 10][1])
-* `chapter11_sudoku` — Sudoku (rows/cols/blocks all-different). ([Chapter 11][2])
-* `chapter12_minesweeper` — Minesweeper (mines + counts). ([Chapter 12][3])
-* `chapter15_guess` — Guess (similar to wordle, guess the colored circles). ([Chapter 15][22])
-* `chapter17_dominosa` — Dominosa (dominoes + counts). ([Chapter 17][4])
-* `chapter21_light_up` — *Akari* / Light Up (lighting & adjacency). ([Chapter 21][5])
-* `chapter22_map` — Map (region coloring). ([Chapter 22][18])
-* `chapter24_inertia` — Inertia (collect all gems without dying (with least number of moves; my addition)). ([Chapter 24][21])
-* `chapter25_tents` — Tents (tree-tent matching). ([Chapter 25][6])
-* `chapter26_bridges` — Bridges (island connections). ([Chapter 26][20])
-* `chapter29_filling` — Filling (Fillomino-style), region sizes. ([Chapter 29][7])
-* `chapter30_keen` — Keen (arithmetic operations). ([Chapter 30][8])
-* `chapter31_towers` — Skyscrapers (permutation + visibility). ([Chapter 31][9])
-* `chapter32_singles` — Singles (hiding numbers). ([Chapter 32][10])
-* `chapter33_magnets` — Magnets (polarized dominoes + counts). ([Chapter 33][11])
-* `chapter34_signpost` — Signpost (visible dominoes + counts). ([Chapter 34][12])
-* `chapter35_range` — Range (rays & totals). ([Chapter 35][13])
-* `chapter36_pearl` — Pearl (pearl game). ([Chapter 36][18])
-* `chapter37_undead` — UnDead (Vampires/Zombies/Ghosts). ([Chapter 37][14])
-* `chapter38_unruly` — Unruly (no triples + balance). ([Chapter 38][15])
-* `chapter40_tracks` — Tracks (connected components). ([Chapter 40][16])
-* `chapter42_mosaic` — Mosaic (Tapa-like tiling). ([Chapter 42][17])
+* `src/puzzle_solver/puzzles/nonograms` — Picross/Griddlers (run-length constraints). ([Chapter 10][1])
+* `src/puzzle_solver/puzzles/sudoku` — Sudoku (rows/cols/blocks all-different). ([Chapter 11][2])
+* `src/puzzle_solver/puzzles/minesweeper` — Minesweeper (mines + counts). ([Chapter 12][3])
+* `src/puzzle_solver/puzzles/guess` — Guess (similar to wordle, guess the colored circles). ([Chapter 15][22])
+* `src/puzzle_solver/puzzles/dominosa` — Dominosa (dominoes + counts). ([Chapter 17][4])
+* `src/puzzle_solver/puzzles/light_up` — *Akari* / Light Up (lighting & adjacency). ([Chapter 21][5])
+* `src/puzzle_solver/puzzles/map` — Map (region coloring). ([Chapter 22][18])
+* `src/puzzle_solver/puzzles/inertia` — Inertia (collect all gems without dying (with least number of moves; my addition)). ([Chapter 24][21])
+* `src/puzzle_solver/puzzles/tents` — Tents (tree-tent matching). ([Chapter 25][6])
+* `src/puzzle_solver/puzzles/bridges` — Bridges (island connections). ([Chapter 26][20])
+* `src/puzzle_solver/puzzles/filling` — Filling (Fillomino-style), region sizes. ([Chapter 29][7])
+* `src/puzzle_solver/puzzles/keen` — Keen (arithmetic operations). ([Chapter 30][8])
+* `src/puzzle_solver/puzzles/towers` — Skyscrapers (permutation + visibility). ([Chapter 31][9])
+* `src/puzzle_solver/puzzles/singles` — Singles (hiding numbers). ([Chapter 32][10])
+* `src/puzzle_solver/puzzles/magnets` — Magnets (polarized dominoes + counts). ([Chapter 33][11])
+* `src/puzzle_solver/puzzles/signpost` — Signpost (visible dominoes + counts). ([Chapter 34][12])
+* `src/puzzle_solver/puzzles/range` — Range (rays & totals). ([Chapter 35][13])
+* `src/puzzle_solver/puzzles/pearl` — Pearl (pearl game). ([Chapter 36][18])
+* `src/puzzle_solver/puzzles/undead` — UnDead (Vampires/Zombies/Ghosts). ([Chapter 37][14])
+* `src/puzzle_solver/puzzles/unruly` — Unruly (no triples + balance). ([Chapter 38][15])
+* `src/puzzle_solver/puzzles/tracks` — Tracks (connected components). ([Chapter 40][16])
+* `src/puzzle_solver/puzzles/mosaic` — Mosaic (Tapa-like tiling). ([Chapter 42][17])
 
 ---
 
@@ -1830,30 +1831,30 @@ Issues and PRs welcome!
 * Prefer small, readable encodings with comments explaining each constraint.
 * If you add a new puzzle:
 
-  1. Create `chapterXX_<name>/`,
-  2. Add a minimal test script,
+  1. Create a directory in `src/puzzle_solver/puzzles/<name>/`,
+  2. Add a minimal test script in `tests/test_<name>.py`,
   3. Document the modeling in code comments,
 
 
-[1]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter10_nonograms "SAT_puzzle_solver/chapter10_nonograms at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[2]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter11_sudoku "SAT_puzzle_solver/chapter11_sudoku at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[3]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter12_minesweeper "SAT_puzzle_solver/chapter12_minesweeper at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[22]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter15_guess "SAT_puzzle_solver/chapter15_guess at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[4]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter17_dominosa "SAT_puzzle_solver/chapter17_dominosa at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[5]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter21_light_up "SAT_puzzle_solver/chapter21_light_up at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[18]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter22_map "SAT_puzzle_solver/chapter22_map at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[21]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter24_inertia "SAT_puzzle_solver/chapter24_inertia at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[6]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter25_tents "SAT_puzzle_solver/chapter25_tents at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[20]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter26_bridges "SAT_puzzle_solver/chapter26_bridges at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[7]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter29_filling "SAT_puzzle_solver/chapter29_filling at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[8]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter30_keen "SAT_puzzle_solver/chapter30_keen at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[9]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter31_towers "SAT_puzzle_solver/chapter31_towers at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[10]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter32_singles "SAT_puzzle_solver/chapter32_singles at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[11]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter33_magnets "SAT_puzzle_solver/chapter33_magnets at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[12]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter34_signpost "SAT_puzzle_solver/chapter34_signpost at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[13]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter35_range "SAT_puzzle_solver/chapter35_range at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[19]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter36_pearl "SAT_puzzle_solver/chapter36_pearl at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[14]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter37_undead "SAT_puzzle_solver/chapter37_undead at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[15]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter38_unruly "SAT_puzzle_solver/chapter38_unruly at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[16]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter40_tracks "SAT_puzzle_solver/chapter40_tracks at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
-[17]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/chapter42_mosaic "SAT_puzzle_solver/chapter42_mosaic at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[1]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/src/puzzle_solver/puzzles/nonograms "SAT_puzzle_solver/src/puzzle_solver/puzzles/nonograms at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[2]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/src/puzzle_solver/puzzles/sudoku "SAT_puzzle_solver/src/puzzle_solver/puzzles/sudoku at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[3]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/src/puzzle_solver/puzzles/minesweeper "SAT_puzzle_solver/src/puzzle_solver/puzzles/minesweeper at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[22]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/src/puzzle_solver/puzzles/guess "SAT_puzzle_solver/src/puzzle_solver/puzzles/guess at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[4]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/src/puzzle_solver/puzzles/dominosa "SAT_puzzle_solver/src/puzzle_solver/puzzles/dominosa at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[5]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/src/puzzle_solver/puzzles/light_up "SAT_puzzle_solver/src/puzzle_solver/puzzles/light_up at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[18]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/src/puzzle_solver/puzzles/map "SAT_puzzle_solver/src/puzzle_solver/puzzles/map at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[21]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/src/puzzle_solver/puzzles/inertia "SAT_puzzle_solver/src/puzzle_solver/puzzles/inertia at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[6]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/src/puzzle_solver/puzzles/tents "SAT_puzzle_solver/src/puzzle_solver/puzzles/tents at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[20]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/src/puzzle_solver/puzzles/bridges "SAT_puzzle_solver/src/puzzle_solver/puzzles/bridges at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[7]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/src/puzzle_solver/puzzles/filling "SAT_puzzle_solver/src/puzzle_solver/puzzles/filling at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[8]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/src/puzzle_solver/puzzles/keen "SAT_puzzle_solver/src/puzzle_solver/puzzles/keen at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[9]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/src/puzzle_solver/puzzles/towers "SAT_puzzle_solver/src/puzzle_solver/puzzles/towers at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[10]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/src/puzzle_solver/puzzles/singles "SAT_puzzle_solver/src/puzzle_solver/puzzles/singles at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[11]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/src/puzzle_solver/puzzles/magnets "SAT_puzzle_solver/src/puzzle_solver/puzzles/magnets at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[12]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/src/puzzle_solver/puzzles/signpost "SAT_puzzle_solver/src/puzzle_solver/puzzles/signpost at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[13]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/src/puzzle_solver/puzzles/range "SAT_puzzle_solver/src/puzzle_solver/puzzles/range at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[19]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/src/puzzle_solver/puzzles/pearl "SAT_puzzle_solver/src/puzzle_solver/puzzles/pearl at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[14]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/src/puzzle_solver/puzzles/undead "SAT_puzzle_solver/src/puzzle_solver/puzzles/undead at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[15]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/src/puzzle_solver/puzzles/unruly "SAT_puzzle_solver/src/puzzle_solver/puzzles/unruly at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[16]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/src/puzzle_solver/puzzles/tracks "SAT_puzzle_solver/src/puzzle_solver/puzzles/tracks at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
+[17]: https://github.com/Ar-Kareem/SAT_puzzle_solver/tree/master/src/puzzle_solver/puzzles/mosaic "SAT_puzzle_solver/src/puzzle_solver/puzzles/mosaic at master · Ar-Kareem/SAT_puzzle_solver · GitHub"
