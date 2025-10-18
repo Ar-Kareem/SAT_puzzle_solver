@@ -1783,30 +1783,30 @@ This repo builds those constraints in Python and uses SAT/CP-SAT (e.g., OR-Tools
 
 ## What’s Inside
 
-Each sub directory in `src/puzzle_solver/puzzles/` targets a different puzzle type:
+Each sub directory in `src/puzzle_solver/puzzles/` targets a different puzzle type. The following are the sub directories:
 
-* `src/puzzle_solver/puzzles/nonograms` — Picross/Griddlers (run-length constraints). ([Chapter 10][1])
-* `src/puzzle_solver/puzzles/sudoku` — Sudoku (rows/cols/blocks all-different). ([Chapter 11][2])
-* `src/puzzle_solver/puzzles/minesweeper` — Minesweeper (mines + counts). ([Chapter 12][3])
-* `src/puzzle_solver/puzzles/guess` — Guess (similar to wordle, guess the colored circles). ([Chapter 15][22])
-* `src/puzzle_solver/puzzles/dominosa` — Dominosa (dominoes + counts). ([Chapter 17][4])
-* `src/puzzle_solver/puzzles/light_up` — *Akari* / Light Up (lighting & adjacency). ([Chapter 21][5])
-* `src/puzzle_solver/puzzles/map` — Map (region coloring). ([Chapter 22][18])
-* `src/puzzle_solver/puzzles/inertia` — Inertia (collect all gems without dying (with least number of moves; my addition)). ([Chapter 24][21])
-* `src/puzzle_solver/puzzles/tents` — Tents (tree-tent matching). ([Chapter 25][6])
-* `src/puzzle_solver/puzzles/bridges` — Bridges (island connections). ([Chapter 26][20])
-* `src/puzzle_solver/puzzles/filling` — Filling (Fillomino-style), region sizes. ([Chapter 29][7])
-* `src/puzzle_solver/puzzles/keen` — Keen (arithmetic operations). ([Chapter 30][8])
-* `src/puzzle_solver/puzzles/towers` — Skyscrapers (permutation + visibility). ([Chapter 31][9])
-* `src/puzzle_solver/puzzles/singles` — Singles (hiding numbers). ([Chapter 32][10])
-* `src/puzzle_solver/puzzles/magnets` — Magnets (polarized dominoes + counts). ([Chapter 33][11])
-* `src/puzzle_solver/puzzles/signpost` — Signpost (visible dominoes + counts). ([Chapter 34][12])
-* `src/puzzle_solver/puzzles/range` — Range (rays & totals). ([Chapter 35][13])
-* `src/puzzle_solver/puzzles/pearl` — Pearl (pearl game). ([Chapter 36][19])
-* `src/puzzle_solver/puzzles/undead` — UnDead (Vampires/Zombies/Ghosts). ([Chapter 37][14])
-* `src/puzzle_solver/puzzles/unruly` — Unruly (no triples + balance). ([Chapter 38][15])
-* `src/puzzle_solver/puzzles/tracks` — Tracks (connected components). ([Chapter 40][16])
-* `src/puzzle_solver/puzzles/mosaic` — Mosaic (Tapa-like tiling). ([Chapter 42][17])
+* `nonograms` — Picross/Griddlers (run-length constraints). ([Chapter 10][1])
+* `sudoku` — Sudoku (rows/cols/blocks all-different). ([Chapter 11][2])
+* `minesweeper` — Minesweeper (mines + counts). ([Chapter 12][3])
+* `guess` — Guess (similar to wordle, guess the colored circles). ([Chapter 15][22])
+* `dominosa` — Dominosa (dominoes + counts). ([Chapter 17][4])
+* `light_up` — *Akari* / Light Up (lighting & adjacency). ([Chapter 21][5])
+* `map` — Map (region coloring). ([Chapter 22][18])
+* `inertia` — Inertia (collect all gems without dying (with least number of moves; my addition)). ([Chapter 24][21])
+* `tents` — Tents (tree-tent matching). ([Chapter 25][6])
+* `bridges` — Bridges (island connections). ([Chapter 26][20])
+* `filling` — Filling (Fillomino-style), region sizes. ([Chapter 29][7])
+* `keen` — Keen (arithmetic operations). ([Chapter 30][8])
+* `towers` — Skyscrapers (permutation + visibility). ([Chapter 31][9])
+* `singles` — Singles (hiding numbers). ([Chapter 32][10])
+* `magnets` — Magnets (polarized dominoes + counts). ([Chapter 33][11])
+* `signpost` — Signpost (visible dominoes + counts). ([Chapter 34][12])
+* `range` — Range (rays & totals). ([Chapter 35][13])
+* `pearl` — Pearl (pearl game). ([Chapter 36][19])
+* `undead` — UnDead (Vampires/Zombies/Ghosts). ([Chapter 37][14])
+* `unruly` — Unruly (no triples + balance). ([Chapter 38][15])
+* `tracks` — Tracks (connected components). ([Chapter 40][16])
+* `mosaic` — Mosaic (Tapa-like tiling). ([Chapter 42][17])
 
 ---
 
