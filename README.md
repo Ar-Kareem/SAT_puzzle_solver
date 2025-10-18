@@ -19,11 +19,27 @@ Play the original puzzles online: https://www.chiark.greenend.org.uk/~sgtatham/p
 
 Almost all the solvers in this repo use the CP-SAT solver from Google OR-Tools.
 
+
+<div align="center">
+
+## 🎮 Puzzle Gallery
+
+| | | | | |
+|:---:|:---:|:---:|:---:|:---:|
+| [**Nonograms**<br><img src="images/nonogram_unsolved.png" width="150">](#nonograms-puzzle-type-1) | [**Sudoku**<br><img src="images/sudoku_unsolved.png" width="150">](#sudoku-puzzle-type-2) | [**Minesweeper**<br><img src="images/minesweeper_pre.png" width="150">](#minesweeper-puzzle-type-3) | [**Dominosa**<br><img src="images/dominosa_unsolved.png" width="150">](#dominosa-puzzle-type-4) | [**Light Up**<br><img src="images/lightup_unsolved.png" width="150">](#light-up-puzzle-type-5) |
+| [**Tents**<br><img src="images/tents_unsolved.png" width="150">](#tents-puzzle-type-6) | [**Filling**<br><img src="images/filling_unsolved.png" width="150">](#filling-puzzle-type-7) | [**Keen**<br><img src="images/keen_unsolved.png" width="150">](#keen-puzzle-type-8) | [**Towers**<br><img src="images/towers_unsolved.png" width="150">](#towers-puzzle-type-9) | [**Singles**<br><img src="images/singles_unsolved.png" width="150">](#singles-puzzle-type-10) |
+| [**Magnets**<br><img src="images/magnets_unsolved.png" width="150">](#magnets-puzzle-type-11) | [**Signpost**<br><img src="images/signpost_unsolved.png" width="150">](#signpost-puzzle-type-12) | [**Range**<br><img src="images/range_unsolved.png" width="150">](#range-puzzle-type-13) | [**Undead**<br><img src="images/undead_unsolved.png" width="150">](#undead-puzzle-type-14) | [**Unruly**<br><img src="images/unruly_unsolved.png" width="150">](#unruly-puzzle-type-15) |
+| [**Tracks**<br><img src="images/tracks_unsolved.png" width="150">](#tracks-puzzle-type-16) | [**Mosaic**<br><img src="images/mosaic_unsolved.png" width="150">](#mosaic-puzzle-type-17) | [**Map**<br><img src="images/map_unsolved.png" width="150">](#map-puzzle-type-18) | [**Pearl**<br><img src="images/pearl_unsolved.png" width="150">](#pearl-puzzle-type-19) | [**Bridges**<br><img src="images/bridges_unsolved.png" width="150">](#bridges-puzzle-type-20) |
+| [**Inertia**<br><img src="images/inertia_unsolved.png" width="150">](#inertia-puzzle-type-21) | [**Guess**<br><img src="images/guess_1.png" width="150">](#guess-puzzle-type-22) | | | |
+
+</div>
+
 ---
 
 ## Table of Contents
 
 - [Python Puzzle Solver](#python-puzzle-solver)
+  - [🎮 Puzzle Gallery](#-puzzle-gallery)
   - [Table of Contents](#table-of-contents)
 - [Puzzles](#puzzles)
   - [Nonograms (Puzzle Type #1)](#nonograms-puzzle-type-1)
