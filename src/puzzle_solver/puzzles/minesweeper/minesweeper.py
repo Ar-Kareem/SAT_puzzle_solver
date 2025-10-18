@@ -1,4 +1,6 @@
 import time
+from typing import Union
+
 import numpy as np
 from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
@@ -26,7 +28,7 @@ class Board:
             self.model_vars[pos] = self.model.NewBoolVar(f'{pos}')
 
     def add_all_constraints(self):
-        self.model.Add(lxp.Sum(self.model_vars.values()) == self.mine_count)
+        self.model.Add(lxp.Sum(list(self.model_vars.values())) == self.mine_count)
         for pos in get_all_pos(self.V, self.H):
             c = get_char(self.board, pos)
             if c in ['F', ' ']:
@@ -53,7 +55,7 @@ def _is_feasible(board: np.array, pos: Pos = None, value: str = None, mine_count
         return SingleSolution(assignment={pos: solver.value(var) for pos, var in board.model_vars.items()})
     return len(generic_solve_all(board, board_to_solution, max_solutions=1, verbose=False)) >= 1
 
-def _is_safe(board: np.array, pos: Pos, mine_count: int) -> bool|None:
+def _is_safe(board: np.array, pos: Pos, mine_count: int) -> Union[bool, None]:
     """Returns a True if the position is safe, False if it is a mine, otherwise None"""
     safe_feasible = _is_feasible(board, pos, 'S', mine_count=mine_count)
     mine_feasible = _is_feasible(board, pos, 'M', mine_count=mine_count)

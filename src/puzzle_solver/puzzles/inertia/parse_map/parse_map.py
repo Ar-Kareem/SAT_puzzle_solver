@@ -79,7 +79,7 @@ def get_distance_robust(cell: np.ndarray, template: np.ndarray, max_shift: int =
                 best = mse
     return float(best)
 
-def distance_to_cell_templates(cell_rgb_image: Image.Image | np.ndarray, templates: dict[str, dict]) -> dict[str, float]:
+def distance_to_cell_templates(cell_rgb_image, templates: dict[str, dict]) -> dict[str, float]:
     W, H = 100, 100
     cell = cv.resize(cell_rgb_image, (W, H), interpolation=cv.INTER_LINEAR)
     distances = {}

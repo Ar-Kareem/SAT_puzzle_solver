@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Tuple, Iterable
+from typing import Tuple, Iterable, Union
 from enum import Enum
 
 import numpy as np
@@ -31,7 +31,7 @@ def get_pos(x: int, y: int) -> Pos:
     return Pos(x=x, y=y)
 
 
-def get_next_pos(cur_pos: Pos, direction: Direction|Direction8) -> Pos:
+def get_next_pos(cur_pos: Pos, direction: Union[Direction, Direction8]) -> Pos:
     delta_x, delta_y = get_deltas(direction)
     return get_pos(cur_pos.x+delta_x, cur_pos.y+delta_y)
 
@@ -106,7 +106,7 @@ def get_opposite_direction(direction: Direction) -> Direction:
         raise ValueError(f'invalid direction: {direction}')
 
 
-def get_deltas(direction: Direction|Direction8) -> Tuple[int, int]:
+def get_deltas(direction: Union[Direction, Direction8]) -> Tuple[int, int]:
     if direction == Direction.RIGHT or direction == Direction8.RIGHT:
         return +1, 0
     elif direction == Direction.LEFT or direction == Direction8.LEFT:

@@ -1,3 +1,5 @@
+from typing import Union
+
 import numpy as np
 from ortools.sat.python import cp_model
 
@@ -5,7 +7,7 @@ from puzzle_solver.core.utils import Pos, get_pos, get_all_pos, get_char, set_ch
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution
 
 
-def get_value(board: np.array, pos: Pos) -> int|str:
+def get_value(board: np.array, pos: Pos) -> Union[int, str]:
     c = get_char(board, pos)
     if c == '*':
         return c
@@ -15,7 +17,7 @@ def get_value(board: np.array, pos: Pos) -> int|str:
     return ord(c) - ord('a') + 10
 
 
-def set_value(board: np.array, pos: Pos, value: int|str):
+def set_value(board: np.array, pos: Pos, value: Union[int, str]):
     if value == '*':
         value = '*'
     elif value < 10:

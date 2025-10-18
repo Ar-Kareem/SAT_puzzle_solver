@@ -1,7 +1,7 @@
 import time
 import json
 from dataclasses import dataclass
-from typing import Optional, Callable, Any
+from typing import Optional, Callable, Any, Union
 
 from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import CpSolverSolutionCallback
@@ -11,7 +11,7 @@ from puzzle_solver.core.utils import Pos
 
 @dataclass(frozen=True)
 class SingleSolution:
-    assignment: dict[Pos, str|int]
+    assignment: dict[Pos, Union[str, int]]
 
     def get_hashable_solution(self) -> str:
         result = []
