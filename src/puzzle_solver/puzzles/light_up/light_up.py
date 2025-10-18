@@ -22,7 +22,7 @@ def laser_out(board: np.array, init_pos: Pos) -> list[Pos]:
         cur_pos = init_pos
         while True:
             cur_pos = get_next_pos(cur_pos, direction)
-            if not in_bounds(cur_pos, N) or get_char(board, cur_pos) != '*':
+            if not in_bounds(cur_pos, N) or get_char(board, cur_pos) != ' ':
                 break
             result.append(cur_pos)
     return result
@@ -32,10 +32,10 @@ class Board:
     def __init__(self, board: np.array):
         assert board.ndim == 2, f'board must be 2d, got {board.ndim}'
         assert board.shape[0] == board.shape[1], 'board must be square'
-        assert all((c in ['*', 'W']) or str(c).isdecimal() for c in np.nditer(board)), 'board must contain only * or W or numbers'
+        assert all((c in [' ', 'W']) or str(c).isdecimal() for c in np.nditer(board)), 'board must contain only space or W or numbers'
         self.board = board
         self.N = board.shape[0]
-        self.star_positions: set[Pos] = {pos for pos in get_all_pos(self.N) if get_char(self.board, pos) == '*'}
+        self.star_positions: set[Pos] = {pos for pos in get_all_pos(self.N) if get_char(self.board, pos) == ' '}
         self.number_position: set[Pos] = {pos for pos in get_all_pos(self.N) if str(get_char(self.board, pos)).isdecimal()}
         self.model = cp_model.CpModel()
         self.model_vars: dict[tuple[Pos, State], cp_model.IntVar] = {}
@@ -87,7 +87,7 @@ class Board:
             res = np.full((self.N, self.N), ' ', dtype=object)
             for pos in get_all_pos(self.N):
                 c = get_char(self.board, pos)
-                if c == '*':
+                if c == ' ':
                     c = single_res.assignment[pos]
                     c = 'L' if c == 'L' else ' '
                 set_char(res, pos, c)

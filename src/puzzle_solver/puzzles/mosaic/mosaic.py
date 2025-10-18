@@ -10,7 +10,7 @@ class Board:
     def __init__(self, board: np.array):
         assert board.ndim == 2, f'board must be 2d, got {board.ndim}'
         assert board.shape[0] == board.shape[1], 'board must be square'
-        assert all((c.item() == '*') or str(c.item()).isdecimal() for c in np.nditer(board)), 'board must contain only * or digits'
+        assert all((c.item() == ' ') or str(c.item()).isdecimal() for c in np.nditer(board)), 'board must contain only space or digits'
         self.board = board
         self.N = board.shape[0]
         self.model = cp_model.CpModel()

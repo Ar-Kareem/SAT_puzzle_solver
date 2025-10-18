@@ -15,10 +15,10 @@ class Board:
         assert len(sides) == 2, '2 sides must be provided'
         assert set(sides.keys()) == set(['top', 'side'])
         assert all(s.ndim == 1 and s.shape[0] == board.shape[0] for s in sides.values()), 'all sides must be equal to board size'
-        assert all(c.item() in ['*', 'T'] for c in np.nditer(board)), 'board must contain only * or T'
+        assert all(c.item() in [' ', 'T'] for c in np.nditer(board)), 'board must contain only space or T'
         self.board = board
         self.N = board.shape[0]
-        self.star_positions: set[Pos] = {pos for pos in get_all_pos(self.N) if get_char(self.board, pos) == '*'}
+        self.star_positions: set[Pos] = {pos for pos in get_all_pos(self.N) if get_char(self.board, pos) == ' '}
         self.tree_positions: set[Pos] = {pos for pos in get_all_pos(self.N) if get_char(self.board, pos) == 'T'}
         self.model = cp_model.CpModel()
         self.is_tent = defaultdict(int)
@@ -42,7 +42,7 @@ class Board:
         # - no two tents are adjacent horizontally, vertically or diagonally
         for pos in self.star_positions:
             for neighbour in get_neighbors8(pos, V=self.N, H=self.N, include_self=False):
-                if get_char(self.board, neighbour) != '*':
+                if get_char(self.board, neighbour) != ' ':
                     continue
                 self.model.Add(self.is_tent[neighbour] == 0).OnlyEnforceIf(self.is_tent[pos])
         # - the number of tents in each row and column matches the numbers around the edge of the grid 
@@ -102,7 +102,7 @@ class Board:
             res = np.full((self.N, self.N), ' ', dtype=object)
             for pos in get_all_pos(self.N):
                 c = get_char(self.board, pos)
-                if c == '*':
+                if c == ' ':
                     c = single_res.assignment[pos]
                     c = 'E' if c == 1 else ' '
                 set_char(res, pos, c)

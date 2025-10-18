@@ -45,7 +45,7 @@ class Board:
         # some cells are already filled
         for pos in get_all_pos(self.V, self.H):
             c = get_char(self.board, pos)
-            if c == '*':
+            if c == ' ':
                 continue
             v = 1 if c == 'B' else 0
             self.model.Add(self.model_vars[pos] == v)
@@ -79,7 +79,7 @@ class Board:
             res = np.full((self.V, self.H), ' ', dtype=object)
             for pos in get_all_pos(self.V, self.H):
                 c = get_char(self.board, pos)
-                if c == '*':
+                if c == ' ':
                     c = 'B' if single_res.assignment[pos] == 1 else 'W'
                 set_char(res, pos, c)
             print(res)

@@ -9,7 +9,7 @@ from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution
 
 def get_value(board: np.array, pos: Pos) -> Union[int, str]:
     c = get_char(board, pos)
-    if c == '*':
+    if c == ' ':
         return c
     if str(c).isdecimal():
         return int(c)
@@ -18,8 +18,8 @@ def get_value(board: np.array, pos: Pos) -> Union[int, str]:
 
 
 def set_value(board: np.array, pos: Pos, value: Union[int, str]):
-    if value == '*':
-        value = '*'
+    if value == ' ':
+        value = ' '
     elif value < 10:
         value = str(value)
     else:
@@ -37,7 +37,7 @@ class Board:
     def __init__(self, board: np.array):
         assert board.ndim == 2, f'board must be 2d, got {board.ndim}'
         assert board.shape[0] == board.shape[1], 'board must be square'
-        assert all(isinstance(i.item(), str) and len(i.item()) == 1 and (i.item().isalnum() or i.item() == '*') for i in np.nditer(board)), 'board must contain only alphanumeric characters or *'
+        assert all(isinstance(i.item(), str) and len(i.item()) == 1 and (i.item().isalnum() or i.item() == ' ') for i in np.nditer(board)), 'board must contain only alphanumeric characters or space'
         self.board = board
         self.N = board.shape[0]
         self.B = np.sqrt(self.N)  # block size
@@ -57,7 +57,7 @@ class Board:
         # some squares are already filled
         for pos in get_all_pos(self.N):
             c = get_value(self.board, pos)
-            if c != '*':
+            if c != ' ':
                 self.model.Add(self.model_vars[pos] == c)
         # every number appears exactly once in each row, each column and each block
         # each row

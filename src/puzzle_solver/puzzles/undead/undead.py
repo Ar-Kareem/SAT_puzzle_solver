@@ -82,7 +82,7 @@ class Board:
         self.N = board.shape[0]
         self.model = cp_model.CpModel()
         self.model_vars: dict[tuple[Pos, str], cp_model.IntVar] = {}
-        self.star_positions: set[Pos] = {pos for pos in get_all_pos(self.N) if get_char(self.board, pos) == '**'}
+        self.star_positions: set[Pos] = {pos for pos in get_all_pos(self.N) if get_char(self.board, pos) == '  '}
         self.monster_count = monster_count
 
         self.create_vars()
@@ -91,7 +91,7 @@ class Board:
     def create_vars(self):
         for pos in self.star_positions:
             c = get_char(self.board, pos)
-            assert c == '**', f'star position {pos} has character {c}'
+            assert c == '  ', f'star position {pos} has character {c}'
             monster_vars = []
             for _, monster_name in get_all_monster_types():
                 v = self.model.NewBoolVar(f"{pos}_is_{monster_name}")
@@ -161,7 +161,7 @@ class Board:
             res = np.full((self.N, self.N), ' ', dtype=object)
             for pos in get_all_pos(self.N):
                 c = get_char(self.board, pos)
-                if c == '**':
+                if c == '  ':
                     c = single_res.assignment[pos]
                 set_char(res, pos, c)
             print(res)

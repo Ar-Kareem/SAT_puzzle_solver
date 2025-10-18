@@ -35,8 +35,8 @@ class Board:
         assert board.ndim == 2, f'board must be 2d, got {board.ndim}'
         self.board = board
         self.V, self.H = board.shape
-        assert all((c == '*') or (str(c).isdecimal() and 0 <= int(c) <= 9)
-                   for c in np.nditer(board)), "board must contain '*' or digits 0..9"
+        assert all((c == ' ') or (str(c).isdecimal() and 0 <= int(c) <= 9)
+                   for c in np.nditer(board)), "board must contain space or digits 0..9"
 
         self.N = self.V * self.H
         self.INF = self.N + 1  # a safe "infinity" upper bound for distances

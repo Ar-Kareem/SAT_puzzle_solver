@@ -20,6 +20,7 @@ class Board:
         assert len(sides) == 4, '4 sides must be provided'
         assert all(s.ndim == 1 and s.shape[0] == board.shape[0] for s in sides.values()), 'all sides must be equal to board size'
         assert set(sides.keys()) == set(['right', 'left', 'top', 'bottom'])
+        assert all((c == ' ') or str(c).isdecimal() for c in np.nditer(board)), 'board must contain space or digits'
         self.board = board
         self.sides = sides
         self.N = board.shape[0]
