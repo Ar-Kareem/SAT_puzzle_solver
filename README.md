@@ -184,8 +184,8 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   - [Inertia (Puzzle Type #21)](#inertia-puzzle-type-21)
   - [Guess (Puzzle Type #22)](#guess-puzzle-type-22)
   - [Quick Start](#quick-start)
-    - [1) Install Python deps](#1-install-python-deps)
-    - [2) Explore a puzzle](#2-explore-a-puzzle)
+    - [1) Install package from PyPI](#1-install-package-from-pypi)
+    - [2) Solve a puzzle](#2-solve-a-puzzle)
   - [Why SAT / CP-SAT?](#why-sat--cp-sat)
   - [What’s Inside](#whats-inside)
   - [Testing](#testing)
@@ -1875,48 +1875,40 @@ In the case when there's only one possible choice left, the solver will inform y
 
 ## Quick Start
 
-### 1) Install Python deps
-
-Use a fresh conda environment:
+### 1) Install package from PyPI
 
 ```bash
-conda create -p ./env python=3.11
-conda activate ./env
-pip install -r requirements.txt
-````
+pip install multi-puzzle-solver
+```
 
-### 2) Explore a puzzle
+### 2) Solve a puzzle
 
-Each puzzle has its own module which can be imported directly from the repo (i.e. `from puzzle_solver import minesweeper_solver`) or you can run the test scripts directly from the CLI.
+Each puzzle has its own solver which can be imported directly.
 
 
 Example: Nonograms (Pattern)
 Docs: [https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/pattern.html#pattern](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/pattern.html#pattern)
 
-```bash
-python -m tests.test_nonograms
-```
-
-This runs code like:
+Use the API to solve the puzzle:
 
 ```python
 from puzzle_solver import nonograms_solver as solver
-top_numbers = [
-  [8, 2],
-  ...
-  [1, 5],
-]  # top clues, omitted here for brevity
-side_numbers = [
-  [7, 3],
-  ...
-  [3, 2],
-]  # side clues, omitted here for brevity
-binst = solver.Board(top=top_numbers, side=side_numbers)
+binst = solver.Board(top=[[2], [3], [1], [1, 1]], side=[[3], [1], [2, 1], [1]])
 solutions = binst.solve_and_print()
 ```
 
-You’ll see the solution grid and status in the terminal.
+You’ll see the solution returned and printed :
 
+```python
+Solution found
+[[' ' 'B' 'B' 'B']
+ [' ' 'B' ' ' ' ']
+ ['B' 'B' ' ' 'B']
+ ['B' ' ' ' ' ' ']]
+Solutions found: 1
+status: OPTIMAL
+Time taken: 0.00 seconds
+```
 ---
 
 ## Why SAT / CP-SAT?
@@ -1962,10 +1954,12 @@ Each sub directory in `src/puzzle_solver/puzzles/` targets a different puzzle ty
 
 ## Testing
 
-To run the tests, simply follow the instructions in Install Python deps section ([here](#1-install-python-deps)) and then run:
+To run the tests, simply run the following (to create a fresh conda environment and install the dev dependencies):
 
 ```bash
+conda create -p ./env python=3.11
 conda activate ./env
+pip install -r requirements.txt
 pip install -r requirements-dev.txt
 pytest
 ```
