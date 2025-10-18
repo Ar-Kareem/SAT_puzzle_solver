@@ -1647,7 +1647,8 @@ The algorithm is as follows
    2. By convention, terms with $P(t \mid g)=0$ contribute $0$ to the sum (interpreting $0\log 0 := 0)$.
 
 7. Return the guess $g \in G$ that maximizes the entropy $H(g)$ (to break ties, choose $g$ that is also in $S$ such that it's possibly the correct solution as well, break further ties arbitrarily).
-   1. i.e. return any $g^*\in (\mathrm{argmax}_{g\in G}\ H(g) \cap S)$ if exists, otherwise return any $g\in \mathrm{argmax}_{g\in G}\ H(g)$.
+   1. i.e. return any $g^*\in (\mathrm{argmax}_{g\in G}\ H(g) \cap S)$ if exists
+   2. otherwise return any $g\in \mathrm{argmax}_{g\in G}\ H(g)$.
 
 
 If you are at all interested in the above steps and want to understand more, 
