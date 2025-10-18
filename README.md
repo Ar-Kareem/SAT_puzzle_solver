@@ -190,6 +190,7 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   - [What’s Inside](#whats-inside)
   - [Testing](#testing)
   - [Contributing](#contributing)
+    - [Build and push to PyPI](#build-and-push-to-pypi)
 
 ---
 
@@ -1965,6 +1966,7 @@ To run the tests, simply follow the instructions in Install Python deps section 
 
 ```bash
 conda activate ./env
+pip install -r requirements-dev.txt
 pytest
 ```
 
@@ -1975,14 +1977,22 @@ the `pytest.ini` file is used to configure the pytest command to use `-n 4` to h
 Issues and PRs welcome!
 
 
-* Python 3.11 recommended but not required.
-* Keep puzzle folders self-contained (inputs, solver, simple demo/CLI).
+* Python version `>= 3.9` required.
+* Keep puzzle folders self-contained (solver, README.md, other files if needed).
 * Prefer small, readable encodings with comments explaining each constraint.
 * If you add a new puzzle:
 
   1. Create a directory in `src/puzzle_solver/puzzles/<name>/`,
   2. Add a minimal test script in `tests/test_<name>.py`,
   3. Document the modeling in code comments,
+
+### Build and push to PyPI
+
+1. First make sure all the tests pass (see [Testing](#testing))
+2. Update the version in `src/puzzle_solver/__init__.py`
+3. Build and push:
+   1. Bash: `rm dist/* && python -m build --sdist --wheel && python -m twine upload --repository pypi dist/*`
+   2. Powershell: `rm dist/*; if ($?) { python -m build --sdist --wheel; if ($?) { python -m twine upload --repository pypi dist/* } }`
 
 
 [1]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/nonograms "puzzle_solver/src/puzzle_solver/puzzles/nonograms at master · Ar-Kareem/puzzle_solver · GitHub"
