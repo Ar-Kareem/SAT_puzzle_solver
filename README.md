@@ -24,22 +24,52 @@ Almost all the solvers in this repo use the CP-SAT solver from Google OR-Tools.
 
 ## 🎮 Puzzle Gallery
 
-| | | | | |
-|:---:|:---:|:---:|:---:|:---:|
-| [**Nonograms**<br><img src="images/nonogram_unsolved.png" width="150">](#nonograms-puzzle-type-1) | [**Sudoku**<br><img src="images/sudoku_unsolved.png" width="150">](#sudoku-puzzle-type-2) | [**Minesweeper**<br><img src="images/minesweeper_pre.png" width="150">](#minesweeper-puzzle-type-3) | [**Dominosa**<br><img src="images/dominosa_unsolved.png" width="150">](#dominosa-puzzle-type-4) | [**Light Up**<br><img src="images/lightup_unsolved.png" width="150">](#light-up-puzzle-type-5) |
-| [**Tents**<br><img src="images/tents_unsolved.png" width="150">](#tents-puzzle-type-6) | [**Filling**<br><img src="images/filling_unsolved.png" width="150">](#filling-puzzle-type-7) | [**Keen**<br><img src="images/keen_unsolved.png" width="150">](#keen-puzzle-type-8) | [**Towers**<br><img src="images/towers_unsolved.png" width="150">](#towers-puzzle-type-9) | [**Singles**<br><img src="images/singles_unsolved.png" width="150">](#singles-puzzle-type-10) |
-| [**Magnets**<br><img src="images/magnets_unsolved.png" width="150">](#magnets-puzzle-type-11) | [**Signpost**<br><img src="images/signpost_unsolved.png" width="150">](#signpost-puzzle-type-12) | [**Range**<br><img src="images/range_unsolved.png" width="150">](#range-puzzle-type-13) | [**Undead**<br><img src="images/undead_unsolved.png" width="150">](#undead-puzzle-type-14) | [**Unruly**<br><img src="images/unruly_unsolved.png" width="150">](#unruly-puzzle-type-15) |
-| [**Tracks**<br><img src="images/tracks_unsolved.png" width="150">](#tracks-puzzle-type-16) | [**Mosaic**<br><img src="images/mosaic_unsolved.png" width="150">](#mosaic-puzzle-type-17) | [**Map**<br><img src="images/map_unsolved.png" width="150">](#map-puzzle-type-18) | [**Pearl**<br><img src="images/pearl_unsolved.png" width="150">](#pearl-puzzle-type-19) | [**Bridges**<br><img src="images/bridges_unsolved.png" width="150">](#bridges-puzzle-type-20) |
-| [**Inertia**<br><img src="images/inertia_unsolved.png" width="150">](#inertia-puzzle-type-21) | [**Guess**<br><img src="images/guess_1.png" width="150">](#guess-puzzle-type-22) | | | |
+<table>
+<tr>
+<td align="center"><a href="#nonograms-puzzle-type-1"><b>Nonograms</b><br><img src="images/nonogram_solved.png" width="150"></a></td>
+<td align="center"><a href="#sudoku-puzzle-type-2"><b>Sudoku</b><br><img src="images/sudoku_solved.png" width="150"></a></td>
+<td align="center"><a href="#minesweeper-puzzle-type-3"><b>Minesweeper</b><br><img src="images/minesweeper_pre.png" width="150"></a></td>
+<td align="center"><a href="#dominosa-puzzle-type-4"><b>Dominosa</b><br><img src="images/dominosa_solved.png" width="150"></a></td>
+<td align="center"><a href="#light-up-puzzle-type-5"><b>Light Up</b><br><img src="images/lightup_solved.png" width="150"></a></td>
+</tr>
+<tr>
+<td align="center"><a href="#tents-puzzle-type-6"><b>Tents</b><br><img src="images/tents_solved.png" width="150"></a></td>
+<td align="center"><a href="#filling-puzzle-type-7"><b>Filling</b><br><img src="images/filling_solved.png" width="150"></a></td>
+<td align="center"><a href="#keen-puzzle-type-8"><b>Keen</b><br><img src="images/keen_solved.png" width="150"></a></td>
+<td align="center"><a href="#towers-puzzle-type-9"><b>Towers</b><br><img src="images/towers_solved.png" width="150"></a></td>
+<td align="center"><a href="#singles-puzzle-type-10"><b>Singles</b><br><img src="images/singles_solved.png" width="150"></a></td>
+</tr>
+<tr>
+<td align="center"><a href="#magnets-puzzle-type-11"><b>Magnets</b><br><img src="images/magnets_solved.png" width="150"></a></td>
+<td align="center"><a href="#signpost-puzzle-type-12"><b>Signpost</b><br><img src="images/signpost_solved.png" width="150"></a></td>
+<td align="center"><a href="#range-puzzle-type-13"><b>Range</b><br><img src="images/range_solved.png" width="150"></a></td>
+<td align="center"><a href="#undead-puzzle-type-14"><b>Undead</b><br><img src="images/undead_solved.png" width="150"></a></td>
+<td align="center"><a href="#unruly-puzzle-type-15"><b>Unruly</b><br><img src="images/unruly_solved.png" width="150"></a></td>
+</tr>
+<tr>
+<td align="center"><a href="#tracks-puzzle-type-16"><b>Tracks</b><br><img src="images/tracks_solved.png" width="150"></a></td>
+<td align="center"><a href="#mosaic-puzzle-type-17"><b>Mosaic</b><br><img src="images/mosaic_solved.png" width="150"></a></td>
+<td align="center"><a href="#map-puzzle-type-18"><b>Map</b><br><img src="images/map_solved.png" width="150"></a></td>
+<td align="center"><a href="#pearl-puzzle-type-19"><b>Pearl</b><br><img src="images/pearl_solved.png" width="150"></a></td>
+<td align="center"><a href="#bridges-puzzle-type-20"><b>Bridges</b><br><img src="images/bridges_solved.png" width="150"></a></td>
+</tr>
+<tr>
+<td align="center"><a href="#inertia-puzzle-type-21"><b>Inertia</b><br><img src="images/inertia_solved.png" width="150"></a></td>
+<td align="center"><a href="#guess-puzzle-type-22"><b>Guess</b><br><img src="images/guess_3.png" width="150"></a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</table>
 
 </div>
-
 ---
 
 ## Table of Contents
 
 - [Python Puzzle Solver](#python-puzzle-solver)
   - [🎮 Puzzle Gallery](#-puzzle-gallery)
+  - [](#)
   - [Table of Contents](#table-of-contents)
 - [Puzzles](#puzzles)
   - [Nonograms (Puzzle Type #1)](#nonograms-puzzle-type-1)
