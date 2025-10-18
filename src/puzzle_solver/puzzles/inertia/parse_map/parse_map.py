@@ -5,12 +5,15 @@
 """
 from pathlib import Path
 import numpy as np
-import cv2 as cv
-from PIL import Image
 import numpy as np
-import matplotlib.pyplot as plt
-import json
-
+try:
+    import cv2 as cv
+except ImportError:
+    cv = None
+try:
+    from PIL import Image
+except ImportError:
+    Image = None
 
 def load_cell_templates(p: Path) -> dict[str, dict]:
     img = Image.open(p)
@@ -133,22 +136,23 @@ def show_wait_destroy(winname, img):
 
 
 
-CELL_BLANK = load_cell_templates(Path(__file__).parent / 'cells' / 'cell_blank.png')
-CELL_WALL = load_cell_templates(Path(__file__).parent / 'cells' / 'cell_wall.png')
-CELL_GEM = load_cell_templates(Path(__file__).parent / 'cells' / 'cell_gem.png')
-CELL_MINE = load_cell_templates(Path(__file__).parent / 'cells' / 'cell_mine.png')
-CELL_STOP = load_cell_templates(Path(__file__).parent / 'cells' / 'cell_stop.png')
-CELL_START = load_cell_templates(Path(__file__).parent / 'cells' / 'cell_start.png')
-TEMPLATES = {
-    "blank": CELL_BLANK,
-    "gem": CELL_GEM,
-    "mine": CELL_MINE,
-    "stop": CELL_STOP,
-    "start": CELL_START,
-    "wall": CELL_WALL,
-}
-
 def main(image):
+    CELL_BLANK = load_cell_templates(Path(__file__).parent / 'cells' / 'cell_blank.png')
+    CELL_WALL = load_cell_templates(Path(__file__).parent / 'cells' / 'cell_wall.png')
+    CELL_GEM = load_cell_templates(Path(__file__).parent / 'cells' / 'cell_gem.png')
+    CELL_MINE = load_cell_templates(Path(__file__).parent / 'cells' / 'cell_mine.png')
+    CELL_STOP = load_cell_templates(Path(__file__).parent / 'cells' / 'cell_stop.png')
+    CELL_START = load_cell_templates(Path(__file__).parent / 'cells' / 'cell_start.png')
+    TEMPLATES = {
+        "blank": CELL_BLANK,
+        "gem": CELL_GEM,
+        "mine": CELL_MINE,
+        "stop": CELL_STOP,
+        "start": CELL_START,
+        "wall": CELL_WALL,
+    }
+
+
     image_path = Path(image)
     output_path = image_path.parent / (image_path.stem + '.json')
     src = cv.imread(image, cv.IMREAD_COLOR)
