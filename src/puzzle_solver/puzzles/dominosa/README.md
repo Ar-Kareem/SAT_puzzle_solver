@@ -21,7 +21,7 @@ Your task is to reconstruct the pattern by arranging the set of dominoes to matc
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import dominosa_solver as solver
 bor = np.array([
   [6, 8, 2, 7, 1, 3, 3, 4, 6, 6, 0],
   [4, 9, 5, 6, 1, 0, 6, 1, 2, 2, 4],

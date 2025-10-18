@@ -23,7 +23,7 @@ You have a grid of white squares, all of which contain numbers. Your task is to 
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import singles_solver as solver
 bor = np.array([
   [1, 6, 5, 4, 9, 8, 9, 3, 5, 1, 3, 7],
   [2, 8, 5, 7, 1, 1, 4, 3, 6, 3, 10, 7],

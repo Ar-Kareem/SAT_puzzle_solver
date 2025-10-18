@@ -36,7 +36,7 @@ Code to utilize this package and solve the puzzle:
 (Note: there is a script that parses a screenshot of the board and outputs the below array that the solver uses. The script uses classical computer vision techniques and is called `parse_map.py`)
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import inertia_solver as solver
 bor = np.array([
   ["O", "O", "M", " ", "G", "O", "G", "O", " ", " ", "M", " ", " ", "O", "G", "G", "W", "O", "O", "O"],
   ["O", " ", "W", " ", "W", "O", "G", "M", " ", " ", " ", "G", "M", "O", "W", "G", " ", "M", "M", "O"],

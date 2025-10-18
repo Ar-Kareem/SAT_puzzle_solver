@@ -25,7 +25,7 @@ For example, it follows that no square can contain a zero, and that two adjacent
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import filling_solver as solver
 bor = np.array([
   ['*', '4', '2', '*', '*', '2', '*'],
   ['*', '*', '7', '*', '*', '3', '*'],

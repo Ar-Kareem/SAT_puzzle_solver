@@ -21,7 +21,7 @@ Complete the track from A to B so that the rows and columns contain the same num
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import tracks_solver as solver
 bor = np.array([
   ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', 'LD', '  ', '  ', ], 
   ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', 'LD', '  ', '  ', '  ', '  ', ], 

@@ -23,7 +23,7 @@ You are also told the total number of each type of monster in the grid. Also aro
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import undead_solver as solver
 bor = np.array([
   ['**', '//', '**', '**', '**', '**', '\\'],
   ['**', '**', '**', '//', '**', '**', '**'],

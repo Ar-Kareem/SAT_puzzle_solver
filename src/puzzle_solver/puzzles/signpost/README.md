@@ -21,7 +21,7 @@ By convention the first and last numbers are shown; one or more interim numbers 
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import signpost_solver as solver
 # Q = up-left, W = up, E = up-right, A = left, D = right, Z = down-left, X = down, C = down-right
 bor1 = np.array([
   ['C', 'D', 'D', 'X', 'D', 'Z', 'X'],

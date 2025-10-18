@@ -90,7 +90,7 @@ Code to utilize this package and solve the puzzle:
 
 We encode the puzzle as a Board object then retreive the optimal next guess:
 ```python
-from . import solver
+from puzzle_solver import guess_solver as solver
 binst = solver.Board()
 binst.add_guess(('R', 'Y', 'G', 'B'), (1, 1, 2))  # 1 black dot, 1 white dot, 2 grey dots
 binst.add_guess(('R', 'G', 'O', 'P'), (0, 2, 2))  # 0 black dots, 2 white dots, 2 grey dots
@@ -116,7 +116,7 @@ So we make our next guess as (Purple, Yellow, Yellow, Green) and let's say we ge
 So we input that again to the solver to retreive the next optimal guess:
 
 ```python
-from . import solver
+from puzzle_solver import guess_solver as solver
 binst = solver.Board()
 binst.add_guess(('R', 'Y', 'G', 'B'), (1, 1, 2))  # 1 black dot, 1 white dot, 2 grey dots
 binst.add_guess(('R', 'G', 'O', 'P'), (0, 2, 2))  # 0 black dots, 2 white dots, 2 grey dots

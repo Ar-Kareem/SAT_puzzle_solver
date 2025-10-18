@@ -18,7 +18,7 @@ You have a grid of squares, which must all be filled in either black or white. B
 
 Code to utilize this package and solve the puzzle:
 ```python
-from . import solver
+from puzzle_solver import nonograms_solver as solver
 top_numbers = [
   [8, 2],
   [5, 4],

@@ -29,7 +29,7 @@ Non-numbered black squares may have any number of lights adjacent to them.
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import light_up_solver as solver
 bor = np.array([
   ['*', '0', '*', '*', '*', '*', 'W', '*', '*', '*'],
   ['*', '*', '*', '0', '*', '*', '*', '*', '*', '1'],

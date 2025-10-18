@@ -21,7 +21,7 @@ Only regions which share a length of border are required to be different colours
 
 Code to utilize this package and solve the puzzle:
 ```python
-from . import solver
+from puzzle_solver import map_solver as solver
 # this was a pain to type out by hand
 regions = {
   0: {1, 11, 12, 27},

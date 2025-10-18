@@ -21,7 +21,7 @@ Your aim is to correctly place the magnets and blank dominoes such that all the 
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import magnets_solver as solver
 bor = np.array([
   ['H', 'H', 'H', 'H', 'V', 'V', 'V', 'V', 'H', 'H'],
   ['H', 'H', 'H', 'H', 'V', 'V', 'V', 'V', 'V', 'V'],

@@ -1,12 +1,23 @@
 # SAT Puzzle Solver
 
-Solve classic logic puzzles automatically in Python. This repo solves many popular pencil logic puzzles like Nonograms, Sudoku, Minesweeper, and many more lesser known ones.
+Solve classic logic puzzles automatically in Python. 
 
-If you happen to have a puzzle similar to the ones below and want to solve it (or see how many potential solutions it has), then this repo is perfect for you
+The aim of this repo it to make very efficient solvers (i.e. not brute force solvers) for many popular pencil logic puzzles like Nonograms, Sudoku, Minesweeper, and many more lesser known ones.
+
+If you happen to have a puzzle similar to the ones listed below and want to solve it (or see how many potential solutions a partially covered board has), then this repo is perfect for you.
+
+The simple use-case of this repo is if you want to solve a puzzle given the state of the board. But other use-cases exist such as checking if removing a clue would still result in a unique solution or would make the puzzle ambiguous and have multiple solutions.
+
+**Why?** There are countless python packages that can solve popular puzzles like the ones below, so a valid question to ask is **why would I want to use this package and why did you create it?**. That is a fair question and the answer is that there are multiple problems with most of those packages that this package solves.
+
+1. **Sophisticated solvers:** A lot of available online solvers are incredibly inefficient as they implement naive algorithms that brute force and backtrack through all possible solutions. This package solves that issue as all the solvers included here never use naive algorithms and instead use a very efficient CP-SAT solver which is a more sophisticated solver than any one person could possibly write.
+2. **Numerous puzzles:** Most of the available python solvers are only designed for a single type of puzzle and each one requires a different way to encode the input and extract the solution. This package solves both those issues as this package provides solvers for many puzzles all with a similar interface that encodes the input and extracts the solution in a similar way.
+3. **Esoteric puzzles:** Most packages you can find online are only designed for popular puzzles. This package partially solves this issue by providing solvers for many puzzles. I'm open to suggestions for implementing solvers for more puzzles.
+4. **All possible solutions:** The available solvers often lack uniqueness checks and simply stop at the first possible solution without verifying uniqueness or completeness. This package supports checking whether puzzles are uniquely solvable, ambiguous, or unsolvable for all the puzzles.
 
 Play the original puzzles online: https://www.chiark.greenend.org.uk/~sgtatham/puzzles
 
-All the solvers in this repo use the CP-SAT solver from Google OR-Tools.
+Almost all the solvers in this repo use the CP-SAT solver from Google OR-Tools.
 
 ---
 
@@ -49,7 +60,7 @@ All the solvers in this repo use the CP-SAT solver from Google OR-Tools.
 
 # Puzzles
 
-The puzzles that have solvers implemented are listed below:
+The puzzles that have solvers implemented are listed below. Each puzzle has a simple example input board followed by the code to utilize this package and solve the puzzle, followed by the scripts output, and finally the solved puzzle.
 
 ## Nonograms (Puzzle Type #1)
 
@@ -72,7 +83,7 @@ You have a grid of squares, which must all be filled in either black or white. B
 
 Code to utilize this package and solve the puzzle:
 ```python
-from . import solver
+from puzzle_solver import nonograms_solver as solver
 top_numbers = [
   [8, 2],
   [5, 4],
@@ -167,7 +178,7 @@ You are given some of the numbers as clues; your aim is to place the rest of the
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import sudoku_solver as solver
 bor = np.array([
   ['*', '7', '5', '4',  '9', '1', 'c', 'e',  'd', 'f', '*', '*',  '2', '*', '3', '*'],
   ['*', '*', '*', '*',  'f', 'a', '*', '*',  '*', '6', '*', 'c',  '*', '*', '8', 'b'],
@@ -255,7 +266,7 @@ This version of it has an unusual property. By default, it will generate its min
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import minesweeper_solver as solver
 bor = np.array([
   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '1', '1', '1', '3', 'F', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '2', '2', '1', 'F', '4', 'F', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -320,7 +331,7 @@ Your task is to reconstruct the pattern by arranging the set of dominoes to matc
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import dominosa_solver as solver
 bor = np.array([
   [6, 8, 2, 7, 1, 3, 3, 4, 6, 6, 0],
   [4, 9, 5, 6, 1, 0, 6, 1, 2, 2, 4],
@@ -391,7 +402,7 @@ Non-numbered black squares may have any number of lights adjacent to them.
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import light_up_solver as solver
 bor = np.array([
   ['*', '0', '*', '*', '*', '*', 'W', '*', '*', '*'],
   ['*', '*', '*', '0', '*', '*', '*', '*', '*', '1'],
@@ -459,7 +470,7 @@ You have a grid of squares, some of which contain trees. Your aim is to place te
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import tents_solver as solver
 bor = np.array([
   ['*', 'T', '*', '*', '*', '*', '*', '*', 'T', '*', 'T', '*', 'T', '*', '*'],
   ['*', '*', '*', '*', 'T', '*', '*', 'T', '*', 'T', '*', '*', 'T', '*', '*'],
@@ -538,7 +549,7 @@ For example, it follows that no square can contain a zero, and that two adjacent
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import filling_solver as solver
 bor = np.array([
   ['*', '4', '2', '*', '*', '2', '*'],
   ['*', '*', '7', '*', '*', '3', '*'],
@@ -601,7 +612,7 @@ You have a square grid; each square may contain a digit from 1 to the size of th
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import keen_solver as solver
 # tells the api the shape of the blocks in the board
 bor = np.array([
   ['d01', 'd01', 'd03', 'd03', 'd05', 'd05', 'd08', 'd08', 'd10'],
@@ -679,7 +690,7 @@ In harder or larger puzzles, some towers will be specified for you as well as th
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import towers_solver as solver
 bor = np.array([
   ['*', '*', '*', '*', '*', '*'],
   ['*', '*', '*', '*', '*', '*'],
@@ -739,7 +750,7 @@ You have a grid of white squares, all of which contain numbers. Your task is to 
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import singles_solver as solver
 bor = np.array([
   [1, 6, 5, 4, 9, 8, 9, 3, 5, 1, 3, 7],
   [2, 8, 5, 7, 1, 1, 4, 3, 6, 3, 10, 7],
@@ -805,7 +816,7 @@ Your aim is to correctly place the magnets and blank dominoes such that all the 
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import magnets_solver as solver
 bor = np.array([
   ['H', 'H', 'H', 'H', 'V', 'V', 'V', 'V', 'H', 'H'],
   ['H', 'H', 'H', 'H', 'V', 'V', 'V', 'V', 'V', 'V'],
@@ -871,7 +882,7 @@ By convention the first and last numbers are shown; one or more interim numbers 
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import signpost_solver as solver
 # Q = up-left, W = up, E = up-right, A = left, D = right, Z = down-left, X = down, C = down-right
 bor1 = np.array([
   ['C', 'D', 'D', 'X', 'D', 'Z', 'X'],
@@ -946,7 +957,7 @@ For instance, a square containing the number one must have four black squares as
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import range_solver as solver
 clues = np.array([
     [-1, 4, 2, -1, -1, 3, -1, -1, -1, 8, -1, -1, -1, -1, 6, -1],
     [-1, -1, -1, -1, -1, 13, -1, 18, -1, -1, 14, -1, -1, 22, -1, -1],
@@ -1012,7 +1023,7 @@ You are also told the total number of each type of monster in the grid. Also aro
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import undead_solver as solver
 bor = np.array([
   ['**', '//', '**', '**', '**', '**', '\\'],
   ['**', '**', '**', '//', '**', '**', '**'],
@@ -1073,7 +1084,7 @@ You are given a grid of squares, which you must colour either black or white. So
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import unruly_solver as solver
 bor = np.array([
   ['W', 'W', '*', 'B', '*', '*', '*', '*', 'B', '*', '*', '*', '*', '*'],
   ['*', '*', '*', '*', '*', '*', '*', 'W', '*', '*', '*', '*', '*', 'W'],
@@ -1144,7 +1155,7 @@ Complete the track from A to B so that the rows and columns contain the same num
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import tracks_solver as solver
 bor = np.array([
   ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', 'LD', '  ', '  ', ], 
   ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', 'LD', '  ', '  ', '  ', '  ', ], 
@@ -1217,7 +1228,7 @@ Some squares contain clue numbers. Each clue tells you the number of black squar
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import mosaic_solver as solver
 bor = np.array([
   ['*', '*', '2', '1', '*', '*', '*', '3', '*', '4', '2', '2', '*', '*', '4'],
   ['3', '*', '*', '*', '4', '*', '*', '*', '*', '*', '4', '*', '2', '*', '*'],
@@ -1288,7 +1299,7 @@ Only regions which share a length of border are required to be different colours
 
 Code to utilize this package and solve the puzzle:
 ```python
-from . import solver
+from puzzle_solver import map_solver as solver
 regions = {
   0: {1, 11, 12, 27},
   1: {11, 12, 13, 6, 2},
@@ -1355,7 +1366,7 @@ A white circle indicates that the square is a straight edge, but at least one of
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import pearl_solver as solver
 bor = np.array([
   ['B', ' ', ' ', 'W', ' ', ' ', 'W', ' ', 'B', ' ', ' ', 'B'],
   [' ', ' ', ' ', 'B', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -1419,7 +1430,7 @@ There are some configurable alternative modes, which involve changing the parall
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import bridges_solver as solver
 bor = np.array([
   [' ', ' ', ' ', ' ', ' ', '1', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '3'],
   ['2', ' ', ' ', ' ', ' ', ' ', ' ', '4', ' ', ' ', '4', ' ', ' ', '2', ' '],
@@ -1525,7 +1536,7 @@ Code to utilize this package and solve the puzzle:
 (Note: there is a script that parses a screenshot of the board and outputs the below array that the solver uses. The script uses classical computer vision techniques and is called `parse_map.py`)
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import inertia_solver as solver
 bor = np.array([
   ["O", "O", "M", " ", "G", "O", "G", "O", " ", " ", "M", " ", " ", "O", "G", "G", "W", "O", "O", "O"],
   ["O", " ", "W", " ", "W", "O", "G", "M", " ", " ", " ", "G", "M", "O", "W", "G", " ", "M", "M", "O"],
@@ -1668,7 +1679,7 @@ Code to utilize this package and solve the puzzle:
 
 We encode the puzzle as a Board object then retreive the optimal next guess:
 ```python
-from . import solver
+from puzzle_solver import guess_solver as solver
 binst = solver.Board()
 binst.add_guess(('R', 'Y', 'G', 'B'), (1, 1, 2))  # 1 black dot, 1 white dot, 2 grey dots
 binst.add_guess(('R', 'G', 'O', 'P'), (0, 2, 2))  # 0 black dots, 2 white dots, 2 grey dots
@@ -1694,7 +1705,7 @@ So we make our next guess as (Purple, Yellow, Yellow, Green) and let's say we ge
 So we input that again to the solver to retreive the next optimal guess:
 
 ```python
-from . import solver
+from puzzle_solver import guess_solver as solver
 binst = solver.Board()
 binst.add_guess(('R', 'Y', 'G', 'B'), (1, 1, 2))  # 1 black dot, 1 white dot, 2 grey dots
 binst.add_guess(('R', 'G', 'O', 'P'), (0, 2, 2))  # 0 black dots, 2 white dots, 2 grey dots
@@ -1750,7 +1761,7 @@ python -m tests.test_nonograms
 This runs code like:
 
 ```python
-from . import solver
+from puzzle_solver import nonograms_solver as solver
 top_numbers = [
   [8, 2],
   ...

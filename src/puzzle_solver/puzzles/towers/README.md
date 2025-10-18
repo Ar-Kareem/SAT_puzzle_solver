@@ -27,7 +27,7 @@ In harder or larger puzzles, some towers will be specified for you as well as th
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import towers_solver as solver
 bor = np.array([
   ['*', '*', '*', '*', '*', '*'],
   ['*', '*', '*', '*', '*', '*'],

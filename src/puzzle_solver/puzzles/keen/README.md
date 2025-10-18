@@ -29,7 +29,7 @@ You have a square grid; each square may contain a digit from 1 to the size of th
 Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
-from . import solver
+from puzzle_solver import keen_solver as solver
 # tells the api the shape of the blocks in the board
 bor = np.array([
   ['d01', 'd01', 'd03', 'd03', 'd05', 'd05', 'd08', 'd08', 'd10'],
