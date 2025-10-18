@@ -4,7 +4,7 @@ from puzzle_solver.puzzles.filling import filling as filling_solver
 from puzzle_solver.puzzles.guess import guess as guess_solver
 from puzzle_solver.puzzles.inertia import inertia as inertia_solver
 from puzzle_solver.puzzles.keen import keen as keen_solver
-from puzzle_solver.puzzles.light import light as light_solver
+from puzzle_solver.puzzles.light_up import light_up as light_up_solver
 from puzzle_solver.puzzles.magnets import magnets as magnets_solver
 from puzzle_solver.puzzles.map import map as map_solver
 from puzzle_solver.puzzles.minesweeper import minesweeper as minesweeper_solver

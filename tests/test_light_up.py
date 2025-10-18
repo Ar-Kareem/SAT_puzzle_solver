@@ -1,6 +1,6 @@
 import numpy as np
 
-from puzzle_solver import light_solver as solver
+from puzzle_solver import light_up_solver as solver
 from puzzle_solver.core.utils import get_pos
 
 # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/lightup.html#10x10b20s2d2%23436435953565512
