@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sat-puzzle-solver"
+dynamic = ["version"]
+description = "Efficient solvers for numerous popular and esoteric logic puzzles using CP-SAT"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{name = "Ar-Kareem"}]
+keywords = [
+    "puzzle", "solver", "sat", "cp-sat", "google-or-tools", "efficient", "logic", "puzzle-solver", "puzzle-solver-python",
+    "sudoku", "nonograms", "minesweeper", "dominosa", "lightup", "map", "inertia", "tents", "towers", "tracks", "undead", "unruly", "bridges", "pearl", "range", "signpost", "singles", "magnets"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+
+dependencies = [
+    "numpy",
+    "ortools",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-xdist"]
+
+[project.urls]
+Homepage = "https://github.com/Ar-Kareem/puzzle_solver"
+Repository = "https://github.com/Ar-Kareem/puzzle_solver"
+Issues = "https://github.com/Ar-Kareem/puzzle_solver/issues"
+
+
+[tool.setuptools.dynamic]
+version = {attr = "puzzle_solver.__version__"}
+
+
+
+# build and pypi push            rm dist/* && python -m build --sdist --wheel && python -m twine upload --repository pypi dist/*
