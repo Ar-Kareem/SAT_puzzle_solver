@@ -4,7 +4,7 @@ from puzzle_solver import minesweeper_solver as solver
 from puzzle_solver.core.utils import get_pos
 
 # (click on (12, 5) initially to seed the puzzle) https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/mines.html#30x16n170%23833313602317986
-bor = np.array([
+board = np.array([
   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '1', '1', '1', '3', 'F', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '2', '2', '1', 'F', '4', 'F', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'F', '2', '1', '3', 'F', '5', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -25,7 +25,7 @@ bor = np.array([
 mine_count = 30
 
 def test_ground():
-  safe_positions, new_garuneed_mine_positions, wrong_flag_positions = solver.give_next_guess(board=bor, mine_count=mine_count)
+  safe_positions, new_garuneed_mine_positions, wrong_flag_positions = solver.give_next_guess(board=board, mine_count=mine_count)
   ground_1 = {get_pos(x=9, y=0), get_pos(x=15, y=8), get_pos(x=15, y=7), get_pos(x=9, y=2), get_pos(x=15, y=6), get_pos(x=7, y=2), get_pos(x=9, y=1), get_pos(x=12, y=8)}
   ground_2 = {get_pos(x=8, y=2), get_pos(x=7, y=5), get_pos(x=10, y=0), get_pos(x=9, y=8)}
   ground_3 = {get_pos(x=15, y=3)}

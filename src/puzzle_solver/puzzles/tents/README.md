@@ -25,7 +25,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import tents_solver as solver
-bor = np.array([
+board = np.array([
   [' ', 'T', ' ', ' ', ' ', ' ', ' ', ' ', 'T', ' ', 'T', ' ', 'T', ' ', ' '],
   [' ', ' ', ' ', ' ', 'T', ' ', ' ', 'T', ' ', 'T', ' ', ' ', 'T', ' ', ' '],
   [' ', 'T', ' ', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -45,7 +45,7 @@ bor = np.array([
 side = np.array([4, 1, 6, 0, 5, 2, 3, 1, 5, 2, 3, 2, 4, 3, 4])
 top = np.array([4, 2, 4, 1, 3, 3, 3, 3, 3, 3, 2, 2, 6, 2, 4])
 
-binst = solver.Board(board=bor, sides={'top': top, 'side': side})
+binst = solver.Board(board=board, sides={'top': top, 'side': side})
 solutions = binst.solve_and_print()
 ```
 **Script Output**

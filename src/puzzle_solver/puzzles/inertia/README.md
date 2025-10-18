@@ -37,7 +37,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import inertia_solver as solver
-bor = np.array([
+board = np.array([
   ['O', 'O', 'M', ' ', 'G', 'O', 'G', 'O', ' ', ' ', 'M', ' ', ' ', 'O', 'G', 'G', 'W', 'O', 'O', 'O'],
   ['O', ' ', 'W', ' ', 'W', 'O', 'G', 'M', ' ', ' ', ' ', 'G', 'M', 'O', 'W', 'G', ' ', 'M', 'M', 'O'],
   ['O', 'M', 'O', 'O', ' ', 'M', ' ', 'W', 'W', 'M', 'G', 'W', ' ', ' ', 'G', ' ', 'W', 'G', 'O', 'G'],
@@ -55,7 +55,7 @@ bor = np.array([
   ['O', 'W', 'O', 'M', 'O', 'G', ' ', 'O', 'O', 'M', 'O', ' ', 'M', 'M', 'O', 'G', 'W', 'G', 'M', ' '],
   ['M', 'G', 'O', 'G', 'O', 'G', 'O', 'G', ' ', 'W', 'W', 'G', 'O', ' ', 'W', 'M', 'G', ' ', 'W', ' ']
 ])
-start_pos, edges, edges_to_direction, gems_to_edges = solver.parse_nodes_and_edges(bor)
+start_pos, edges, edges_to_direction, gems_to_edges = solver.parse_nodes_and_edges(board)
 optimal_walk = solver.solve_optimal_walk(start_pos, edges, gems_to_edges)
 moves = solver.get_moves_from_walk(optimal_walk, edges_to_direction, verbose=True)
 ```

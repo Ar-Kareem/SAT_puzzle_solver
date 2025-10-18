@@ -5,7 +5,7 @@ from puzzle_solver.core.utils import get_pos
 
 # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/tracks.html#15x15dh%23872777330479824
 # U L D R
-bor = np.array([
+board = np.array([
   # 6     5     7     3      3     2    7     8     13    8     9     8     10    13    14
   ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', 'LD', '  ', '  ', ], 
   ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', 'LD', '  ', '  ', '  ', '  ', ], 
@@ -26,7 +26,7 @@ bor = np.array([
 side = np.array([9, 7, 7, 7, 11, 10, 9, 8, 9, 10, 7, 9, 9, 2, 2])
 top = np.array([6, 5, 7, 3, 3, 2, 7, 8, 13, 8, 9, 8, 10, 13, 14])
 
-# bor = np.array([
+# board = np.array([
 #   ['LR', '  ', '  ', '  ', '  ', '  ', '  ', '  '], 
 #   ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  '], 
 #   ['UD', '  ', '  ', '  ', '  ', '  ', '  ', '  '], 
@@ -41,7 +41,7 @@ top = np.array([6, 5, 7, 3, 3, 2, 7, 8, 13, 8, 9, 8, 10, 13, 14])
 
 
 def test_ground():
-  binst = solver.Board(board=bor, top=top, side=side)
+  binst = solver.Board(board=board, top=top, side=side)
   solutions = binst.solve_and_print()
   ground = np.array([
     ['  ', '  ', '  ', '  ', '  ', '  ', 'DR', 'LR', 'LR', 'LR', 'LR', 'LR', 'DL', 'DR', 'DL'],

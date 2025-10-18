@@ -20,7 +20,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import unruly_solver as solver
-bor = np.array([
+board = np.array([
   ['W', 'W', ' ', 'B', ' ', ' ', ' ', ' ', 'B', ' ', ' ', ' ', ' ', ' '],
   [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'W', ' ', ' ', ' ', ' ', ' ', 'W'],
   [' ', ' ', ' ', ' ', ' ', 'B', ' ', 'W', ' ', ' ', 'B', ' ', ' ', ' '],
@@ -36,7 +36,7 @@ bor = np.array([
   [' ', ' ', ' ', ' ', 'B', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
   ['W', ' ', ' ', ' ', 'W', ' ', ' ', ' ', 'B', ' ', 'W', ' ', 'B', ' '],
 ])
-binst = solver.Board(board=bor)
+binst = solver.Board(board=board)
 solutions = binst.solve_and_print()
 ```
 **Script Output**

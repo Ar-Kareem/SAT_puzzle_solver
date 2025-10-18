@@ -24,7 +24,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import undead_solver as solver
-bor = np.array([
+board = np.array([
   ['  ', '//', '  ', '  ', '  ', '  ', '\\'],
   ['  ', '  ', '  ', '//', '  ', '  ', '  '],
   ['  ', '//', '//', '  ', '  ', '\\', '//'],
@@ -40,7 +40,7 @@ l = np.array([1, 4, 8, 0, 0, 2, 2])
 counts = {Monster.GHOST: 5, Monster.VAMPIRE: 12, Monster.ZOMBIE: 11}
 
 # create board and solve
-binst = solver.Board(board=bor, sides={'top': t, 'bottom': b, 'right': r, 'left': l}, monster_count=counts)
+binst = solver.Board(board=board, sides={'top': t, 'bottom': b, 'right': r, 'left': l}, monster_count=counts)
 solutions = binst.solve_and_print()
 ```
 **Script Output**

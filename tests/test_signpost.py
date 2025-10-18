@@ -5,7 +5,7 @@ from puzzle_solver.core.utils import get_pos
 
 # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/signpost.html#7x7c%23512596780210399
 # Q = up-left, W = up, E = up-right, A = left, D = right, Z = down-left, X = down, C = down-right
-bor1 = np.array([
+board1 = np.array([
   ['C', 'D', 'D', 'X', 'D', 'Z', 'X'],
   ['D', 'C', 'D', 'X', 'X', 'A', 'A'],
   ['X', 'X', 'D', 'Q', 'Z', 'W', 'A'],
@@ -14,7 +14,7 @@ bor1 = np.array([
   ['D', 'W', 'W', 'A', 'E', 'A', 'Z'],
   ['D', 'E', 'D', 'E', 'D', 'A', ' '],
 ])
-bor2 = np.array([
+board2 = np.array([
   [ 1,  0, 23,  0,  0,  0,  0],
   [30, 32,  0,  0,  0,  0,  0],
   [ 0,  0,  2,  0,  0,  0,  0],
@@ -27,7 +27,7 @@ bor2 = np.array([
 
 
 def test_ground():
-  binst = solver.Board(board=bor1, values=bor2)
+  binst = solver.Board(board=board1, values=board2)
   solutions = binst.solve_and_print()
   ground = np.array([
     [1, 42, 23, 7, 43, 44, 24],

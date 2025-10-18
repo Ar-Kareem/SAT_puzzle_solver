@@ -4,7 +4,7 @@ from puzzle_solver import magnets_solver as solver
 from puzzle_solver.core.utils import get_pos
 
 # define board and parameters
-# bor = np.array([
+# board = np.array([
 #   ['H', 'H', 'H', 'H', 'V'],
 #   ['V', 'V', 'H', 'H', 'V'],
 #   ['V', 'V', 'H', 'H', 'V'],
@@ -17,7 +17,7 @@ from puzzle_solver.core.utils import get_pos
 # pos_h = np.array([2, 1, 1, 2, 2, 1])
 # neg_h = np.array([1, 2, 1, 2, 2, 1])
 # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/magnets.html#10x9:..3533.3.4,5...5.31.,.234.34344,4.4.54.2.,LRLRTTTTLRLRLRBBBBTTLRLRLRLRBBTTTLRLRLRTBBBTTTTLRBTLRBBBBTTTBTTTTLRBBBTBBBBTLRLRBLRLRBLRLR
-bor = np.array([
+board = np.array([
   ['H', 'H', 'H', 'H', 'V', 'V', 'V', 'V', 'H', 'H'],
   ['H', 'H', 'H', 'H', 'V', 'V', 'V', 'V', 'V', 'V'],
   ['H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'V', 'V'],
@@ -35,7 +35,7 @@ neg_h = np.array([4, -1, 4, -1, 5, 4, -1, 2, -1])
 
 
 def test_ground():
-  binst = solver.Board(board=bor, sides={'pos_v': pos_v, 'neg_v': neg_v, 'pos_h': pos_h, 'neg_h': neg_h})
+  binst = solver.Board(board=board, sides={'pos_v': pos_v, 'neg_v': neg_v, 'pos_h': pos_h, 'neg_h': neg_h})
   solutions = binst.solve_and_print()
   ground = np.array([
     ['-', '+', '-', '+', ' ', '+', '-', '+', '-', '+'],

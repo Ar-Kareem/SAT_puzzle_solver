@@ -26,7 +26,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import filling_solver as solver
-bor = np.array([
+board = np.array([
   [' ', '4', '2', ' ', ' ', '2', ' '],
   [' ', ' ', '7', ' ', ' ', '3', ' '],
   [' ', ' ', ' ', ' ', '4', ' ', '3'],
@@ -34,7 +34,7 @@ bor = np.array([
   [' ', '7', ' ', '6', '4', '5', ' '],
   [' ', '6', ' ', ' ', ' ', ' ', '4'],
 ])
-binst = solver.Board(board=bor)
+binst = solver.Board(board=board)
 solutions = binst.solve_and_print()
 assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
 ```

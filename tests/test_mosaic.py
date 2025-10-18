@@ -4,7 +4,7 @@ from puzzle_solver import mosaic_solver as solver
 from puzzle_solver.core.utils import get_pos
 
 # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/mosaic.html#15x15:b21c3a422b43c4e4a2b4b5a5b5a3325c7a4b5e5b67b4a7d77a3b3a57764a4a5c4a578a5a1345b5a43c7a3a3b3f5a6e4a7a5b467a3a3a5g6b35e5453a7b566a2c34c7b7a31b5c5c6a6c3a2a3a2f
-bor = np.array([
+board = np.array([
   [' ', ' ', '2', '1', ' ', ' ', ' ', '3', ' ', '4', '2', '2', ' ', ' ', '4'],
   ['3', ' ', ' ', ' ', '4', ' ', ' ', ' ', ' ', ' ', '4', ' ', '2', ' ', ' '],
   ['4', ' ', ' ', '5', ' ', '5', ' ', ' ', '5', ' ', '3', '3', '2', '5', ' '],
@@ -23,7 +23,7 @@ bor = np.array([
 ])
 
 def test_ground():
-  binst = solver.Board(board=bor)
+  binst = solver.Board(board=board)
   solutions = binst.solve_and_print()
   ground = np.array([
     [' ', 'B', ' ', ' ', ' ', ' ', ' ', ' ', 'B', ' ', 'B', ' ', ' ', 'B', 'B'],

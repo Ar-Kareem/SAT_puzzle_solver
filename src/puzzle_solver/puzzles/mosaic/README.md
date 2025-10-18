@@ -22,7 +22,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import mosaic_solver as solver
-bor = np.array([
+board = np.array([
   [' ', ' ', '2', '1', ' ', ' ', ' ', '3', ' ', '4', '2', '2', ' ', ' ', '4'],
   ['3', ' ', ' ', ' ', '4', ' ', ' ', ' ', ' ', ' ', '4', ' ', '2', ' ', ' '],
   ['4', ' ', ' ', '5', ' ', '5', ' ', ' ', '5', ' ', '3', '3', '2', '5', ' '],
@@ -39,7 +39,7 @@ bor = np.array([
   ['1', ' ', ' ', '5', ' ', ' ', ' ', '5', ' ', ' ', ' ', '6', ' ', '6', ' '],
   [' ', ' ', '3', ' ', '2', ' ', '3', ' ', '2', ' ', ' ', ' ', ' ', ' ', ' ']
 ])
-binst = solver.Board(board=bor)
+binst = solver.Board(board=board)
 solutions = binst.solve_and_print()
 ```
 **Script Output**

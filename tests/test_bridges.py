@@ -4,7 +4,7 @@ from puzzle_solver import bridges_solver as solver
 from puzzle_solver.core.utils import get_pos
 
 # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/bridges.html#15x15i30e10m2d2%23250028023273916
-bor = np.array([
+board = np.array([
   [' ', ' ', ' ', ' ', ' ', '1', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '3'],
   ['2', ' ', ' ', ' ', ' ', ' ', ' ', '4', ' ', ' ', '4', ' ', ' ', '2', ' '],
   [' ', ' ', ' ', '2', ' ', '4', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -23,7 +23,7 @@ bor = np.array([
 ])
 
 def test_ground():
-  binst = solver.Board(board=bor)
+  binst = solver.Board(board=board)
   solutions = binst.solve_and_print()
   ground = np.array([
     ['    ', '    ', '    ', '    ', '    ', '1000', '    ', '    ', '    ', '    ', '    ', '    ', '    ', '    ', '0120'],

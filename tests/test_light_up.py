@@ -4,7 +4,7 @@ from puzzle_solver import light_up_solver as solver
 from puzzle_solver.core.utils import get_pos
 
 # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/lightup.html#10x10b20s2d2%23436435953565512
-bor = np.array([
+board = np.array([
   [' ', '0', ' ', ' ', ' ', ' ', 'W', ' ', ' ', ' '],
   [' ', ' ', ' ', '0', ' ', ' ', ' ', ' ', ' ', '1'],
   ['W', ' ', 'W', ' ', ' ', 'W', ' ', ' ', '0', ' '],
@@ -19,7 +19,7 @@ bor = np.array([
 
 
 def test_ground():
-  binst = solver.Board(board=bor)
+  binst = solver.Board(board=board)
   solutions = binst.solve_and_print()
   ground = np.array([
     ['S', '0', 'S', 'S', 'S', 'L', 'W', 'S', 'S', 'L'],

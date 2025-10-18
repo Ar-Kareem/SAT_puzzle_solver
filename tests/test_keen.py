@@ -5,7 +5,7 @@ from puzzle_solver.core.utils import get_pos
 
 
 # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/keen.html#9dn%23388677227852840
-bor = np.array([
+board = np.array([
   ['d01', 'd01', 'd03', 'd03', 'd05', 'd05', 'd08', 'd08', 'd10'],
   ['d02', 'd02', 'd03', 'd04', 'd06', 'd06', 'd09', 'd09', 'd10'],
   ['d12', 'd13', 'd14', 'd04', 'd07', 'd07', 'd07', 'd11', 'd11'],
@@ -38,7 +38,7 @@ clues = None
 #   [0, 0, 0, 0, 0, 0, 0, 0, 0],
 #   [0, 0, 0, 0, 0, 0, 0, 0, 0],
 # ])
-# bor = np.array([
+# board = np.array([
 #   ['d01', 'd03', 'd03', 'd08'],
 #   ['d01', 'd04', 'd04', 'd08'],
 #   ['d02', 'd05', 'd06', 'd06'],
@@ -53,7 +53,7 @@ clues = None
 # }
 
 def test_ground():
-  binst = solver.Board(board=bor, block_results=block_results, clues=clues)
+  binst = solver.Board(board=board, block_results=block_results, clues=clues)
   solutions = binst.solve_and_print()
   ground = np.array([
     [5, 4, 7, 9, 3, 6, 8, 1, 2],

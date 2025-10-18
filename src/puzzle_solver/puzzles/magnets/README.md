@@ -22,7 +22,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import magnets_solver as solver
-bor = np.array([
+board = np.array([
   ['H', 'H', 'H', 'H', 'V', 'V', 'V', 'V', 'H', 'H'],
   ['H', 'H', 'H', 'H', 'V', 'V', 'V', 'V', 'V', 'V'],
   ['H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'V', 'V'],
@@ -38,7 +38,7 @@ neg_v = np.array([-1, 2, 3, 4, -1, 3, 4, 3, 4, 4])
 pos_h = np.array([5, -1, -1, -1, 5, -1, 3, 1, -1])
 neg_h = np.array([4, -1, 4, -1, 5, 4, -1, 2, -1])
 
-binst = solver.Board(board=bor, sides={'pos_v': pos_v, 'neg_v': neg_v, 'pos_h': pos_h, 'neg_h': neg_h})
+binst = solver.Board(board=board, sides={'pos_v': pos_v, 'neg_v': neg_v, 'pos_h': pos_h, 'neg_h': neg_h})
 solutions = binst.solve_and_print()
 ```
 **Script Output**

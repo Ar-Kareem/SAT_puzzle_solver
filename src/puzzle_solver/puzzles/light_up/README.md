@@ -30,7 +30,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import light_up_solver as solver
-bor = np.array([
+board = np.array([
   [' ', '0', ' ', ' ', ' ', ' ', 'W', ' ', ' ', ' '],
   [' ', ' ', ' ', '0', ' ', ' ', ' ', ' ', ' ', '1'],
   ['W', ' ', 'W', ' ', ' ', 'W', ' ', ' ', '0', ' '],
@@ -43,7 +43,7 @@ bor = np.array([
   [' ', ' ', ' ', '2', ' ', ' ', ' ', ' ', 'W', ' '],
 ])  # W is wall, ' ' is space, '0-9' is number
 
-binst = solver.Board(board=bor)
+binst = solver.Board(board=board)
 solutions = binst.solve_and_print()
 ```
 **Script Output**

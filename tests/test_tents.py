@@ -4,7 +4,7 @@ from puzzle_solver import tents_solver as solver
 from puzzle_solver.core.utils import get_pos
 
 # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/tents.html#15x15dt%23727673714482646
-bor = np.array([
+board = np.array([
   [' ', 'T', ' ', ' ', ' ', ' ', ' ', ' ', 'T', ' ', 'T', ' ', 'T', ' ', ' '],
   [' ', ' ', ' ', ' ', 'T', ' ', ' ', 'T', ' ', 'T', ' ', ' ', 'T', ' ', ' '],
   [' ', 'T', ' ', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -26,7 +26,7 @@ top = np.array([4, 2, 4, 1, 3, 3, 3, 3, 3, 3, 2, 2, 6, 2, 4])
 
 
 def test_ground():
-  binst = solver.Board(board=bor, sides={'top': top, 'side': side})
+  binst = solver.Board(board=board, sides={'top': top, 'side': side})
   solutions = binst.solve_and_print()
   ground = np.array([
     [' ', 'T', 'E', ' ', ' ', ' ', ' ', 'E', 'T', ' ', 'T', 'E', 'T', 'E', ' '],

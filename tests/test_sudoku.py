@@ -5,7 +5,7 @@ from puzzle_solver.core.utils import get_pos
 
 # The link takes a few seconds to load
 # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/solo.html#4x4du%23149435502448981
-bor = np.array([
+board = np.array([
   [' ', '7', '5', '4',  '9', '1', 'c', 'e',  'd', 'f', ' ', ' ',  '2', ' ', '3', ' '],
   [' ', ' ', ' ', ' ',  'f', 'a', ' ', ' ',  ' ', '6', ' ', 'c',  ' ', ' ', '8', 'b'],
   [' ', ' ', '1', ' ',  ' ', '6', ' ', ' ',  ' ', '9', ' ', ' ',  ' ', 'g', ' ', 'd'],
@@ -28,7 +28,7 @@ bor = np.array([
 ])
 
 def test_ground():
-  binst = solver.Board(board=bor)
+  binst = solver.Board(board=board)
   solutions = binst.solve_and_print()
   ground = np.array([
     ['g', '7', '5', '4', '9', '1', 'c', 'e', 'd', 'f', 'b', '8', '2', '6', '3', 'a'],

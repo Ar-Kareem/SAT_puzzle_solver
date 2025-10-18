@@ -4,7 +4,7 @@ from puzzle_solver import undead_solver as solver
 from puzzle_solver.core.utils import get_pos
 
 # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/undead.html#7x7:5,12,11,aRdLcRdRRbLRRLRaRLaRaRLaRRaLLLdRe,3,0,3,0,5,6,0,0,8,0,4,2,2,4,0,2,8,3,1,2,5,2,2,0,0,8,4,1
-bor = np.array([
+board = np.array([
   ['  ', '//', '  ', '  ', '  ', '  ', '\\'],
   ['  ', '  ', '  ', '//', '  ', '  ', '  '],
   ['  ', '//', '//', '  ', '  ', '\\', '//'],
@@ -22,7 +22,7 @@ counts = {solver.Monster.GHOST: 5, solver.Monster.VAMPIRE: 12, solver.Monster.ZO
 # create board and solve
 
 def test_ground():
-  binst = solver.Board(board=bor, sides={'top': t, 'bottom': b, 'right': r, 'left': l}, monster_count=counts)
+  binst = solver.Board(board=board, sides={'top': t, 'bottom': b, 'right': r, 'left': l}, monster_count=counts)
   solutions = binst.solve_and_print()
   ground = np.array([
     ['VA', '//', 'GH', 'GH', 'ZO', 'GH', '\\'],

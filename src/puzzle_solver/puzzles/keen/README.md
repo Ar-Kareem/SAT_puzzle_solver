@@ -31,7 +31,7 @@ Code to utilize this package and solve the puzzle:
 import numpy as np
 from puzzle_solver import keen_solver as solver
 # tells the api the shape of the blocks in the board
-bor = np.array([
+board = np.array([
   ['d01', 'd01', 'd03', 'd03', 'd05', 'd05', 'd08', 'd08', 'd10'],
   ['d02', 'd02', 'd03', 'd04', 'd06', 'd06', 'd09', 'd09', 'd10'],
   ['d12', 'd13', 'd14', 'd04', 'd07', 'd07', 'd07', 'd11', 'd11'],
@@ -53,7 +53,7 @@ block_results = {
   'd31': ('+', 11), 'd32': ('/', 4), 'd33': ('+', 16), 'd34': ('+', 15), 'd35': ('*', 30),
   'd36': ('-', 7),
 }
-binst = solver.Board(board=bor, block_results=block_results)
+binst = solver.Board(board=board, block_results=block_results)
 solutions = binst.solve_and_print()
 ```
 **Script Output**

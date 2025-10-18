@@ -22,7 +22,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import dominosa_solver as solver
-bor = np.array([
+board = np.array([
   [6, 8, 2, 7, 1, 3, 3, 4, 6, 6, 0],
   [4, 9, 5, 6, 1, 0, 6, 1, 2, 2, 4],
   [8, 2, 8, 9, 1, 9, 3, 3, 8, 8, 5],
@@ -34,7 +34,7 @@ bor = np.array([
   [0, 4, 5, 2, 8, 6, 1, 0, 9, 0, 4],
   [0, 8, 8, 3, 2, 1, 3, 2, 5, 5, 4],
 ])
-binst = solver.Board(board=bor)
+binst = solver.Board(board=board)
 solutions = binst.solve_and_print()
 assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
 ```

@@ -314,7 +314,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import sudoku_solver as solver
-bor = np.array([
+board = np.array([
   [' ', '7', '5', '4',  '9', '1', 'c', 'e',  'd', 'f', ' ', ' ',  '2', ' ', '3', ' '],
   [' ', ' ', ' ', ' ',  'f', 'a', ' ', ' ',  ' ', '6', ' ', 'c',  ' ', ' ', '8', 'b'],
   [' ', ' ', '1', ' ',  ' ', '6', ' ', ' ',  ' ', '9', ' ', ' ',  ' ', 'g', ' ', 'd'],
@@ -335,7 +335,7 @@ bor = np.array([
   ['e', '8', ' ', ' ',  '1', ' ', '4', ' ',  ' ', ' ', '6', '7',  ' ', ' ', ' ', ' '],
   [' ', '3', ' ', '9',  ' ', ' ', 'f', '8',  'a', 'e', 'g', '5',  'b', 'c', 'd', ' '],
 ])
-binst = solver.Board(board=bor)
+binst = solver.Board(board=board)
 solutions = binst.solve_and_print()
 assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
 ```
@@ -402,7 +402,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import minesweeper_solver as solver
-bor = np.array([
+board = np.array([
   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '1', '1', '1', '3', 'F', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '2', '2', '1', 'F', '4', 'F', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'F', '2', '1', '3', 'F', '5', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -421,7 +421,7 @@ bor = np.array([
   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
 ])
 mine_count = 30
-safe_positions, new_garuneed_mine_positions, wrong_flag_positions = solver.give_next_guess(board=bor, mine_count=mine_count)
+safe_positions, new_garuneed_mine_positions, wrong_flag_positions = solver.give_next_guess(board=board, mine_count=mine_count)
 ```
 **Script Output**
 
@@ -470,7 +470,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import dominosa_solver as solver
-bor = np.array([
+board = np.array([
   [6, 8, 2, 7, 1, 3, 3, 4, 6, 6, 0],
   [4, 9, 5, 6, 1, 0, 6, 1, 2, 2, 4],
   [8, 2, 8, 9, 1, 9, 3, 3, 8, 8, 5],
@@ -482,7 +482,7 @@ bor = np.array([
   [0, 4, 5, 2, 8, 6, 1, 0, 9, 0, 4],
   [0, 8, 8, 3, 2, 1, 3, 2, 5, 5, 4],
 ])
-binst = solver.Board(board=bor)
+binst = solver.Board(board=board)
 solutions = binst.solve_and_print()
 assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
 ```
@@ -541,7 +541,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import light_up_solver as solver
-bor = np.array([
+board = np.array([
   [' ', '0', ' ', ' ', ' ', ' ', 'W', ' ', ' ', ' '],
   [' ', ' ', ' ', '0', ' ', ' ', ' ', ' ', ' ', '1'],
   ['W', ' ', 'W', ' ', ' ', 'W', ' ', ' ', '0', ' '],
@@ -554,7 +554,7 @@ bor = np.array([
   [' ', ' ', ' ', '2', ' ', ' ', ' ', ' ', 'W', ' '],
 ])  # W is wall, ' ' is space, '0-9' is number
 
-binst = solver.Board(board=bor)
+binst = solver.Board(board=board)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
@@ -609,7 +609,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import tents_solver as solver
-bor = np.array([
+board = np.array([
   [' ', 'T', ' ', ' ', ' ', ' ', ' ', ' ', 'T', ' ', 'T', ' ', 'T', ' ', ' '],
   [' ', ' ', ' ', ' ', 'T', ' ', ' ', 'T', ' ', 'T', ' ', ' ', 'T', ' ', ' '],
   [' ', 'T', ' ', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -629,7 +629,7 @@ bor = np.array([
 side = np.array([4, 1, 6, 0, 5, 2, 3, 1, 5, 2, 3, 2, 4, 3, 4])
 top = np.array([4, 2, 4, 1, 3, 3, 3, 3, 3, 3, 2, 2, 6, 2, 4])
 
-binst = solver.Board(board=bor, sides={'top': top, 'side': side})
+binst = solver.Board(board=board, sides={'top': top, 'side': side})
 solutions = binst.solve_and_print()
 ```
 **Script Output**
@@ -688,7 +688,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import filling_solver as solver
-bor = np.array([
+board = np.array([
   [' ', '4', '2', ' ', ' ', '2', ' '],
   [' ', ' ', '7', ' ', ' ', '3', ' '],
   [' ', ' ', ' ', ' ', '4', ' ', '3'],
@@ -696,7 +696,7 @@ bor = np.array([
   [' ', '7', ' ', '6', '4', '5', ' '],
   [' ', '6', ' ', ' ', ' ', ' ', '4'],
 ])
-binst = solver.Board(board=bor)
+binst = solver.Board(board=board)
 solutions = binst.solve_and_print()
 assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
 ```
@@ -752,7 +752,7 @@ Code to utilize this package and solve the puzzle:
 import numpy as np
 from puzzle_solver import keen_solver as solver
 # tells the api the shape of the blocks in the board
-bor = np.array([
+board = np.array([
   ['d01', 'd01', 'd03', 'd03', 'd05', 'd05', 'd08', 'd08', 'd10'],
   ['d02', 'd02', 'd03', 'd04', 'd06', 'd06', 'd09', 'd09', 'd10'],
   ['d12', 'd13', 'd14', 'd04', 'd07', 'd07', 'd07', 'd11', 'd11'],
@@ -774,7 +774,7 @@ block_results = {
   'd31': ('+', 11), 'd32': ('/', 4), 'd33': ('+', 16), 'd34': ('+', 15), 'd35': ('*', 30),
   'd36': ('-', 7),
 }
-binst = solver.Board(board=bor, block_results=block_results)
+binst = solver.Board(board=board, block_results=block_results)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
@@ -829,7 +829,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import towers_solver as solver
-bor = np.array([
+board = np.array([
   [' ', ' ', ' ', ' ', ' ', ' '],
   [' ', ' ', ' ', ' ', ' ', ' '],
   [' ', ' ', '3', ' ', ' ', ' '],
@@ -841,7 +841,7 @@ t = np.array([2, -1, 2, 2, 2, 3])
 b = np.array([2, 4, -1, 4, -1, -1])
 r = np.array([3, -1, 2, -1, -1, -1])
 l = np.array([-1, -1, -1, 2, -1, 4])
-binst = solver.Board(board=bor, sides={'top': t, 'bottom': b, 'right': r, 'left': l})
+binst = solver.Board(board=board, sides={'top': t, 'bottom': b, 'right': r, 'left': l})
 solutions = binst.solve_and_print()
 ```
 **Script Output**
@@ -889,7 +889,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import singles_solver as solver
-bor = np.array([
+board = np.array([
   [1, 6, 5, 4, 9, 8, 9, 3, 5, 1, 3, 7],
   [2, 8, 5, 7, 1, 1, 4, 3, 6, 3, 10, 7],
   [6, 7, 7, 11, 2, 6, 3, 10, 10, 2, 3, 3],
@@ -903,7 +903,7 @@ bor = np.array([
   [5, 1, 6, 10, 9, 4, 8, 4, 8, 3, 2, 12],
   [11, 2, 12, 10, 8, 3, 5, 4, 10, 4, 8, 11],
 ])
-binst = solver.Board(board=bor)
+binst = solver.Board(board=board)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
@@ -955,7 +955,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import magnets_solver as solver
-bor = np.array([
+board = np.array([
   ['H', 'H', 'H', 'H', 'V', 'V', 'V', 'V', 'H', 'H'],
   ['H', 'H', 'H', 'H', 'V', 'V', 'V', 'V', 'V', 'V'],
   ['H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'V', 'V'],
@@ -971,7 +971,7 @@ neg_v = np.array([-1, 2, 3, 4, -1, 3, 4, 3, 4, 4])
 pos_h = np.array([5, -1, -1, -1, 5, -1, 3, 1, -1])
 neg_h = np.array([4, -1, 4, -1, 5, 4, -1, 2, -1])
 
-binst = solver.Board(board=bor, sides={'pos_v': pos_v, 'neg_v': neg_v, 'pos_h': pos_h, 'neg_h': neg_h})
+binst = solver.Board(board=board, sides={'pos_v': pos_v, 'neg_v': neg_v, 'pos_h': pos_h, 'neg_h': neg_h})
 solutions = binst.solve_and_print()
 ```
 **Script Output**
@@ -1022,7 +1022,7 @@ Code to utilize this package and solve the puzzle:
 import numpy as np
 from puzzle_solver import signpost_solver as solver
 # Q = up-left, W = up, E = up-right, A = left, D = right, Z = down-left, X = down, C = down-right
-bor1 = np.array([
+board1 = np.array([
   ['C', 'D', 'D', 'X', 'D', 'Z', 'X'],
   ['D', 'C', 'D', 'X', 'X', 'A', 'A'],
   ['X', 'X', 'D', 'Q', 'Z', 'W', 'A'],
@@ -1031,7 +1031,7 @@ bor1 = np.array([
   ['D', 'W', 'W', 'A', 'E', 'A', 'Z'],
   ['D', 'E', 'D', 'E', 'D', 'A', ' '],
 ])
-bor2 = np.array([
+board2 = np.array([
   [ 1,  0, 23,  0,  0,  0,  0],
   [30, 32,  0,  0,  0,  0,  0],
   [ 0,  0,  2,  0,  0,  0,  0],
@@ -1041,7 +1041,7 @@ bor2 = np.array([
   [ 0,  0,  0,  0,  0, 20, 49],
 ])
 
-binst = solver.Board(board=bor1, values=bor2)
+binst = solver.Board(board=board1, values=board2)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
@@ -1162,7 +1162,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import undead_solver as solver
-bor = np.array([
+board = np.array([
   ['  ', '//', '  ', '  ', '  ', '  ', '\\'],
   ['  ', '  ', '  ', '//', '  ', '  ', '  '],
   ['  ', '//', '//', '  ', '  ', '\\', '//'],
@@ -1178,7 +1178,7 @@ l = np.array([1, 4, 8, 0, 0, 2, 2])
 counts = {Monster.GHOST: 5, Monster.VAMPIRE: 12, Monster.ZOMBIE: 11}
 
 # create board and solve
-binst = solver.Board(board=bor, sides={'top': t, 'bottom': b, 'right': r, 'left': l}, monster_count=counts)
+binst = solver.Board(board=board, sides={'top': t, 'bottom': b, 'right': r, 'left': l}, monster_count=counts)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
@@ -1223,7 +1223,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import unruly_solver as solver
-bor = np.array([
+board = np.array([
   ['W', 'W', ' ', 'B', ' ', ' ', ' ', ' ', 'B', ' ', ' ', ' ', ' ', ' '],
   [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'W', ' ', ' ', ' ', ' ', ' ', 'W'],
   [' ', ' ', ' ', ' ', ' ', 'B', ' ', 'W', ' ', ' ', 'B', ' ', ' ', ' '],
@@ -1239,7 +1239,7 @@ bor = np.array([
   [' ', ' ', ' ', ' ', 'B', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
   ['W', ' ', ' ', ' ', 'W', ' ', ' ', ' ', 'B', ' ', 'W', ' ', 'B', ' '],
 ])
-binst = solver.Board(board=bor)
+binst = solver.Board(board=board)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
@@ -1294,7 +1294,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import tracks_solver as solver
-bor = np.array([
+board = np.array([
   ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', 'LD', '  ', '  ', ], 
   ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', 'LD', '  ', '  ', '  ', '  ', ], 
   ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', ], 
@@ -1313,7 +1313,7 @@ bor = np.array([
 ])
 side = np.array([9, 7, 7, 7, 11, 10, 9, 8, 9, 10, 7, 9, 9, 2, 2])
 top = np.array([6, 5, 7, 3, 3, 2, 7, 8, 13, 8, 9, 8, 10, 13, 14])
-binst = solver.Board(board=bor, top=top, side=side)
+binst = solver.Board(board=board, top=top, side=side)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
@@ -1367,7 +1367,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import mosaic_solver as solver
-bor = np.array([
+board = np.array([
   [' ', ' ', '2', '1', ' ', ' ', ' ', '3', ' ', '4', '2', '2', ' ', ' ', '4'],
   ['3', ' ', ' ', ' ', '4', ' ', ' ', ' ', ' ', ' ', '4', ' ', '2', ' ', ' '],
   ['4', ' ', ' ', '5', ' ', '5', ' ', ' ', '5', ' ', '3', '3', '2', '5', ' '],
@@ -1384,7 +1384,7 @@ bor = np.array([
   ['1', ' ', ' ', '5', ' ', ' ', ' ', '5', ' ', ' ', ' ', '6', ' ', '6', ' '],
   [' ', ' ', '3', ' ', '2', ' ', '3', ' ', '2', ' ', ' ', ' ', ' ', ' ', ' ']
 ])
-binst = solver.Board(board=bor)
+binst = solver.Board(board=board)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
@@ -1505,7 +1505,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import pearl_solver as solver
-bor = np.array([
+board = np.array([
   ['B', ' ', ' ', 'W', ' ', ' ', 'W', ' ', 'B', ' ', ' ', 'B'],
   [' ', ' ', ' ', 'B', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'B', ' ', ' ', ' '],
@@ -1515,7 +1515,7 @@ bor = np.array([
   [' ', ' ', 'B', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
   ['B', ' ', ' ', ' ', ' ', 'B', 'B', ' ', ' ', ' ', ' ', 'B'],
 ])
-binst = solver.Board(bor)
+binst = solver.Board(board)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
@@ -1569,7 +1569,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import bridges_solver as solver
-bor = np.array([
+board = np.array([
   [' ', ' ', ' ', ' ', ' ', '1', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '3'],
   ['2', ' ', ' ', ' ', ' ', ' ', ' ', '4', ' ', ' ', '4', ' ', ' ', '2', ' '],
   [' ', ' ', ' ', '2', ' ', '4', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -1586,7 +1586,7 @@ bor = np.array([
   [' ', ' ', '1', ' ', ' ', '2', ' ', ' ', ' ', '1', ' ', '2', ' ', ' ', ' '],
   [' ', '4', ' ', ' ', '4', ' ', '3', ' ', ' ', ' ', '4', ' ', ' ', ' ', '4'],
 ])
-binst = solver.Board(bor)
+binst = solver.Board(board)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
@@ -1675,7 +1675,7 @@ Code to utilize this package and solve the puzzle:
 ```python
 import numpy as np
 from puzzle_solver import inertia_solver as solver
-bor = np.array([
+board = np.array([
   ['O', 'O', 'M', ' ', 'G', 'O', 'G', 'O', ' ', ' ', 'M', ' ', ' ', 'O', 'G', 'G', 'W', 'O', 'O', 'O'],
   ['O', ' ', 'W', ' ', 'W', 'O', 'G', 'M', ' ', ' ', ' ', 'G', 'M', 'O', 'W', 'G', ' ', 'M', 'M', 'O'],
   ['O', 'M', 'O', 'O', ' ', 'M', ' ', 'W', 'W', 'M', 'G', 'W', ' ', ' ', 'G', ' ', 'W', 'G', 'O', 'G'],
@@ -1693,7 +1693,7 @@ bor = np.array([
   ['O', 'W', 'O', 'M', 'O', 'G', ' ', 'O', 'O', 'M', 'O', ' ', 'M', 'M', 'O', 'G', 'W', 'G', 'M', ' '],
   ['M', 'G', 'O', 'G', 'O', 'G', 'O', 'G', ' ', 'W', 'W', 'G', 'O', ' ', 'W', 'M', 'G', ' ', 'W', ' ']
 ])
-start_pos, edges, edges_to_direction, gems_to_edges = solver.parse_nodes_and_edges(bor)
+start_pos, edges, edges_to_direction, gems_to_edges = solver.parse_nodes_and_edges(board)
 optimal_walk = solver.solve_optimal_walk(start_pos, edges, gems_to_edges)
 moves = solver.get_moves_from_walk(optimal_walk, edges_to_direction, verbose=True)
 ```

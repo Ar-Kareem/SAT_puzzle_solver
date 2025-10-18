@@ -4,7 +4,7 @@ from puzzle_solver import singles_solver as solver
 from puzzle_solver.core.utils import get_pos
 
 # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/singles.html#12x12dk%23215229029446280
-bor = np.array([
+board = np.array([
   [1, 6, 5, 4, 9, 8, 9, 3, 5, 1, 3, 7],
   [2, 8, 5, 7, 1, 1, 4, 3, 6, 3, 10, 7],
   [6, 7, 7, 11, 2, 6, 3, 10, 10, 2, 3, 3],
@@ -20,7 +20,7 @@ bor = np.array([
 ])
 
 def test_ground():
-  binst = solver.Board(board=bor)
+  binst = solver.Board(board=board)
   solutions = binst.solve_and_print()
   ground = np.array([
     ['B', ' ', 'B', ' ', 'B', ' ', ' ', 'B', ' ', ' ', ' ', ' '],

@@ -4,7 +4,7 @@ from puzzle_solver import pearl_solver as solver
 from puzzle_solver.core.utils import get_pos
 
 # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/pearl.html#12x8dt%23105305052653698
-bor = np.array([
+board = np.array([
   ['B', ' ', ' ', 'W', ' ', ' ', 'W', ' ', 'B', ' ', ' ', 'B'],
   [' ', ' ', ' ', 'B', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'B', ' ', ' ', ' '],
@@ -16,7 +16,7 @@ bor = np.array([
 ])
 
 def test_ground():
-  binst = solver.Board(bor)
+  binst = solver.Board(board)
   solutions = binst.solve_and_print()
   ground = np.array([
     ['DR', 'LR', 'LR', 'LR', 'DL', 'DR', 'LR', 'DL', 'DR', 'LR', 'LR', 'DL'],
