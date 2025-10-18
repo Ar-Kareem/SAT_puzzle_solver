@@ -53,4 +53,4 @@ class Board:
         def callback(single_res: SingleSolution):
             print("Solution found")
             print({k: self.int_to_color[v] for k, v in single_res.assignment.items()})
-        return generic_solve_all(self, board_to_solution, callback=callback)
+        return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)

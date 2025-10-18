@@ -87,4 +87,4 @@ class Board:
                 c = single_res.assignment[pos]
                 set_value(res, pos, c)
             print(res)
-        return generic_solve_all(self, board_to_solution, callback=callback)
+        return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)

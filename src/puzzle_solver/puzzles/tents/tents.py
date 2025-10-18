@@ -107,4 +107,4 @@ class Board:
                     c = 'E' if c == 1 else ' '
                 set_char(res, pos, c)
             print(res)
-        return generic_solve_all(self, board_to_solution, callback=callback)
+        return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)

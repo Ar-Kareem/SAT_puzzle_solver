@@ -133,4 +133,4 @@ class Board:
                 c = Direction(single_res.assignment[pos]).name[:1]
                 set_char(res, pos, c)
             print(res)
-        return generic_solve_all(self, board_to_solution, callback=callback)
+        return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)
