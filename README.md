@@ -24,52 +24,215 @@ Almost all the solvers in this repo use the CP-SAT solver from Google OR-Tools.
 
 ## 🎮 Puzzle Gallery
 
-<table>
-<tr>
-<td align="center"><a href="#nonograms-puzzle-type-1"><b>Nonograms</b><br><img src="images/nonogram_solved.png" width="150"></a></td>
-<td align="center"><a href="#sudoku-puzzle-type-2"><b>Sudoku</b><br><img src="images/sudoku_solved.png" width="150"></a></td>
-<td align="center"><a href="#minesweeper-puzzle-type-3"><b>Minesweeper</b><br><img src="images/minesweeper_pre.png" width="150"></a></td>
-<td align="center"><a href="#dominosa-puzzle-type-4"><b>Dominosa</b><br><img src="images/dominosa_solved.png" width="150"></a></td>
-<td align="center"><a href="#light-up-puzzle-type-5"><b>Light Up</b><br><img src="images/lightup_solved.png" width="150"></a></td>
-</tr>
-<tr>
-<td align="center"><a href="#tents-puzzle-type-6"><b>Tents</b><br><img src="images/tents_solved.png" width="150"></a></td>
-<td align="center"><a href="#filling-puzzle-type-7"><b>Filling</b><br><img src="images/filling_solved.png" width="150"></a></td>
-<td align="center"><a href="#keen-puzzle-type-8"><b>Keen</b><br><img src="images/keen_solved.png" width="150"></a></td>
-<td align="center"><a href="#towers-puzzle-type-9"><b>Towers</b><br><img src="images/towers_solved.png" width="150"></a></td>
-<td align="center"><a href="#singles-puzzle-type-10"><b>Singles</b><br><img src="images/singles_solved.png" width="150"></a></td>
-</tr>
-<tr>
-<td align="center"><a href="#magnets-puzzle-type-11"><b>Magnets</b><br><img src="images/magnets_solved.png" width="150"></a></td>
-<td align="center"><a href="#signpost-puzzle-type-12"><b>Signpost</b><br><img src="images/signpost_solved.png" width="150"></a></td>
-<td align="center"><a href="#range-puzzle-type-13"><b>Range</b><br><img src="images/range_solved.png" width="150"></a></td>
-<td align="center"><a href="#undead-puzzle-type-14"><b>Undead</b><br><img src="images/undead_solved.png" width="150"></a></td>
-<td align="center"><a href="#unruly-puzzle-type-15"><b>Unruly</b><br><img src="images/unruly_solved.png" width="150"></a></td>
-</tr>
-<tr>
-<td align="center"><a href="#tracks-puzzle-type-16"><b>Tracks</b><br><img src="images/tracks_solved.png" width="150"></a></td>
-<td align="center"><a href="#mosaic-puzzle-type-17"><b>Mosaic</b><br><img src="images/mosaic_solved.png" width="150"></a></td>
-<td align="center"><a href="#map-puzzle-type-18"><b>Map</b><br><img src="images/map_solved.png" width="150"></a></td>
-<td align="center"><a href="#pearl-puzzle-type-19"><b>Pearl</b><br><img src="images/pearl_solved.png" width="150"></a></td>
-<td align="center"><a href="#bridges-puzzle-type-20"><b>Bridges</b><br><img src="images/bridges_solved.png" width="150"></a></td>
-</tr>
-<tr>
-<td align="center"><a href="#inertia-puzzle-type-21"><b>Inertia</b><br><img src="images/inertia_solved.png" width="150"></a></td>
-<td align="center"><a href="#guess-puzzle-type-22"><b>Guess</b><br><img src="images/guess_3.png" width="150"></a></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</table>
+<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:14px; max-width:1000px; margin:0 auto;">
+
+  <a href="#nonograms-puzzle-type-1" style="text-decoration:none; color:inherit;">
+    <div style="border:1px solid #eaecef; border-radius:10px; padding:10px;">
+      <div style="width:120px; height:120px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; background:#fafbfc; border-radius:8px; overflow:hidden;">
+        <img src="images/nonogram_solved.png" alt="Nonograms" style="max-width:100%; max-height:100%; display:block;">
+      </div>
+      <div style="font-weight:600;">Nonograms</div>
+    </div>
+  </a>
+
+  <a href="#sudoku-puzzle-type-2" style="text-decoration:none; color:inherit;">
+    <div style="border:1px solid #eaecef; border-radius:10px; padding:10px;">
+      <div style="width:120px; height:120px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; background:#fafbfc; border-radius:8px; overflow:hidden;">
+        <img src="images/sudoku_solved.png" alt="Sudoku" style="max-width:100%; max-height:100%; display:block;">
+      </div>
+      <div style="font-weight:600;">Sudoku</div>
+    </div>
+  </a>
+
+  <a href="#minesweeper-puzzle-type-3" style="text-decoration:none; color:inherit;">
+    <div style="border:1px solid #eaecef; border-radius:10px; padding:10px;">
+      <div style="width:120px; height:120px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; background:#fafbfc; border-radius:8px; overflow:hidden;">
+        <img src="images/minesweeper_pre.png" alt="Minesweeper" style="max-width:100%; max-height:100%; display:block;">
+      </div>
+      <div style="font-weight:600;">Minesweeper</div>
+    </div>
+  </a>
+
+  <a href="#dominosa-puzzle-type-4" style="text-decoration:none; color:inherit;">
+    <div style="border:1px solid #eaecef; border-radius:10px; padding:10px;">
+      <div style="width:120px; height:120px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; background:#fafbfc; border-radius:8px; overflow:hidden;">
+        <img src="images/dominosa_solved.png" alt="Dominosa" style="max-width:100%; max-height:100%; display:block;">
+      </div>
+      <div style="font-weight:600;">Dominosa</div>
+    </div>
+  </a>
+
+  <a href="#light-up-puzzle-type-5" style="text-decoration:none; color:inherit;">
+    <div style="border:1px solid #eaecef; border-radius:10px; padding:10px;">
+      <div style="width:120px; height:120px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; background:#fafbfc; border-radius:8px; overflow:hidden;">
+        <img src="images/lightup_solved.png" alt="Light Up" style="max-width:100%; max-height:100%; display:block;">
+      </div>
+      <div style="font-weight:600;">Light Up</div>
+    </div>
+  </a>
+
+  <a href="#tents-puzzle-type-6" style="text-decoration:none; color:inherit;">
+    <div style="border:1px solid #eaecef; border-radius:10px; padding:10px;">
+      <div style="width:120px; height:120px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; background:#fafbfc; border-radius:8px; overflow:hidden;">
+        <img src="images/tents_solved.png" alt="Tents" style="max-width:100%; max-height:100%; display:block;">
+      </div>
+      <div style="font-weight:600;">Tents</div>
+    </div>
+  </a>
+
+  <a href="#filling-puzzle-type-7" style="text-decoration:none; color:inherit;">
+    <div style="border:1px solid #eaecef; border-radius:10px; padding:10px;">
+      <div style="width:120px; height:120px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; background:#fafbfc; border-radius:8px; overflow:hidden;">
+        <img src="images/filling_solved.png" alt="Filling" style="max-width:100%; max-height:100%; display:block;">
+      </div>
+      <div style="font-weight:600;">Filling</div>
+    </div>
+  </a>
+
+  <a href="#keen-puzzle-type-8" style="text-decoration:none; color:inherit;">
+    <div style="border:1px solid #eaecef; border-radius:10px; padding:10px;">
+      <div style="width:120px; height:120px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; background:#fafbfc; border-radius:8px; overflow:hidden;">
+        <img src="images/keen_solved.png" alt="Keen" style="max-width:100%; max-height:100%; display:block;">
+      </div>
+      <div style="font-weight:600;">Keen</div>
+    </div>
+  </a>
+
+  <a href="#towers-puzzle-type-9" style="text-decoration:none; color:inherit;">
+    <div style="border:1px solid #eaecef; border-radius:10px; padding:10px;">
+      <div style="width:120px; height:120px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; background:#fafbfc; border-radius:8px; overflow:hidden;">
+        <img src="images/towers_solved.png" alt="Towers" style="max-width:100%; max-height:100%; display:block;">
+      </div>
+      <div style="font-weight:600;">Towers</div>
+    </div>
+  </a>
+
+  <a href="#singles-puzzle-type-10" style="text-decoration:none; color:inherit;">
+    <div style="border:1px solid #eaecef; border-radius:10px; padding:10px;">
+      <div style="width:120px; height:120px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; background:#fafbfc; border-radius:8px; overflow:hidden;">
+        <img src="images/singles_solved.png" alt="Singles" style="max-width:100%; max-height:100%; display:block;">
+      </div>
+      <div style="font-weight:600;">Singles</div>
+    </div>
+  </a>
+
+  <a href="#magnets-puzzle-type-11" style="text-decoration:none; color:inherit;">
+    <div style="border:1px solid #eaecef; border-radius:10px; padding:10px;">
+      <div style="width:120px; height:120px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; background:#fafbfc; border-radius:8px; overflow:hidden;">
+        <img src="images/magnets_solved.png" alt="Magnets" style="max-width:100%; max-height:100%; display:block;">
+      </div>
+      <div style="font-weight:600;">Magnets</div>
+    </div>
+  </a>
+
+  <a href="#signpost-puzzle-type-12" style="text-decoration:none; color:inherit;">
+    <div style="border:1px solid #eaecef; border-radius:10px; padding:10px;">
+      <div style="width:120px; height:120px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; background:#fafbfc; border-radius:8px; overflow:hidden;">
+        <img src="images/signpost_solved.png" alt="Signpost" style="max-width:100%; max-height:100%; display:block;">
+      </div>
+      <div style="font-weight:600;">Signpost</div>
+    </div>
+  </a>
+
+  <a href="#range-puzzle-type-13" style="text-decoration:none; color:inherit;">
+    <div style="border:1px solid #eaecef; border-radius:10px; padding:10px;">
+      <div style="width:120px; height:120px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; background:#fafbfc; border-radius:8px; overflow:hidden;">
+        <img src="images/range_solved.png" alt="Range" style="max-width:100%; max-height:100%; display:block;">
+      </div>
+      <div style="font-weight:600;">Range</div>
+    </div>
+  </a>
+
+  <a href="#undead-puzzle-type-14" style="text-decoration:none; color:inherit;">
+    <div style="border:1px solid #eaecef; border-radius:10px; padding:10px;">
+      <div style="width:120px; height:120px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; background:#fafbfc; border-radius:8px; overflow:hidden;">
+        <img src="images/undead_solved.png" alt="Undead" style="max-width:100%; max-height:100%; display:block;">
+      </div>
+      <div style="font-weight:600;">Undead</div>
+    </div>
+  </a>
+
+  <a href="#unruly-puzzle-type-15" style="text-decoration:none; color:inherit;">
+    <div style="border:1px solid #eaecef; border-radius:10px; padding:10px;">
+      <div style="width:120px; height:120px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; background:#fafbfc; border-radius:8px; overflow:hidden;">
+        <img src="images/unruly_solved.png" alt="Unruly" style="max-width:100%; max-height:100%; display:block;">
+      </div>
+      <div style="font-weight:600;">Unruly</div>
+    </div>
+  </a>
+
+  <a href="#tracks-puzzle-type-16" style="text-decoration:none; color:inherit;">
+    <div style="border:1px solid #eaecef; border-radius:10px; padding:10px;">
+      <div style="width:120px; height:120px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; background:#fafbfc; border-radius:8px; overflow:hidden;">
+        <img src="images/tracks_solved.png" alt="Tracks" style="max-width:100%; max-height:100%; display:block;">
+      </div>
+      <div style="font-weight:600;">Tracks</div>
+    </div>
+  </a>
+
+  <a href="#mosaic-puzzle-type-17" style="text-decoration:none; color:inherit;">
+    <div style="border:1px solid #eaecef; border-radius:10px; padding:10px;">
+      <div style="width:120px; height:120px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; background:#fafbfc; border-radius:8px; overflow:hidden;">
+        <img src="images/mosaic_solved.png" alt="Mosaic" style="max-width:100%; max-height:100%; display:block;">
+      </div>
+      <div style="font-weight:600;">Mosaic</div>
+    </div>
+  </a>
+
+  <a href="#map-puzzle-type-18" style="text-decoration:none; color:inherit;">
+    <div style="border:1px solid #eaecef; border-radius:10px; padding:10px;">
+      <div style="width:120px; height:120px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; background:#fafbfc; border-radius:8px; overflow:hidden;">
+        <img src="images/map_solved.png" alt="Map" style="max-width:100%; max-height:100%; display:block;">
+      </div>
+      <div style="font-weight:600;">Map</div>
+    </div>
+  </a>
+
+  <a href="#pearl-puzzle-type-19" style="text-decoration:none; color:inherit;">
+    <div style="border:1px solid #eaecef; border-radius:10px; padding:10px;">
+      <div style="width:120px; height:120px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; background:#fafbfc; border-radius:8px; overflow:hidden;">
+        <img src="images/pearl_solved.png" alt="Pearl" style="max-width:100%; max-height:100%; display:block;">
+      </div>
+      <div style="font-weight:600;">Pearl</div>
+    </div>
+  </a>
+
+  <a href="#bridges-puzzle-type-20" style="text-decoration:none; color:inherit;">
+    <div style="border:1px solid #eaecef; border-radius:10px; padding:10px;">
+      <div style="width:120px; height:120px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; background:#fafbfc; border-radius:8px; overflow:hidden;">
+        <img src="images/bridges_solved.png" alt="Bridges" style="max-width:100%; max-height:100%; display:block;">
+      </div>
+      <div style="font-weight:600;">Bridges</div>
+    </div>
+  </a>
+
+  <a href="#inertia-puzzle-type-21" style="text-decoration:none; color:inherit;">
+    <div style="border:1px solid #eaecef; border-radius:10px; padding:10px;">
+      <div style="width:120px; height:120px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; background:#fafbfc; border-radius:8px; overflow:hidden;">
+        <img src="images/inertia_solved.png" alt="Inertia" style="max-width:100%; max-height:100%; display:block;">
+      </div>
+      <div style="font-weight:600;">Inertia</div>
+    </div>
+  </a>
+
+  <a href="#guess-puzzle-type-22" style="text-decoration:none; color:inherit;">
+    <div style="border:1px solid #eaecef; border-radius:10px; padding:10px;">
+      <div style="width:120px; height:120px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; background:#fafbfc; border-radius:8px; overflow:hidden;">
+        <img src="images/guess_3.png" alt="Guess" style="max-width:100%; max-height:100%; display:block;">
+      </div>
+      <div style="font-weight:600;">Guess</div>
+    </div>
+  </a>
 
 </div>
+</div>
+
 ---
 
 ## Table of Contents
 
 - [Python Puzzle Solver](#python-puzzle-solver)
   - [🎮 Puzzle Gallery](#-puzzle-gallery)
-  - [](#)
   - [Table of Contents](#table-of-contents)
 - [Puzzles](#puzzles)
   - [Nonograms (Puzzle Type #1)](#nonograms-puzzle-type-1)
