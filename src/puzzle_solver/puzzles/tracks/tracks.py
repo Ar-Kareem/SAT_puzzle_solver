@@ -9,7 +9,7 @@ from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, 
 class Board:
     def __init__(self, board: np.array, side: np.array, top: np.array):
         assert board.ndim == 2, f'board must be 2d, got {board.ndim}'
-        assert all((len(c.item()) == 2) and all(ch in [' ', 'U', 'L', 'D', 'R'] for ch in c.item()) for c in np.nditer(board)), 'board must contain only * or digits'
+        assert all((len(c.item()) == 2) and all(ch in [' ', 'U', 'L', 'D', 'R'] for ch in c.item()) for c in np.nditer(board)), 'board must contain only digits or space'
         self.board = board
         self.V = board.shape[0]
         self.H = board.shape[1]

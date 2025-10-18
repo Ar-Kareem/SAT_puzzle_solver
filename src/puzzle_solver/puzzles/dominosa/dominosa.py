@@ -17,7 +17,7 @@ def get_bool_var(model: cp_model.CpModel, var: cp_model.IntVar, eq_val: int, nam
 class Board:
     def __init__(self, board: np.array):
         assert board.ndim == 2, f'board must be 2d, got {board.ndim}'
-        assert all(0 <= int(i.item()) <= 9 for i in np.nditer(board)), 'board must contain only alphanumeric characters or *'
+        assert all(0 <= int(i.item()) <= 9 for i in np.nditer(board)), 'board must contain only alphanumeric characters or space'
         assert np.min(board) == 0, 'expected board to start from 0'
         self.board = board
         self.max_val = np.max(board)
