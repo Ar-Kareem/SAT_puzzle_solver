@@ -99,7 +99,7 @@ class Board:
             if ground_neg != -1:
                 self.model.Add(sum_neg == ground_neg)
 
-    def solve_and_print(self):
+    def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
             assignment: dict[Pos, str] = {}
             for (pos, state), var in board.model_vars.items():

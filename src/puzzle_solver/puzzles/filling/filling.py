@@ -175,7 +175,7 @@ class Board:
             # Inactive root id -> size 0
             m.Add(size_k == 0).OnlyEnforceIf(self.is_root[root_pos].Not())
 
-    def solve_and_print(self):
+    def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: "Board", solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
             assignment: dict[Pos, int] = {}
             for p in get_all_pos(board.V, board.H):

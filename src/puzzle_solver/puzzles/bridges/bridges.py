@@ -81,7 +81,7 @@ class Board:
         y_contained = yvert_min < yhoriz < yvert_max
         return x_contained and y_contained
 
-    def solve_and_print(self):
+    def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
             assignment = defaultdict(lambda: [0, 0, 0, 0])
             for bridge in board.horiz_bridges:
@@ -103,4 +103,4 @@ class Board:
                 set_char(res, pos, c)
             for row in res:
                 print('|' + '|'.join(row) + '|\n')
-        return generic_solve_all(self, board_to_solution, callback=callback, max_solutions=20)
+        return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose, max_solutions=20)

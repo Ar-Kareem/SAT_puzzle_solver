@@ -78,7 +78,7 @@ class Board:
             is_eq_list.append(aux)
         self.model.Add(lxp.Sum(is_eq_list) == 1)
     
-    def solve_and_print(self):
+    def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
             assignment: dict[Pos, str] = {}
             for pos, var in board.model_vars.items():
@@ -92,4 +92,4 @@ class Board:
                 c = single_res.assignment[pos]
                 set_char(res, pos, c)
             print(res)
-        return generic_solve_all(self, board_to_solution, callback=callback, max_solutions=20)
+        return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose, max_solutions=20)

@@ -44,7 +44,7 @@ class Board:
             for other_region_idx in region_connections:  # neighboring regions must have different colors
                 self.model.Add(self.model_vars[region_idx] != self.model_vars[other_region_idx])
 
-    def solve_and_print(self):
+    def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
             assignment: dict[int, int] = {}
             for region_idx, var in board.model_vars.items():

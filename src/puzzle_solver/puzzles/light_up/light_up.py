@@ -75,7 +75,7 @@ class Board:
             no_light_in_laser = [self.model_vars[(p, State.LIGHT)].Not() for p in orthoginals]
             self.model.Add(self.model_vars[(pos, State.BLACK)] == 1).OnlyEnforceIf(i_am_not_light + no_light_in_laser)
 
-    def solve_and_print(self):
+    def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
             assignment: dict[Pos, str] = {}
             for (pos, state), var in board.model_vars.items():

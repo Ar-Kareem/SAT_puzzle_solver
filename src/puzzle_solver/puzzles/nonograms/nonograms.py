@@ -110,7 +110,7 @@ class Board:
         for j in range(L):
             self.model.Add(sum(cover[i][j] for i in range(len(clues))) == current_sequence[j])
 
-    def solve_and_print(self):
+    def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
             assignment: dict[Pos, int] = {}
             for pos, var in board.model_vars.items():
@@ -123,4 +123,4 @@ class Board:
                 c = 'B' if single_res.assignment[pos] == 1 else ' '
                 set_char(res, pos, c)
             print(res)
-        return generic_solve_all(self, board_to_solution, callback=callback)
+        return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)

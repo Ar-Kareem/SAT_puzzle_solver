@@ -119,7 +119,7 @@ class Board:
                 aux_list.append(get_bool_var(self.model, self.model_vars[pos], direction.value, f'{pos}:{direction.name}'))
             or_constraint(self.model, self.pair_vars[pair], aux_list)
 
-    def solve_and_print(self):
+    def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
             assignment: dict[Pos, int] = {}
             for pos, var in board.model_vars.items():

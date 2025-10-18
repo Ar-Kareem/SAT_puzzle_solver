@@ -31,7 +31,7 @@ class Board:
             neighbour_vars = [self.model_vars[p] for p in get_neighbors8(pos, self.N, include_self=True)]
             self.model.Add(lxp.sum(neighbour_vars) == int(c))
 
-    def solve_and_print(self):
+    def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
             assignment: dict[Pos, int] = {}
             for pos, var in board.model_vars.items():

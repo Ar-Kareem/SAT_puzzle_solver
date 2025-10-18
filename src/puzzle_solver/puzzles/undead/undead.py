@@ -149,7 +149,7 @@ class Board:
                     path_vars.append(self.model_vars[(square.position, monster_name)])
         return lxp.Sum(path_vars) if path_vars else 0
 
-    def solve_and_print(self):
+    def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
             assignment: dict[Pos, str] = {}
             for (pos, monster_name), var in board.model_vars.items():

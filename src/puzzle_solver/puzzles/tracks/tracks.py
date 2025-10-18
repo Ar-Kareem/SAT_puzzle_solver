@@ -145,7 +145,7 @@ class Board:
 
 
 
-    def solve_and_print(self):
+    def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
             assignment: dict[Pos, str] = defaultdict(str)
             for (pos, direction), var in board.cell_direction.items():
@@ -167,4 +167,4 @@ class Board:
                 c = pretty_dict[c]
                 set_char(res, pos, c)
             print(res)
-        return generic_solve_all(self, board_to_solution, callback=callback, max_solutions=20)
+        return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose, max_solutions=20)

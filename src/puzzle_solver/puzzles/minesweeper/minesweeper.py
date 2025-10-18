@@ -67,7 +67,7 @@ def _is_safe(board: np.array, pos: Pos, mine_count: int) -> Union[bool, None]:
         return False
     raise ValueError(f"Position {pos} has both safe and mine infeasible")
 
-def give_next_guess(board: np.array, mine_count: int):
+def give_next_guess(board: np.array, mine_count: int, verbose: bool = True):
     tic = time.time()
     is_feasible = _is_feasible(board, mine_count=mine_count)
     if not is_feasible:
@@ -89,22 +89,23 @@ def give_next_guess(board: np.array, mine_count: int):
     mine_positions = {pos for pos, is_safe in pos_dict.items() if is_safe is False}
     new_garuneed_mine_positions = mine_positions - flag_positions
     wrong_flag_positions = flag_positions - mine_positions
-    if len(safe_positions) > 0:
-        print(f"Found {len(safe_positions)} new guaranteed safe positions")
-        print(safe_positions)
-        print('-'*10)
-    if len(mine_positions) == 0:
-        print("No guaranteed mine positions")
-        print('-'*10)
-    if len(new_garuneed_mine_positions) > 0:
-        print(f"Found {len(new_garuneed_mine_positions)} new guaranteed mine positions")
-        print(new_garuneed_mine_positions)
-        print('-'*10)
-    if len(wrong_flag_positions) > 0:
-        print(f"WARNING | "*4 + "WARNING")
-        print(f"Found {len(wrong_flag_positions)} wrong flag positions")
-        print(wrong_flag_positions)
-        print('-'*10)
-    toc = time.time()
-    print(f"Time taken: {toc - tic:.2f} seconds")
+    if verbose:
+        if len(safe_positions) > 0:
+            print(f"Found {len(safe_positions)} new guaranteed safe positions")
+            print(safe_positions)
+            print('-'*10)
+        if len(mine_positions) == 0:
+            print("No guaranteed mine positions")
+            print('-'*10)
+        if len(new_garuneed_mine_positions) > 0:
+            print(f"Found {len(new_garuneed_mine_positions)} new guaranteed mine positions")
+            print(new_garuneed_mine_positions)
+            print('-'*10)
+        if len(wrong_flag_positions) > 0:
+            print(f"WARNING | "*4 + "WARNING")
+            print(f"Found {len(wrong_flag_positions)} wrong flag positions")
+            print(wrong_flag_positions)
+            print('-'*10)
+        toc = time.time()
+        print(f"Time taken: {toc - tic:.2f} seconds")
     return safe_positions, new_garuneed_mine_positions, wrong_flag_positions

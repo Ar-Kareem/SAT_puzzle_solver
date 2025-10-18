@@ -82,7 +82,7 @@ class Board:
             block_vars = [self.model_vars[p] for p in self.get_block_pos(block)]
             add_opcode_constraint(self.model, block_vars, op, result)
 
-    def solve_and_print(self):
+    def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: "Board", solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
             assignment: dict[Pos, int] = {}
             for p in get_all_pos(board.N):
@@ -96,4 +96,4 @@ class Board:
                 c = single_res.assignment[pos]
                 set_char(res, pos, c)
             print(res)
-        return generic_solve_all(self, board_to_solution, callback=callback, max_solutions=10)
+        return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose, max_solutions=10)
