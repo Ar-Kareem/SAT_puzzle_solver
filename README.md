@@ -139,7 +139,7 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
 <tr>
   <td align="center">
     <a href="#inertia-puzzle-type-21"><b>Inertia</b><br><br>
-      <img src="images/inertia_solved.png" alt="Inertia" height="120">
+      <img src="images/inertia_unsolved.png" alt="Inertia" height="120">
     </a>
   </td>
   <td align="center">
@@ -424,6 +424,9 @@ mine_count = 30
 safe_positions, new_garuneed_mine_positions, wrong_flag_positions = solver.give_next_guess(board=bor, mine_count=mine_count)
 ```
 **Script Output**
+
+Notice how not only did it output all garunteed new safe and mine positions, it also outputs a warning about the incorrectly placed flag position.
+
 ```
 Found 8 new guaranteed safe positions
 {Pos(x=9, y=0), Pos(x=15, y=8), Pos(x=15, y=7), Pos(x=9, y=2), Pos(x=15, y=6), Pos(x=7, y=2), Pos(x=9, y=1), Pos(x=12, y=8)}
