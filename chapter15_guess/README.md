@@ -17,7 +17,7 @@ Unlike most other puzzles in this repo, 'Guess' is very different. Similar to mi
 
 The solver is designed to take the state of the board at any timestep and always gives the next optimal guess. This might seem like an impossible task at first but it's actually not too bad. The optimal guess is defined to be the one that maximizes the Shannon entropy (i.e. maximizes the expected information gain).
 
-The steps below formaly describe the algorithm that is also used in [this 3Blue1Brown video](https://www.youtube.com/watch?v=v68zYyaEmEA) on solving Wordle using information theory. Where 3Blue1Browne describes the same steps below but for a slightly harder problem to solve wordle (a very similar game). The video intuitively justifies this algorithm and builds it from scratch using basic intuition.
+The steps below formaly describe the algorithm that is also used in [this amazing 3Blue1Brown video](https://www.youtube.com/watch?v=v68zYyaEmEA) on solving Wordle using information theory. Where 3Blue1Browne describes the same steps below but for a slightly harder problem to solve wordle (a very similar game). The video intuitively justifies this algorithm and builds it from scratch using basic intuition.
 
 To formalize the algorithm, let's first define our three inputs as
 - $N :=$ the number of pegs (the length of every guess) 
@@ -73,7 +73,7 @@ The algorithm is as follows
 
 
 If you are at all interested in the above steps and want to understand more, 
-I highly recommend watching [This 3Blue1Brown video](https://www.youtube.com/watch?v=v68zYyaEmEA) on solving Wordle using information theory where he describes the same steps but a bits more complicated problem to solve Wordle (a very similar game).
+I highly recommend watching [this amazing 3Blue1Brown video](https://www.youtube.com/watch?v=v68zYyaEmEA) on solving Wordle using information theory where he describes the same steps but a bits more complicated problem to solve Wordle (a very similar game).
 
 Below is an example of how to utilize the solver while in the middle of a puzzle.
 
