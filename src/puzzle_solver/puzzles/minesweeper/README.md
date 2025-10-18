@@ -2,7 +2,7 @@
 
 This is a dedicated solver for Minesweeper (Called "Mines" in the website)
 
-This Minesweeper solver is a bit different from the other solvers in this repo because in Minesweeper is a uniquely different type of puzzle. 
+This Minesweeper solver is a bit different from the other solvers in this repo because Minesweeper is a uniquely different type of puzzle. 
 
 In Minesweeper, you don't solve the puzzle in one go. You need to partially solve the puzzle and get new information to continue. Thus the solver is designed to take the state of the board at any timestep and always gives the most amount of garunteed next steps to take (i.e. garunteed safe positions, garunteed mine positions, and even warns you if you placed a flag in a potentially wrong position).
 
