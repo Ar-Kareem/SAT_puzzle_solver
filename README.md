@@ -1802,7 +1802,7 @@ Each sub directory in `src/puzzle_solver/puzzles/` targets a different puzzle ty
 * `src/puzzle_solver/puzzles/magnets` — Magnets (polarized dominoes + counts). ([Chapter 33][11])
 * `src/puzzle_solver/puzzles/signpost` — Signpost (visible dominoes + counts). ([Chapter 34][12])
 * `src/puzzle_solver/puzzles/range` — Range (rays & totals). ([Chapter 35][13])
-* `src/puzzle_solver/puzzles/pearl` — Pearl (pearl game). ([Chapter 36][18])
+* `src/puzzle_solver/puzzles/pearl` — Pearl (pearl game). ([Chapter 36][19])
 * `src/puzzle_solver/puzzles/undead` — UnDead (Vampires/Zombies/Ghosts). ([Chapter 37][14])
 * `src/puzzle_solver/puzzles/unruly` — Unruly (no triples + balance). ([Chapter 38][15])
 * `src/puzzle_solver/puzzles/tracks` — Tracks (connected components). ([Chapter 40][16])
