@@ -22,7 +22,10 @@ Almost all the solvers in this repo use the CP-SAT solver from Google OR-Tools.
 
 <div align="center">
 
-## 🎮 Puzzle Gallery
+
+## 🕹️ Puzzle Gallery
+
+These are all the puzzles that are implemented in this repo. <br> Click on any of them to go to that section of the README.
 
 <table>
 <tr>
@@ -155,7 +158,7 @@ Almost all the solvers in this repo use the CP-SAT solver from Google OR-Tools.
 ## Table of Contents
 
 - [Python Puzzle Solver](#python-puzzle-solver)
-  - [🎮 Puzzle Gallery](#-puzzle-gallery)
+  - [🕹️ Puzzle Gallery](#️-puzzle-gallery)
   - [Table of Contents](#table-of-contents)
 - [Puzzles](#puzzles)
   - [Nonograms (Puzzle Type #1)](#nonograms-puzzle-type-1)
