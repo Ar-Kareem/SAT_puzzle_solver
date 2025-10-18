@@ -46,4 +46,5 @@ version = {attr = "puzzle_solver.__version__"}
 
 
 
-# build and pypi push            rm dist/* && python -m build --sdist --wheel && python -m twine upload --repository pypi dist/*
+# build and pypi push (bash)               rm dist/* && python -m build --sdist --wheel && python -m twine upload --repository pypi dist/*
+# build and pypi push (powershell)         rm dist/*; if ($?) { python -m build --sdist --wheel; if ($?) { python -m twine upload --repository pypi dist/* } }
