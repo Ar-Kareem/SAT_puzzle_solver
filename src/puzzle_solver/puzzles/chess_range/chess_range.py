@@ -92,14 +92,17 @@ def is_move_valid(from_pos: Pos, to_pos: Pos, piece_type: PieceType) -> bool:
 
 
 class Board:
-    def __init__(self, pieces: list[str], max_moves_per_piece: int = None, last_piece_alive: Union[PieceType, str] = None):
+    def __init__(self, pieces: list[str], colors: list[str] = None, max_moves_per_piece: int = None, last_piece_alive: Union[PieceType, str] = None):
         """
         Args:
             pieces: list of algebraic notation of the pieces
+            colors: list of colors of the pieces (default: None, all pieces are assumed white (i.e. all pieces are the same except for pawns move only up))
             max_moves_per_piece: maximum number of moves per piece (default: None, no limit)
             last_piece_alive: force the last piece alive to be of this type (default: None, any piece can be last man standing)
         """
         self.pieces: dict[int, tuple[PieceType, Pos]] = {i: parse_algebraic_notation(p) for i, p in enumerate(pieces)}
+        assert colors is None or (len(colors) == len(self.pieces) and all(c in ['B', 'W'] for c in colors)), f'if provided, colors must be a list of length {len(self.pieces)} with elements B or W, got {colors}'
+        self.colors = colors
         self.N = len(self.pieces)  # number of pieces
         self.T = self.N  # (N-1) moves + 1 initial state
         self.max_moves_per_piece = max_moves_per_piece
@@ -130,7 +133,11 @@ class Board:
 
         self.create_vars()
         self.add_all_constraints()
-    
+
+    def can_move(self, p: int, t: int) -> bool:
+        c = self.colors[p]
+        return (c == 'W' and t % 2 == 0) or (c == 'B' and t % 2 == 1)
+
     def create_vars(self):
         for p in range(self.N):
             for t in range(self.T):
@@ -199,6 +206,13 @@ class Board:
                 if p == target_p:
                     continue
                 self.model.Add(self.is_dead[(p, self.T - 1)] == 1)
+
+        if self.colors is not None:
+            # t=0 and even timesteps are white, odd timesteps are black
+            for p in range(self.N):
+                for t in range(self.T - 1):
+                    if not self.can_move(p, t):
+                        self.model.Add(self.mover[(p, t)] == 0)
 
     def enforce_mover_victim_constraints(self):
         for p in range(self.N):
