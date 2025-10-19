@@ -6,14 +6,8 @@
 from pathlib import Path
 import numpy as np
 import numpy as np
-try:
-    import cv2 as cv
-except ImportError:
-    cv = None
-try:
-    from PIL import Image
-except ImportError:
-    Image = None
+cv = None
+Image = None
 
 def load_cell_templates(p: Path) -> dict[str, dict]:
     img = Image.open(p)
@@ -137,6 +131,12 @@ def show_wait_destroy(winname, img):
 
 
 def main(image):
+    global Image
+    global cv
+    from PIL import Image as Image_module
+    import cv2 as cv_module
+    Image = Image_module
+    cv = cv_module
     CELL_BLANK = load_cell_templates(Path(__file__).parent / 'cells' / 'cell_blank.png')
     CELL_WALL = load_cell_templates(Path(__file__).parent / 'cells' / 'cell_wall.png')
     CELL_GEM = load_cell_templates(Path(__file__).parent / 'cells' / 'cell_gem.png')
