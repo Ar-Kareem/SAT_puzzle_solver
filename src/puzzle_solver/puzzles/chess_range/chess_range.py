@@ -36,6 +36,7 @@ class SingleSolution:
 
 
 def parse_algebraic_notation(algebraic: str) -> tuple[PieceType, Pos]:
+    assert isinstance(algebraic, str), f'algebraic notation must be a string, got {type(algebraic)}'
     assert len(algebraic) == 3, 'algebraic notation must be 3 characters'
     p = {'K': PieceType.KING, 'Q': PieceType.QUEEN, 'R': PieceType.ROOK, 'B': PieceType.BISHOP, 'N': PieceType.KNIGHT, 'P': PieceType.PAWN}
     assert algebraic[0] in p, 'invalid piece type'
@@ -56,7 +57,8 @@ def to_algebraic_notation_single_move(piece_type: str, from_pos: Pos, to_pos: Po
     to_rank_letter = str(to_pos.y + 1)
     return f'{letter[piece_type]}{from_file_letter}{from_rank_letter}->{letter[victim_type]}{to_file_letter}{to_rank_letter}'
 
-def to_algebraic_notation(move_sequence: dict[int, tuple[str, Pos, Pos, str]]) -> list[str]:
+def to_algebraic_notation(single_solution: SingleSolution) -> list[str]:
+    move_sequence = single_solution.assignment
     move_sequence = sorted(move_sequence.items(), key=lambda x: x[0])
     move_sequence = [x[1] for x in move_sequence]
     return [to_algebraic_notation_single_move(piece_type, from_pos, to_pos, victim_type) for piece_type, from_pos, to_pos, victim_type in move_sequence]
@@ -280,6 +282,6 @@ class Board:
             # print('victims:', single_res.victim)
             # print('movers:', single_res.mover)
             # print()
-            move_sequence = to_algebraic_notation(single_res.assignment)
+            move_sequence = to_algebraic_notation(single_res)
             print(move_sequence)
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose, max_solutions=max_solutions)

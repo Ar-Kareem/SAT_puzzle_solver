@@ -15,7 +15,7 @@ def test_ground_2():
     binst = solver.Board(board)
     solutions = binst.solve_and_print()
     assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
-    solution = solver.to_algebraic_notation(solutions[0].assignment)
+    solution = solver.to_algebraic_notation(solutions[0])
     ground = ' | '.join(['Qc3->Pd3', 'Qd3->Ne3', 'Qe3->Pf4'])
     assert ' | '.join(solution) == ground, f'solution != {ground}, == {solution}'
 
