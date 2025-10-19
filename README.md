@@ -198,7 +198,7 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
 <tr>
   <td align="center">
     <a href="#thermometers-puzzle-type-26"><b>Thermometers</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/thermometers_unsolved.png" alt="Thermometers" width="200">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/thermometers_solved.png" alt="Thermometers" width="200">
     </a>
   </td>
 </tr>
