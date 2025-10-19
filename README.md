@@ -1997,6 +1997,7 @@ Code to utilize this package and solve the puzzle:
 (Note that this puzzle does not typically have a unique solution. Thus, we specify here that we only want the first valid solution that the solver finds.)
 
 ```python
+from puzzle_solver import chess_solo_solver as solver
 # algebraic notation
 board = ['Kc6', 'Rc5', 'Rc4', 'Pb3', 'Bd3', 'Pd2', 'Pe3', 'Nf2', 'Ng2', 'Qg3', 'Pg6']
 binst = solver.Board(board)
@@ -2047,6 +2048,7 @@ Code to utilize this package and solve the puzzle:
 (Note that this puzzle does not typically have a unique solution. Thus, we specify here that we only want the first valid solution that the solver finds.)
 
 ```python
+from puzzle_solver import chess_melee_solver as solver
 # algebraic notation
 board = ['Pb7', 'Nc7', 'Bc6', 'Ne6', 'Pb5', 'Rc4', 'Qb3', 'Rf7', 'Rb6', 'Pe5', 'Nc3', 'Pd3', 'Nf3']
 colors = ['B', 'B', 'B', 'B', 'B', 'B', 'B', 'W', 'W', 'W', 'W', 'W', 'W']

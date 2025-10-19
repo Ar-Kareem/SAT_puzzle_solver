@@ -1,6 +1,12 @@
 
 # Chess Range (Puzzle Type #23)
 
+These are three dedicated solvers for different types of chess puzzles (all use the same solver under the hood)
+
+Below are the details of how to utilize the solver. In addition, the solver gives all possible solutions to the input thus it can be utilized to figure out if a single input board has multiple possible solutions.
+
+(The solver under the hood mainly utilizes the CP-SAT solver from Google OR-Tools)
+
 * [**Play online**](https://www.puzzle-chess.com/chess-ranger-11/)
 
 You are given a chess board with $N$ pieces distributed on it. Your aim is to make $N-1$ range of moves where each move is a legal chess move and captures another piece.
