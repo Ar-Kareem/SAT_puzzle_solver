@@ -90,11 +90,19 @@ def is_move_valid(from_pos: Pos, to_pos: Pos, piece_type: PieceType) -> bool:
 
 
 class Board:
-    def __init__(self, pieces: list[str]):
+    def __init__(self, pieces: list[str], max_moves_per_piece: int = None, last_piece_alive: Union[PieceType, str] = None):
+        """
+        Args:
+            pieces: list of algebraic notation of the pieces
+            max_moves_per_piece: maximum number of moves per piece (default: None, no limit)
+            last_piece_alive: force the last piece alive to be of this type (default: None, any piece can be last man standing)
+        """
         self.pieces: dict[int, tuple[PieceType, Pos]] = {i: parse_algebraic_notation(p) for i, p in enumerate(pieces)}
         self.N = len(self.pieces)  # number of pieces
         self.T = self.N  # (N-1) moves + 1 initial state
-        
+        self.max_moves_per_piece = max_moves_per_piece
+        self.last_piece_alive = last_piece_alive
+
         self.V = 8  # board size
         self.H = 8  # board size
         self.num_positions = self.V * self.H  # 8x8 board
@@ -178,6 +186,18 @@ class Board:
                     for pos in get_all_pos(self.V, self.H):
                         self.model.Add(self.piece_positions[(p_mover, t + 1, pos)] == self.piece_positions[(p_victim, t, pos)]).OnlyEnforceIf([self.mover[(p_mover, t)], self.victim[(p_victim, t)]])
 
+        # optional parameter to force last piece alive
+        if self.last_piece_alive is not None:
+            target_ps = [p for p in range(self.N) if self.pieces[p][0] == self.last_piece_alive]
+            assert len(target_ps) == 1, f'multiple pieces of type {self.last_piece_alive} found'
+            target_p = target_ps[0]
+            # target piece is force to be last man standing
+            self.model.Add(self.is_dead[(target_p, self.T - 1)] == 0)
+            for p in range(self.N):
+                if p == target_p:
+                    continue
+                self.model.Add(self.is_dead[(p, self.T - 1)] == 1)
+
     def enforce_mover_victim_constraints(self):
         for p in range(self.N):
             for t in range(self.T - 1):
@@ -214,6 +234,11 @@ class Board:
         # at each timestep only one piece can be victimized
         for t in range(self.T - 1):
             self.model.AddExactlyOne([self.victim[(p, t)] for p in range(self.N)])
+
+        # optional parameter to force 
+        if self.max_moves_per_piece is not None:
+            for p in range(self.N):
+                self.model.Add(sum([self.mover[(p, t)] for t in range(self.T - 1)]) <= self.max_moves_per_piece)
 
 
     def solve_and_print(self, verbose: bool = True, max_solutions: int = None):
