@@ -201,6 +201,11 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/thermometers_solved.png" alt="Thermometers" width="200">
     </a>
   </td>
+  <td align="center">
+    <a href="#aquarium-puzzle-type-27"><b>Aquarium</b><br><br>
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/aquarium_unsolved.png" alt="Aquarium" width="200">
+    </a>
+  </td>
 </tr>
 </table>
 
@@ -242,6 +247,7 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   - [Chess Solo (Puzzle Type #24)](#chess-solo-puzzle-type-24)
   - [Chess Melee (Puzzle Type #25)](#chess-melee-puzzle-type-25)
   - [Thermometers (Puzzle Type #26)](#thermometers-puzzle-type-26)
+  - [Aquarium (Puzzle Type #27)](#aquarium-puzzle-type-27)
   - [Why SAT / CP-SAT?](#why-sat--cp-sat)
   - [Testing](#testing)
   - [Contributing](#contributing)
@@ -2091,6 +2097,7 @@ Time taken: 6.24 seconds
   <summary><strong>Rules</strong></summary>
 
 You have to fill some thermometers with mercury starting from the bulb and going toward the end without gaps.
+
 The numbers outside the grid show the number of filled cells horizontally and vertically. 
 
 </details>
@@ -2151,9 +2158,84 @@ status: OPTIMAL
 Time taken: 0.01 seconds
 ```
 
+## Aquarium (Puzzle Type #27)
+
+* [**Play online**](https://www.puzzle-aquarium.com/)
+
+* [**Solver Code**][27]
+
+<details>
+  <summary><strong>Rules</strong></summary>
+
+The puzzle is played on a rectangular grid divided into blocks called "aquariums"
+
+You have to "fill" the aquariums with water up to a certain level or leave it empty.
+
+The water level in each aquarium is one and the same across its full width
+
+The numbers outside the grid show the number of filled cells horizontally and vertically. 
+
+</details>
+
+**Unsolved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/aquarium_unsolved.png" alt="Aquarium unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+
+(Note that this puzzle does not typically have a unique solution. Thus, we specify here that we only want the first valid solution that the solver finds.)
+
+```python
+from puzzle_solver import aquarium_solver as solver
+board = np.array([
+  ['01', '01', '01', '01', '02', '02', '02', '03', '03', '03', '03', '04', '05', '05', '05'],
+  ['01', '02', '02', '02', '02', '06', '07', '07', '03', '08', '03', '04', '04', '05', '09'],
+  ['01', '01', '02', '11', '06', '06', '06', '12', '12', '08', '13', '13', '13', '09', '09'],
+  ['01', '11', '11', '11', '14', '06', '06', '12', '12', '15', '15', '13', '09', '09', '09'],
+  ['01', '01', '11', '11', '14', '12', '12', '12', '16', '16', '15', '13', '13', '17', '09'],
+  ['45', '11', '11', '14', '14', '12', '42', '42', '42', '15', '15', '13', '13', '17', '18'],
+  ['45', '11', '11', '14', '14', '12', '12', '43', '15', '15', '20', '13', '13', '17', '18'],
+  ['46', '46', '11', '19', '19', '19', '43', '43', '44', '20', '20', '20', '13', '17', '18'],
+  ['46', '22', '23', '23', '23', '19', '43', '21', '21', '24', '24', '24', '25', '17', '17'],
+  ['22', '22', '22', '23', '19', '19', '26', '24', '24', '24', '28', '28', '25', '17', '33'],
+  ['22', '22', '23', '23', '27', '27', '26', '26', '24', '24', '29', '29', '25', '25', '33'],
+  ['22', '22', '35', '27', '27', '26', '26', '26', '26', '30', '30', '30', '25', '34', '34'],
+  ['37', '22', '35', '35', '35', '35', '35', '26', '26', '30', '31', '31', '32', '32', '40'],
+  ['37', '37', '37', '36', '36', '35', '26', '26', '26', '40', '40', '40', '40', '40', '40'],
+  ['37', '37', '37', '37', '35', '35', '38', '38', '39', '39', '40', '40', '40', '41', '41'],
+])
+top = np.array([6, 6, 5, 3, 3, 4, 7, 6, 9, 6, 3, 4, 9, 6, 7])
+side = np.array([3, 5, 1, 2, 5, 3, 10, 10, 5, 3, 7, 3, 7, 8, 12])
+binst = solver.Board(board=board, top=top, side=side)
+solutions = binst.solve_and_print()
+```
+**Script Output**
+
+```python
+Solution found
+[['0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '1' '1' '1']
+ ['0' '0' '0' '0' '0' '0' '0' '0' '1' '0' '1' '1' '1' '1' '0']
+ ['0' '0' '0' '0' '0' '0' '0' '0' '0' '1' '0' '0' '0' '0' '0']
+ ['0' '0' '0' '0' '0' '1' '1' '0' '0' '0' '0' '0' '0' '0' '0']
+ ['1' '1' '0' '0' '0' '0' '0' '0' '1' '1' '0' '0' '0' '0' '1']
+ ['0' '0' '0' '0' '0' '0' '1' '1' '1' '0' '0' '0' '0' '0' '0']
+ ['1' '1' '1' '0' '0' '1' '1' '0' '1' '1' '0' '1' '1' '0' '1']
+ ['1' '1' '1' '0' '0' '0' '1' '1' '0' '1' '1' '1' '1' '0' '1']
+ ['1' '0' '0' '0' '0' '0' '1' '1' '1' '0' '0' '0' '1' '0' '0']
+ ['0' '0' '0' '0' '1' '1' '0' '0' '0' '0' '0' '0' '1' '0' '0']
+ ['0' '0' '1' '1' '0' '0' '0' '0' '1' '1' '0' '0' '1' '1' '1']
+ ['0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '1' '1' '1']
+ ['0' '1' '0' '0' '0' '0' '0' '1' '1' '0' '1' '1' '1' '1' '0']
+ ['1' '1' '1' '1' '1' '0' '1' '1' '1' '0' '0' '0' '0' '0' '0']
+ ['1' '1' '1' '1' '1' '1' '1' '1' '1' '1' '0' '0' '0' '1' '1']]
+Solutions found: 1
+status: OPTIMAL
+Time taken: 0.02 seconds
+```
+
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/thermometers_solved.png" alt="Thermometers solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/aquarium_solved.png" alt="Aquarium solved" width="500">
 
 ---
 
@@ -2234,3 +2316,4 @@ Issues and PRs welcome!
 [24]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/chess_range#chess-solo-puzzle-type-24 "puzzle_solver/src/puzzle_solver/puzzles/chess_range at master · Ar-Kareem/puzzle_solver · GitHub"
 [25]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/chess_range#chess-melee-puzzle-type-25 "puzzle_solver/src/puzzle_solver/puzzles/chess_range at master · Ar-Kareem/puzzle_solver · GitHub"
 [26]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/thermometers "puzzle_solver/src/puzzle_solver/puzzles/thermometers at master · Ar-Kareem/puzzle_solver · GitHub"
+[27]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/aquarium "puzzle_solver/src/puzzle_solver/puzzles/aquarium at master · Ar-Kareem/puzzle_solver · GitHub"
