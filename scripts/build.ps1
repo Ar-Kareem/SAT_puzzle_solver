@@ -1,0 +1,1 @@
+rm dist/*; if ($?) { python -m build --sdist --wheel; if ($?) { python -m twine upload --repository pypi dist/* } }
