@@ -252,12 +252,13 @@ class Board:
                 self.model.Add(self.is_dead[(p, t + 1)] == 1).OnlyEnforceIf(self.is_dead[(p, t)])
         # every move must be legal chess move
         for p in range(self.N):
+            color = self.colors[p] if self.colors is not None else None
             for t in range(self.T - 1):
                 for from_pos in self.all_legal_positions:
                     for to_pos in self.all_legal_positions:
                         if from_pos == to_pos:
                             continue
-                        is_valid, need_to_be_empty = is_move_valid(from_pos, to_pos, self.pieces[p][0])
+                        is_valid, need_to_be_empty = is_move_valid(from_pos, to_pos, self.pieces[p][0], color=color)
                         # remove non legal moves
                         need_to_be_empty = set(need_to_be_empty) & self.all_legal_positions
                         if not is_valid:
