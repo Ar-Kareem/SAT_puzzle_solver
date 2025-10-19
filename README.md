@@ -195,6 +195,13 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
     </a>
   </td>
 </tr>
+<tr>
+  <td align="center">
+    <a href="#thermometers-puzzle-type-26"><b>Thermometers</b><br><br>
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/thermometers_unsolved.png" alt="Thermometers" width="200">
+    </a>
+  </td>
+</tr>
 </table>
 
 </div>
@@ -234,6 +241,7 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   - [Chess Range (Puzzle Type #23)](#chess-range-puzzle-type-23)
   - [Chess Solo (Puzzle Type #24)](#chess-solo-puzzle-type-24)
   - [Chess Melee (Puzzle Type #25)](#chess-melee-puzzle-type-25)
+  - [Thermometers (Puzzle Type #26)](#thermometers-puzzle-type-26)
   - [Why SAT / CP-SAT?](#why-sat--cp-sat)
   - [Testing](#testing)
   - [Contributing](#contributing)
@@ -2073,6 +2081,82 @@ Time taken: 6.24 seconds
 
 ---
 
+## Thermometers (Puzzle Type #26)
+
+* [**Play online**](https://www.puzzle-thermometers.com/)
+
+* [**Solver Code**][26]
+
+<details>
+  <summary><strong>Rules</strong></summary>
+
+You have to fill some thermometers with mercury starting from the bulb and going toward the end without gaps.
+The numbers outside the grid show the number of filled cells horizontally and vertically. 
+
+</details>
+
+**Unsolved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/thermometers_unsolved.png" alt="Thermometers unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+
+(Note that this puzzle does not typically have a unique solution. Thus, we specify here that we only want the first valid solution that the solver finds.)
+
+```python
+from puzzle_solver import thermometers_solver as solver
+board = np.array([
+  ['R', 'R', 'D', 'R', 'D', 'R', 'X', 'D', 'L', 'X', 'L', 'L', 'L', 'L', 'L'],
+  ['D', 'D', 'D', 'U', 'X', 'U', 'X', 'R', 'R', 'R', 'R', 'D', 'D', 'R', 'U'],
+  ['D', 'D', 'D', 'U', 'X', 'U', 'U', 'R', 'R', 'R', 'X', 'D', 'D', 'D', 'D'],
+  ['X', 'D', 'D', 'U', 'U', 'U', 'L', 'U', 'R', 'R', 'D', 'X', 'D', 'X', 'X'],
+  ['X', 'D', 'D', 'U', 'U', 'R', 'R', 'R', 'R', 'X', 'R', 'X', 'D', 'R', 'X'],
+  ['U', 'D', 'D', 'U', 'U', 'R', 'X', 'R', 'R', 'R', 'R', 'D', 'D', 'R', 'D'],
+  ['U', 'D', 'D', 'R', 'R', 'X', 'R', 'R', 'R', 'R', 'D', 'D', 'R', 'X', 'D'],
+  ['U', 'D', 'D', 'U', 'X', 'L', 'X', 'L', 'R', 'X', 'X', 'R', 'X', 'X', 'L'],
+  ['U', 'D', 'D', 'R', 'X', 'U', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L'],
+  ['X', 'D', 'X', 'U', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'D', 'U'],
+  ['U', 'D', 'X', 'U', 'R', 'R', 'X', 'R', 'R', 'R', 'R', 'X', 'X', 'L', 'U'],
+  ['U', 'R', 'U', 'U', 'R', 'X', 'R', 'X', 'R', 'X', 'R', 'R', 'R', 'R', 'U'],
+  ['U', 'R', 'X', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'X', 'X', 'L'],
+  ['U', 'U', 'R', 'R', 'X', 'D', 'R', 'R', 'D', 'R', 'X', 'X', 'L', 'L', 'U'],
+  ['U', 'U', 'U', 'L', 'L', 'R', 'X', 'X', 'L', 'U', 'R', 'R', 'R', 'U', 'U'],
+])
+top = np.array([7, 4, 12, 8, 4, 6, 5, 7, 5, 4, 8, 9, 13, 8, 12])
+side = np.array([8, 10, 9, 10, 6, 10, 4, 6, 6, 10, 5, 7, 6, 6, 9])
+binst = solver.Board(board=board, top=top, side=side)
+solutions = binst.solve_and_print()
+```
+**Script Output**
+
+```python
+Solution found
+[['X' 'X' 'X' ' ' ' ' ' ' ' ' 'X' 'X' ' ' ' ' ' ' 'X' 'X' 'X']
+ ['X' ' ' 'X' ' ' ' ' ' ' ' ' 'X' 'X' 'X' 'X' 'X' 'X' 'X' 'X']
+ ['X' ' ' 'X' 'X' ' ' 'X' 'X' 'X' ' ' ' ' ' ' 'X' 'X' ' ' 'X']
+ [' ' ' ' 'X' 'X' ' ' 'X' 'X' 'X' 'X' 'X' 'X' ' ' 'X' ' ' 'X']
+ [' ' ' ' 'X' 'X' ' ' ' ' ' ' ' ' ' ' ' ' 'X' ' ' 'X' 'X' 'X']
+ [' ' ' ' 'X' 'X' ' ' ' ' ' ' 'X' 'X' 'X' 'X' 'X' 'X' 'X' 'X']
+ [' ' ' ' 'X' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' 'X' 'X' ' ' 'X']
+ [' ' ' ' 'X' ' ' ' ' ' ' 'X' 'X' ' ' ' ' ' ' 'X' 'X' ' ' 'X']
+ [' ' ' ' 'X' ' ' ' ' ' ' ' ' ' ' ' ' ' ' 'X' 'X' 'X' 'X' 'X']
+ [' ' ' ' ' ' ' ' 'X' 'X' 'X' 'X' 'X' 'X' 'X' 'X' 'X' ' ' 'X']
+ [' ' ' ' ' ' 'X' 'X' 'X' 'X' ' ' ' ' ' ' ' ' ' ' ' ' ' ' 'X']
+ ['X' ' ' ' ' 'X' ' ' ' ' ' ' ' ' ' ' ' ' 'X' 'X' 'X' 'X' 'X']
+ ['X' 'X' 'X' 'X' 'X' 'X' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ']
+ ['X' 'X' 'X' ' ' ' ' 'X' ' ' ' ' ' ' ' ' ' ' ' ' 'X' 'X' ' ']
+ ['X' 'X' 'X' 'X' 'X' ' ' ' ' ' ' ' ' ' ' 'X' 'X' 'X' 'X' ' ']]
+Solutions found: 1
+status: OPTIMAL
+Time taken: 0.01 seconds
+```
+
+**Solved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/thermometers_solved.png" alt="Thermometers solved" width="500">
+
+---
+
 ---
 
 ## Why SAT / CP-SAT?
@@ -2149,3 +2233,4 @@ Issues and PRs welcome!
 [23]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/chess_range "puzzle_solver/src/puzzle_solver/puzzles/chess_range at master · Ar-Kareem/puzzle_solver · GitHub"
 [24]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/chess_range#chess-solo-puzzle-type-24 "puzzle_solver/src/puzzle_solver/puzzles/chess_range at master · Ar-Kareem/puzzle_solver · GitHub"
 [25]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/chess_range#chess-melee-puzzle-type-25 "puzzle_solver/src/puzzle_solver/puzzles/chess_range at master · Ar-Kareem/puzzle_solver · GitHub"
+[26]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/thermometers "puzzle_solver/src/puzzle_solver/puzzles/thermometers at master · Ar-Kareem/puzzle_solver · GitHub"
