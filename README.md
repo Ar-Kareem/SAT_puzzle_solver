@@ -184,8 +184,14 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_range_unsolved.png" alt="Chess range" height="120">
     </a>
   </td>
+  <td align="center">
+    <a href="#chess-solo-puzzle-type-24"><b>Chess Solo</b><br><br>
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_solo_unsolved.png" alt="Chess solo" height="120">
+    </a>
+  </td>
+  <td align="center">
   
-  </td><td></td><td></td>
+  </td>
 </tr>
 </table>
 
