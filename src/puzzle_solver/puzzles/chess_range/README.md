@@ -83,3 +83,45 @@ Time taken: 4.33 seconds
 **Solved puzzle**
 
 <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_solo_solved.png" alt="Chess solo solved" width="500">
+
+# Chess Melee (Puzzle Type #25)
+
+* [**Play online**](https://www.puzzle-chess.com/chess-melee-13/)
+
+You are given a chess board with $N$ pieces distributed on it (equal white and black pieces, one more black if $N$ is odd). Your aim is to make $N-1$ sequence of moves where each move is a legal chess move and captures another piece of the opposite color and end up with a single piece on the board. White starts and colors alternate as usual.
+
+- Pieces move as standard chess pieces.
+- White moves first.
+- You can perform only capture moves. A move that does not capture another piece of the opposite color is not allowed.
+- The goal is to end up with one single piece on the board. 
+
+**Unsolved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_melee_unsolved.png" alt="Chess melee unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+
+(Note that this puzzle does not typically have a unique solution. Thus, we specify here that we only want the first valid solution that the solver finds.)
+
+```python
+# algebraic notation
+board = ['Pb7', 'Nc7', 'Bc6', 'Ne6', 'Pb5', 'Rc4', 'Qb3', 'Rf7', 'Rb6', 'Pe5', 'Nc3', 'Pd3', 'Nf3']
+colors = ['B', 'B', 'B', 'B', 'B', 'B', 'B', 'W', 'W', 'W', 'W', 'W', 'W']
+binst = solver.Board(board, colors)
+solutions = binst.solve_and_print()
+```
+**Script Output**
+
+The output is in the form of "pos -> pos" where "pos" is the algebraic notation of the position.
+
+```python
+Solution found
+['Rf7->Nc7', 'Ne6->Rc7', 'Pd3->Rc4', 'Qb3->Nc3', 'Pc4->Pb5', 'Qc3->Pe5', 'Nf3->Qe5', 'Nc7->Pb5', 'Ne5->Bc6', 'Pb7->Nc6', 'Rb6->Nb5', 'Pc6->Rb5']
+Solutions found: 1
+status: OPTIMAL
+Time taken: 6.24 seconds
+```
+
+**Solved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_melee_solved.png" alt="Chess melee solved" width="500">

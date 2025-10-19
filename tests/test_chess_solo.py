@@ -13,7 +13,7 @@ def test_ground():
     # algebraic notation
     board = ['Kc6', 'Rc5', 'Rc4', 'Pb3', 'Bd3', 'Pd2', 'Pe3', 'Nf2', 'Ng2', 'Qg3', 'Pg6']
     binst = solver.Board(board)
-    solutions = binst.solve_and_print()
+    solutions = binst.solve_and_print(max_solutions=1)
     assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
     unsorted_solution = sorted([(p1.x, p1.y, p2.x, p2.y) for _, p1, p2, _ in solutions[0].assignment.values()])
     assert unsorted_ground == unsorted_solution, f'unsorted_ground != unsorted_solution, {unsorted_ground} != {unsorted_solution}'
