@@ -3,18 +3,11 @@
 
 * [**Play online**](https://www.puzzle-chess.com/chess-ranger-11/)
 
-* [**Solver Code**][23]
-
-<details>
-  <summary><strong>Rules</strong></summary>
-
 You are given a chess board with $N$ pieces distributed on it. Your aim is to make $N-1$ sequence of moves where each move is a legal chess move and captures another piece.
 
 This means that at the end of the $N-1$ moves, there is only one piece left alive on the board.
 
 A move that does not capture another piece is not allowed.
-
-</details>
 
 **Unsolved puzzle**
 
