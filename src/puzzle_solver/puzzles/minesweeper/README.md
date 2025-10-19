@@ -24,7 +24,7 @@ This version of it has an unusual property. By default, it will generate its min
 
 **Partially solved puzzle**
 
-<img src="../images/minesweeper_pre.png" alt="Minesweeper partially solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/minesweeper_pre.png" alt="Minesweeper partially solved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -71,4 +71,4 @@ Time taken: 0.92 seconds
 
 **Progressed puzzle**
 
-<img src="../images/minesweeper_post.png" alt="Minesweeper progressed" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/minesweeper_post.png" alt="Minesweeper progressed" width="500">

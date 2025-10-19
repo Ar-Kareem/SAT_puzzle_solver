@@ -22,7 +22,7 @@ In harder or larger puzzles, some towers will be specified for you as well as th
 
 **Unsolved puzzle**
 
-<img src="../images/towers_unsolved.png" alt="Towers unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/towers_unsolved.png" alt="Towers unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -59,4 +59,4 @@ Time taken: 0.03 seconds
 
 **Solved puzzle**
 
-<img src="../images/towers_solved.png" alt="Towers solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/towers_solved.png" alt="Towers solved" width="500">

@@ -18,7 +18,7 @@ A move that does not capture another piece is not allowed.
 
 **Unsolved puzzle**
 
-<img src="../images/chess_sequence_unsolved.png" alt="Chess sequence unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_sequence_unsolved.png" alt="Chess sequence unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -45,4 +45,4 @@ Time taken: 6.27 seconds
 
 **Solved puzzle**
 
-<img src="../images/chess_sequence_solved.png" alt="Chess sequence solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_sequence_solved.png" alt="Chess sequence solved" width="500">

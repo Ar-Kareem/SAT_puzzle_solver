@@ -18,7 +18,7 @@ You are also told the total number of each type of monster in the grid. Also aro
 
 **Unsolved puzzle**
 
-<img src="../images/undead_unsolved.png" alt="UnDead unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/undead_unsolved.png" alt="UnDead unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -60,4 +60,4 @@ Time taken: 0.01 seconds
 
 **Solved puzzle**
 
-<img src="../images/undead_solved.png" alt="UnDead solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/undead_solved.png" alt="UnDead solved" width="500">

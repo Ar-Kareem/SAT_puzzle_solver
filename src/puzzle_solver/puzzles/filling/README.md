@@ -20,7 +20,7 @@ For example, it follows that no square can contain a zero, and that two adjacent
 
 **Unsolved puzzle**
 
-<img src="../images/filling_unsolved.png" alt="Filling unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/filling_unsolved.png" alt="Filling unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -54,4 +54,4 @@ Time taken: 46.27 seconds
 
 **Solved puzzle**
 
-<img src="../images/filling_solved.png" alt="Filling solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/filling_solved.png" alt="Filling solved" width="500">

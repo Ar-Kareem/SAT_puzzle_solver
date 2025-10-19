@@ -22,7 +22,7 @@ A white circle indicates that the square is a straight edge, but at least one of
 
 **Unsolved puzzle**
 
-<img src="../images/pearl_unsolved.png" alt="Pearl unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/pearl_unsolved.png" alt="Pearl unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -59,4 +59,4 @@ Time taken: 0.98 seconds
 
 **Solved puzzle**
 
-<img src="../images/pearl_solved.png" alt="Pearl solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/pearl_solved.png" alt="Pearl solved" width="500">

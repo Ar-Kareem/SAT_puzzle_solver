@@ -17,7 +17,7 @@ Only regions which share a length of border are required to be different colours
 
 **Unsolved puzzle**
 
-<img src="../images/map_unsolved.png" alt="Map unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/map_unsolved.png" alt="Map unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -118,4 +118,4 @@ Time taken: 0.01 seconds
 
 **Solved puzzle**
 
-<img src="../images/map_solved.png" alt="Map solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/map_solved.png" alt="Map solved" width="500">

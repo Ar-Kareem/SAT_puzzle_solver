@@ -24,7 +24,7 @@ You have a square grid; each square may contain a digit from 1 to the size of th
 
 **Unsolved puzzle**
 
-<img src="../images/keen_unsolved.png" alt="Keen unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/keen_unsolved.png" alt="Keen unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -75,4 +75,4 @@ Time taken: 0.02 seconds
 
 **Solved puzzle**
 
-<img src="../images/keen_solved.png" alt="Keen solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/keen_solved.png" alt="Keen solved" width="500">

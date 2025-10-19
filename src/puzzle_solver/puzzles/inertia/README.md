@@ -29,7 +29,7 @@ Running into a mine is fatal. Even if you picked up the last gem in the same mov
 
 **Unsolved puzzle**
 
-<img src="../images/inertia_unsolved.png" alt="Inertia unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/inertia_unsolved.png" alt="Inertia unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -82,4 +82,4 @@ Time taken: 13.92 seconds
 
 This picture won't mean much as the game is about the sequence of moves not the final frame as shown here.
 
-<img src="../images/inertia_solved.png" alt="Inertia solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/inertia_solved.png" alt="Inertia solved" width="500">

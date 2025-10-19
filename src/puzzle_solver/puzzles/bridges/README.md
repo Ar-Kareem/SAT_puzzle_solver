@@ -22,7 +22,7 @@ There are some configurable alternative modes, which involve changing the parall
 
 **Unsolved puzzle**
 
-<img src="../images/bridges_unsolved.png" alt="Bridges unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/bridges_unsolved.png" alt="Bridges unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -90,4 +90,4 @@ Time taken: 0.01 seconds
 
 **Solved puzzle**
 
-<img src="../images/bridges_solved.png" alt="Bridges solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/bridges_solved.png" alt="Bridges solved" width="500">

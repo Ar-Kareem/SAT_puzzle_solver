@@ -247,7 +247,7 @@ You have a grid of squares, which must all be filled in either black or white. B
 
 **Unsolved puzzle**
 
-<img src="./images/nonogram_unsolved.png" alt="Nonogram unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nonogram_unsolved.png" alt="Nonogram unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -290,7 +290,7 @@ binst = solver.Board(top=top_numbers, side=side_numbers)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
-```
+```python
 Solution found
 B B B B B B B . B B B . . . .
 B B B B B B B . . . . . B . B
@@ -314,7 +314,7 @@ Time taken: 0.04 seconds
 
 **Solved puzzle**
 
-<img src="./images/nonogram_solved.png" alt="Nonogram solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nonogram_solved.png" alt="Nonogram solved" width="500">
 
 ---
 
@@ -341,7 +341,7 @@ You are given some of the numbers as clues; your aim is to place the rest of the
 
 **Unsolved puzzle**
 
-<img src="./images/sudoku_unsolved.png" alt="Sudoku unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_unsolved.png" alt="Sudoku unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -373,7 +373,7 @@ solutions = binst.solve_and_print()
 assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
 ```
 **Script Output**
-```
+```python
 Solution found
 [['g' '7' '5' '4' '9' '1' 'c' 'e' 'd' 'f' 'b' '8' '2' '6' '3' 'a']
  ['3' '9' 'd' 'e' 'f' 'a' '7' 'g' '2' '6' '4' 'c' '5' '1' '8' 'b']
@@ -398,7 +398,7 @@ Time taken: 0.04 seconds
 
 **Solved puzzle**
 
-<img src="./images/sudoku_solved.png" alt="Sudoku solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_solved.png" alt="Sudoku solved" width="500">
 
 ---
 
@@ -429,7 +429,7 @@ This version of it has an unusual property. By default, it will generate its min
 
 **Partially solved puzzle**
 
-<img src="./images/minesweeper_pre.png" alt="Minesweeper partially solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/minesweeper_pre.png" alt="Minesweeper partially solved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -460,7 +460,7 @@ safe_positions, new_garuneed_mine_positions, wrong_flag_positions = solver.give_
 
 Notice how not only did it output all garunteed new safe and mine positions, it also outputs a warning about the incorrectly placed flag position.
 
-```
+```python
 Found 8 new guaranteed safe positions
 {Pos(x=9, y=0), Pos(x=15, y=8), Pos(x=15, y=7), Pos(x=9, y=2), Pos(x=15, y=6), Pos(x=7, y=2), Pos(x=9, y=1), Pos(x=12, y=8)}
 ----------
@@ -476,7 +476,7 @@ Time taken: 0.92 seconds
 
 **Progressed puzzle**
 
-<img src="./images/minesweeper_post.png" alt="Minesweeper progressed" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/minesweeper_post.png" alt="Minesweeper progressed" width="500">
 
 ---
 
@@ -497,7 +497,7 @@ Your task is to reconstruct the pattern by arranging the set of dominoes to matc
 
 **Unsolved puzzle**
 
-<img src="./images/dominosa_unsolved.png" alt="Dominosa unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/dominosa_unsolved.png" alt="Dominosa unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -520,7 +520,7 @@ solutions = binst.solve_and_print()
 assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
 ```
 **Script Output**
-```
+```python
 Solution found
 [['R' 'L' 'R' 'L' 'D' 'R' 'L' 'R' 'L' 'R' 'L']
  ['D' 'D' 'R' 'L' 'U' 'D' 'D' 'D' 'R' 'L' 'D']
@@ -539,7 +539,7 @@ Time taken: 0.02 seconds
 
 **Solved puzzle**
 
-<img src="./images/dominosa_solved.png" alt="Dominosa solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/dominosa_solved.png" alt="Dominosa solved" width="500">
 
 ---
 
@@ -568,7 +568,7 @@ Non-numbered black squares may have any number of lights adjacent to them.
 
 **Unsolved puzzle**
 
-<img src="./images/lightup_unsolved.png" alt="Light Up unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/lightup_unsolved.png" alt="Light Up unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -591,7 +591,7 @@ binst = solver.Board(board=board)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
-```
+```python
 Solution found
 [[' ' '0' ' ' ' ' ' ' 'L' 'W' ' ' ' ' 'L']
  ['L' ' ' ' ' '0' ' ' ' ' 'L' ' ' ' ' '1']
@@ -612,7 +612,7 @@ Time taken: 0.01 seconds
 
 Which exactly matches the true solutions (Remember, the goal of the puzzle is to find where to place the lights, marked as 'L' in the solution above):
 
-<img src="./images/lightup_solved.png" alt="Light Up solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/lightup_solved.png" alt="Light Up solved" width="500">
 
 ---
 
@@ -636,7 +636,7 @@ You have a grid of squares, some of which contain trees. Your aim is to place te
 
 **Unsolved puzzle**
 
-<img src="./images/tents_unsolved.png" alt="Tents unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tents_unsolved.png" alt="Tents unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -666,7 +666,7 @@ binst = solver.Board(board=board, sides={'top': top, 'side': side})
 solutions = binst.solve_and_print()
 ```
 **Script Output**
-```
+```python
 Solution found
 [[' ' 'T' 'E' ' ' ' ' ' ' ' ' 'E' 'T' ' ' 'T' 'E' 'T' 'E' ' ']
  [' ' ' ' ' ' ' ' 'T' 'E' ' ' 'T' ' ' 'T' ' ' ' ' 'T' ' ' ' ']
@@ -690,7 +690,7 @@ Time taken: 0.02 seconds
 
 **Solved puzzle**
 
-<img src="./images/tents_solved.png" alt="Tents solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tents_solved.png" alt="Tents solved" width="500">
 
 ---
 
@@ -715,7 +715,7 @@ For example, it follows that no square can contain a zero, and that two adjacent
 
 **Unsolved puzzle**
 
-<img src="./images/filling_unsolved.png" alt="Filling unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/filling_unsolved.png" alt="Filling unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -734,7 +734,7 @@ solutions = binst.solve_and_print()
 assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
 ```
 **Script Output**
-```
+```python
 Solution found
 [[4 4 2 2 4 2 2]
  [4 4 7 4 4 3 3]
@@ -749,7 +749,7 @@ Time taken: 46.27 seconds
 
 **Solved puzzle**
 
-<img src="./images/filling_solved.png" alt="Filling solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/filling_solved.png" alt="Filling solved" width="500">
 
 ---
 
@@ -778,7 +778,7 @@ You have a square grid; each square may contain a digit from 1 to the size of th
 
 **Unsolved puzzle**
 
-<img src="./images/keen_unsolved.png" alt="Keen unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/keen_unsolved.png" alt="Keen unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -811,7 +811,7 @@ binst = solver.Board(board=board, block_results=block_results)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
-```
+```python
 Solution found
 [[5 4 7 9 3 6 8 1 2]
  [9 8 6 1 5 3 2 4 7]
@@ -829,7 +829,7 @@ Time taken: 0.02 seconds
 
 **Solved puzzle**
 
-<img src="./images/keen_solved.png" alt="Keen solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/keen_solved.png" alt="Keen solved" width="500">
 
 ---
 
@@ -856,7 +856,7 @@ In harder or larger puzzles, some towers will be specified for you as well as th
 
 **Unsolved puzzle**
 
-<img src="./images/towers_unsolved.png" alt="Towers unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/towers_unsolved.png" alt="Towers unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -878,7 +878,7 @@ binst = solver.Board(board=board, sides={'top': t, 'bottom': b, 'right': r, 'lef
 solutions = binst.solve_and_print()
 ```
 **Script Output**
-```
+```python
 Solution found
 [[5 6 4 1 2 3]
  [3 4 2 6 1 5]
@@ -893,7 +893,7 @@ Time taken: 0.03 seconds
 
 **Solved puzzle**
 
-<img src="./images/towers_solved.png" alt="Towers solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/towers_solved.png" alt="Towers solved" width="500">
 
 ---
 
@@ -916,7 +916,7 @@ You have a grid of white squares, all of which contain numbers. Your task is to 
 
 **Unsolved puzzle**
 
-<img src="./images/singles_unsolved.png" alt="Singles unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/singles_unsolved.png" alt="Singles unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -940,7 +940,7 @@ binst = solver.Board(board=board)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
-```
+```python
 Solution found
 [['B' ' ' 'B' ' ' 'B' ' ' ' ' 'B' ' ' ' ' ' ' ' ']
  [' ' ' ' ' ' ' ' ' ' 'B' ' ' ' ' ' ' 'B' ' ' 'B']
@@ -961,7 +961,7 @@ Time taken: 2.14 seconds
 
 **Solved puzzle**
 
-<img src="./images/singles_solved.png" alt="Singles solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/singles_solved.png" alt="Singles solved" width="500">
 
 ---
 
@@ -982,7 +982,7 @@ Your aim is to correctly place the magnets and blank dominoes such that all the 
 
 **Unsolved puzzle**
 
-<img src="./images/magnets_unsolved.png" alt="Magnets unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/magnets_unsolved.png" alt="Magnets unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -1008,7 +1008,7 @@ binst = solver.Board(board=board, sides={'pos_v': pos_v, 'neg_v': neg_v, 'pos_h'
 solutions = binst.solve_and_print()
 ```
 **Script Output**
-```
+```python
 Solution found
 [['-' '+' '-' '+' ' ' '+' '-' '+' '-' '+']
  [' ' ' ' '+' '-' ' ' '-' '+' '-' '+' '-']
@@ -1026,7 +1026,7 @@ Time taken: 0.02 seconds
 
 **Solved puzzle**
 
-<img src="./images/magnets_solved.png" alt="Magnets solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/magnets_solved.png" alt="Magnets solved" width="500">
 
 
 ---
@@ -1048,7 +1048,7 @@ By convention the first and last numbers are shown; one or more interim numbers 
 
 **Unsolved puzzle**
 
-<img src="./images/signpost_unsolved.png" alt="Signpost unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/signpost_unsolved.png" alt="Signpost unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -1078,7 +1078,7 @@ binst = solver.Board(board=board1, values=board2)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
-```
+```python
 Solution found
 [[1 42 23 7 43 44 24]
  [30 32 36 5 37 4 31]
@@ -1094,7 +1094,7 @@ Time taken: 0.03 seconds
 
 **Solved puzzle**
 
-<img src="./images/signpost_solved.png" alt="Signpost solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/signpost_solved.png" alt="Signpost solved" width="500">
 
 
 ---
@@ -1123,7 +1123,7 @@ For instance, a square containing the number one must have four black squares as
 
 **Unsolved puzzle**
 
-<img src="./images/range_unsolved.png" alt="Range unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/range_unsolved.png" alt="Range unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -1146,7 +1146,7 @@ binst = solver.Board(clues)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
-```
+```python
 Solution:
 B . . B . . B . B . B . B . . .
 . . B . . . . . . . . . . . . B
@@ -1166,7 +1166,7 @@ Time taken: 3.32 seconds
 
 **Solved puzzle**
 
-<img src="./images/range_solved.png" alt="Range solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/range_solved.png" alt="Range solved" width="500">
 
 ---
 
@@ -1189,7 +1189,7 @@ You are also told the total number of each type of monster in the grid. Also aro
 
 **Unsolved puzzle**
 
-<img src="./images/undead_unsolved.png" alt="UnDead unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/undead_unsolved.png" alt="UnDead unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -1215,7 +1215,7 @@ binst = solver.Board(board=board, sides={'top': t, 'bottom': b, 'right': r, 'lef
 solutions = binst.solve_and_print()
 ```
 **Script Output**
-```
+```python
 Solution found
 [['VA' '//' 'GH' 'GH' 'ZO' 'GH' '\\']
  ['VA' 'VA' 'VA' '//' 'ZO' 'ZO' 'ZO']
@@ -1231,7 +1231,7 @@ Time taken: 0.01 seconds
 
 **Solved puzzle**
 
-<img src="./images/undead_solved.png" alt="UnDead solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/undead_solved.png" alt="UnDead solved" width="500">
 
 ---
 
@@ -1250,7 +1250,7 @@ You are given a grid of squares, which you must colour either black or white. So
 
 **Unsolved puzzle**
 
-<img src="./images/unruly_unsolved.png" alt="Unruly unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/unruly_unsolved.png" alt="Unruly unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -1276,7 +1276,7 @@ binst = solver.Board(board=board)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
-```
+```python
 Solution found
 [['W' 'W' 'B' 'B' 'W' 'B' 'W' 'B' 'B' 'W' 'B' 'W' 'W' 'B']
  ['B' 'B' 'W' 'W' 'B' 'W' 'B' 'W' 'W' 'B' 'W' 'B' 'B' 'W']
@@ -1299,7 +1299,7 @@ Time taken: 0.01 seconds
 
 **Solved puzzle**
 
-<img src="./images/unruly_solved.png" alt="Unruly solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/unruly_solved.png" alt="Unruly solved" width="500">
 
 ---
 
@@ -1321,7 +1321,7 @@ Complete the track from A to B so that the rows and columns contain the same num
 
 **Unsolved puzzle**
 
-<img src="./images/tracks_unsolved.png" alt="Tracks unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tracks_unsolved.png" alt="Tracks unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -1350,7 +1350,7 @@ binst = solver.Board(board=board, top=top, side=side)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
-```
+```python
 [['  ' '  ' '  ' '  ' '  ' '  ' '┏━' '━━' '━━' '━━' '━━' '━━' '━┒' '┏━' '━┒']
  ['  ' '  ' '  ' '  ' '  ' '  ' '┃ ' '  ' '┏━' '━━' '━┒' '  ' '┗━' '━┛' '┃ ']
  ['  ' '  ' '  ' '  ' '  ' '  ' '┃ ' '  ' '┃ ' '  ' '┗━' '━━' '━━' '━━' '━┛']
@@ -1373,7 +1373,7 @@ Time taken: 9.42 seconds
 
 **Solved puzzle**
 
-<img src="./images/tracks_solved.png" alt="Tracks solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tracks_solved.png" alt="Tracks solved" width="500">
 
 ---
 
@@ -1394,7 +1394,7 @@ Some squares contain clue numbers. Each clue tells you the number of black squar
 
 **Unsolved puzzle**
 
-<img src="./images/mosaic_unsolved.png" alt="Mosaic unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/mosaic_unsolved.png" alt="Mosaic unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -1421,7 +1421,7 @@ binst = solver.Board(board=board)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
-```
+```python
 Solution found
 [[' ' 'B' ' ' ' ' ' ' ' ' ' ' ' ' 'B' ' ' 'B' ' ' ' ' 'B' 'B']
  [' ' 'B' ' ' ' ' 'B' 'B' ' ' 'B' 'B' ' ' 'B' ' ' ' ' 'B' 'B']
@@ -1445,7 +1445,7 @@ Time taken: 0.01 seconds
 
 **Solved puzzle**
 
-<img src="./images/mosaic_solved.png" alt="Mosaic solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/mosaic_solved.png" alt="Mosaic solved" width="500">
 
 ---
 
@@ -1466,7 +1466,7 @@ Only regions which share a length of border are required to be different colours
 
 **Unsolved puzzle**
 
-<img src="./images/map_unsolved.png" alt="Map unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/map_unsolved.png" alt="Map unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -1495,7 +1495,7 @@ binst = solver.Board(regions=regions, fixed_colors=fixed_colors)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
-```
+```python
 Solution found
 {0: 'Y', 1: 'R', 2: 'G', 3: 'R', 4: 'B', 5: 'G', 6: 'B', 7: 'Y', 8: 'R', 9: 'Y', 10: 'B', 11: 'G', 12: 'B', 13: 'G', 14: 'Y', 15: 'R', 16: 'Y', 17: 'R', 18: 'G', 19: 'B', 20: 'G', 21: 'Y', 22: 'R', 23: 'Y', 24: 'Y', 25: 'B', 26: 'R', 27: 'G', 28: 'G', 29: 'B', 30: 'B', 31: 'R', 32: 'B', 33: 'Y', 34: 'R', 35: 'G', 36: 'B', 37: 'G', 38: 'B', 39: 'G', 40: 'Y', 41: 'Y', 42: 'R', 43: 'G', 44: 'R', 45: 'Y', 46: 'Y', 47: 'R', 48: 'Y', 49: 'Y', 50: 'G', 51: 'R', 52: 'R', 53: 'Y', 54: 'B', 55: 'B', 56: 'G', 57: 'B', 58: 'R', 59: 'Y', 60: 'R', 61: 'B', 62: 'B', 63: 'Y', 64: 'G', 65: 'R', 66: 'Y', 67: 'G', 68: 'B', 69: 'R', 70: 'Y', 71: 'R', 72: 'B', 73: 'G', 74: 'G'}
 Solutions found: 1
@@ -1505,7 +1505,7 @@ Time taken: 0.01 seconds
 
 **Solved puzzle**
 
-<img src="./images/map_solved.png" alt="Map solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/map_solved.png" alt="Map solved" width="500">
 
 ---
 
@@ -1532,7 +1532,7 @@ A white circle indicates that the square is a straight edge, but at least one of
 
 **Unsolved puzzle**
 
-<img src="./images/pearl_unsolved.png" alt="Pearl unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/pearl_unsolved.png" alt="Pearl unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -1552,7 +1552,7 @@ binst = solver.Board(board)
 solutions = binst.solve_and_print()
 ```
 **Script Output**
-```
+```python
 Solution found
 [['┏━' '━━' '━━' '━━' '━┒' '┏━' '━━' '━┒' '┏━' '━━' '━━' '━┒']
  ['┃ ' '┏━' '━━' '━┒' '┗━' '━┛' '┏━' '━┛' '┃ ' '┏━' '━┒' '┃ ']
@@ -1569,7 +1569,7 @@ Time taken: 0.98 seconds
 
 **Solved puzzle**
 
-<img src="./images/pearl_solved.png" alt="Pearl solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/pearl_solved.png" alt="Pearl solved" width="500">
 
 ---
 
@@ -1596,7 +1596,7 @@ There are some configurable alternative modes, which involve changing the parall
 
 **Unsolved puzzle**
 
-<img src="./images/bridges_unsolved.png" alt="Bridges unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/bridges_unsolved.png" alt="Bridges unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -1625,7 +1625,7 @@ solutions = binst.solve_and_print()
 **Script Output**
 
 Note that the four numbers indicate how many bridges in the 4 directions (right, left, down, up) respectively.
-```
+```python
 Solution found
 |    |    |    |    |    |1000|    |    |    |    |    |    |    |    |0120|
 
@@ -1664,7 +1664,7 @@ Time taken: 0.01 seconds
 
 **Solved puzzle**
 
-<img src="./images/bridges_solved.png" alt="Bridges solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/bridges_solved.png" alt="Bridges solved" width="500">
 
 ---
 
@@ -1700,7 +1700,7 @@ Running into a mine is fatal. Even if you picked up the last gem in the same mov
 
 **Unsolved puzzle**
 
-<img src="./images/inertia_unsolved.png" alt="Inertia unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/inertia_unsolved.png" alt="Inertia unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -1733,7 +1733,7 @@ moves = solver.get_moves_from_walk(optimal_walk, edges_to_direction, verbose=Tru
 **Script Output**
 
 Note that the output is the sequence of moves to collect all the gems. This particular solution is 106 moves, which is 15 moves better than the website's solution.
-```
+```python
 number of moves 106
 ↗ ↖ ↖ ↙ ↙ ↖ ↖ ↙ → ↘ 
 ↙ → ↖ → ↙ ↓ → ↘ ↗ ↓
@@ -1753,7 +1753,7 @@ Time taken: 13.92 seconds
 
 This picture won't mean much as the game is about the sequence of moves not the final frame as shown here.
 
-<img src="./images/inertia_solved.png" alt="Inertia solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/inertia_solved.png" alt="Inertia solved" width="500">
 
 ---
 
@@ -1844,7 +1844,7 @@ Below is an example of how to utilize the solver while in the middle of a puzzle
 
 Let's say we start and made two guesses to end up with the following puzzle:
 
-<img src="./images/guess_1.png" alt="Guess Pre Move" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/guess_1.png" alt="Guess Pre Move" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -1864,14 +1864,14 @@ Note: by default, the board will have 4 circles and 6 possible colors (R: Red, Y
 **Script Output 1/2**
 
 Note that the output is next optimal guess that has the maximum Shannon entropy.
-```
+```python
 out of 1296 possible ground truths, only 57 are still possible.
 max entropy guess is: ['P', 'Y', 'Y', 'G'] with entropy 3.4511
 ```
 
 So we make our next guess as (Purple, Yellow, Yellow, Green) and let's say we get this result: (2 black, 1 white, 1 grey)
 
-<img src="./images/guess_2.png" alt="Guess Post 1 Move" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/guess_2.png" alt="Guess Post 1 Move" width="500">
 
 So we input that again to the solver to retreive the next optimal guess:
 
@@ -1886,7 +1886,7 @@ binst.best_next_guess()
 
 **Script Output 2/2**
 
-```
+```python
 out of 1296 possible ground truths, only 3 are still possible.
 max entropy guess is: ['G', 'Y', 'Y', 'O'] with entropy 1.5850
 ```
@@ -1895,7 +1895,7 @@ So we make our fourth guess as (Green, Yellow, Yellow, Orange)
 
 When we input the guess, we see that we correctly solve the puzzle!
 
-<img src="./images/guess_3.png" alt="Guess Post 2 Moves" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/guess_3.png" alt="Guess Post 2 Moves" width="500">
 
 Note that in this case, the correct guess was among multiple possible guesses
 
@@ -1922,7 +1922,7 @@ A move that does not capture another piece is not allowed.
 
 **Unsolved puzzle**
 
-<img src="./images/chess_sequence_unsolved.png" alt="Chess sequence unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_sequence_unsolved.png" alt="Chess sequence unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -1949,7 +1949,7 @@ Time taken: 6.27 seconds
 
 **Solved puzzle**
 
-<img src="./images/chess_sequence_solved.png" alt="Chess sequence solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_sequence_solved.png" alt="Chess sequence solved" width="500">
 
 ---
 

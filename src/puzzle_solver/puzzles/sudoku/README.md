@@ -20,7 +20,7 @@ You are given some of the numbers as clues; your aim is to place the rest of the
 
 **Unsolved puzzle**
 
-<img src="../images/sudoku_unsolved.png" alt="Sudoku unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_unsolved.png" alt="Sudoku unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -77,4 +77,4 @@ Time taken: 0.04 seconds
 
 **Solved puzzle**
 
-<img src="../images/sudoku_solved.png" alt="Sudoku solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_solved.png" alt="Sudoku solved" width="500">
