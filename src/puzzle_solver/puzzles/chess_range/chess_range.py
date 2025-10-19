@@ -105,7 +105,6 @@ class Board:
 
         self.V = 8  # board size
         self.H = 8  # board size
-        self.num_positions = self.V * self.H  # 8x8 board
 
         self.model = cp_model.CpModel()
         # Input numbers: N is number of piece, T is number of time steps (=N here), B is board size (=64 here):
