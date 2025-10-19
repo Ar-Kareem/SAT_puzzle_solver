@@ -18,7 +18,7 @@ solver = nonograms_solver.Board(top=[[2], [3], [1], [1, 1]], side=[[3], [1], [2,
 solutions = solver.solve_and_print()
 ```
 
-You’ll see the solution returned and printed:
+Output:
 
 ```python
 Solution found
