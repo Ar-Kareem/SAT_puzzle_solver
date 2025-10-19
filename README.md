@@ -190,7 +190,9 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
     </a>
   </td>
   <td align="center">
-  
+    <a href="#chess-melee-puzzle-type-25"><b>Chess Melee</b><br><br>
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_melee_unsolved.png" alt="Chess melee" height="120">
+    </a>
   </td>
 </tr>
 </table>
@@ -2144,3 +2146,4 @@ Issues and PRs welcome!
 [17]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/mosaic "puzzle_solver/src/puzzle_solver/puzzles/mosaic at master · Ar-Kareem/puzzle_solver · GitHub"
 [23]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/chess_range "puzzle_solver/src/puzzle_solver/puzzles/chess_range at master · Ar-Kareem/puzzle_solver · GitHub"
 [24]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/chess_range#chess-solo-puzzle-type-24 "puzzle_solver/src/puzzle_solver/puzzles/chess_range at master · Ar-Kareem/puzzle_solver · GitHub"
+[25]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/chess_range#chess-melee-puzzle-type-25 "puzzle_solver/src/puzzle_solver/puzzles/chess_range at master · Ar-Kareem/puzzle_solver · GitHub"
