@@ -203,7 +203,7 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   </td>
   <td align="center">
     <a href="#aquarium-puzzle-type-27"><b>Aquarium</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/aquarium_unsolved.png" alt="Aquarium" width="200">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/aquarium_solved.png" alt="Aquarium" width="200">
     </a>
   </td>
 </tr>
