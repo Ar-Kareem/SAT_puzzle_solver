@@ -206,6 +206,10 @@ class Board:
         c = self.colors[p]
         return (c == 'W' and t % 2 == 0) or (c == 'B' and t % 2 == 1)
 
+    def can_be_victim(self, p: int, t: int) -> bool:
+        c = self.colors[p]
+        return (c == 'W' and t % 2 == 1) or (c == 'B' and t % 2 == 0)
+
     def create_vars(self):
         for p in range(self.N):
             for t in range(self.T):
@@ -295,6 +299,11 @@ class Board:
                 for t in range(self.T - 1):
                     if not self.can_move(p, t):
                         self.model.Add(self.mover[(p, t)] == 0)
+            # t=0 and even timesteps only black victims, odd timesteps only white victims
+            for p in range(self.N):
+                for t in range(self.T - 1):
+                    if not self.can_be_victim(p, t):
+                        self.model.Add(self.victim[(p, t)] == 0)
 
     def enforce_mover_victim_constraints(self):
         for p in range(self.N):
