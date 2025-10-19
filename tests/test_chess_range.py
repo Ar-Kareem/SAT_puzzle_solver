@@ -20,6 +20,14 @@ def test_ground_2():
     assert ' | '.join(solution) == ground, f'solution != {ground}, == {solution}'
 
 
+def test_chess_jumping():
+    board = ['Ba1', 'Kc3', 'Ke5']
+    binst = solver.Board(board)
+    solutions = binst.solve_and_print()
+    assert len(solutions) > 0, f'no solutions found'
+    assert len(solutions) == 1, f'more than one solution found, jump over positions is illegal'
+
+
 if __name__ == '__main__':
     test_ground()
     test_ground_2()

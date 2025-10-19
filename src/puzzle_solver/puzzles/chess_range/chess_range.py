@@ -5,7 +5,7 @@ from enum import Enum
 
 from ortools.sat.python import cp_model
 
-from puzzle_solver.core.utils import Pos, get_pos, get_all_pos
+from puzzle_solver.core.utils import Pos, get_pos
 from puzzle_solver.core.utils_ortools import and_constraint, generic_solve_all, or_constraint
 
 
@@ -21,6 +21,7 @@ class PieceType(Enum):
 @dataclass(frozen=True)
 class SingleSolution:
     assignment: dict[int, tuple[str, Pos, Pos, str]]  # every time step a single piece moves from one position to another and eats another piece
+    position_occupied: dict[Pos, int]
     # pos_assignment: dict[tuple[int, int, Union[Pos, str]], int]
     # mover: dict[int, tuple[int, PieceType]]
     # victim: dict[int, tuple[int, PieceType]]
@@ -49,6 +50,7 @@ def parse_algebraic_notation(algebraic: str) -> tuple[PieceType, Pos]:
     pos = get_pos(x=file, y=rank)
     return (piece_type, pos)
 
+
 def to_algebraic_notation_single_move(piece_type: str, from_pos: Pos, to_pos: Pos, victim_type: str) -> str:
     letter = {PieceType.KING.name: 'K', PieceType.QUEEN.name: 'Q', PieceType.ROOK.name: 'R', PieceType.BISHOP.name: 'B', PieceType.KNIGHT.name: 'N', PieceType.PAWN.name: 'P'}
     from_file_letter = chr(from_pos.x + ord('a'))
@@ -56,6 +58,7 @@ def to_algebraic_notation_single_move(piece_type: str, from_pos: Pos, to_pos: Po
     to_file_letter = chr(to_pos.x + ord('a'))
     to_rank_letter = str(to_pos.y + 1)
     return f'{letter[piece_type]}{from_file_letter}{from_rank_letter}->{letter[victim_type]}{to_file_letter}{to_rank_letter}'
+
 
 def to_algebraic_notation(single_solution: SingleSolution) -> list[str]:
     move_sequence = single_solution.assignment
@@ -67,28 +70,88 @@ def to_algebraic_notation(single_solution: SingleSolution) -> list[str]:
 def is_same_row_col(from_pos: Pos, to_pos: Pos) -> bool:
     return from_pos.x == to_pos.x or from_pos.y == to_pos.y
 
+
 def is_diagonal(from_pos: Pos, to_pos: Pos) -> bool:
     return abs(from_pos.x - to_pos.x) == abs(from_pos.y - to_pos.y)
 
-def is_move_valid(from_pos: Pos, to_pos: Pos, piece_type: PieceType) -> bool:
+
+def squares_between_rook(from_pos: Pos, to_pos: Pos) -> list[Pos]:
+    if not is_same_row_col(from_pos, to_pos):
+        return []
+    if abs(from_pos.x - to_pos.x) <= 1 and abs(from_pos.y - to_pos.y) <= 1:  # within 2x2 thus no intermediate squares
+        return []
+    squares: list[Pos] = []
+    if from_pos.x == to_pos.x:
+        x = from_pos.x
+        step = 1 if to_pos.y > from_pos.y else -1
+        for y in range(from_pos.y + step, to_pos.y, step):
+            squares.append(get_pos(x=x, y=y))
+    else:
+        y = from_pos.y
+        step = 1 if to_pos.x > from_pos.x else -1
+        for x in range(from_pos.x + step, to_pos.x, step):
+            squares.append(get_pos(x=x, y=y))
+    return squares
+
+
+def squares_between_bishop(from_pos: Pos, to_pos: Pos) -> list[Pos]:
+    if not is_diagonal(from_pos, to_pos):
+        return []
+    if abs(from_pos.x - to_pos.x) <= 1 and abs(from_pos.y - to_pos.y) <= 1:  # within 2x2 thus no intermediate squares
+        return []
+    squares: list[Pos] = []
+    step_x = 1 if to_pos.x > from_pos.x else -1
+    step_y = 1 if to_pos.y > from_pos.y else -1
+    x = from_pos.x + step_x
+    y = from_pos.y + step_y
+    while x != to_pos.x and y != to_pos.y:
+        squares.append(get_pos(x=x, y=y))
+        x += step_x
+        y += step_y
+    return squares
+
+
+
+def is_move_valid(from_pos: Pos, to_pos: Pos, piece_type: PieceType, color=None) -> tuple[bool, list[Pos]]:
+    """Returns: (is_valid, list of positions that must be empty for the move to be valid)
+    For Kings, Pawns, and Knights, no positions must be empty for the move to be valid.
+    A Queen is equivalent to a Rook and a Bishop.
+    A Rook needs all positions directly between the from and to position to be empty for the move to be valid.
+    Similarly, a Bishop needs all positions diagonally between the from and to position to be empty for the move to be valid.
+
+    Args:
+        from_pos (Pos): from position
+        to_pos (Pos): to position
+        piece_type (PieceType): piece type
+        color (str, optional): color of the piece (default: None, all pieces are assumed white)
+
+    Returns:
+        tuple[bool, list[Pos]]: (is_valid, list of positions that must be empty for the move to be valid)
+    """
     if piece_type == PieceType.KING:
         dx = abs(from_pos.x - to_pos.x)
         dy = abs(from_pos.y - to_pos.y)
-        return dx <= 1 and dy <= 1
-    elif piece_type == PieceType.QUEEN:
-        return is_same_row_col(from_pos, to_pos) or is_diagonal(from_pos, to_pos)
+        is_valid = dx <= 1 and dy <= 1
+        return is_valid, []
+    elif piece_type == PieceType.QUEEN:  # rook + bishop
+        rook_valid = is_move_valid(from_pos, to_pos, PieceType.ROOK, color)
+        if rook_valid[0]:
+            return rook_valid
+        return is_move_valid(from_pos, to_pos, PieceType.BISHOP, color)
     elif piece_type == PieceType.ROOK:
-        return is_same_row_col(from_pos, to_pos)
+        return is_same_row_col(from_pos, to_pos), squares_between_rook(from_pos, to_pos)
     elif piece_type == PieceType.BISHOP:
-        return is_diagonal(from_pos, to_pos)
+        return is_diagonal(from_pos, to_pos), squares_between_bishop(from_pos, to_pos)
     elif piece_type == PieceType.KNIGHT:
         dx = abs(from_pos.x - to_pos.x)
         dy = abs(from_pos.y - to_pos.y)
-        return (dx == 2 and dy == 1) or (dx == 1 and dy == 2)
+        is_valid = (dx == 2 and dy == 1) or (dx == 1 and dy == 2)
+        return is_valid, []
     elif piece_type == PieceType.PAWN:  # will always eat because the this is how the puzzle works
         dx = to_pos.x - from_pos.x
         dy = to_pos.y - from_pos.y
-        return abs(dx) == 1 and dy == 1
+        is_valid = abs(dx) == 1 and dy == (1 if color != 'B' else -1)
+        return is_valid, []
 
 
 class Board:
@@ -111,17 +174,19 @@ class Board:
         self.H = 8  # board size
         # the puzzle rules mean the only legal positions are the starting positions of the pieces
         self.all_legal_positions: set[Pos] = {pos for _, pos in self.pieces.values()}
+        assert len(self.all_legal_positions) == len(self.pieces), f'positions are not unique'
 
         self.model = cp_model.CpModel()
-        # Input numbers: N is number of piece, T is number of time steps (=N here), B is board size (=64 here):
+        # Input numbers: N is number of piece, T is number of time steps (=N here), B is board size (=N here because the only legal positions are the starting positions of the pieces):
         # Number of variables 
         # piece_positions: O(NTB)
         # is_dead: O(NT)
         # mover: O(NT)
         # victim: O(NT)
+        # position_occupied: O(TB)
         # dies_this_timestep: O(NT)
         # pos_is_p_star: O(NTB)
-        # Total: ~ (2*64)N^2 + 5N^2 = 132N^2
+        # Total: ~ (2*N)N^2 + 6N^2 = 2N^3 + 6N^2
 
         # (piece_index, time_step, position) -> boolean variable (possible all false if i'm dead)
         self.piece_positions: dict[tuple[int, int, Pos], cp_model.IntVar] = {}
@@ -130,6 +195,9 @@ class Board:
         # (piece_index, time_step) -> boolean variable indicating if the piece [moved/died]
         self.mover: dict[tuple[int, int], cp_model.IntVar] = {}  # did i move this timestep?
         self.victim: dict[tuple[int, int], cp_model.IntVar] = {}  # did i die this timestep?
+
+        # (time_step, position) -> boolean variable indicating if the position is occupied by any piece at this timestep
+        self.position_occupied: dict[tuple[int, Pos], cp_model.IntVar] = {}
 
         self.create_vars()
         self.add_all_constraints()
@@ -149,10 +217,15 @@ class Board:
                 self.mover[(p, t)] = self.model.NewIntVar(0, 1, f'mover[{p},{t}]')
                 self.victim[(p, t)] = self.model.NewIntVar(0, 1, f'victim[{p},{t}]')
 
+        for t in range(self.T):
+            for pos in self.all_legal_positions:
+                self.position_occupied[(t, pos)] = self.model.NewBoolVar(f'position_occupied[{t},{pos}]')
+
     def add_all_constraints(self):
         self.enforce_initial_state()
         self.enforce_board_state_constraints()
         self.enforce_mover_victim_constraints()
+        self.enforce_position_occupied_constraints()
 
     def enforce_initial_state(self):
         # initial state
@@ -184,8 +257,16 @@ class Board:
                     for to_pos in self.all_legal_positions:
                         if from_pos == to_pos:
                             continue
-                        if not is_move_valid(from_pos, to_pos, self.pieces[p][0]):
+                        is_valid, need_to_be_empty = is_move_valid(from_pos, to_pos, self.pieces[p][0])
+                        # remove non legal moves
+                        need_to_be_empty = set(need_to_be_empty) & self.all_legal_positions
+                        if not is_valid:
                             self.model.Add(self.piece_positions[(p, t + 1, to_pos)] == 0).OnlyEnforceIf([self.piece_positions[(p, t, from_pos)]])
+                        elif len(need_to_be_empty) > 0:
+                            occupied_between = self.model.NewBoolVar(f'occupied_between[{from_pos},{to_pos},{t},{p}]')
+                            or_constraint(self.model, occupied_between, [self.position_occupied[(t, pos)] for pos in need_to_be_empty])
+                            self.model.Add(self.piece_positions[(p, t + 1, to_pos)] == 0).OnlyEnforceIf([self.piece_positions[(p, t, from_pos)], occupied_between])
+
         # if mover is i and victim is j then i HAS to be at the position of j at the next timestep
         for p_mover in range(self.N):
             for p_victim in range(self.N):
@@ -256,6 +337,11 @@ class Board:
             for p in range(self.N):
                 self.model.Add(sum([self.mover[(p, t)] for t in range(self.T - 1)]) <= self.max_moves_per_piece)
 
+    def enforce_position_occupied_constraints(self):
+        for t in range(self.T):
+            for pos in self.all_legal_positions:
+                self.model.Add(self.position_occupied[(t, pos)] == sum([self.piece_positions[(p, t, pos)] for p in range(self.N)]))
+
 
     def solve_and_print(self, verbose: bool = True, max_solutions: int = None):
         def board_to_solution(board: "Board", solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
@@ -284,7 +370,8 @@ class Board:
                 to_pos = next(pos for pos in board.all_legal_positions if pos_assignment[(mover_i, t + 1, pos)])
                 assignment[t] = (board.pieces[mover_i][0].name, from_pos, to_pos, board.pieces[victim_i][0].name)
             # return SingleSolution(assignment=assignment, pos_assignment=pos_assignment, mover=mover, victim=victim)
-            return SingleSolution(assignment=assignment)
+            position_occupied = {(t, pos): int(solver.Value(board.position_occupied[(t, pos)])) for t in range(board.T) for pos in board.all_legal_positions}
+            return SingleSolution(assignment=assignment, position_occupied=position_occupied)
 
         def callback(single_res: SingleSolution):
             print("Solution found")
@@ -297,6 +384,8 @@ class Board:
             # print('victims:', single_res.victim)
             # print('movers:', single_res.mover)
             # print()
+            # for t in range(self.T):
+            #     print('at timestep', t, 'the following positions are occupied', [pos for pos in self.all_legal_positions if single_res.position_occupied[(t, pos)] == 1])
             move_sequence = to_algebraic_notation(single_res)
             print(move_sequence)
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose, max_solutions=max_solutions)

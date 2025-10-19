@@ -1,6 +1,7 @@
 from puzzle_solver.puzzles.bridges import bridges as bridges_solver
 from puzzle_solver.puzzles.chess_range import chess_range as chess_range_solver
 from puzzle_solver.puzzles.chess_range import chess_solo as chess_solo_solver
+from puzzle_solver.puzzles.chess_range import chess_melee as chess_melee_solver
 from puzzle_solver.puzzles.dominosa import dominosa as dominosa_solver
 from puzzle_solver.puzzles.filling import filling as filling_solver
 from puzzle_solver.puzzles.guess import guess as guess_solver
