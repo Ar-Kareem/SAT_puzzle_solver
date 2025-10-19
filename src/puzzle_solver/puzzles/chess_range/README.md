@@ -1,24 +1,26 @@
 
-## Chess Sequence(Puzzle Type #23)
+## Chess Range(Puzzle Type #23)
 
 * [**Play online**](https://www.puzzle-chess.com/chess-ranger-11/)
 
-You are given a chess board with $N$ pieces distributed on it. Your aim is to make $N-1$ sequence of moves where each move is a legal chess move and captures another piece.
+You are given a chess board with $N$ pieces distributed on it. Your aim is to make $N-1$ range of moves where each move is a legal chess move and captures another piece.
 
-This means that at the end of the $N-1$ moves, there is only one piece left alive on the board.
+- Pieces move as standard chess pieces.
+- You can perform only capture moves. A move that does not capture another piece is not allowed.
+- You are allowed to capture the king.
+- The goal is to end up with one single piece on the board. 
 
-A move that does not capture another piece is not allowed.
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_sequence_unsolved.png" alt="Chess sequence unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_range_unsolved.png" alt="Chess range unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
 (Note that this puzzle does not typically have a unique solution. Thus, we specify here that we only want the first valid solution that the solver finds.)
 
 ```python
-from puzzle_solver import chess_sequence_solver as solver
+from puzzle_solver import chess_range_solver as solver
 # algebraic notation
 board = ['Qe7', 'Nc6', 'Kb6', 'Pb5', 'Nf5', 'Pg4', 'Rb3', 'Bc3', 'Pd3', 'Pc2', 'Rg2']
 binst = solver.Board(board)
@@ -38,4 +40,4 @@ Time taken: 6.27 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_sequence_solved.png" alt="Chess sequence solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_range_solved.png" alt="Chess range solved" width="500">

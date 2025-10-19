@@ -1,4 +1,4 @@
-from puzzle_solver import chess_sequence_solver as solver
+from puzzle_solver import chess_range_solver as solver
 
 
 # https://www.puzzle-chess.com/chess-ranger-11/?e=Nzo5NDAsOTEy

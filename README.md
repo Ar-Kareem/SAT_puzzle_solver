@@ -180,8 +180,8 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
     </a>
   </td>
   <td align="center">
-    <a href="#chess-sequence-puzzle-type-23"><b>Chess Sequence</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_sequence_unsolved.png" alt="Chess sequence" height="120">
+    <a href="#chess-range-puzzle-type-23"><b>Chess Range</b><br><br>
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_range_unsolved.png" alt="Chess range" height="120">
     </a>
   </td>
   
@@ -223,7 +223,7 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   - [Bridges (Puzzle Type #20)](#bridges-puzzle-type-20)
   - [Inertia (Puzzle Type #21)](#inertia-puzzle-type-21)
   - [Guess (Puzzle Type #22)](#guess-puzzle-type-22)
-  - [Chess Sequence(Puzzle Type #23)](#chess-sequencepuzzle-type-23)
+  - [Chess Range(Puzzle Type #23)](#chess-rangepuzzle-type-23)
   - [Why SAT / CP-SAT?](#why-sat--cp-sat)
   - [What’s Inside](#whats-inside)
   - [Testing](#testing)
@@ -1909,7 +1909,7 @@ In the case when there's only one possible choice left, the solver will inform y
 
 ---
 
-## Chess Sequence(Puzzle Type #23)
+## Chess Range(Puzzle Type #23)
 
 * [**Play online**](https://www.puzzle-chess.com/chess-ranger-11/)
 
@@ -1918,24 +1918,25 @@ In the case when there's only one possible choice left, the solver will inform y
 <details>
   <summary><strong>Rules</strong></summary>
 
-You are given a chess board with $N$ pieces distributed on it. Your aim is to make $N-1$ sequence of moves where each move is a legal chess move and captures another piece.
+You are given a chess board with $N$ pieces distributed on it. Your aim is to make $N-1$ range of moves where each move is a legal chess move and captures another piece.
 
-This means that at the end of the $N-1$ moves, there is only one piece left alive on the board.
-
-A move that does not capture another piece is not allowed.
+- Pieces move as standard chess pieces.
+- You can perform only capture moves. A move that does not capture another piece is not allowed.
+- You are allowed to capture the king.
+- The goal is to end up with one single piece on the board. 
 
 </details>
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_sequence_unsolved.png" alt="Chess sequence unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_range_unsolved.png" alt="Chess range unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
 (Note that this puzzle does not typically have a unique solution. Thus, we specify here that we only want the first valid solution that the solver finds.)
 
 ```python
-from puzzle_solver import chess_sequence_solver as solver
+from puzzle_solver import chess_range_solver as solver
 # algebraic notation
 board = ['Qe7', 'Nc6', 'Kb6', 'Pb5', 'Nf5', 'Pg4', 'Rb3', 'Bc3', 'Pd3', 'Pc2', 'Rg2']
 binst = solver.Board(board)
@@ -1955,7 +1956,7 @@ Time taken: 6.27 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_sequence_solved.png" alt="Chess sequence solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_range_solved.png" alt="Chess range solved" width="500">
 
 ---
 
@@ -1999,7 +2000,7 @@ Each sub directory in `src/puzzle_solver/puzzles/` targets a different puzzle ty
 * `unruly` — Unruly (no triples + balance). ([Chapter 38][15])
 * `tracks` — Tracks (connected components). ([Chapter 40][16])
 * `mosaic` — Mosaic (Tapa-like tiling). ([Chapter 42][17])
-* `chess_sequence` — Chess Sequence (chess moves). ([Puzzle-Chess][23])
+* `chess_range` — Chess Range (chess moves). ([Puzzle-Chess][23])
 
 ---
 
@@ -2062,4 +2063,4 @@ Issues and PRs welcome!
 [15]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/unruly "puzzle_solver/src/puzzle_solver/puzzles/unruly at master · Ar-Kareem/puzzle_solver · GitHub"
 [16]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/tracks "puzzle_solver/src/puzzle_solver/puzzles/tracks at master · Ar-Kareem/puzzle_solver · GitHub"
 [17]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/mosaic "puzzle_solver/src/puzzle_solver/puzzles/mosaic at master · Ar-Kareem/puzzle_solver · GitHub"
-[23]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/chess_sequence "puzzle_solver/src/puzzle_solver/puzzles/chess_sequence at master · Ar-Kareem/puzzle_solver · GitHub"
+[23]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/chess_range "puzzle_solver/src/puzzle_solver/puzzles/chess_range at master · Ar-Kareem/puzzle_solver · GitHub"
