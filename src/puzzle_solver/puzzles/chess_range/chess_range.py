@@ -3,10 +3,9 @@ from dataclasses import dataclass
 from typing import Union
 from enum import Enum
 
-import numpy as np
 from ortools.sat.python import cp_model
 
-from puzzle_solver.core.utils import Pos, get_pos, get_all_pos, get_char, set_char, get_row_pos, get_col_pos, Direction, get_next_pos, in_bounds
+from puzzle_solver.core.utils import Pos, get_pos, get_all_pos
 from puzzle_solver.core.utils_ortools import and_constraint, generic_solve_all, or_constraint
 
 
