@@ -179,7 +179,13 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
       <img src="images/guess_3.png" alt="Guess" height="120">
     </a>
   </td>
-  <td></td><td></td><td></td>
+  <td align="center">
+    <a href="#chess-sequence-puzzle-type-23"><b>Chess Sequence</b><br><br>
+      <img src="images/chess_sequence_unsolved.png" alt="Chess sequence" height="120">
+    </a>
+  </td>
+  
+  </td><td></td><td></td>
 </tr>
 </table>
 
