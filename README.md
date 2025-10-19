@@ -1974,36 +1974,6 @@ This repo builds those constraints in Python and uses SAT/CP-SAT (e.g., OR-Tools
 
 ---
 
-## What’s Inside
-
-Each sub directory in `src/puzzle_solver/puzzles/` targets a different puzzle type. The following are the sub directories:
-
-* `nonograms` — Picross/Griddlers (run-length constraints). ([Chapter 10][1])
-* `sudoku` — Sudoku (rows/cols/blocks all-different). ([Chapter 11][2])
-* `minesweeper` — Minesweeper (mines + counts). ([Chapter 12][3])
-* `guess` — Guess (similar to wordle, guess the colored circles). ([Chapter 15][22])
-* `dominosa` — Dominosa (dominoes + counts). ([Chapter 17][4])
-* `light_up` — *Akari* / Light Up (lighting & adjacency). ([Chapter 21][5])
-* `map` — Map (region coloring). ([Chapter 22][18])
-* `inertia` — Inertia (collect all gems without dying (with least number of moves; my addition)). ([Chapter 24][21])
-* `tents` — Tents (tree-tent matching). ([Chapter 25][6])
-* `bridges` — Bridges (island connections). ([Chapter 26][20])
-* `filling` — Filling (Fillomino-style), region sizes. ([Chapter 29][7])
-* `keen` — Keen (arithmetic operations). ([Chapter 30][8])
-* `towers` — Skyscrapers (permutation + visibility). ([Chapter 31][9])
-* `singles` — Singles (hiding numbers). ([Chapter 32][10])
-* `magnets` — Magnets (polarized dominoes + counts). ([Chapter 33][11])
-* `signpost` — Signpost (visible dominoes + counts). ([Chapter 34][12])
-* `range` — Range (rays & totals). ([Chapter 35][13])
-* `pearl` — Pearl (pearl game). ([Chapter 36][19])
-* `undead` — UnDead (Vampires/Zombies/Ghosts). ([Chapter 37][14])
-* `unruly` — Unruly (no triples + balance). ([Chapter 38][15])
-* `tracks` — Tracks (connected components). ([Chapter 40][16])
-* `mosaic` — Mosaic (Tapa-like tiling). ([Chapter 42][17])
-* `chess_range` — Chess Range (chess moves). ([Puzzle-Chess][23])
-
----
-
 ## Testing
 
 To run the tests, simply run the following (to create a fresh conda environment and install the dev dependencies):
