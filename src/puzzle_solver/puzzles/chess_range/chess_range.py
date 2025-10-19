@@ -104,9 +104,10 @@ class Board:
         self.T = self.N  # (N-1) moves + 1 initial state
         self.max_moves_per_piece = max_moves_per_piece
         self.last_piece_alive = last_piece_alive
-
         self.V = 8  # board size
         self.H = 8  # board size
+        # the puzzle rules mean the only legal positions are the starting positions of the pieces
+        self.all_legal_positions: set[Pos] = {pos for _, pos in self.pieces.values()}
 
         self.model = cp_model.CpModel()
         # Input numbers: N is number of piece, T is number of time steps (=N here), B is board size (=64 here):
@@ -133,7 +134,7 @@ class Board:
     def create_vars(self):
         for p in range(self.N):
             for t in range(self.T):
-                for pos in get_all_pos(self.V, self.H):
+                for pos in self.all_legal_positions:
                     self.piece_positions[(p, t, pos)] = self.model.NewBoolVar(f'piece_positions[{p},{t},{pos}]')
                 self.is_dead[(p, t)] = self.model.NewBoolVar(f'is_dead[{p},{t}]')
         for p in range(self.N):
@@ -153,7 +154,7 @@ class Board:
             # cant be initially dead
             self.model.Add(self.is_dead[(p, 0)] == 0)
             # all others are blank
-            for pos in get_all_pos(self.V, self.H):
+            for pos in self.all_legal_positions:
                 if pos == initial_pos:
                     continue
                 self.model.Add(self.piece_positions[(p, 0, pos)] == 0)
@@ -162,7 +163,7 @@ class Board:
         # at each timestep and each piece, it can only be at exactly one position or dead
         for p in range(self.N):
             for t in range(self.T):
-                pos_vars = [self.piece_positions[(p, t, pos)] for pos in get_all_pos(self.V, self.H)]
+                pos_vars = [self.piece_positions[(p, t, pos)] for pos in self.all_legal_positions]
                 pos_vars.append(self.is_dead[(p, t)])
                 self.model.AddExactlyOne(pos_vars)
         # if im dead this timestep then im also dead next timestep
@@ -172,8 +173,8 @@ class Board:
         # every move must be legal chess move
         for p in range(self.N):
             for t in range(self.T - 1):
-                for from_pos in get_all_pos(self.V, self.H):
-                    for to_pos in get_all_pos(self.V, self.H):
+                for from_pos in self.all_legal_positions:
+                    for to_pos in self.all_legal_positions:
                         if from_pos == to_pos:
                             continue
                         if not is_move_valid(from_pos, to_pos, self.pieces[p][0]):
@@ -184,7 +185,7 @@ class Board:
                 if p_mover == p_victim:
                     continue
                 for t in range(self.T - 1):
-                    for pos in get_all_pos(self.V, self.H):
+                    for pos in self.all_legal_positions:
                         self.model.Add(self.piece_positions[(p_mover, t + 1, pos)] == self.piece_positions[(p_victim, t, pos)]).OnlyEnforceIf([self.mover[(p_mover, t)], self.victim[(p_victim, t)]])
 
         # optional parameter to force last piece alive
@@ -221,7 +222,7 @@ class Board:
                 # if next timestep im somewhere else then i was the mover
                 # i.e. there exists a position p* s.t. (piece_positions[p, t + 1, p*] AND NOT piece_positions[p, t, p*])
                 pos_is_p_star = []
-                for pos in get_all_pos(self.V, self.H):
+                for pos in self.all_legal_positions:
                     v = self.model.NewBoolVar(f'pos_is_p_star[{p},{t},{pos}]')
                     self.model.Add(v == 1).OnlyEnforceIf([self.piece_positions[(p, t + 1, pos)], self.piece_positions[(p, t, pos)].Not()])
                     self.model.Add(v == 0).OnlyEnforceIf([self.piece_positions[(p, t + 1, pos)].Not()])
@@ -247,7 +248,7 @@ class Board:
             pos_assignment: dict[tuple[int, int, Union[Pos, str]], int] = {}
             for t in range(board.T):
                 for i in range(board.N):
-                    for pos in get_all_pos(board.V, board.H):
+                    for pos in board.all_legal_positions:
                         pos_assignment[(i, t, pos)] = solver.Value(board.piece_positions[(i, t, pos)])
                     pos_assignment[(i, t, 'DEAD')] = solver.Value(board.is_dead[(i, t)])
             mover = {}
@@ -265,8 +266,8 @@ class Board:
             for t in range(board.T - 1):
                 mover_i = mover[t][0]
                 victim_i = victim[t][0]
-                from_pos = next(pos for pos in get_all_pos(board.V, board.H) if pos_assignment[(mover_i, t, pos)])
-                to_pos = next(pos for pos in get_all_pos(board.V, board.H) if pos_assignment[(mover_i, t + 1, pos)])
+                from_pos = next(pos for pos in board.all_legal_positions if pos_assignment[(mover_i, t, pos)])
+                to_pos = next(pos for pos in board.all_legal_positions if pos_assignment[(mover_i, t + 1, pos)])
                 assignment[t] = (board.pieces[mover_i][0].name, from_pos, to_pos, board.pieces[victim_i][0].name)
             # return SingleSolution(assignment=assignment, pos_assignment=pos_assignment, mover=mover, victim=victim)
             return SingleSolution(assignment=assignment)
