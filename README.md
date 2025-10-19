@@ -223,9 +223,9 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   - [Bridges (Puzzle Type #20)](#bridges-puzzle-type-20)
   - [Inertia (Puzzle Type #21)](#inertia-puzzle-type-21)
   - [Guess (Puzzle Type #22)](#guess-puzzle-type-22)
-  - [Chess Range(Puzzle Type #23)](#chess-rangepuzzle-type-23)
+  - [Chess Range (Puzzle Type #23)](#chess-range-puzzle-type-23)
+  - [Chess Solo (Puzzle Type #24)](#chess-solo-puzzle-type-24)
   - [Why SAT / CP-SAT?](#why-sat--cp-sat)
-  - [What’s Inside](#whats-inside)
   - [Testing](#testing)
   - [Contributing](#contributing)
     - [Build and push to PyPI](#build-and-push-to-pypi)
@@ -1909,7 +1909,7 @@ In the case when there's only one possible choice left, the solver will inform y
 
 ---
 
-## Chess Range(Puzzle Type #23)
+## Chess Range (Puzzle Type #23)
 
 * [**Play online**](https://www.puzzle-chess.com/chess-ranger-11/)
 
@@ -1957,6 +1957,57 @@ Time taken: 6.27 seconds
 **Solved puzzle**
 
 <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_range_solved.png" alt="Chess range solved" width="500">
+
+---
+
+## Chess Solo (Puzzle Type #24)
+
+* [**Play online**](https://www.puzzle-chess.com/solo-chess-11/)
+
+* [**Solver Code**][24]
+
+<details>
+  <summary><strong>Rules</strong></summary>
+
+You are given a chess board with $N$ pieces distributed on it. Your aim is to make $N-1$ range of moves where each move is a legal chess move and captures another piece and end up with the king as the only piece on the board. You are not allowed to move a piece more than twice.
+
+- Pieces move as standard chess pieces.
+- You can perform only capture moves. A move that does not capture another piece is not allowed.
+- You can move a piece only twice.
+- You are NOT allowed to capture the king.
+- The goal is to end up with one single piece (the king) on the board. 
+
+</details>
+
+**Unsolved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_solo_unsolved.png" alt="Chess solo unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+
+(Note that this puzzle does not typically have a unique solution. Thus, we specify here that we only want the first valid solution that the solver finds.)
+
+```python
+# algebraic notation
+board = ['Kc6', 'Rc5', 'Rc4', 'Pb3', 'Bd3', 'Pd2', 'Pe3', 'Nf2', 'Ng2', 'Qg3', 'Pg6']
+binst = solver.Board(board)
+solutions = binst.solve_and_print(max_solutions=1)
+```
+**Script Output**
+
+The output is in the form of "pos -> pos" where "pos" is the algebraic notation of the position.
+
+```python
+Solution found
+['Pd2->Pe3', 'Pb3->Rc4', 'Ng2->Pe3', 'Qg3->Pg6', 'Qg6->Bd3', 'Nf2->Qd3', 'Nd3->Rc5', 'Ne3->Pc4', 'Kc6->Nc5', 'Kc5->Nc4']
+Solutions found: 1
+status: FEASIBLE
+Time taken: 4.33 seconds
+```
+
+**Solved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_solo_solved.png" alt="Chess solo solved" width="500">
 
 ---
 
@@ -2034,3 +2085,4 @@ Issues and PRs welcome!
 [16]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/tracks "puzzle_solver/src/puzzle_solver/puzzles/tracks at master · Ar-Kareem/puzzle_solver · GitHub"
 [17]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/mosaic "puzzle_solver/src/puzzle_solver/puzzles/mosaic at master · Ar-Kareem/puzzle_solver · GitHub"
 [23]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/chess_range "puzzle_solver/src/puzzle_solver/puzzles/chess_range at master · Ar-Kareem/puzzle_solver · GitHub"
+[24]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/chess_range#chess-solo-puzzle-type-24 "puzzle_solver/src/puzzle_solver/puzzles/chess_range at master · Ar-Kareem/puzzle_solver · GitHub"
