@@ -62,147 +62,147 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
 <table>
 <tr>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#nonograms-puzzle-type-1"><b>Nonograms</b><br><br>
+    <a href="#nonograms-puzzle-type-1"><b>Nonograms</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nonogram_solved.png" alt="Nonograms" width="140">
     </a>
   </td>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#sudoku-puzzle-type-2"><b>Sudoku</b><br><br>
+    <a href="#sudoku-puzzle-type-2"><b>Sudoku</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_solved.png" alt="Sudoku" width="140">
     </a>
   </td>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#minesweeper-puzzle-type-3"><b>Minesweeper</b><br><br>
+    <a href="#minesweeper-puzzle-type-3"><b>Minesweeper</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/minesweeper_pre.png" alt="Minesweeper" width="140">
     </a>
   </td>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#dominosa-puzzle-type-4"><b>Dominosa</b><br><br>
+    <a href="#dominosa-puzzle-type-4"><b>Dominosa</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/dominosa_solved.png" alt="Dominosa" width="140">
     </a>
   </td>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#light-up-puzzle-type-5"><b>Light Up</b><br><br>
+    <a href="#light-up-puzzle-type-5"><b>Light Up</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/lightup_solved.png" alt="Light Up" width="140">
     </a>
   </td>
 </tr>
 <tr>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#tents-puzzle-type-6"><b>Tents</b><br><br>
+    <a href="#tents-puzzle-type-6"><b>Tents</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tents_solved.png" alt="Tents" width="140">
     </a>
   </td>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#filling-puzzle-type-7"><b>Filling</b><br><br>
+    <a href="#filling-puzzle-type-7"><b>Filling</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/filling_solved.png" alt="Filling" width="140">
     </a>
   </td>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#keen-puzzle-type-8"><b>Keen</b><br><br>
+    <a href="#keen-puzzle-type-8"><b>Keen</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/keen_solved.png" alt="Keen" width="140">
     </a>
   </td>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#towers-puzzle-type-9"><b>Towers</b><br><br>
+    <a href="#towers-puzzle-type-9"><b>Towers</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/towers_solved.png" alt="Towers" width="140">
     </a>
   </td>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#singles-puzzle-type-10"><b>Singles</b><br><br>
+    <a href="#singles-puzzle-type-10"><b>Singles</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/singles_solved.png" alt="Singles" width="140">
     </a>
   </td>
 </tr>
 <tr>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#magnets-puzzle-type-11"><b>Magnets</b><br><br>
+    <a href="#magnets-puzzle-type-11"><b>Magnets</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/magnets_solved.png" alt="Magnets" width="140">
     </a>
   </td>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#signpost-puzzle-type-12"><b>Signpost</b><br><br>
+    <a href="#signpost-puzzle-type-12"><b>Signpost</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/signpost_solved.png" alt="Signpost" width="140">
     </a>
   </td>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#range-puzzle-type-13"><b>Range</b><br><br>
+    <a href="#range-puzzle-type-13"><b>Range</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/range_solved.png" alt="Range" width="140">
     </a>
   </td>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#undead-puzzle-type-14"><b>Undead</b><br><br>
+    <a href="#undead-puzzle-type-14"><b>Undead</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/undead_solved.png" alt="Undead" width="140">
     </a>
   </td>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#unruly-puzzle-type-15"><b>Unruly</b><br><br>
+    <a href="#unruly-puzzle-type-15"><b>Unruly</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/unruly_solved.png" alt="Unruly" width="140">
     </a>
   </td>
 </tr>
 <tr>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#tracks-puzzle-type-16"><b>Tracks</b><br><br>
+    <a href="#tracks-puzzle-type-16"><b>Tracks</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tracks_solved.png" alt="Tracks" width="140">
     </a>
   </td>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#mosaic-puzzle-type-17"><b>Mosaic</b><br><br>
+    <a href="#mosaic-puzzle-type-17"><b>Mosaic</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/mosaic_solved.png" alt="Mosaic" width="140">
     </a>
   </td>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#map-puzzle-type-18"><b>Map</b><br><br>
+    <a href="#map-puzzle-type-18"><b>Map</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/map_solved.png" alt="Map" width="140">
     </a>
   </td>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#pearl-puzzle-type-19"><b>Pearl</b><br><br>
+    <a href="#pearl-puzzle-type-19"><b>Pearl</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/pearl_solved.png" alt="Pearl" width="140">
     </a>
   </td>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#bridges-puzzle-type-20"><b>Bridges</b><br><br>
+    <a href="#bridges-puzzle-type-20"><b>Bridges</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/bridges_solved.png" alt="Bridges" width="140">
     </a>
   </td>
 </tr>
 <tr>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#inertia-puzzle-type-21"><b>Inertia</b><br><br>
+    <a href="#inertia-puzzle-type-21"><b>Inertia</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/inertia_unsolved.png" alt="Inertia" width="140">
     </a>
   </td>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#guess-puzzle-type-22"><b>Guess</b><br><br>
+    <a href="#guess-puzzle-type-22"><b>Guess</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/guess_3.png" alt="Guess" width="140">
     </a>
   </td>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#chess-range-puzzle-type-23"><b>Chess Range</b><br><br>
+    <a href="#chess-range-puzzle-type-23"><b>Chess Range</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_range_unsolved.png" alt="Chess range" width="140">
     </a>
   </td>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#chess-solo-puzzle-type-24"><b>Chess Solo</b><br><br>
+    <a href="#chess-solo-puzzle-type-24"><b>Chess Solo</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_solo_unsolved.png" alt="Chess solo" width="140">
     </a>
   </td>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#chess-melee-puzzle-type-25"><b>Chess Melee</b><br><br>
+    <a href="#chess-melee-puzzle-type-25"><b>Chess Melee</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_melee_unsolved.png" alt="Chess melee" width="140">
     </a>
   </td>
 </tr>
 <tr>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#thermometers-puzzle-type-26"><b>Thermometers</b><br><br>
+    <a href="#thermometers-puzzle-type-26"><b>Thermometers</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/thermometers_solved.png" alt="Thermometers" width="140">
     </a>
   </td>
   <td align="center">
-    <a href="https://github.com/Ar-Kareem/puzzle_solver/tree/master?tab=readme-ov-file#aquarium-puzzle-type-27"><b>Aquarium</b><br><br>
+    <a href="#aquarium-puzzle-type-27"><b>Aquarium</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/aquarium_solved.png" alt="Aquarium" width="140">
     </a>
   </td>
