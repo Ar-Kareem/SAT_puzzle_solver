@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "multi-puzzle-solver"
 dynamic = ["version"]
 description = "Efficient solvers for numerous popular and esoteric logic puzzles using CP-SAT"
-readme = "README.md"
+readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.9"
 authors = [{name = "Ar-Kareem"}]
 keywords = [
