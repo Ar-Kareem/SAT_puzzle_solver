@@ -1,0 +1,70 @@
+# Battleships (Puzzle Type #29)
+
+* [**Play online**](https://www.puzzle-battleships.com/)
+
+- You have to find the location of the battleships hidden in the grid. Some battleships may be partially revealed.
+- A battleship is a straight line of consecutive black cells.
+- The number of the battleships from each size is shown in the legend.
+- 2 battleships cannot touch each other (even diagonally)
+- The numbers outside the grid show the number of cells occupied by battleships on that row/column.
+
+**Unsolved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/battleships_unsolved.png" alt="Battleships unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+
+```python
+from puzzle_solver import battleships_solver as solver
+board = np.array([
+  [' ', ' ', ' ', ' ', ' ', 'S', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'S', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'O', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  ['W', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', 'O', ' ', ' ', ' ', ' ', 'W', ' ', ' ', 'R'],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'U', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'L', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'S'],
+])
+top = np.array([2, 2, 4, 2, 1, 2, 1, 2, 4, 1, 3, 2, 5, 2, 2])
+side = np.array([1, 2, 1, 1, 0, 7, 0, 9, 2, 2, 5, 1, 3, 0, 1])
+ship_counts = {1: 5, 2: 4, 3: 3, 4: 2, 5: 1}
+binst = solver.Board(board=board, top=top, side=side, ship_counts=ship_counts)
+solutions = binst.solve_and_print()
+```
+
+
+**Script Output**
+
+```python
+Solution found
+[[' ' ' ' ' ' ' ' ' ' 'S' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ']
+ [' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' 'S' ' ' 'S' ' ' ' ']
+ [' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' 'S' ' ' ' ']
+ [' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' 'S' ' ' ' ']
+ [' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ']
+ [' ' 'S' 'S' 'S' 'S' ' ' ' ' ' ' ' ' ' ' ' ' 'S' 'S' 'S' ' ']
+ [' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ']
+ [' ' ' ' 'S' ' ' ' ' 'S' 'S' 'S' 'S' 'S' ' ' ' ' 'S' 'S' 'S']
+ ['S' ' ' 'S' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ']
+ [' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' 'S' ' ' ' ' 'S' ' ' ' ' ' ']
+ ['S' 'S' 'S' 'S' ' ' ' ' ' ' ' ' 'S' ' ' ' ' ' ' ' ' ' ' ' ']
+ [' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' 'S' ' ' ' ' ' ' ' ']
+ [' ' ' ' ' ' ' ' ' ' ' ' ' ' 'S' 'S' ' ' 'S' ' ' ' ' ' ' ' ']
+ [' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ']
+ [' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' 'S']]
+Solutions found: 1
+status: OPTIMAL
+Time taken: 0.12 seconds
+```
+
+**Solved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/battleships_solved.png" alt="Battleships solved" width="500">

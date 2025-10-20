@@ -211,6 +211,11 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/stitches_solved.png" alt="Stitches" width="140">
     </a>
   </td>
+  <td align="center">
+    <a href="#battleships-puzzle-type-29"><b>Battleships</b><br><br>
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/battleships_solved.png" alt="Battleships" width="140">
+    </a>
+  </td>
 </tr>
 </table>
 
@@ -254,6 +259,7 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   - [Thermometers (Puzzle Type #26)](#thermometers-puzzle-type-26)
   - [Aquarium (Puzzle Type #27)](#aquarium-puzzle-type-27)
   - [Stitches (Puzzle Type #28)](#stitches-puzzle-type-28)
+  - [Battleships (Puzzle Type #29)](#battleships-puzzle-type-29)
   - [Why SAT / CP-SAT?](#why-sat--cp-sat)
   - [Testing](#testing)
   - [Contributing](#contributing)
@@ -2327,6 +2333,86 @@ Time taken: 0.01 seconds
 
 ---
 
+## Battleships (Puzzle Type #29)
+
+* [**Play online**](https://www.puzzle-battleships.com/)
+
+* [**Solver Code**][29]
+
+<details>
+  <summary><strong>Rules</strong></summary>
+
+- You have to find the location of the battleships hidden in the grid. Some battleships may be partially revealed.
+- A battleship is a straight line of consecutive black cells.
+- The number of the battleships from each size is shown in the legend.
+- 2 battleships cannot touch each other (even diagonally)
+- The numbers outside the grid show the number of cells occupied by battleships on that row/column.
+
+</details>
+
+**Unsolved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/battleships_unsolved.png" alt="Battleships unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+
+```python
+from puzzle_solver import battleships_solver as solver
+board = np.array([
+  [' ', ' ', ' ', ' ', ' ', 'S', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'S', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'O', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  ['W', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', 'O', ' ', ' ', ' ', ' ', 'W', ' ', ' ', 'R'],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'U', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'L', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'S'],
+])
+top = np.array([2, 2, 4, 2, 1, 2, 1, 2, 4, 1, 3, 2, 5, 2, 2])
+side = np.array([1, 2, 1, 1, 0, 7, 0, 9, 2, 2, 5, 1, 3, 0, 1])
+ship_counts = {1: 5, 2: 4, 3: 3, 4: 2, 5: 1}
+binst = solver.Board(board=board, top=top, side=side, ship_counts=ship_counts)
+solutions = binst.solve_and_print()
+```
+
+
+**Script Output**
+
+```python
+Solution found
+[[' ' ' ' ' ' ' ' ' ' 'S' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ']
+ [' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' 'S' ' ' 'S' ' ' ' ']
+ [' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' 'S' ' ' ' ']
+ [' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' 'S' ' ' ' ']
+ [' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ']
+ [' ' 'S' 'S' 'S' 'S' ' ' ' ' ' ' ' ' ' ' ' ' 'S' 'S' 'S' ' ']
+ [' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ']
+ [' ' ' ' 'S' ' ' ' ' 'S' 'S' 'S' 'S' 'S' ' ' ' ' 'S' 'S' 'S']
+ ['S' ' ' 'S' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ']
+ [' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' 'S' ' ' ' ' 'S' ' ' ' ' ' ']
+ ['S' 'S' 'S' 'S' ' ' ' ' ' ' ' ' 'S' ' ' ' ' ' ' ' ' ' ' ' ']
+ [' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' 'S' ' ' ' ' ' ' ' ']
+ [' ' ' ' ' ' ' ' ' ' ' ' ' ' 'S' 'S' ' ' 'S' ' ' ' ' ' ' ' ']
+ [' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ']
+ [' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' 'S']]
+Solutions found: 1
+status: OPTIMAL
+Time taken: 0.12 seconds
+```
+
+**Solved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/battleships_solved.png" alt="Battleships solved" width="500">
+
+---
+
 ---
 
 ## Why SAT / CP-SAT?
@@ -2406,3 +2492,4 @@ Issues and PRs welcome!
 [26]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/thermometers "puzzle_solver/src/puzzle_solver/puzzles/thermometers at master · Ar-Kareem/puzzle_solver · GitHub"
 [27]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/aquarium "puzzle_solver/src/puzzle_solver/puzzles/aquarium at master · Ar-Kareem/puzzle_solver · GitHub"
 [28]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/stitches "puzzle_solver/src/puzzle_solver/puzzles/stitches at master · Ar-Kareem/puzzle_solver · GitHub"
+[29]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/battleships "puzzle_solver/src/puzzle_solver/puzzles/battleships at master · Ar-Kareem/puzzle_solver · GitHub"

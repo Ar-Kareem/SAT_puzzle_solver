@@ -1,4 +1,5 @@
 from puzzle_solver.puzzles.aquarium import aquarium as aquarium_solver
+from puzzle_solver.puzzles.battleships import battleships as battleships_solver
 from puzzle_solver.puzzles.bridges import bridges as bridges_solver
 from puzzle_solver.puzzles.chess_range import chess_range as chess_range_solver
 from puzzle_solver.puzzles.chess_range import chess_solo as chess_solo_solver
@@ -29,4 +30,4 @@ from puzzle_solver.puzzles.unruly import unruly as unruly_solver
 
 from puzzle_solver.puzzles.inertia.parse_map.parse_map import main as inertia_image_parser
 
-__version__ = '0.9.4'
+__version__ = '0.9.5'
