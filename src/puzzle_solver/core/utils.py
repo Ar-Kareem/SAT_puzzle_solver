@@ -21,7 +21,7 @@ class Direction8(Enum):
     DOWN_LEFT = 7
     DOWN_RIGHT = 8
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, order=True)
 class Pos:
     x: int
     y: int
