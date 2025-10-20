@@ -1,5 +1,5 @@
 import time
-from typing import Union
+from typing import Union, Optional
 
 import numpy as np
 from ortools.sat.python import cp_model
@@ -10,7 +10,7 @@ from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution
 
 
 class Board:
-    def __init__(self, board: np.array, mine_count: int):
+    def __init__(self, board: np.array, mine_count: Optional[int] = None):
         assert board.ndim == 2, f'board must be 2d, got {board.ndim}'
         assert all(isinstance(i.item(), str) and (str(i.item()) in [' ', 'F', 'S', 'M', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) for i in np.nditer(board)), 'board must be either F, S, M, 0-9 or space'
         self.board = board
@@ -28,7 +28,8 @@ class Board:
             self.model_vars[pos] = self.model.NewBoolVar(f'{pos}')
 
     def add_all_constraints(self):
-        self.model.Add(lxp.Sum(list(self.model_vars.values())) == self.mine_count)
+        if self.mine_count is not None:
+            self.model.Add(lxp.Sum(list(self.model_vars.values())) == self.mine_count)
         for pos in get_all_pos(self.V, self.H):
             c = get_char(self.board, pos)
             if c in ['F', ' ']:
@@ -55,7 +56,7 @@ def _is_feasible(board: np.array, pos: Pos = None, value: str = None, mine_count
         return SingleSolution(assignment={pos: solver.value(var) for pos, var in board.model_vars.items()})
     return len(generic_solve_all(board, board_to_solution, max_solutions=1, verbose=False)) >= 1
 
-def _is_safe(board: np.array, pos: Pos, mine_count: int) -> Union[bool, None]:
+def _is_safe(board: np.array, pos: Pos, mine_count: Optional[int] = None) -> Union[bool, None]:
     """Returns a True if the position is safe, False if it is a mine, otherwise None"""
     safe_feasible = _is_feasible(board, pos, 'S', mine_count=mine_count)
     mine_feasible = _is_feasible(board, pos, 'M', mine_count=mine_count)
@@ -67,7 +68,7 @@ def _is_safe(board: np.array, pos: Pos, mine_count: int) -> Union[bool, None]:
         return False
     raise ValueError(f"Position {pos} has both safe and mine infeasible")
 
-def give_next_guess(board: np.array, mine_count: int, verbose: bool = True):
+def give_next_guess(board: np.array, mine_count: Optional[int] = None, verbose: bool = True):
     tic = time.time()
     is_feasible = _is_feasible(board, mine_count=mine_count)
     if not is_feasible:
@@ -109,3 +110,15 @@ def give_next_guess(board: np.array, mine_count: int, verbose: bool = True):
         toc = time.time()
         print(f"Time taken: {toc - tic:.2f} seconds")
     return safe_positions, new_garuneed_mine_positions, wrong_flag_positions
+
+def print_board(board: np.array, safe_positions: set[Pos], new_garuneed_mine_positions: set[Pos], wrong_flag_positions: set[Pos]):
+    res = np.full((board.shape[0], board.shape[1]), ' ', dtype=object)
+    for pos in get_all_pos(board.shape[0], board.shape[1]):
+        if pos in safe_positions:
+            set_char(res, pos, 'S')
+        elif pos in new_garuneed_mine_positions:
+            set_char(res, pos, 'M')
+        elif get_char(board, pos) == 'F' and pos not in wrong_flag_positions:
+            set_char(res, pos, 'F')
+    
+    print(res)
