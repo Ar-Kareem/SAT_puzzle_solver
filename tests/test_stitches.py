@@ -1,0 +1,83 @@
+
+import numpy as np
+
+from puzzle_solver import stitches_solver as solver
+from puzzle_solver.core.utils import get_pos
+
+def test_ground_1():
+  # https://www.puzzle-stitches.com/?e=MDoxMiw4ODMsMTYy
+  board = np.array([
+    ['1', '1', '2', '2', '2'],
+    ['1', '1', '1', '1', '3'],
+    ['5', '5', '1', '3', '3'],
+    ['5', '1', '1', '1', '4'],
+    ['4', '4', '4', '4', '4'],
+  ])
+  top = np.array([2, 3, 3, 2, 4])
+  side = np.array([3, 1, 3, 5, 2])
+  binst = solver.Board(board=board, top=top, side=side)
+  solutions = binst.solve_and_print()
+  assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+  solution = solutions[0].assignment
+  ground = np.array([
+    [' ', 'R', 'L', ' ', 'D'],
+    [' ', ' ', ' ', ' ', 'U'],
+    [' ', 'D', ' ', 'D', 'D'],
+    ['D', 'U', 'D', 'U', 'U'],
+    ['U', ' ', 'U', ' ', ' '],
+  ])
+  ground_assignment = {get_pos(x=x, y=y): ground[y][x] for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+  assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())}'
+  for pos in solution.keys():
+    assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
+
+def test_ground_2():
+  # https://www.puzzle-stitches.com/?e=MTM6OSw4MjEsNDAx
+  board = np.array([
+    ["00", "00", "00", "00", "00", "01", "01", "01", "01", "01", "01", "01", "01", "02", "02"],
+    ["00", "03", "03", "04", "00", "00", "01", "05", "05", "05", "05", "05", "01", "01", "02"],
+    ["00", "03", "04", "04", "04", "00", "05", "05", "05", "05", "05", "05", "05", "05", "02"],
+    ["00", "03", "04", "04", "04", "04", "05", "05", "06", "05", "02", "02", "02", "02", "02"],
+    ["07", "03", "03", "03", "03", "04", "06", "06", "06", "06", "06", "06", "06", "02", "02"],
+    ["07", "07", "07", "03", "03", "04", "04", "06", "08", "08", "08", "06", "02", "02", "02"],
+    ["07", "07", "03", "03", "03", "04", "04", "08", "08", "08", "08", "06", "06", "06", "02"],
+    ["07", "07", "07", "07", "07", "08", "08", "08", "09", "09", "08", "06", "08", "06", "02"],
+    ["10", "10", "07", "07", "09", "09", "09", "09", "09", "09", "08", "08", "08", "11", "02"],
+    ["10", "10", "07", "09", "09", "09", "09", "09", "09", "09", "09", "08", "08", "11", "02"],
+    ["10", "09", "09", "09", "12", "12", "12", "13", "09", "09", "11", "11", "11", "11", "11"],
+    ["10", "10", "10", "09", "12", "12", "12", "13", "09", "11", "11", "11", "13", "13", "11"],
+    ["14", "15", "10", "12", "12", "16", "17", "13", "13", "11", "13", "13", "13", "13", "11"],
+    ["14", "15", "10", "12", "16", "16", "17", "17", "13", "13", "13", "13", "13", "13", "11"],
+    ["14", "15", "15", "12", "16", "16", "17", "17", "17", "17", "17", "13", "13", "13", "13"]
+  ])
+  top = np.array([6, 6, 9, 5, 3, 8, 9, 3, 1, 4, 4, 1, 4, 8, 5])
+  side = np.array([0, 10, 6, 4, 4, 1, 5, 8, 2, 6, 5, 11, 4, 3, 7])
+  binst = solver.Board(board=board, top=top, side=side)
+  solutions = binst.solve_and_print()
+  assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+  solution = solutions[0].assignment
+  ground = np.array([
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    ['R', 'L', 'D', 'R', 'L', 'R', 'L', ' ', ' ', ' ', ' ', ' ', 'D', 'R', 'L'],
+    [' ', ' ', 'U', ' ', ' ', 'R', 'L', ' ', ' ', ' ', ' ', ' ', 'U', 'R', 'L'],
+    ['D', ' ', ' ', ' ', ' ', 'R', 'L', ' ', ' ', 'D', ' ', ' ', ' ', ' ', ' '],
+    ['U', ' ', ' ', ' ', ' ', 'R', 'L', ' ', ' ', 'U', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'D', ' '],
+    [' ', ' ', 'D', ' ', ' ', ' ', 'R', 'L', ' ', 'D', ' ', ' ', ' ', 'U', ' '],
+    [' ', 'D', 'U', ' ', 'R', 'L', ' ', ' ', ' ', 'U', ' ', 'R', 'L', 'D', ' '],
+    [' ', 'U', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'U', ' '],
+    [' ', ' ', 'R', 'L', ' ', ' ', ' ', ' ', ' ', ' ', 'D', ' ', 'R', 'L', 'D'],
+    [' ', ' ', 'D', ' ', ' ', ' ', 'R', 'L', ' ', ' ', 'U', ' ', ' ', ' ', 'U'],
+    ['D', 'D', 'U', 'R', 'L', 'D', 'D', 'R', 'L', ' ', ' ', ' ', ' ', 'R', 'L'],
+    ['U', 'U', ' ', ' ', ' ', 'U', 'U', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', 'R', 'L', ' ', ' ', ' ', ' ', ' ', ' ', 'D', ' ', ' ', ' ', ' '],
+    ['R', 'L', 'R', 'L', ' ', 'R', 'L', ' ', ' ', ' ', 'U', ' ', ' ', ' ', ' '],
+  ])
+  ground_assignment = {get_pos(x=x, y=y): ground[y][x] for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+  assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())}'
+  for pos in solution.keys():
+    assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
+
+if __name__ == '__main__':
+  test_ground_1()
+  test_ground_2()
