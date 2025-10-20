@@ -207,4 +207,5 @@ if __name__ == '__main__':
     # to run this script and visualize the output, in the root run:
     #  python .\src\puzzle_solver\puzzles\stitches\parse_map\parse_map.py | python .\src\puzzle_solver\utils\visualizer.py --read_stdin
     # main(Path(__file__).parent / 'input_output' / 'MTM6OSw4MjEsNDAx.png')
-    main(Path(__file__).parent / 'input_output' / 'weekly_oct_3rd_2025.png')
+    # main(Path(__file__).parent / 'input_output' / 'weekly_oct_3rd_2025.png')
+    main(Path(__file__).parent / 'input_output' / 'star_battle_67f73ff90cd8cdb4b3e30f56f5261f4968f5dac940bc6.png')
