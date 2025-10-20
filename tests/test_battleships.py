@@ -4,7 +4,6 @@ from puzzle_solver import battleships_solver as solver
 from puzzle_solver.core.utils import get_pos
 
 def test_ground_1():
-  # https://www.puzzle-aquarium.com/?e=ODo0LDc2MCwxMDI=
   board = np.array([
     [' ', ' ', ' ', ' ', ' ', ' '],
     [' ', 'R', ' ', ' ', ' ', ' '],
