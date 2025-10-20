@@ -123,6 +123,13 @@ def get_input():
 
 if __name__ == '__main__':
     board = get_input()
+    print('Visualizing board:')
+    print('[')
+    for i,row in enumerate(board):
+        print('    [' + ', '.join([f"'{c}'" for c in row]) + ']', end='')
+        if i != len(board) - 1:
+            print(',')
+    print('\n]')
     # rcolors = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (0, 255, 255), (255, 0, 255), (255, 255, 255), (128, 128, 128)]
     vs =[0, 128, 255]
     rcolors = [(v1, v2, v3) for v1 in vs for v2 in vs for v3 in vs if (v1, v2, v3) != (0, 0, 0)]
