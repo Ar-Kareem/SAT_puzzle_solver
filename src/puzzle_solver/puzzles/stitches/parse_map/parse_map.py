@@ -5,8 +5,6 @@
 """
 from pathlib import Path
 import numpy as np
-import numpy as np
-import matplotlib.pyplot as plt
 cv = None
 Image = None
 
@@ -91,6 +89,7 @@ def dfs(x, y, out, output, current_num):
 def main(image):
     global Image
     global cv
+    import matplotlib.pyplot as plt
     from PIL import Image as Image_module
     import cv2 as cv_module
     Image = Image_module
