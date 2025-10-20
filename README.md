@@ -225,7 +225,7 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
 <tr>
   <td align="center">
     <a href="#star-battle-puzzle-type-31"><b>Star Battle</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/star_battle_unsolved.png" alt="Star Battle" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/star_battle_solved.png" alt="Star Battle" width="140">
     </a>
   </td>
 </tr>
