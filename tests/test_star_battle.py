@@ -1,6 +1,7 @@
 import numpy as np
 
 from puzzle_solver import star_battle_solver as solver
+from puzzle_solver import star_battle_shapeless_solver as shapeless_solver
 from puzzle_solver.core.utils import get_pos
 
 
@@ -93,6 +94,26 @@ def test_ground_2():
   assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
   for pos in solution.keys():
     assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
+
+def test_ground_3():
+  # https://www.puzzle-star-battle.com/?e=MTQ6OSw4ODEsNTc1
+  board = np.array([
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '], 
+    ['B', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '], 
+    ['B', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'B', ' '], 
+    ['B', 'B', ' ', ' ', 'B', ' ', ' ', ' ', ' ', ' '], 
+    ['B', 'B', ' ', ' ', 'B', ' ', ' ', ' ', ' ', ' '], 
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '], 
+    [' ', ' ', ' ', ' ', 'B', ' ', ' ', ' ', 'B', ' '], 
+    ['B', ' ', ' ', ' ', ' ', ' ', ' ', 'B', 'B', ' '], 
+    ['B', 'B', ' ', ' ', ' ', ' ', 'B', 'B', 'B', ' '], 
+    ['B', ' ', ' ', ' ', 'B', ' ', ' ', ' ', ' ', ' '], 
+  ])
+  binst = shapeless_solver.Board(board=board, star_count=2)
+  solutions = binst.solve_and_print()
+  assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+  solution = solutions[0].assignment
+
 
 if __name__ == '__main__':
   test_ground_1()
