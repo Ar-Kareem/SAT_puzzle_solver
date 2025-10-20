@@ -16,8 +16,6 @@ The numbers outside the grid show the number of filled cells horizontally and ve
 
 Code to utilize this package and solve the puzzle:
 
-(Note that this puzzle does not typically have a unique solution. Thus, we specify here that we only want the first valid solution that the solver finds.)
-
 ```python
 from puzzle_solver import aquarium_solver as solver
 board = np.array([
