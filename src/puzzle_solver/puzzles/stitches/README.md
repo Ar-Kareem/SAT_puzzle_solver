@@ -38,6 +38,9 @@ side = np.array([0, 10, 6, 4, 4, 1, 5, 8, 2, 6, 5, 11, 4, 3, 7])
 binst = solver.Board(board=board, top=top, side=side)
 solutions = binst.solve_and_print()
 ```
+
+Note: `solver.Board` accepts an optional `connection_count=N` parameter to specify the (÷N) stitches puzzle (by default, 1 stitch).
+
 **Script Output**
 
 ```python
