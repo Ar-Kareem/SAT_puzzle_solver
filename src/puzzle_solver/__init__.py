@@ -8,6 +8,7 @@ from puzzle_solver.puzzles.dominosa import dominosa as dominosa_solver
 from puzzle_solver.puzzles.filling import filling as filling_solver
 from puzzle_solver.puzzles.guess import guess as guess_solver
 from puzzle_solver.puzzles.inertia import inertia as inertia_solver
+from puzzle_solver.puzzles.kakurasu import kakurasu as kakurasu_solver
 from puzzle_solver.puzzles.keen import keen as keen_solver
 from puzzle_solver.puzzles.light_up import light_up as light_up_solver
 from puzzle_solver.puzzles.magnets import magnets as magnets_solver
@@ -30,4 +31,4 @@ from puzzle_solver.puzzles.unruly import unruly as unruly_solver
 
 from puzzle_solver.puzzles.inertia.parse_map.parse_map import main as inertia_image_parser
 
-__version__ = '0.9.5'
+__version__ = '0.9.6'
