@@ -1,12 +1,10 @@
-import json
 from collections import defaultdict
-from dataclasses import dataclass
 
 import numpy as np
 from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
 
-from puzzle_solver.core.utils import Pos, get_all_pos, get_char, set_char, get_neighbors8, get_next_pos, Direction, get_row_pos, get_col_pos
+from puzzle_solver.core.utils import Pos, get_all_pos, get_char, set_char, get_row_pos, get_col_pos
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution
 
 

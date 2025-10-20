@@ -1,7 +1,8 @@
-from collections import defaultdict
-import numpy as np
-from collections import Counter
+from collections import Counter, defaultdict
 from itertools import product
+
+import numpy as np
+
 
 class Board:
     def __init__(self, num_pegs: int = 4, all_colors: list[str] = ['R', 'Y', 'G', 'B', 'O', 'P'], show_warnings: bool = True, show_progress: bool = False):

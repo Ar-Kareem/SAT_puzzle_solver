@@ -3,8 +3,8 @@ from collections import defaultdict
 import numpy as np
 from ortools.sat.python import cp_model
 
-from puzzle_solver.core.utils import Pos, get_pos, get_all_pos, get_char, set_char, get_row_pos, get_col_pos, Direction, get_next_pos, in_bounds
-from puzzle_solver.core.utils_ortools import and_constraint, generic_solve_all, SingleSolution, or_constraint
+from puzzle_solver.core.utils import Pos, get_all_pos, get_char, set_char, Direction, get_next_pos, in_bounds
+from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, or_constraint
 
 
 def get_bool_var(model: cp_model.CpModel, var: cp_model.IntVar, eq_val: int, name: str) -> cp_model.IntVar:

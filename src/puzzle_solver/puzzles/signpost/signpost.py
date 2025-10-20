@@ -1,10 +1,8 @@
-from enum import Enum
-
 import numpy as np
 from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
 
-from puzzle_solver.core.utils import Pos, get_all_pos, get_char, set_char, in_bounds, get_next_pos, Direction, get_row_pos, get_col_pos, Direction8
+from puzzle_solver.core.utils import Pos, get_all_pos, get_char, set_char, in_bounds, get_next_pos, Direction8
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution
 
 

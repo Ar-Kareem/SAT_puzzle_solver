@@ -3,7 +3,6 @@ from collections import defaultdict
 import numpy as np
 
 from puzzle_solver.core.utils import Direction8, Pos, get_all_pos, get_char, in_bounds, get_next_pos
-
 from . import tsp
 
 

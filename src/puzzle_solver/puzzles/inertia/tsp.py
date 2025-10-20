@@ -1,7 +1,9 @@
-from collections import deque, defaultdict
+from collections import defaultdict, deque
 from typing import Dict, List, Tuple, Set, Any, Optional
 import random
+
 from ortools.constraint_solver import pywrapcp, routing_enums_pb2
+
 
 Pos = Any  # Hashable node id
 
@@ -81,7 +83,6 @@ def solve_optimal_walk(
         prev = {n: None for n in nodes}
         if src not in adj:
             return dist, prev
-        from collections import deque
         q = deque([src])
         dist[src] = 0
         while q:

@@ -1,11 +1,9 @@
-from collections import defaultdict
 from typing import Union
 
 import numpy as np
 from ortools.sat.python import cp_model
-from ortools.sat.python.cp_model import LinearExpr as lxp
 
-from puzzle_solver.core.utils import Pos, get_all_pos, get_char, get_neighbors4, set_char, get_neighbors8, get_next_pos, Direction, get_row_pos, get_col_pos, in_bounds, get_opposite_direction
+from puzzle_solver.core.utils import Pos, get_all_pos, get_char, set_char, get_next_pos, Direction, get_row_pos, get_col_pos, in_bounds, get_opposite_direction
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, and_constraint
 
 

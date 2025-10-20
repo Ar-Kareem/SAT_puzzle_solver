@@ -9,7 +9,6 @@ from puzzle_solver.core.utils import Pos, get_pos
 from puzzle_solver.core.utils_ortools import and_constraint, generic_solve_all, or_constraint
 
 
-
 class PieceType(Enum):
     KING   = 1
     QUEEN  = 2
