@@ -1,5 +1,8 @@
 from __future__ import annotations
+import argparse
 from typing import Any, Mapping, Tuple
+import json
+import sys
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
@@ -9,13 +12,12 @@ RGB = Tuple[int, int, int]
 def render_board_image(
     board: np.ndarray,
     colors: Mapping[Any, RGB],
-    output_filename: str,
     cell_size: int = 64,
     grid: bool = True,
     bg_default: RGB = (240, 240, 240),
     text_color: RGB = (0, 0, 0),
     padding: int = 20,
-) -> None:
+    ) -> None:
     """
     Render a 2D numpy array as a colored grid image with centered text labels.
 
@@ -23,7 +25,6 @@ def render_board_image(
         board: 2D numpy array (dtype can be object/str/int/etc.). Each cell's value
                is looked up in `colors` for its fill color.
         colors: Dict-like mapping from cell values to RGB tuples (0-255).
-        output_filename: Where to save the image (e.g., 'board.png').
         cell_size: Square side length (pixels) for each cell.
         grid: Whether to draw grid lines around cells.
         bg_default: Fill color when a cell's value is not in `colors`.
@@ -76,33 +77,58 @@ def render_board_image(
                 ty = y0 + (cell_size - th) / 2
                 draw.text((tx, ty), text, fill=text_color, font=font)
 
-    img.save(output_filename)
+    img.show()
 
+
+
+
+
+def get_input():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--read_stdin', action='store_true')
+    args = parser.parse_args()
+    if args.read_stdin:
+        # read from stdin until the line starts with "output json: "
+        print('reading board from stdin until the line starts with "output json: "')
+        json_path = None
+        while True:
+            line = sys.stdin.readline()
+            if line.startswith('output json: '):
+                json_path = line.split('output json: ')[1].strip()
+                break
+        with open(json_path, 'r') as f:
+            board = np.array(json.load(f))
+        print(f'read board from {json_path}')
+    else:
+        # with open('src/puzzle_solver/puzzles/stitches/parse_map/input_output/MTM6OSw4MjEsNDAx.json', 'r') as f:
+        #     board = np.array(json.load(f))
+        board = np.array([
+            ['01', '123', '01', '01', '02', '02', '02', '03', '03', '03', '03', '04', '05', '05', '05'],
+            ['01', '02', '02', '02', '02', '06', '07', '07', '03', '08', '03', '04', '04', '05', '09'],
+            ['01', '01', '02', '11', '06', '06', '06', '12', '12', '08', '13', '13', '13', '09', '09'],
+            ['01', '11', '11', '11', '14', '06', '06', '12', '12', '15', '15', '13', '09', '09', '09'],
+            ['01', '01', '11', '11', '14', '12', '12', '12', '16', '16', '15', '13', '13', '17', '09'],
+            ['01', '11', '11', '14', '14', '12', '42', '42', '42', '15', '15', '13', '13', '17', '18'],
+            ['01', '11', '11', '14', '14', '12', '12', '43', '15', '15', '20', '13', '13', '17', '18'],
+            ['01', '01', '11', '19', '19', '19', '43', '43', '44', '20', '20', '20', '13', '17', '18'],
+            ['01', '22', '23', '23', '23', '19', '43', '21', '21', '24', '24', '24', '25', '17', '17'],
+            ['22', '22', '22', '23', '19', '19', '26', '24', '24', '24', '28', '28', '25', '17', '33'],
+            ['22', '22', '23', '23', '27', '27', '26', '26', '24', '24', '29', '29', '25', '25', '33'],
+            ['22', '22', '35', '27', '27', '26', '26', '26', '26', '30', '30', '30', '25', '34', '34'],
+            ['37', '22', '35', '35', '35', '35', '35', '26', '26', '30', '31', '31', '32', '32', '40'],
+            ['37', '37', '37', '36', '36', '35', '26', '26', '26', '40', '40', '40', '40', '40', '40'],
+            ['37', '37', '37', '37', '35', '35', '38', '38', '39', '39', '40', '40', '40', '41', '41'],
+        ])
+    return board
 
 if __name__ == '__main__':
-    board = np.array([
-        ['01', '01', '01', '01', '02', '02', '02', '03', '03', '03', '03', '04', '05', '05', '05'],
-        ['01', '02', '02', '02', '02', '06', '07', '07', '03', '08', '03', '04', '04', '05', '09'],
-        ['01', '01', '02', '11', '06', '06', '06', '12', '12', '08', '13', '13', '13', '09', '09'],
-        ['01', '11', '11', '11', '14', '06', '06', '12', '12', '15', '15', '13', '09', '09', '09'],
-        ['01', '01', '11', '11', '14', '12', '12', '12', '16', '16', '15', '13', '13', '17', '09'],
-        ['01', '11', '11', '14', '14', '12', '42', '42', '42', '15', '15', '13', '13', '17', '18'],
-        ['01', '11', '11', '14', '14', '12', '12', '43', '15', '15', '20', '13', '13', '17', '18'],
-        ['01', '01', '11', '19', '19', '19', '43', '43', '44', '20', '20', '20', '13', '17', '18'],
-        ['01', '22', '23', '23', '23', '19', '43', '21', '21', '24', '24', '24', '25', '17', '17'],
-        ['22', '22', '22', '23', '19', '19', '26', '24', '24', '24', '28', '28', '25', '17', '33'],
-        ['22', '22', '23', '23', '27', '27', '26', '26', '24', '24', '29', '29', '25', '25', '33'],
-        ['22', '22', '35', '27', '27', '26', '26', '26', '26', '30', '30', '30', '25', '34', '34'],
-        ['37', '22', '35', '35', '35', '35', '35', '26', '26', '30', '31', '31', '32', '32', '40'],
-        ['37', '37', '37', '36', '36', '35', '26', '26', '26', '40', '40', '40', '40', '40', '40'],
-        ['37', '37', '37', '37', '35', '35', '38', '38', '39', '39', '40', '40', '40', '41', '41'],
-    ])
+    board = get_input()
     # rcolors = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (0, 255, 255), (255, 0, 255), (255, 255, 255), (128, 128, 128)]
-    vs =[0, 255]
+    vs =[0, 128, 255]
     rcolors = [(v1, v2, v3) for v1 in vs for v2 in vs for v3 in vs if (v1, v2, v3) != (0, 0, 0)]
     nums = set([c.item() for c in np.nditer(board)])
-    colors = {i: rcolors[int(i) % len(rcolors)] for i in nums}
+    colors = {c: rcolors[i % len(rcolors)] for i, c in enumerate(nums)}
     print(nums)
     print('max i:', max(nums))
     print('skipped:', set(range(int(max(nums)) + 1)) - set(int(i) for i in nums))
-    render_board_image(board, colors, 'board.png')
+    render_board_image(board, colors)
