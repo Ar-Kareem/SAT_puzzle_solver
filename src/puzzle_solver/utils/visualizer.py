@@ -3,6 +3,7 @@ import argparse
 from typing import Any, Mapping, Tuple
 import json
 import sys
+import random
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
@@ -86,6 +87,7 @@ def render_board_image(
 def get_input():
     parser = argparse.ArgumentParser()
     parser.add_argument('--read_stdin', action='store_true')
+    parser.add_argument('--clipboard', action='store_true')
     args = parser.parse_args()
     if args.read_stdin:
         # read from stdin until the line starts with "output json: "
@@ -99,6 +101,15 @@ def get_input():
         with open(json_path, 'r') as f:
             board = np.array(json.load(f))
         print(f'read board from {json_path}')
+    elif args.clipboard:
+        import pyperclip
+        pasted = pyperclip.paste()
+        print('got from clipboard: ', pasted)
+        print('eval: ', eval(pasted))
+        board = np.array(eval(pasted))
+        assert board.ndim == 2, f'board must be a 2D numpy array, got {board.ndim}'
+        assert board.shape[0] > 0, 'board must have at least one row'
+        assert board.shape[1] > 0, 'board must have at least one column'
     else:
         # with open('src/puzzle_solver/puzzles/stitches/parse_map/input_output/MTM6OSw4MjEsNDAx.json', 'r') as f:
         #     board = np.array(json.load(f))
@@ -122,6 +133,7 @@ def get_input():
     return board
 
 if __name__ == '__main__':
+    # to read numpy array from clipboard run: python .\src\puzzle_solver\utils\visualizer.py --clipboard
     board = get_input()
     print('Visualizing board:')
     print('[')
@@ -133,9 +145,11 @@ if __name__ == '__main__':
     # rcolors = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (0, 255, 255), (255, 0, 255), (255, 255, 255), (128, 128, 128)]
     vs =[0, 128, 255]
     rcolors = [(v1, v2, v3) for v1 in vs for v2 in vs for v3 in vs if (v1, v2, v3) != (0, 0, 0)]
+    random.shuffle(rcolors)
     nums = set([c.item() for c in np.nditer(board)])
     colors = {c: rcolors[i % len(rcolors)] for i, c in enumerate(nums)}
     print(nums)
     print('max i:', max(nums))
-    print('skipped:', set(range(int(max(nums)) + 1)) - set(int(i) for i in nums))
+    if all(str(c).isdigit() for c in nums):
+        print('skipped:', set(range(int(max(nums)) + 1)) - set(int(i) for i in nums))
     render_board_image(board, colors)
