@@ -76,15 +76,15 @@ def _test_ground(board: np.array, website_moves: int, expected = None):
 def test_ground_1():
   print('board 1:')
   board = board1
-  _test_ground(board, 61, expected=47)
+  _test_ground(board, 61)  # expected: 47
 
 def test_ground_2():
   print('board 2:')
-  _test_ground(board2, 73, expected=60)
+  _test_ground(board2, 73)  # expected: 60
 
 def test_ground_3():
   print('board 3:')
-  _test_ground(board3, 121, expected=106)
+  _test_ground(board3, 121)  # expected: 106
 
 # _test_ground(np.array([
 #   ['M', 'O', 'G'],
