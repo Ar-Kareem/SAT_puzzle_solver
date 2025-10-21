@@ -1,0 +1,107 @@
+import numpy as np
+
+from puzzle_solver import norinori_solver as solver
+from puzzle_solver.core.utils import get_pos
+
+def test_ground_1():
+    board = np.array([
+        ['00', '00', '00', '01', '01', '02'],
+        ['03', '00', '00', '01', '01', '02'],
+        ['03', '00', '01', '01', '02', '02'],
+        ['03', '00', '00', '01', '01', '02'],
+        ['03', '00', '04', '04', '01', '01'],
+        ['00', '00', '00', '04', '04', '04']
+    ])
+    binst = solver.Board(board)
+    solutions = binst.solve_and_print()
+    assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+    solution = solutions[0].assignment
+    ground = np.array([
+        ['X', 'X', 'X', ' ', ' ', 'X'],
+        ['X', ' ', 'X', ' ', ' ', 'X'],
+        ['X', ' ', 'X', 'X', ' ', 'X'],
+        ['X', ' ', ' ', 'X', 'X', 'X'],
+        ['X', ' ', ' ', 'X', ' ', ' '],
+        [' ', ' ', ' ', 'X', 'X', 'X'],
+    ])
+    ground_assignment = {get_pos(x=x, y=y): 1 if ground[y][x] == 'X' else 0 for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+    assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
+    for pos in solution.keys():
+        assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
+
+def test_ground_2():
+    # https://www.puzzle-lits.com/?e=OTo3LDMwNiwwMTU=
+    board = np.array([
+    ['00', '00', '00', '01', '01', '02', '02', '02', '03', '03', '03', '04', '04', '05', '06', '07', '07', '08', '08', '09'],
+    ['00', '00', '00', '00', '01', '02', '03', '03', '03', '10', '04', '04', '05', '05', '06', '07', '08', '08', '09', '09'],
+    ['11', '11', '11', '01', '01', '02', '02', '03', '10', '10', '04', '04', '05', '06', '06', '07', '07', '07', '09', '12'],
+    ['11', '13', '13', '13', '01', '02', '03', '03', '03', '10', '04', '04', '06', '06', '06', '07', '12', '09', '09', '12'],
+    ['11', '11', '11', '13', '14', '14', '03', '15', '15', '10', '04', '04', '06', '16', '16', '12', '12', '09', '12', '12'],
+    ['17', '13', '13', '13', '14', '14', '03', '03', '15', '15', '04', '04', '16', '16', '16', '12', '12', '12', '12', '18'],
+    ['17', '13', '19', '13', '20', '14', '03', '03', '15', '04', '04', '16', '16', '21', '21', '22', '23', '23', '23', '18'],
+    ['17', '17', '19', '19', '20', '20', '03', '03', '24', '24', '24', '25', '25', '25', '21', '22', '23', '23', '18', '18'],
+    ['17', '26', '19', '19', '20', '20', '20', '24', '24', '20', '20', '25', '25', '21', '21', '22', '22', '23', '23', '18'],
+    ['26', '26', '26', '19', '19', '20', '20', '20', '20', '20', '25', '25', '21', '21', '21', '21', '21', '23', '27', '18'],
+    ['28', '28', '28', '29', '29', '29', '29', '20', '20', '30', '30', '25', '31', '32', '32', '32', '21', '27', '27', '27'],
+    ['28', '33', '28', '28', '28', '28', '29', '34', '34', '35', '30', '30', '31', '31', '31', '32', '32', '36', '36', '27'],
+    ['28', '33', '33', '28', '28', '29', '29', '34', '34', '35', '35', '30', '31', '31', '31', '32', '36', '36', '27', '27'],
+    ['28', '33', '37', '37', '28', '29', '34', '34', '35', '35', '38', '38', '39', '39', '40', '40', '40', '40', '27', '41'],
+    ['28', '37', '37', '37', '42', '34', '34', '34', '43', '38', '38', '38', '39', '39', '44', '44', '40', '40', '27', '41'],
+    ['37', '37', '42', '42', '42', '34', '34', '43', '43', '43', '38', '39', '39', '39', '44', '44', '27', '27', '27', '41'],
+    ['45', '45', '45', '42', '46', '34', '34', '34', '34', '38', '38', '47', '47', '47', '44', '44', '44', '27', '27', '41'],
+    ['48', '45', '45', '46', '46', '46', '46', '34', '49', '49', '49', '47', '44', '44', '44', '27', '44', '50', '27', '27'],
+    ['48', '48', '45', '46', '46', '51', '46', '52', '52', '49', '49', '53', '44', '53', '44', '27', '50', '50', '50', '27'],
+    ['48', '51', '51', '51', '51', '51', '52', '52', '52', '49', '53', '53', '53', '53', '44', '27', '27', '27', '27', '27']
+    ])
+    binst = solver.Board(board)
+    solutions = binst.solve_then_constrain()
+    assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+    solution = solutions[0].assignment
+    ground = np.array([
+        ['X', 'X', 'X', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' ', 'X', 'X', ' '],
+        [' ', 'X', ' ', ' ', 'X', 'X', ' ', ' ', ' ', 'X', ' ', ' ', 'X', 'X', ' ', 'X', 'X', 'X', ' ', ' '],
+        ['X', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X', 'X', ' ', ' ', 'X', ' ', ' ', 'X', ' ', ' ', 'X', ' '],
+        ['X', ' ', ' ', ' ', 'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' '],
+        [' ', ' ', ' ', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X', ' ', ' ', ' ', ' ', 'X', ' ', ' '],
+        ['X', ' ', 'X', 'X', ' ', 'X', ' ', ' ', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', ' '],
+        ['X', ' ', ' ', 'X', ' ', 'X', ' ', ' ', 'X', ' ', 'X', 'X', 'X', ' ', ' ', 'X', ' ', ' ', ' ', 'X'],
+        ['X', 'X', ' ', 'X', ' ', 'X', ' ', ' ', 'X', 'X', ' ', 'X', ' ', ' ', ' ', 'X', ' ', 'X', ' ', 'X'],
+        [' ', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', ' ', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
+        ['X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', ' ', 'X'],
+        [' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', ' ', ' ', 'X', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', ' '],
+        [' ', 'X', ' ', 'X', 'X', ' ', 'X', ' ', ' ', 'X', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X', 'X', ' '],
+        [' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', ' ', 'X', ' ', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', ' '],
+        [' ', 'X', ' ', ' ', 'X', ' ', 'X', ' ', 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'X', 'X', ' ', ' ', 'X'],
+        [' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X', ' ', 'X', ' ', 'X', 'X', ' ', ' ', 'X', ' ', ' ', 'X'],
+        ['X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X', ' ', ' ', 'X', 'X', ' ', 'X'],
+        [' ', 'X', 'X', 'X', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X', 'X'],
+        ['X', ' ', 'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', ' ', ' ', 'X', ' ', ' ', 'X', ' ', ' '],
+        ['X', 'X', 'X', ' ', 'X', ' ', ' ', 'X', ' ', 'X', ' ', 'X', ' ', ' ', 'X', ' ', 'X', 'X', 'X', ' '],
+        ['X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' '],
+    ])
+    ground_assignment = {get_pos(x=x, y=y): 1 if ground[y][x] == 'X' else 0 for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+    assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
+    for pos in solution.keys():
+        assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
+
+def compare_performance():
+    # this board INTENTIONALLY has MANY solutions
+    board = np.array([
+        ['00', '00', '00', '01', '01', '01'],
+        ['00', '00', '00', '01', '01', '01'],
+        ['00', '00', '00', '01', '01', '01'],
+        ['00', '00', '00', '03', '03', '03'],
+        ['02', '00', '02', '03', '03', '03'],
+        ['02', '02', '02', '03', '03', '03']
+    ])
+    binst = solver.Board(board)
+    # solutions = binst.solve_then_constrain()  # takes forever
+    solutions = binst.solve_and_print()  # slow but finishes in seconds
+    # meanwhile if you try test2 with "solve_and_print" then it will take forever
+    # conclusion: possible that either function takes forever and the other finishes in seconds => neither is better than the other for all boards
+    # BUT if we know the board has 1 solution then "solve_then_constrain" is MILES faster than "solve_and_print"
+
+
+if __name__ == '__main__':
+    test_ground_1()
+    test_ground_2()
