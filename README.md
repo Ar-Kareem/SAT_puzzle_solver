@@ -233,6 +233,11 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/star_battle_shapeless_solved.png" alt="Star Battle Shapeless" width="140">
     </a>
   </td>
+  <td align="center">
+    <a href="#norinori-puzzle-type-33"><b>Norinori</b><br><br>
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/norinori_solved.png" alt="Norinori" width="140">
+    </a>
+  </td>
 </tr>
 </table>
 
@@ -280,6 +285,7 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   - [Kakurasu (Puzzle Type #30)](#kakurasu-puzzle-type-30)
   - [Star Battle (Puzzle Type #31)](#star-battle-puzzle-type-31)
   - [Star Battle Shapeless (Puzzle Type #32)](#star-battle-shapeless-puzzle-type-32)
+  - [Norinori (Puzzle Type #33)](#norinori-puzzle-type-33)
   - [Why SAT / CP-SAT?](#why-sat--cp-sat)
   - [Testing](#testing)
   - [Contributing](#contributing)
@@ -2661,6 +2667,95 @@ Time taken: 0.02 seconds
 
 ---
 
+## Norinori (Puzzle Type #33)
+
+* [**Play online**](https://www.puzzle-norinori.com/)
+
+* [**Solver Code**][33]
+
+<details>
+  <summary><strong>Rules</strong></summary>
+
+ You have to place one tetromino in each region in such a way that:
+- 2 tetrominoes of matching types cannot touch each other horizontally or vertically. Rotations and reflections count as matching.
+- The shaded cells should form a single connected area.
+- 2x2 shaded areas are not allowed.
+
+* Tetromino is a shape made of 4 connected cells. There are 5 types of tetrominoes, which are usually named L, I, T, S and O, based on their shape. The O tetromino is not used in this puzzle because it is a 2x2 shape, which is not allowed. 
+
+</details>
+
+Note: The solver is capable of solving variations where the puzzle pieces the made up of more than 4 cells (e.g., pentominoes for 5 with `polyomino_degrees=5`, or hexominoes for 6 with `polyomino_degrees=6`, etc.). By default the degree is set to 4 thus only tetrominoes are used.
+
+**Unsolved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/norinori_unsolved.png" alt="Norinori unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+
+```python
+board = np.array([
+  ['00', '00', '00', '01', '01', '02', '02', '02', '03', '03', '03', '04', '04', '05', '06', '07', '07', '08', '08', '09'],
+  ['00', '00', '00', '00', '01', '02', '03', '03', '03', '10', '04', '04', '05', '05', '06', '07', '08', '08', '09', '09'],
+  ['11', '11', '11', '01', '01', '02', '02', '03', '10', '10', '04', '04', '05', '06', '06', '07', '07', '07', '09', '12'],
+  ['11', '13', '13', '13', '01', '02', '03', '03', '03', '10', '04', '04', '06', '06', '06', '07', '12', '09', '09', '12'],
+  ['11', '11', '11', '13', '14', '14', '03', '15', '15', '10', '04', '04', '06', '16', '16', '12', '12', '09', '12', '12'],
+  ['17', '13', '13', '13', '14', '14', '03', '03', '15', '15', '04', '04', '16', '16', '16', '12', '12', '12', '12', '18'],
+  ['17', '13', '19', '13', '20', '14', '03', '03', '15', '04', '04', '16', '16', '21', '21', '22', '23', '23', '23', '18'],
+  ['17', '17', '19', '19', '20', '20', '03', '03', '24', '24', '24', '25', '25', '25', '21', '22', '23', '23', '18', '18'],
+  ['17', '26', '19', '19', '20', '20', '20', '24', '24', '20', '20', '25', '25', '21', '21', '22', '22', '23', '23', '18'],
+  ['26', '26', '26', '19', '19', '20', '20', '20', '20', '20', '25', '25', '21', '21', '21', '21', '21', '23', '27', '18'],
+  ['28', '28', '28', '29', '29', '29', '29', '20', '20', '30', '30', '25', '31', '32', '32', '32', '21', '27', '27', '27'],
+  ['28', '33', '28', '28', '28', '28', '29', '34', '34', '35', '30', '30', '31', '31', '31', '32', '32', '36', '36', '27'],
+  ['28', '33', '33', '28', '28', '29', '29', '34', '34', '35', '35', '30', '31', '31', '31', '32', '36', '36', '27', '27'],
+  ['28', '33', '37', '37', '28', '29', '34', '34', '35', '35', '38', '38', '39', '39', '40', '40', '40', '40', '27', '41'],
+  ['28', '37', '37', '37', '42', '34', '34', '34', '43', '38', '38', '38', '39', '39', '44', '44', '40', '40', '27', '41'],
+  ['37', '37', '42', '42', '42', '34', '34', '43', '43', '43', '38', '39', '39', '39', '44', '44', '27', '27', '27', '41'],
+  ['45', '45', '45', '42', '46', '34', '34', '34', '34', '38', '38', '47', '47', '47', '44', '44', '44', '27', '27', '41'],
+  ['48', '45', '45', '46', '46', '46', '46', '34', '49', '49', '49', '47', '44', '44', '44', '27', '44', '50', '27', '27'],
+  ['48', '48', '45', '46', '46', '51', '46', '52', '52', '49', '49', '53', '44', '53', '44', '27', '50', '50', '50', '27'],
+  ['48', '51', '51', '51', '51', '51', '52', '52', '52', '49', '53', '53', '53', '53', '44', '27', '27', '27', '27', '27']
+])
+binst = solver.Board(board)
+solutions = binst.solve_then_constrain()  # solve_then_constrain NOT solve_and_print (to use #1 instead of #2 in https://github.com/google/or-tools/discussions/3347, its faster in this case)
+```
+
+**Script Output**
+
+```python
+Solution found
+[
+  ['X', 'X', 'X', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' ', 'X', 'X', ' '],
+  [' ', 'X', ' ', ' ', 'X', 'X', ' ', ' ', ' ', 'X', ' ', ' ', 'X', 'X', ' ', 'X', 'X', 'X', ' ', ' '],
+  ['X', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X', 'X', ' ', ' ', 'X', ' ', ' ', 'X', ' ', ' ', 'X', ' '],
+  ['X', ' ', ' ', ' ', 'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' '],
+  [' ', ' ', ' ', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X', ' ', ' ', ' ', ' ', 'X', ' ', ' '],
+  ['X', ' ', 'X', 'X', ' ', 'X', ' ', ' ', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', ' '],
+  ['X', ' ', ' ', 'X', ' ', 'X', ' ', ' ', 'X', ' ', 'X', 'X', 'X', ' ', ' ', 'X', ' ', ' ', ' ', 'X'],
+  ['X', 'X', ' ', 'X', ' ', 'X', ' ', ' ', 'X', 'X', ' ', 'X', ' ', ' ', ' ', 'X', ' ', 'X', ' ', 'X'],
+  [' ', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', ' ', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
+  ['X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', ' ', 'X'],
+  [' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', ' ', ' ', 'X', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', ' '],
+  [' ', 'X', ' ', 'X', 'X', ' ', 'X', ' ', ' ', 'X', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X', 'X', ' '],
+  [' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', ' ', 'X', ' ', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', ' '],
+  [' ', 'X', ' ', ' ', 'X', ' ', 'X', ' ', 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'X', 'X', ' ', ' ', 'X'],
+  [' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X', ' ', 'X', ' ', 'X', 'X', ' ', ' ', 'X', ' ', ' ', 'X'],
+  ['X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X', ' ', ' ', 'X', 'X', ' ', 'X'],
+  [' ', 'X', 'X', 'X', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X', 'X'],
+  ['X', ' ', 'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', ' ', ' ', 'X', ' ', ' ', 'X', ' ', ' '],
+  ['X', 'X', 'X', ' ', 'X', ' ', ' ', 'X', ' ', 'X', ' ', 'X', ' ', ' ', 'X', ' ', 'X', 'X', 'X', ' '],
+  ['X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' '],
+]
+Solutions found: 1
+Time taken: 0.38 seconds
+```
+
+**Solved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/norinori_solved.png" alt="Norinori solved" width="500">
+
+---
+
 ---
 
 ## Why SAT / CP-SAT?
@@ -2744,3 +2839,4 @@ Issues and PRs welcome!
 [30]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/kakurasu "puzzle_solver/src/puzzle_solver/puzzles/kakurasu at master · Ar-Kareem/puzzle_solver · GitHub"
 [31]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/star_battle "puzzle_solver/src/puzzle_solver/puzzles/star_battle at master · Ar-Kareem/puzzle_solver · GitHub"
 [32]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/star_battle_shapeless "puzzle_solver/src/puzzle_solver/puzzles/star_battle_shapeless at master · Ar-Kareem/puzzle_solver · GitHub"
+[33]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/norinori "puzzle_solver/src/puzzle_solver/puzzles/norinori at master · Ar-Kareem/puzzle_solver · GitHub"
