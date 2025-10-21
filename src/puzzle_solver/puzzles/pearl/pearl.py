@@ -5,7 +5,7 @@ from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
 
 from puzzle_solver.core.utils import Pos, get_all_pos, set_char, in_bounds, Direction, get_next_pos, get_char, get_opposite_direction
-from puzzle_solver.core.utils_ortools import and_constraint, or_constraint, generic_solve_all, SingleSolution
+from puzzle_solver.core.utils_ortools import and_constraint, generic_solve_all, SingleSolution, force_connected_component
 
 
 class Board:
@@ -18,7 +18,6 @@ class Board:
         self.model = cp_model.CpModel()
         self.cell_active: dict[Pos, cp_model.IntVar] = {}
         self.cell_direction: dict[tuple[Pos, Direction], cp_model.IntVar] = {}
-        self.reach_layers: list[dict[Pos, cp_model.IntVar]] = []  # R_t[p] booleans, t = 0..T
 
         self.create_vars()
         self.add_all_constraints()
@@ -28,18 +27,11 @@ class Board:
             self.cell_active[pos] = self.model.NewBoolVar(f"a[{pos}]")
             for direction in Direction:
                 self.cell_direction[(pos, direction)] = self.model.NewBoolVar(f"b[{pos}]->({direction.name})")
-        # Percolation layers R_t (monotone flood fill)
-        T = self.V * self.H  # large enough to cover whole board
-        for t in range(T + 1):
-            Rt: dict[Pos, cp_model.IntVar] = {}
-            for pos in get_all_pos(self.V, self.H):
-                Rt[pos] = self.model.NewBoolVar(f"R[{t}][{pos}]")
-            self.reach_layers.append(Rt)
 
     def add_all_constraints(self):
         self.force_direction_constraints()
         self.force_wb_constraints()
-        self.connectivity_percolation()
+        self.force_connected_component()
 
     def force_wb_constraints(self):
         for pos in get_all_pos(self.V, self.H):
@@ -91,40 +83,16 @@ class Board:
                 else:
                     self.model.Add(self.cell_direction[(pos, direction)] == 0)
 
-    def connectivity_percolation(self):
-        """
-        Layered percolation:
-            - root is exactly the first cell
-            - R_t is monotone nondecreasing in t (R_t+1 >= R_t)
-            - A cell can 'turn on' at layer t+1 iff has a neighbor on at layer t and the neighbor is pointing to it (or is root)
-            - Final layer is all connected
-        """
-        # Seed: R0 = root
-        for i, pos in enumerate(get_all_pos(self.V, self.H)):
-            if i == 0:
-                self.model.Add(self.reach_layers[0][pos] == 1)  # first cell is root
-            else:
-                self.model.Add(self.reach_layers[0][pos] == 0)
-
-        for t in range(1, len(self.reach_layers)):
-            Rt_prev = self.reach_layers[t - 1]
-            Rt = self.reach_layers[t]
-            for p in get_all_pos(self.V, self.H):
-                # Rt[p] = Rt_prev[p] | (white[p] & Rt_prev[neighbour #1]) | (white[p] & Rt_prev[neighbour #2]) | ...
-                # Create helper (white[p] & Rt_prev[neighbour #X]) for each neighbor q
-                neigh_helpers: list[cp_model.IntVar] = []
-                for direction in Direction:
-                    q = get_next_pos(p, direction)
-                    if not in_bounds(q, self.V, self.H):
-                        continue
-                    a = self.model.NewBoolVar(f"A[{t}][{p}]<-({q})")
-                    and_constraint(self.model, target=a, cs=[Rt_prev[q], self.cell_direction[(q, get_opposite_direction(direction))]])
-                    neigh_helpers.append(a)
-                or_constraint(self.model, target=Rt[p], cs=[Rt_prev[p]] + neigh_helpers)
-
-        # every pearl must be reached by the final layer
-        for p in get_all_pos(self.V, self.H):
-            self.model.Add(self.reach_layers[-1][p] == 1).OnlyEnforceIf(self.cell_active[p])
+    def force_connected_component(self):
+        def is_neighbor(pd1: tuple[Pos, Direction], pd2: tuple[Pos, Direction]) -> bool:
+            p1, d1 = pd1
+            p2, d2 = pd2
+            if p1 == p2 and d1 != d2:  # same position, different direction, is neighbor
+                return True
+            if get_next_pos(p1, d1) == p2 and d2 == get_opposite_direction(d1):
+                return True
+            return False
+        force_connected_component(self.model, self.cell_direction, is_neighbor=is_neighbor)
 
 
     def solve_and_print(self, verbose: bool = True):
