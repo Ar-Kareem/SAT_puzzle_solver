@@ -155,3 +155,81 @@ def force_connected_component(model: cp_model.CpModel, vars_to_force: dict[Any, 
         all_new_vars[f"{prefix_name}max_neighbor_height[{k}]"] = v
 
     return all_new_vars
+
+
+def force_no_loops(model: cp_model.CpModel, vars_to_force: dict[Any, cp_model.IntVar], is_neighbor: Callable[[Any, Any], bool] = None):
+    """
+    Forces no loops in the given variables and any abstract function that defines adjacency.
+    Returns a dictionary of new variables that can be used to enforce the no component constraint.
+    """
+    if is_neighbor is None:
+        is_neighbor = lambda p1, p2: manhattan_distance(p1, p2) <= 1
+
+    vs = vars_to_force
+    v_count = len(vs)
+    is_root: dict[Pos, cp_model.IntVar] = {}
+    block_root: dict[Pos, cp_model.IntVar] = {}
+    node_height: dict[Pos, cp_model.IntVar] = {}
+    tree_edge: dict[tuple[Pos, Pos], cp_model.IntVar] = {}  # tree_edge[p, q] means p is parent of q
+    prefix_name = "no_loops_"
+
+    def parent_of(p: Pos) -> list[Pos]:
+        return [q for q in keys_in_order if (q, p) in tree_edge]
+    def children_of(p: Pos) -> list[Pos]:
+        return [q for q in keys_in_order if (p, q) in tree_edge]
+
+    keys_in_order = list(vs.keys())  # must enforce some ordering
+    node_to_idx: dict[Pos, int] = {p: i+1 for i, p in enumerate(keys_in_order)}
+    for p in keys_in_order:
+        # capacity = node_to_idx[p] + 1
+        # if p == Pos(0, 0):
+        #     capacity = 10
+        #     print(f'capacity for {p} = {capacity}')
+        node_height[p] = model.NewIntVar(0, v_count, f"{prefix_name}node_height[{p}]")
+        block_root[p] = model.NewIntVar(0, node_to_idx[p], f"{prefix_name}block_root[{p}]")
+        is_root[p] = model.NewBoolVar(f"{prefix_name}is_root[{p}]")
+        model.Add(is_root[p] == 0).OnlyEnforceIf([vs[p].Not()])
+        model.Add(node_height[p] == 0).OnlyEnforceIf([vs[p].Not()])
+        model.Add(node_height[p] == 1).OnlyEnforceIf([is_root[p]])
+        model.Add(block_root[p] == 0).OnlyEnforceIf([vs[p].Not()])
+        model.Add(block_root[p] == node_to_idx[p]).OnlyEnforceIf([is_root[p]])
+
+    for p in keys_in_order:
+        for q in keys_in_order:
+            if p == q:
+                continue
+            if is_neighbor(p, q):
+                tree_edge[(p, q)] = model.NewBoolVar(f"{prefix_name}tree_edge[{p} is parent of {q}]")
+                model.Add(tree_edge[(p, q)] == 0).OnlyEnforceIf([vs[p].Not()])
+                model.Add(tree_edge[(p, q)] == 0).OnlyEnforceIf([vs[q].Not()])
+                # a tree_edge[p, q] means p is parent of q thus h[q] = h[p] + 1
+                model.Add(node_height[q] == node_height[p] + 1).OnlyEnforceIf([tree_edge[(p, q)]])
+                model.Add(block_root[q] == block_root[p]).OnlyEnforceIf([tree_edge[(p, q)]])
+
+    for (p, q) in tree_edge:
+        if (q, p) in tree_edge:
+            model.Add(tree_edge[(p, q)] == 0).OnlyEnforceIf([tree_edge[(q, p)]])
+            model.Add(tree_edge[(p, q)] == 1).OnlyEnforceIf([tree_edge[(q, p)].Not(), vs[p], vs[q]])
+
+    for p in keys_in_order:
+        for p_child in children_of(p):
+            # i am root thus I point to all my children
+            model.Add(tree_edge[(p, p_child)] == 1).OnlyEnforceIf([is_root[p], vs[p_child]])
+        for p_parent in parent_of(p):
+            # i am root thus I have no parent
+            model.Add(tree_edge[(p_parent, p)] == 0).OnlyEnforceIf([is_root[p]])
+        # every active node has exactly 1 parent except root has none
+        model.AddExactlyOne([tree_edge[(p_parent, p)] for p_parent in parent_of(p)] + [vs[p].Not(), is_root[p]])
+    
+    # now each subgraph has directions where each non-root points to a single parent (and its value is parent+1). 
+    # to break cycles, every non-root active node must be > all neighbors that arent children
+
+    all_new_vars: dict[str, cp_model.IntVar] = {}
+    for k, v in is_root.items():
+        all_new_vars[f"{prefix_name}is_root[{k}]"] = v
+    for k, v in tree_edge.items():
+        all_new_vars[f"{prefix_name}tree_edge[{k[0]} is parent of {k[1]}]"] = v
+    for k, v in node_height.items():
+        all_new_vars[f"{prefix_name}node_height[{k}]"] = v
+
+    return all_new_vars
