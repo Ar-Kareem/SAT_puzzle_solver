@@ -1,3 +1,5 @@
+import time
+
 import numpy as np
 
 from puzzle_solver import filling_solver as solver
@@ -79,14 +81,34 @@ board = np.array([
 #   ['3', ' ', '3', ' ', ' '],
 #   ['2', ' ', ' ', ' ', '5'],
 # ])
-# board = np.array([
-#   ['1', '3', ' '],
-#   ['3', '3', ' '],
-# ])
 
-def test_ground():
+def test_ground_simple():
+
+  board = np.array([
+    ['1', '3', ' '],
+    ['3', '3', ' '],
+  ])
   binst = solver.Board(board=board)
   solutions = binst.solve_and_print()
+  assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+  solution = solutions[0].assignment
+  ground = np.array([
+    ['1', '3', '2'],
+    ['3', '3', '2'],
+  ])
+  ground_assignment = {get_pos(x=x, y=y): int(ground[y][x]) for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+  assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
+  for pos in solution.keys():
+    assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
+
+def test_ground():
+  print(f'setting up board')
+  tic = time.time()
+  binst = solver.Board(board=board)
+  toc = time.time()
+  print('solving board')
+  solutions = binst.solve_and_print()
+  print(f'building model took {toc - tic:.2f} seconds')
   ground = np.array([
     ['4', '4', '2', '2', '4', '2', '2'],
     ['4', '4', '7', '4', '4', '3', '3'],
@@ -103,4 +125,5 @@ def test_ground():
     assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
 
 if __name__ == '__main__':
+  test_ground_simple()
   test_ground()
