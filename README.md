@@ -234,8 +234,8 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
     </a>
   </td>
   <td align="center">
-    <a href="#norinori-puzzle-type-33"><b>Norinori</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/norinori_solved.png" alt="Norinori" width="140">
+    <a href="#lits-puzzle-type-33"><b>Lits</b><br><br>
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/lits_solved.png" alt="Lits" width="140">
     </a>
   </td>
 </tr>
@@ -285,7 +285,7 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   - [Kakurasu (Puzzle Type #30)](#kakurasu-puzzle-type-30)
   - [Star Battle (Puzzle Type #31)](#star-battle-puzzle-type-31)
   - [Star Battle Shapeless (Puzzle Type #32)](#star-battle-shapeless-puzzle-type-32)
-  - [Norinori (Puzzle Type #33)](#norinori-puzzle-type-33)
+  - [Lits (Puzzle Type #33)](#lits-puzzle-type-33)
   - [Why SAT / CP-SAT?](#why-sat--cp-sat)
   - [Testing](#testing)
   - [Contributing](#contributing)
@@ -2667,9 +2667,9 @@ Time taken: 0.02 seconds
 
 ---
 
-## Norinori (Puzzle Type #33)
+## Lits (Puzzle Type #33)
 
-* [**Play online**](https://www.puzzle-norinori.com/)
+* [**Play online**](https://www.puzzle-lits.com/)
 
 * [**Solver Code**][33]
 
@@ -2689,7 +2689,7 @@ Note: The solver is capable of solving variations where the puzzle pieces the ma
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/norinori_unsolved.png" alt="Norinori unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/lits_unsolved.png" alt="Lits unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -2752,7 +2752,7 @@ Time taken: 0.38 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/norinori_solved.png" alt="Norinori solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/lits_solved.png" alt="Lits solved" width="500">
 
 ---
 
@@ -2839,4 +2839,4 @@ Issues and PRs welcome!
 [30]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/kakurasu "puzzle_solver/src/puzzle_solver/puzzles/kakurasu at master · Ar-Kareem/puzzle_solver · GitHub"
 [31]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/star_battle "puzzle_solver/src/puzzle_solver/puzzles/star_battle at master · Ar-Kareem/puzzle_solver · GitHub"
 [32]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/star_battle_shapeless "puzzle_solver/src/puzzle_solver/puzzles/star_battle_shapeless at master · Ar-Kareem/puzzle_solver · GitHub"
-[33]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/norinori "puzzle_solver/src/puzzle_solver/puzzles/norinori at master · Ar-Kareem/puzzle_solver · GitHub"
+[33]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/lits "puzzle_solver/src/puzzle_solver/puzzles/lits at master · Ar-Kareem/puzzle_solver · GitHub"

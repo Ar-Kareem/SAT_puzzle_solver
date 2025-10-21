@@ -1,6 +1,6 @@
 import numpy as np
 
-from puzzle_solver import norinori_solver as solver
+from puzzle_solver import lits_solver as solver
 from puzzle_solver.core.utils import get_pos
 
 def test_ground_1():

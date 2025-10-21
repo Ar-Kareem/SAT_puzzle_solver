@@ -16,7 +16,7 @@ from puzzle_solver.puzzles.map import map as map_solver
 from puzzle_solver.puzzles.minesweeper import minesweeper as minesweeper_solver
 from puzzle_solver.puzzles.mosaic import mosaic as mosaic_solver
 from puzzle_solver.puzzles.nonograms import nonograms as nonograms_solver
-from puzzle_solver.puzzles.norinori import norinori as norinori_solver
+from puzzle_solver.puzzles.lits import lits as lits_solver
 from puzzle_solver.puzzles.pearl import pearl as pearl_solver
 from puzzle_solver.puzzles.range import range as range_solver
 from puzzle_solver.puzzles.signpost import signpost as signpost_solver

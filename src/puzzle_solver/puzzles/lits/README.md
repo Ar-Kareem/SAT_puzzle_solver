@@ -1,6 +1,6 @@
-# Norinori (Puzzle Type #33)
+# Lits (Puzzle Type #33)
 
-* [**Play online**](https://www.puzzle-norinori.com/)
+* [**Play online**](https://www.puzzle-lits.com/)
 
  You have to place one tetromino in each region in such a way that:
 - 2 tetrominoes of matching types cannot touch each other horizontally or vertically. Rotations and reflections count as matching.
@@ -13,7 +13,7 @@ Note: The solver is capable of solving variations where the puzzle pieces the ma
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/norinori_unsolved.png" alt="Norinori unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/lits_unsolved.png" alt="Lits unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -76,4 +76,4 @@ Time taken: 0.38 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/norinori_solved.png" alt="Norinori solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/lits_solved.png" alt="Lits solved" width="500">
