@@ -90,8 +90,7 @@ def force_connected_component(model: cp_model.CpModel, vars_to_force: dict[Any, 
     """
     Forces a single connected component of the given variables and any abstract function that defines adjacency.
     Returns a dictionary of new variables that can be used to enforce the connected component constraint.
-    Total new variables: =(3+N)V where N is average number of neighbors, ~7*N*M for N by M 2D grid
-    WARNING: Will make solutions not unique (because the choice of parent is not unique)
+    Total new variables: =4V [for N by M 2D grid total is 4NM]
     """
     if is_neighbor is None:
         is_neighbor = lambda p1, p2: manhattan_distance(p1, p2) <= 1
@@ -99,23 +98,19 @@ def force_connected_component(model: cp_model.CpModel, vars_to_force: dict[Any, 
     vs = vars_to_force
     v_count = len(vs)
     # =V model variables, one for each variable
-    is_root: dict[Pos, cp_model.IntVar] = {}  # =V
-    prefix_zero: dict[Pos, cp_model.IntVar] = {}  # =V
-    node_mtz: dict[Pos, cp_model.IntVar] = {}  # =V
-    # =NV model variables where N is average number of neighbors (with double counting)
-    # for a N by M 2D grid exactly = 4MN-2M-2N [the correction term (-2M-2N) is because the borders have less neighbors]
-    parent: dict[tuple[int, int], cp_model.IntVar] = {}  # =NV
+    is_root: dict[Pos, cp_model.IntVar] = {}  # =V, defines the unique root 
+    prefix_zero: dict[Pos, cp_model.IntVar] = {}  # =V, used for picking the unique root
+    node_height: dict[Pos, cp_model.IntVar] = {}  # =V, trickles down from the root
+    max_neighbor_height: dict[Pos, cp_model.IntVar] = {}  # =V, the height of the tallest neighbor
     prefix_name = "connected_component_"
-    # total = (3+N)V [for N by M 2D grid total is (7MN-2M-2N) or simply ~7*N*M]
+    # total = 4V [for N by M 2D grid total is 4NM]
 
-    # must enforce some ordering
-    key_to_idx: dict[Pos, int] = {p: i for i, p in enumerate(vs.keys())}
-    idx_to_key: dict[int, Pos] = {i: p for p, i in key_to_idx.items()}
-    keys_in_order = [idx_to_key[i] for i in range(len(key_to_idx))]
+    keys_in_order = list(vs.keys())  # must enforce some ordering
 
     for p in keys_in_order:
         is_root[p] = model.NewBoolVar(f"{prefix_name}is_root[{p}]")
-        node_mtz[p] = model.NewIntVar(0, v_count - 1, f"{prefix_name}node_mtz[{p}]")
+        node_height[p] = model.NewIntVar(0, v_count, f"{prefix_name}node_height[{p}]")
+        max_neighbor_height[p] = model.NewIntVar(0, v_count, f"{prefix_name}max_neighbor_height[{p}]")
     # Unique root: the smallest index i with x[i] = 1
     # prefix_zero[i] = AND_{k < i} (not x[k])
     prev_p = None
@@ -139,34 +134,20 @@ def force_connected_component(model: cp_model.CpModel, vars_to_force: dict[Any, 
     for i, pi in enumerate(keys_in_order):
         cand = sorted([pj for j, pj in enumerate(keys_in_order) if i != j and is_neighbor(pi, pj)])
         # if a node is active and its not root, it must have 1 parent [the first true candidate], otherwise no parent
-        ps = []
-        for j, pj in enumerate(cand):
-            parent_ij = model.NewBoolVar(f"{prefix_name}parent[{pi},{pj}]")
-            parent[(pi,pj)] = parent_ij
-            am_i_root = is_root[pi]
-            am_i_active = vs[pi]
-            is_neighbor_active = vs[pj]
-            model.AddImplication(parent_ij, am_i_root.Not())
-            model.AddImplication(parent_ij, am_i_active)
-            model.AddImplication(parent_ij, is_neighbor_active)
-            ps.append(parent_ij)
-        # if 1 then sum(parents) = 1, if 0 then sum(parents) = 0; thus sum(parents) = var_minus_root
-        var_minus_root = vs[pi] - is_root[pi]
-        model.Add(sum(ps) == var_minus_root)
-        # MTZ constraint to force single connected component
-        model.Add(node_mtz[pi] == 0).OnlyEnforceIf(is_root[pi])
-        model.Add(node_mtz[pi] == 0).OnlyEnforceIf(vs[pi].Not())
-        for pj in cand:
-            model.Add(node_mtz[pi] == node_mtz[pj] + 1).OnlyEnforceIf(parent[(pi,pj)])
+        ps = [node_height[pj] for pj in cand]
+        model.AddMaxEquality(max_neighbor_height[pi], ps)
+        model.Add(node_height[pi] == max_neighbor_height[pi] - 1).OnlyEnforceIf([vs[pi], is_root[pi].Not()])
+        model.Add(node_height[pi] == v_count).OnlyEnforceIf(is_root[pi])
+        model.Add(node_height[pi] == 0).OnlyEnforceIf(vs[pi].Not())
+    
+    # final check: all active nodes have height > 0
+    for p in keys_in_order:
+        model.Add(node_height[p] > 0).OnlyEnforceIf(vs[p])
 
     all_new_vars: dict[str, cp_model.IntVar] = {}
     for k, v in is_root.items():
         all_new_vars[f"{prefix_name}is_root[{k}]"] = v
     for k, v in prefix_zero.items():
         all_new_vars[f"{prefix_name}prefix_zero[{k}]"] = v
-    for (p1, p2), v in parent.items():
-        all_new_vars[f"{prefix_name}parent[{p1},{p2}]"] = v
-    for k, v in node_mtz.items():
-        all_new_vars[f"{prefix_name}node_mtz[{k}]"] = v
 
     return all_new_vars
