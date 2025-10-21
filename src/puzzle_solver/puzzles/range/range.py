@@ -2,7 +2,7 @@ import numpy as np
 from ortools.sat.python import cp_model
 
 from puzzle_solver.core.utils import Pos, get_all_pos, set_char, get_neighbors4, in_bounds, Direction, get_next_pos, get_char
-from puzzle_solver.core.utils_ortools import and_constraint, or_constraint, generic_solve_all, SingleSolution
+from puzzle_solver.core.utils_ortools import and_constraint, or_constraint, generic_solve_all, SingleSolution, force_connected_component
 
 
 def get_ray(pos: Pos, V: int, H: int, direction: Direction) -> list[Pos]:
@@ -27,9 +27,6 @@ class Board:
         # Core vars
         self.b: dict[Pos, cp_model.IntVar] = {}  # 1=black, 0=white
         self.w: dict[Pos, cp_model.IntVar] = {}  # 1=white, 0=black
-        # Connectivity helpers
-        self.root: dict[Pos, cp_model.IntVar] = {}       # exactly one root; root <= w
-        self.reach_layers: list[dict[Pos, cp_model.IntVar]] = []  # R_t[p] booleans, t = 0..T
 
         self.create_vars()
         self.add_all_constraints()
@@ -40,18 +37,6 @@ class Board:
             self.b[pos] = self.model.NewBoolVar(f"b[{pos}]")
             self.w[pos] = self.model.NewBoolVar(f"w[{pos}]")
             self.model.AddExactlyOne([self.b[pos], self.w[pos]])
-
-        # Root
-        for pos in get_all_pos(self.V, self.H):
-            self.root[pos] = self.model.NewBoolVar(f"root[{pos}]")
-
-        # Percolation layers R_t (monotone flood fill)
-        T = self.V * self.H  # large enough to cover whole board
-        for t in range(T + 1):
-            Rt: dict[Pos, cp_model.IntVar] = {}
-            for pos in get_all_pos(self.V, self.H):
-                Rt[pos] = self.model.NewBoolVar(f"R[{t}][{pos}]")
-            self.reach_layers.append(Rt)
 
     def add_all_constraints(self):
         self.no_adjacent_blacks()
@@ -69,41 +54,7 @@ class Board:
 
 
     def white_connectivity_percolation(self):
-        """
-        Layered percolation:
-          - root is exactly the first white cell
-          - R_t is monotone nondecreasing in t (R_t+1 >= R_t)
-          - A cell can 'turn on' at layer t+1 iff it's white and has a neighbor on at layer t (or is root)
-          - Final layer is equal to the white mask: R_T[p] == w[p]  => all whites are connected to the unique root
-        """
-        # to find unique solutions easily, we make only 1 possible root allowed; root is exactly the first white cell
-        prev_cells_black: list[cp_model.IntVar] = []
-        for pos in get_all_pos(self.V, self.H):
-            and_constraint(self.model, target=self.root[pos], cs=[self.w[pos]] + prev_cells_black)
-            prev_cells_black.append(self.b[pos])
-
-        # Seed: R0 = root
-        for pos in get_all_pos(self.V, self.H):
-            self.model.Add(self.reach_layers[0][pos] == self.root[pos])
-
-        T = len(self.reach_layers)
-        for t in range(1, T):
-            Rt_prev = self.reach_layers[t - 1]
-            Rt = self.reach_layers[t]
-            for p in get_all_pos(self.V, self.H):
-                # Rt[p] = Rt_prev[p] | (white[p] & Rt_prev[neighbour #1]) | (white[p] & Rt_prev[neighbour #2]) | ...
-                # Create helper (white[p] & Rt_prev[neighbour #X]) for each neighbor q
-                neigh_helpers: list[cp_model.IntVar] = []
-                for q in get_neighbors4(p, self.V, self.H):
-                    a = self.model.NewBoolVar(f"A[{t}][{p}]<-({q})")
-                    and_constraint(self.model, target=a, cs=[self.w[p], Rt_prev[q]])
-                    neigh_helpers.append(a)
-                or_constraint(self.model, target=Rt[p], cs=[Rt_prev[p]] + neigh_helpers)
-
-        # All whites must be reached by the final layer
-        RT = self.reach_layers[T - 1]
-        for p in get_all_pos(self.V, self.H):
-            self.model.Add(RT[p] == self.w[p])
+        force_connected_component(self.model, self.w)
 
     def range_clues(self):
         # For each numbered cell c with value k:
