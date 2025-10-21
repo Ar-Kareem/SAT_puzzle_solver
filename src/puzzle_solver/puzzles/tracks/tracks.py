@@ -105,7 +105,7 @@ class Board:
         def is_neighbor(pd1: tuple[Pos, Direction], pd2: tuple[Pos, Direction]) -> bool:
             p1, d1 = pd1
             p2, d2 = pd2
-            if p1 == p2 and d1 != d2:  # same position, different direction, is neighbor
+            if p1 == p2:  # same position, different direction, is neighbor
                 return True
             if get_next_pos(p1, d1) == p2 and d2 == get_opposite_direction(d1):
                 return True
