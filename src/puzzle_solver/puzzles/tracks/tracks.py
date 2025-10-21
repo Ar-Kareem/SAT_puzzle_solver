@@ -3,7 +3,7 @@ import numpy as np
 from ortools.sat.python import cp_model
 
 from puzzle_solver.core.utils import Pos, get_all_pos, set_char, get_char, Direction, in_bounds, get_next_pos, get_row_pos, get_col_pos, get_opposite_direction
-from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, and_constraint, or_constraint
+from puzzle_solver.core.utils_ortools import force_connected_component, generic_solve_all, SingleSolution
 
 
 class Board:
@@ -25,7 +25,6 @@ class Board:
         self.model = cp_model.CpModel()
         self.cell_active: dict[Pos, cp_model.IntVar] = {}
         self.cell_direction: dict[tuple[Pos, Direction], cp_model.IntVar] = {}
-        self.reach_layers: list[dict[Pos, cp_model.IntVar]] = []  # R_t[p] booleans, t = 0..T
 
         self.create_vars()
         self.add_all_constraints()
@@ -35,12 +34,6 @@ class Board:
             self.cell_active[pos] = self.model.NewBoolVar(f'{pos}')
             for direction in Direction:
                 self.cell_direction[(pos, direction)] = self.model.NewBoolVar(f'{pos}:{direction}')
-        # Percolation layers R_t (monotone flood fill)
-        for t in range(self.V * self.H + 1):
-            Rt: dict[Pos, cp_model.IntVar] = {}
-            for pos in get_all_pos(self.V, self.H):
-                Rt[pos] = self.model.NewBoolVar(f"R[{t}][{pos}]")
-            self.reach_layers.append(Rt)
 
     def add_all_constraints(self):
         self.force_hints()
@@ -109,37 +102,15 @@ class Board:
             self.model.Add(self.cell_direction[(pos, Direction.UP)] == 0)
 
     def force_percolation(self):
-        """
-        Layered percolation:
-          - root is exactly the first cell in the first column
-          - R_t is monotone nondecreasing in t (R_t+1 >= R_t)
-          - A cell can 'turn on' at layer t+1 iff it's active and has a neighbor on AND pointing to it at layer t
-          - Final layer is equal to the active mask: R_T[p] == active[p]  => all active cells are connected to the unique root
-        """
-        # only the start position is a root
-        self.model.Add(self.reach_layers[0][self.first_col_start_pos] == 1)
-        for pos in get_all_pos(self.V, self.H):
-            if pos != self.first_col_start_pos:
-                self.model.Add(self.reach_layers[0][pos] == 0)
-
-        for t in range(1, len(self.reach_layers)):
-            Rt_prev = self.reach_layers[t - 1]
-            Rt = self.reach_layers[t]
-            for p in get_all_pos(self.V, self.H):
-                # Rt[p] = Rt_prev[p] | (active[p] & Rt_prev[neighbour #1]) | (active[p] & Rt_prev[neighbour #2]) | ...
-                # Create helper (active[p] & Rt_prev[neighbour #X]) for each neighbor q
-                neigh_helpers: list[cp_model.IntVar] = []
-                for direction in Direction:
-                    q = get_next_pos(p, direction)
-                    if not in_bounds(q, self.V, self.H):
-                        continue
-                    a = self.model.NewBoolVar(f"A[{t}][{p}]<-({q})")
-                    and_constraint(self.model, target=a, cs=[self.cell_active[p], Rt_prev[q], self.cell_direction[(q, get_opposite_direction(direction))]])
-                    neigh_helpers.append(a)
-                or_constraint(self.model, target=Rt[p], cs=[Rt_prev[p]] + neigh_helpers)
-        # every avtive track must be reachible -> single connected component
-        for pos in get_all_pos(self.V, self.H):
-            self.model.Add(self.reach_layers[-1][pos] == 1).OnlyEnforceIf(self.cell_active[pos])
+        def is_neighbor(pd1: tuple[Pos, Direction], pd2: tuple[Pos, Direction]) -> bool:
+            p1, d1 = pd1
+            p2, d2 = pd2
+            if p1 == p2 and d1 != d2:  # same position, different direction, is neighbor
+                return True
+            if get_next_pos(p1, d1) == p2 and d2 == get_opposite_direction(d1):
+                return True
+            return False
+        force_connected_component(self.model, self.cell_direction, is_neighbor=is_neighbor)
 
 
 
