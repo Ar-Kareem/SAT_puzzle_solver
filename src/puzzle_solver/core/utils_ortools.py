@@ -132,10 +132,10 @@ def force_connected_component(model: cp_model.CpModel, vars_to_force: dict[Any, 
 
     # For each node i, consider only neighbors
     for i, pi in enumerate(keys_in_order):
-        cand = sorted([pj for j, pj in enumerate(keys_in_order) if i != j and is_neighbor(pi, pj)])
-        # if a node is active and its not root, it must have 1 parent [the first true candidate], otherwise no parent
-        ps = [node_height[pj] for pj in cand]
+        # ps is list of neighbor heights
+        ps = [node_height[pj] for j, pj in enumerate(keys_in_order) if i != j and is_neighbor(pi, pj)]
         model.AddMaxEquality(max_neighbor_height[pi], ps)
+        # if a node is active and its not root, its height is the height of the tallest neighbor - 1
         model.Add(node_height[pi] == max_neighbor_height[pi] - 1).OnlyEnforceIf([vs[pi], is_root[pi].Not()])
         model.Add(node_height[pi] == v_count).OnlyEnforceIf(is_root[pi])
         model.Add(node_height[pi] == 0).OnlyEnforceIf(vs[pi].Not())
@@ -149,5 +149,9 @@ def force_connected_component(model: cp_model.CpModel, vars_to_force: dict[Any, 
         all_new_vars[f"{prefix_name}is_root[{k}]"] = v
     for k, v in prefix_zero.items():
         all_new_vars[f"{prefix_name}prefix_zero[{k}]"] = v
+    for k, v in node_height.items():
+        all_new_vars[f"{prefix_name}node_height[{k}]"] = v
+    for k, v in max_neighbor_height.items():
+        all_new_vars[f"{prefix_name}max_neighbor_height[{k}]"] = v
 
     return all_new_vars
