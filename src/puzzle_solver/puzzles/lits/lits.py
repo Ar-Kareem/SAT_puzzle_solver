@@ -233,23 +233,3 @@ class Board:
             print('[\n' + '\n'.join(['  ' + str(res[row].tolist()) + ',' for row in range(self.V)]) + '\n]')
             pass
         return generic_solve_all(self, board_to_solution, callback=callback if verbose_callback else None, verbose=verbose, max_solutions=max_solutions)
-
-    def solve_then_constrain(self, verbose: bool = True):
-        tic = time.time()
-        all_solutions = []
-        while True:
-            solutions = self.solve_and_print(verbose=False, verbose_callback=verbose, max_solutions=1)
-            if len(solutions) == 0:
-                break
-            all_solutions.extend(solutions)
-            assignment = solutions[0].assignment
-            # constrain the board to not return the same solution again
-            lits = [self.model_vars[p].Not() if assignment[p] == 1 else self.model_vars[p] for p in assignment.keys()]
-            self.model.AddBoolOr(lits)
-            self.model.ClearHints()
-            for k, v in solutions[0].all_other_variables['fc'].items():
-                self.model.AddHint(self.fc[k], v)
-        print(f'Solutions found: {len(all_solutions)}')
-        toc = time.time()
-        print(f'Time taken: {toc - tic:.2f} seconds')
-        return all_solutions

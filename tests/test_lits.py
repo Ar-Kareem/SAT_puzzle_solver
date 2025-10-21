@@ -54,7 +54,7 @@ def test_ground_2():
     ['48', '51', '51', '51', '51', '51', '52', '52', '52', '49', '53', '53', '53', '53', '44', '27', '27', '27', '27', '27']
     ])
     binst = solver.Board(board)
-    solutions = binst.solve_then_constrain()
+    solutions = binst.solve_and_print()
     assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
     solution = solutions[0].assignment
     ground = np.array([
@@ -105,3 +105,4 @@ def compare_performance():
 if __name__ == '__main__':
     test_ground_1()
     test_ground_2()
+    # compare_performance()
