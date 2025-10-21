@@ -342,7 +342,9 @@ def solve_optimal_walk(
     for attempt in range(attempts):
         cluster_orders = shuffled_cluster_orders()
         for meta in meta_list:
+            # print('solve once')
             rep_idxs, _, _, _ = solve_once(cluster_orders, meta)
+            # print('solve once done')
             if rep_idxs is None:
                 continue
 
@@ -370,6 +372,7 @@ def solve_optimal_walk(
                         new_nodes, new_cost = reps_to_nodes_and_cost(new_reps)
                         if new_cost < cost:
                             reps = new_reps
+                            # print('2-opt improved cost from', cost, 'to', new_cost)
                             nodes_seq, cost = new_nodes, new_cost
                             improved = True
                             break
@@ -383,7 +386,7 @@ def solve_optimal_walk(
 
     if best_nodes is None:
         raise RuntimeError("No solution found.")
-
+    # print('final check')
     # Final checks and edge list
     edge_walk: List[Tuple[Pos, Pos]] = [(best_nodes[i], best_nodes[i+1]) for i in range(len(best_nodes)-1)]
     assert all(e in edges for e in edge_walk), "Output contains an edge not in the input directed edges."

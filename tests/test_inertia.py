@@ -53,7 +53,7 @@ board3 = np.array([
   ['M', 'G', 'O', 'G', 'O', 'G', 'O', 'G', ' ', 'W', 'W', 'G', 'O', ' ', 'W', 'M', 'G', ' ', 'W', ' ']
 ])
 
-def _test_ground(board: np.array, website_moves: int):
+def _test_ground(board: np.array, website_moves: int, expected = None):
   tic = time.time()
   assert np.sum(board == 'B') == 1, 'board must have exactly one start position'
   print('" " count', np.sum(board == ' '))
@@ -62,24 +62,36 @@ def _test_ground(board: np.array, website_moves: int):
   print('O count', np.sum(board == 'O'))
   print('W count', np.sum(board == 'W'))
   start_pos, edges, edges_to_direction, gems_to_edges = solver.parse_nodes_and_edges(board)
+  tic = time.time()
   optimal_walk = solver.solve_optimal_walk(start_pos, edges, gems_to_edges)
+  toc = time.time()
+  print(f'Time taken: {toc - tic:.2f} seconds')
   moves = solver.get_moves_from_walk(optimal_walk, edges_to_direction)
   assert solver.is_board_completed(board, moves)
   assert len(moves) <= website_moves, f'website solves it in {website_moves} moves. The optimal here is {len(moves)}'
   toc = time.time()
   print(f'Time taken: {toc - tic:.2f} seconds')
+  if expected is not None:
+    assert len(moves) == expected, f'expected {expected} moves, got {len(moves)}'
 def test_ground_1():
   print('board 1:')
   board = board1
-  _test_ground(board, 61)
+  _test_ground(board, 61, expected=47)
 
 def test_ground_2():
   print('board 2:')
-  _test_ground(board2, 73)
+  _test_ground(board2, 73, expected=60)
 
 def test_ground_3():
   print('board 3:')
-  _test_ground(board3, 121)
+  _test_ground(board3, 121, expected=106)
+
+# _test_ground(np.array([
+#   ['M', 'O', 'G'],
+#   ['B', ' ', 'G'],
+#   ['W', 'M', 'M'],
+# ]), 6, expected=4)
+
 
 if __name__ == '__main__':
   test_ground_1()

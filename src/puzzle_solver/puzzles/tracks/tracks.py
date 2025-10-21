@@ -40,7 +40,7 @@ class Board:
         self.force_sides()
         self.force_0_or_2_active()
         self.force_direction_constraints()
-        self.force_percolation()
+        self.force_connected_component()
 
 
     def force_hints(self):
@@ -101,7 +101,7 @@ class Board:
         for pos in get_row_pos(0, self.H):
             self.model.Add(self.cell_direction[(pos, Direction.UP)] == 0)
 
-    def force_percolation(self):
+    def force_connected_component(self):
         def is_neighbor(pd1: tuple[Pos, Direction], pd2: tuple[Pos, Direction]) -> bool:
             p1, d1 = pd1
             p2, d2 = pd2
