@@ -12,8 +12,6 @@ Below are the details of how to utilize the solver. In addition, the solver give
 
 Complete the track from A to B so that the rows and columns contain the same number of track segments as are indicated in the clues to the top and right of the grid. There are only straight and 90-degree curved rail sections, and the track may not cross itself. 
 
-(Note: The solver for this puzzle is slightly slower and could take several seconds to solve a large 15x15 puzzle)
-
 **Unsolved puzzle**
 
 <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tracks_unsolved.png" alt="Tracks unsolved" width="500">
@@ -63,7 +61,7 @@ solutions = binst.solve_and_print()
  ['  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '┏━' '━┛']]
 Solutions found: 1
 status: OPTIMAL
-Time taken: 9.42 seconds
+Time taken: 1.04 seconds
 ```
 
 **Solved puzzle**

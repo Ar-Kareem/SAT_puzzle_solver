@@ -19,8 +19,6 @@ You have a grid of squares; some squares contain numbers. Your job is to colour 
 
 For instance, a square containing the number one must have four black squares as its neighbours by the last criterion; but then it's impossible for it to be connected to any outside white square, which violates the second to last criterion. So no square will contain the number one. 
 
-(Note: The solver for this puzzle is slightly slower and could take several seconds to solve a 16x11 puzzle)
-
 **Unsolved puzzle**
 
 <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/range_unsolved.png" alt="Range unsolved" width="500">
@@ -61,7 +59,7 @@ B . . . B . B . . . . . B . . .
 B . . . . . . B . . . . B . . .
 Solutions found: 1
 status: OPTIMAL
-Time taken: 3.32 seconds
+Time taken: 0.04 seconds
 ```
 
 **Solved puzzle**

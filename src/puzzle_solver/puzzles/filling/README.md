@@ -16,7 +16,7 @@ You have a grid of squares, some of which contain digits, and the rest of which 
 
 For example, it follows that no square can contain a zero, and that two adjacent squares can not both contain a one. No region has an area greater than 9 (because then its area would not be a single digit).
 
-(Note: The solver for this puzzle is the only extremely slow solver in this repo and will take a minute to solve a simple 6x7 puzzle)
+Note: It may take a few seconds for the model to be built.
 
 **Unsolved puzzle**
 
@@ -49,7 +49,7 @@ Solution found
  [1 6 6 1 4 4 4]]
 Solutions found: 1
 status: OPTIMAL
-Time taken: 46.27 seconds
+Time taken: 0.10 seconds
 ```
 
 **Solved puzzle**

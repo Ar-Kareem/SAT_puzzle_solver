@@ -778,7 +778,7 @@ You have a grid of squares, some of which contain digits, and the rest of which 
 For example, it follows that no square can contain a zero, and that two adjacent squares can not both contain a one. No region has an area greater than 9 (because then its area would not be a single digit).
 </details>
 
-(Note: The solver for this puzzle is the only extremely slow solver in this repo and will take a minute to solve a simple 6x7 puzzle)
+Note: It may take a few seconds for the model to be built.
 
 **Unsolved puzzle**
 
@@ -811,7 +811,7 @@ Solution found
  [1 6 6 1 4 4 4]]
 Solutions found: 1
 status: OPTIMAL
-Time taken: 46.27 seconds
+Time taken: 0.10 seconds
 ```
 
 **Solved puzzle**
@@ -1186,8 +1186,6 @@ You have a grid of squares; some squares contain numbers. Your job is to colour 
 For instance, a square containing the number one must have four black squares as its neighbours by the last criterion; but then it's impossible for it to be connected to any outside white square, which violates the second to last criterion. So no square will contain the number one. 
 </details>
 
-(Note: The solver for this puzzle is slightly slower and could take several seconds to solve a 16x11 puzzle)
-
 **Unsolved puzzle**
 
 <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/range_unsolved.png" alt="Range unsolved" width="500">
@@ -1228,7 +1226,7 @@ B . . . B . B . . . . . B . . .
 B . . . . . . B . . . . B . . .
 Solutions found: 1
 status: OPTIMAL
-Time taken: 3.32 seconds
+Time taken: 0.04 seconds
 ```
 
 **Solved puzzle**
@@ -1384,8 +1382,6 @@ Complete the track from A to B so that the rows and columns contain the same num
 
 </details>
 
-(Note: The solver for this puzzle is slightly slower and could take several seconds to solve a large 15x15 puzzle)
-
 **Unsolved puzzle**
 
 <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tracks_unsolved.png" alt="Tracks unsolved" width="500">
@@ -1435,7 +1431,7 @@ solutions = binst.solve_and_print()
  ['  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '  ' '┏━' '━┛']]
 Solutions found: 1
 status: OPTIMAL
-Time taken: 9.42 seconds
+Time taken: 1.04 seconds
 ```
 
 **Solved puzzle**
