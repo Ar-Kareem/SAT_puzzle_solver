@@ -4,8 +4,8 @@ from typing import Iterable, Union
 import numpy as np
 from ortools.sat.python import cp_model
 
-from puzzle_solver.core.utils import Pos, get_all_pos, get_char, set_char, Direction, get_next_pos, in_bounds, get_opposite_direction, get_pos
-from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, or_constraint, force_connected_component
+from puzzle_solver.core.utils import Pos, get_all_pos, set_char, Direction, get_next_pos, in_bounds, get_opposite_direction, get_pos
+from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, force_connected_component
 
 
 def parse_numpy(galaxies: np.ndarray) -> list[tuple[Pos, ...]]:
