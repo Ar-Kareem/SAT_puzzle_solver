@@ -7,6 +7,7 @@ from puzzle_solver.puzzles.chess_range import chess_solo as chess_solo_solver
 from puzzle_solver.puzzles.chess_range import chess_melee as chess_melee_solver
 from puzzle_solver.puzzles.dominosa import dominosa as dominosa_solver
 from puzzle_solver.puzzles.filling import filling as filling_solver
+from puzzle_solver.puzzles.galaxies import galaxies as galaxies_solver
 from puzzle_solver.puzzles.guess import guess as guess_solver
 from puzzle_solver.puzzles.inertia import inertia as inertia_solver
 from puzzle_solver.puzzles.kakurasu import kakurasu as kakurasu_solver
@@ -35,4 +36,4 @@ from puzzle_solver.puzzles.unruly import unruly as unruly_solver
 
 from puzzle_solver.puzzles.inertia.parse_map.parse_map import main as inertia_image_parser
 
-__version__ = '0.9.14'
+__version__ = '0.9.15'
