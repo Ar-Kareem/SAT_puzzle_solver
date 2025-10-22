@@ -95,11 +95,7 @@ def compare_performance():
         ['02', '02', '02', '03', '03', '03']
     ])
     binst = solver.Board(board)
-    # solutions = binst.solve_then_constrain()  # takes forever
-    solutions = binst.solve_and_print()  # slow but finishes in seconds
-    # meanwhile if you try test2 with "solve_and_print" then it will take forever
-    # conclusion: possible that either function takes forever and the other finishes in seconds => neither is better than the other for all boards
-    # BUT if we know the board has 1 solution then "solve_then_constrain" is MILES faster than "solve_and_print"
+    solutions = binst.solve_and_print()
 
 
 if __name__ == '__main__':
