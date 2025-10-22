@@ -38,4 +38,4 @@ from puzzle_solver.puzzles.unruly import unruly as unruly_solver
 
 from puzzle_solver.puzzles.inertia.parse_map.parse_map import main as inertia_image_parser
 
-__version__ = '0.9.17'
+__version__ = '0.9.18'

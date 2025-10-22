@@ -1,11 +1,9 @@
-from typing import Literal, Optional, Union
-from dataclasses import dataclass
-
 import numpy as np
 from ortools.sat.python import cp_model
 
-from puzzle_solver.core.utils import Pos, get_all_pos, get_row_pos, get_col_pos, set_char, get_pos, get_char
+from puzzle_solver.core.utils import Pos, get_all_pos, get_row_pos, get_col_pos, set_char, get_pos, get_char, Direction, in_bounds, get_next_pos
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution
+
 
 def parse_board(board: np.array) -> tuple[np.array, list[tuple[Pos, Pos, str]]]:
     """Returns the internal board and a list for every pair of positions (p1, p2, comparison_type) where p1 < p2 if comparison_type is '<' otherwise abs(p1 - p2)==1 if comparison_type is '|'"""
@@ -56,12 +54,12 @@ def parse_board(board: np.array) -> tuple[np.array, list[tuple[Pos, Pos, str]]]:
                 assert cell in [' ', '.', 'X'], f'expected empty cell or dot or X at unused corner {row_i, col_i}, got {cell}'
     return internal_board, pairs
 
-
 class Board:
-    def __init__(self, board: np.array, include_zero_before_letter: bool = True):
+    def __init__(self, board: np.array, adjacent_mode: bool = False, include_zero_before_letter: bool = True):
         assert board.ndim == 2, f'board must be 2d, got {board.ndim}'
         assert board.shape[0] > 0 and board.shape[1] > 0, 'board must be non-empty'
         self.board, self.pairs = parse_board(board)
+        self.adjacent_mode = adjacent_mode
         self.V, self.H = self.board.shape
         self.lb = 1
         self.N = max(self.V, self.H)
@@ -83,18 +81,33 @@ class Board:
             self.model.AddAllDifferent([self.model_vars[pos] for pos in get_row_pos(row_i, self.H)])
         for col_i in range(self.H):
             self.model.AddAllDifferent([self.model_vars[pos] for pos in get_col_pos(col_i, self.V)])
+        for pos in get_all_pos(self.V, self.H):
+            c = get_char(self.board, pos)
+            if str(c).isdecimal():
+                self.model.Add(self.model_vars[pos] == int(c))
+
         for p1, p2, comparison_type in self.pairs:
             assert comparison_type in ['<', '|'], f'SHOULD NEVER HAPPEN: invalid comparison type {comparison_type}, expected < or |'
             if comparison_type == '<':
                 self.model.Add(self.model_vars[p1] < self.model_vars[p2])
             elif comparison_type == '|':
-                v = self.model.NewBoolVar(f'adjacent_{p1}_{p2}')
-                self.model.Add(self.model_vars[p1] == self.model_vars[p2] + 1).OnlyEnforceIf(v)
-                self.model.Add(self.model_vars[p1] == self.model_vars[p2] - 1).OnlyEnforceIf(v.Not())
-        for pos in get_all_pos(self.V, self.H):
-            c = get_char(self.board, pos)
-            if str(c).isdecimal():
-                self.model.Add(self.model_vars[pos] == int(c))
+                aux = self.model.NewIntVar(0, 2*self.N, f'aux_{p1}_{p2}')
+                self.model.AddAbsEquality(aux, self.model_vars[p1] - self.model_vars[p2])
+                self.model.Add(aux == 1)
+        if self.adjacent_mode:
+            # in adjacent mode, there is strict NON adjacency if a | does not exist
+            all_pairs = {(p1, p2) for p1, p2, _ in self.pairs}
+            for pos in get_all_pos(self.V, self.H):
+                for direction in [Direction.RIGHT, Direction.DOWN]:
+                    neighbor = get_next_pos(pos, direction)
+                    if not in_bounds(neighbor, self.V, self.H):
+                        continue
+                    if (pos, neighbor) in all_pairs:
+                        continue
+                    assert (neighbor, pos) not in all_pairs, f'SHOULD NEVER HAPPEN: both {pos}->{neighbor} and {neighbor}->{pos} are in the same pair'
+                    aux = self.model.NewIntVar(0, 2*self.N, f'aux_{pos}_{neighbor}')
+                    self.model.AddAbsEquality(aux, self.model_vars[pos] - self.model_vars[neighbor])
+                    self.model.Add(aux != 1)
 
     def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
