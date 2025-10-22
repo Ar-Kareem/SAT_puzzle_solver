@@ -175,10 +175,15 @@ def force_no_loops(model: cp_model.CpModel, vars_to_force: dict[Any, cp_model.In
     tree_edge: dict[tuple[Pos, Pos], cp_model.IntVar] = {}  # tree_edge[p, q] means p is parent of q
     prefix_name = "no_loops_"
 
-    def parent_of(p: Pos) -> list[Pos]:
-        return [q for q in keys_in_order if (q, p) in tree_edge]
-    def children_of(p: Pos) -> list[Pos]:
-        return [q for q in keys_in_order if (p, q) in tree_edge]
+    parent_of = {p: [] for p in vs.keys()}
+    children_of = {p: [] for p in vs.keys()}
+    for p in vs.keys():
+        for q in vs.keys():
+            if p == q:
+                continue
+            if is_neighbor(p, q):
+                parent_of[q].append(p)
+                children_of[p].append(q)
 
     keys_in_order = list(vs.keys())  # must enforce some ordering
     node_to_idx: dict[Pos, int] = {p: i+1 for i, p in enumerate(keys_in_order)}
@@ -197,16 +202,13 @@ def force_no_loops(model: cp_model.CpModel, vars_to_force: dict[Any, cp_model.In
         model.Add(block_root[p] == node_to_idx[p]).OnlyEnforceIf([is_root[p]])
 
     for p in keys_in_order:
-        for q in keys_in_order:
-            if p == q:
-                continue
-            if is_neighbor(p, q):
-                tree_edge[(p, q)] = model.NewBoolVar(f"{prefix_name}tree_edge[{p} is parent of {q}]")
-                model.Add(tree_edge[(p, q)] == 0).OnlyEnforceIf([vs[p].Not()])
-                model.Add(tree_edge[(p, q)] == 0).OnlyEnforceIf([vs[q].Not()])
-                # a tree_edge[p, q] means p is parent of q thus h[q] = h[p] + 1
-                model.Add(node_height[q] == node_height[p] + 1).OnlyEnforceIf([tree_edge[(p, q)]])
-                model.Add(block_root[q] == block_root[p]).OnlyEnforceIf([tree_edge[(p, q)]])
+        for q in children_of[p]:
+            tree_edge[(p, q)] = model.NewBoolVar(f"{prefix_name}tree_edge[{p} is parent of {q}]")
+            model.Add(tree_edge[(p, q)] == 0).OnlyEnforceIf([vs[p].Not()])
+            model.Add(tree_edge[(p, q)] == 0).OnlyEnforceIf([vs[q].Not()])
+            # a tree_edge[p, q] means p is parent of q thus h[q] = h[p] + 1
+            model.Add(node_height[q] == node_height[p] + 1).OnlyEnforceIf([tree_edge[(p, q)]])
+            model.Add(block_root[q] == block_root[p]).OnlyEnforceIf([tree_edge[(p, q)]])
 
     for (p, q) in tree_edge:
         if (q, p) in tree_edge:
@@ -214,14 +216,14 @@ def force_no_loops(model: cp_model.CpModel, vars_to_force: dict[Any, cp_model.In
             model.Add(tree_edge[(p, q)] == 1).OnlyEnforceIf([tree_edge[(q, p)].Not(), vs[p], vs[q]])
 
     for p in keys_in_order:
-        for p_child in children_of(p):
+        for p_child in children_of[p]:
             # i am root thus I point to all my children
             model.Add(tree_edge[(p, p_child)] == 1).OnlyEnforceIf([is_root[p], vs[p_child]])
-        for p_parent in parent_of(p):
+        for p_parent in parent_of[p]:
             # i am root thus I have no parent
             model.Add(tree_edge[(p_parent, p)] == 0).OnlyEnforceIf([is_root[p]])
         # every active node has exactly 1 parent except root has none
-        model.AddExactlyOne([tree_edge[(p_parent, p)] for p_parent in parent_of(p)] + [vs[p].Not(), is_root[p]])
+        model.AddExactlyOne([tree_edge[(p_parent, p)] for p_parent in parent_of[p]] + [vs[p].Not(), is_root[p]])
     
     # now each subgraph has directions where each non-root points to a single parent (and its value is parent+1). 
     # to break cycles, every non-root active node must be > all neighbors that arent children
@@ -233,5 +235,7 @@ def force_no_loops(model: cp_model.CpModel, vars_to_force: dict[Any, cp_model.In
         all_new_vars[f"{prefix_name}tree_edge[{k[0]} is parent of {k[1]}]"] = v
     for k, v in node_height.items():
         all_new_vars[f"{prefix_name}node_height[{k}]"] = v
+    for k, v in block_root.items():
+        all_new_vars[f"{prefix_name}block_root[{k}]"] = v
 
     return all_new_vars
