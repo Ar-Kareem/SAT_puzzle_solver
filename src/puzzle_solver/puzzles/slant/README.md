@@ -53,6 +53,7 @@ Solution found
 ]
 Solutions found: 1
 status: OPTIMAL
+Time taken: 0.06 seconds
 ```
 
 **Solved puzzle**
