@@ -22,14 +22,14 @@ class SingleSolution:
 
 
 class Board:
-    def __init__(self, top: list, right: list, bottom: list, left: list, ball_count: Optional[int] = None, max_travel_steps: Optional[int] = None):
+    def __init__(self, top: list, right: list, bottom: list, left: list, ball_count: Optional[tuple[int, int]] = None, max_travel_steps: Optional[int] = None):
         assert len(top) == len(bottom), 'top and bottom must be the same length'
         assert len(left) == len(right), 'left and right must be the same length'
         self.K = len(top) + len(right) + len(bottom) + len(left)  # side count
         self.H = len(top)
         self.V = len(left)
         if max_travel_steps is None:
-            self.T = self.V + self.H  # maximum travel steps for a beam that bounces an undefined number of times
+            self.T = self.V * self.H  # maximum travel steps for a beam that bounces an undefined number of times
         else:
             self.T = max_travel_steps
         self.ball_count = ball_count
@@ -99,7 +99,10 @@ class Board:
         self.constrain_beam_movement()
         self.constrain_final_beam_states()
         if self.ball_count is not None:
-            self.model.Add(sum([b for b in self.ball_states.values() if b is not None]) == self.ball_count)
+            s = sum([b for b in self.ball_states.values() if b is not None])
+            b_min, b_max = self.ball_count
+            self.model.Add(s >= b_min)
+            self.model.Add(s <= b_max)
 
     def init_beams(self):
         beam_ids = []
