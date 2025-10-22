@@ -97,6 +97,8 @@ def force_connected_component(model: cp_model.CpModel, vars_to_force: dict[Any, 
 
     vs = vars_to_force
     v_count = len(vs)
+    if v_count <= 2:  # graph must have at least 3 nodes to possibly be disconnected
+        return {}
     # =V model variables, one for each variable
     is_root: dict[Pos, cp_model.IntVar] = {}  # =V, defines the unique root 
     prefix_zero: dict[Pos, cp_model.IntVar] = {}  # =V, used for picking the unique root
@@ -128,7 +130,7 @@ def force_connected_component(model: cp_model.CpModel, vars_to_force: dict[Any, 
     for p in keys_in_order:
         and_constraint(model, is_root[p], [vs[p], prefix_zero[p]])
     # Exactly one root:
-    model.Add(sum(is_root.values()) == 1)
+    model.Add(sum(is_root.values()) <= 1)
 
     # For each node i, consider only neighbors
     for i, pi in enumerate(keys_in_order):
