@@ -2,7 +2,7 @@ import numpy as np
 from collections import defaultdict
 from ortools.sat.python import cp_model
 
-from puzzle_solver.core.utils import Pos, get_all_pos, get_char, set_char, get_pos, Direction, get_row_pos, get_col_pos, get_next_pos, in_bounds, get_opposite_direction
+from puzzle_solver.core.utils import Pos, get_all_pos, get_char, set_char, get_pos, Direction, get_row_pos, get_col_pos, get_next_pos, in_bounds, get_opposite_direction, render_grid
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, force_connected_component
 
 
@@ -118,131 +118,7 @@ class Board:
                     continue
                 c = ''.join(sorted(single_res.assignment[pos]))
                 set_char(res, pos, c)
-            print(render_grid(cell_flags=res, center_char=lambda c, r: self.board[r, c] if self.board[r, c] != ' ' else '·'))
+            # replace " " with "·"
+            board = np.where(self.board == ' ', '·', self.board)
+            print(render_grid(cell_flags=res, center_char=board))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose, max_solutions=999)
-
-
-
-
-
-def render_grid(cell_flags: np.ndarray = None,
-                H: np.ndarray = None,
-                V: np.ndarray = None,
-                mark_centers: bool = True,
-                center_char: str = '·',
-                show_axes: bool = True,
-                scale_x: int = 2) -> str:
-    """
-    AI generated this because I don't currently care about the details of rendering to the terminal and I did it in a quick and dirty way while the AI made it in a pretty way, and this looks good during my development.
-        cell_flags: np.ndarray of shape (N, N) with characters 'U', 'D', 'L', 'R' to represent the edges of the cells.
-    OR:
-        H: (N+1, N) horizontal edges between corners
-        V: (N,   N+1) vertical edges between corners
-    scale_x: horizontal stretch factor (>=1). Try 2 or 3 for squarer cells.
-    """
-    if cell_flags is not None:
-        N = cell_flags.shape[0]
-        H = np.zeros((N+1, N), dtype=bool)
-        V = np.zeros((N, N+1), dtype=bool)
-        for r in range(N):
-            for c in range(N):
-                s = cell_flags[r, c]
-                if 'U' in s: H[r, c]   = True          # edge between (r,c) and (r, c+1) above the cell
-                if 'D' in s: H[r+1, c] = True          # edge below the cell
-                if 'L' in s: V[r, c]   = True          # edge left of the cell
-                if 'R' in s: V[r, c+1] = True          # edge right of the cell
-    assert H is not None and V is not None, 'H and V must be provided'
-    # Bitmask for corner connections
-    U, R, D, L = 1, 2, 4, 8
-    JUNCTION = {
-        0: ' ',
-        U: '│', D: '│', U|D: '│',
-        L: '─', R: '─', L|R: '─',
-        U|R: '└', R|D: '┌', D|L: '┐', L|U: '┘',
-        U|D|L: '┤', U|D|R: '├', L|R|U: '┴', L|R|D: '┬',
-        U|R|D|L: '┼',
-    }
-
-    assert scale_x >= 1
-    N = V.shape[0]
-    assert H.shape == (N+1, N) and V.shape == (N, N+1)
-
-    rows = 2*N + 1
-    cols = 2*N*scale_x + 1                 # stretched width
-    canvas = [[' ']*cols for _ in range(rows)]
-
-    def x_corner(c):     # x of corner column c
-        return (2*c) * scale_x
-    def x_between(c,k):  # kth in-between column (1..scale_x) between c and c+1 corners
-        return (2*c) * scale_x + k
-
-    # horizontal edges: fill the stretched band between corners with '─'
-    for r in range(N+1):
-        rr = 2*r
-        for c in range(N):
-            if H[r, c]:
-                # previously: for k in range(1, scale_x*2, 2):
-                for k in range(1, scale_x*2):          # 1..(2*scale_x-1), no gaps
-                    canvas[rr][x_between(c, k)] = '─'
-
-    # vertical edges: draw at the corner columns (no horizontal stretching needed)
-    for r in range(N):
-        rr = 2*r + 1
-        for c in range(N+1):
-            if V[r, c]:
-                canvas[rr][x_corner(c)] = '│'
-
-    # junctions at corners
-    for r in range(N+1):
-        rr = 2*r
-        for c in range(N+1):
-            m = 0
-            if r > 0   and V[r-1, c]: m |= U
-            if c < N   and H[r, c]:   m |= R
-            if r < N   and V[r, c]:   m |= D
-            if c > 0   and H[r, c-1]: m |= L
-            canvas[rr][x_corner(c)] = JUNCTION[m]
-
-    # centers (help count exact widths/heights)
-    if mark_centers:
-        for r in range(N):
-            rr = 2*r + 1
-            for c in range(N):
-                # center lies midway across the stretched span
-                xc = x_corner(c) + scale_x          # middle-ish; works for any integer scale_x
-                canvas[rr][xc] = center_char if isinstance(center_char, str) else center_char(c, r)
-
-    # turn canvas rows into strings
-    art_rows = [''.join(row) for row in canvas]
-
-    if not show_axes:
-        return '\n'.join(art_rows)
-
-    # ── Axes ────────────────────────────────────────────────────────────────
-    gut = max(2, len(str(N-1)))       # left gutter width
-    gutter = ' ' * gut
-    top_tens = list(gutter + ' ' * cols)
-    top_ones = list(gutter + ' ' * cols)
-
-    for c in range(N):
-        xc_center = x_corner(c) + scale_x
-        if N >= 10:
-            top_tens[gut + xc_center] = str((c // 10) % 10)
-        top_ones[gut + xc_center] = str(c % 10)
-
-    # tiny corner labels
-    if gut >= 2:
-        top_tens[gut-2:gut] = list('  ')
-        top_ones[gut-2:gut] = list('  ')
-
-    labeled = []
-    for r, line in enumerate(art_rows):
-        if r % 2 == 1:                     # cell-center row
-            label = str(r//2).rjust(gut)
-        else:
-            label = ' ' * gut
-        labeled.append(label + line)
-
-    return ''.join(top_tens) + '\n' + ''.join(top_ones) + '\n' + '\n'.join(labeled)
-
-
