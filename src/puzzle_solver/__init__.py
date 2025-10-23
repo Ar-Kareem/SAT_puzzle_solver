@@ -37,7 +37,8 @@ from puzzle_solver.puzzles.tracks import tracks as tracks_solver
 from puzzle_solver.puzzles.undead import undead as undead_solver
 from puzzle_solver.puzzles.unequal import unequal as unequal_solver
 from puzzle_solver.puzzles.unruly import unruly as unruly_solver
+from puzzle_solver.puzzles.yin_yang import yin_yang as yin_yang_solver
 
 from puzzle_solver.puzzles.inertia.parse_map.parse_map import main as inertia_image_parser
 
-__version__ = '0.9.20'
+__version__ = '0.9.21'
