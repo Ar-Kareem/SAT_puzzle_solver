@@ -283,6 +283,11 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/slitherlink_solved.png" alt="Slitherlink" width="140">
     </a>
   </td>
+  <td align="center">
+    <a href="#yin-yang-puzzle-type-40"><b>Yin-Yang</b><br><br>
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/yin_yang_solved.png" alt="Yin-Yang" width="140">
+    </a>
+  </td>
 </tr>
 </table>
 
@@ -337,6 +342,7 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   - [Unequal (Puzzle Type #37)](#unequal-puzzle-type-37)
   - [Norinori (Puzzle Type #38)](#norinori-puzzle-type-38)
   - [Slitherlink (Puzzle Type #39)](#slitherlink-puzzle-type-39)
+  - [Yin-Yang (Puzzle Type #40)](#yin-yang-puzzle-type-40)
   - [Why SAT / CP-SAT?](#why-sat--cp-sat)
   - [Testing](#testing)
   - [Contributing](#contributing)
@@ -3366,6 +3372,97 @@ Applying the solution to the puzzle visually:
 
 ---
 
+
+## Yin-Yang (Puzzle Type #40)
+
+* [**Play online**](https://www.puzzle-yin-yang.com)
+
+* [**Solver Code**][40]
+
+<details>
+  <summary><strong>Rules</strong></summary>
+
+Yin-Yang is played on a rectangular grid with no standard size. Some cells start out filled with black or white. The rest of the cells are empty. The goal is to color all cells in such a way that:
+1. All black cells should be connected orthogonally in a single group.
+2. All white cells should be connected orthogonally in a single group.
+3. 2x2 areas of the same color are not allowed.
+
+</details>
+
+**Unsolved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/yin_yang_unsolved.png" alt="Yin-Yang unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+
+```python
+import numpy as np
+from puzzle_solver import yin_yang_solver as solver
+board = np.array([
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', 'W', ' ', ' ', ' ', 'B', ' ', ' ', 'W', ' ', 'W', ' ', ' ', 'W', ' ', ' '],
+  [' ', ' ', 'B', ' ', 'B', ' ', 'W', ' ', ' ', 'W', 'B', ' ', ' ', ' ', ' ', 'W', ' ', 'W', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', 'W', ' ', 'W', ' ', 'B', ' ', ' ', ' ', ' ', 'W', ' ', ' ', 'W', ' ', ' '],
+  [' ', 'W', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'W', 'W', ' ', ' ', ' ', ' ', ' ', ' ', 'W', ' ', ' '],
+  [' ', ' ', ' ', ' ', 'W', ' ', ' ', ' ', 'W', 'B', ' ', ' ', ' ', ' ', ' ', 'W', ' ', 'W', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', 'W', ' ', ' ', ' ', ' ', 'B', ' ', 'B', ' ', 'B', 'W', ' ', 'W', ' ', ' '],
+  [' ', ' ', 'B', 'W', 'W', ' ', 'W', ' ', ' ', ' ', 'B', ' ', 'B', ' ', 'B', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'B', ' ', 'B', ' ', 'B', ' ', 'B', ' ', 'B', ' ', 'B', ' '],
+  [' ', 'W', ' ', 'W', ' ', ' ', 'W', ' ', ' ', ' ', 'B', ' ', 'B', ' ', 'B', ' ', 'B', ' ', 'B', ' '],
+  [' ', ' ', ' ', ' ', 'W', 'B', ' ', ' ', ' ', 'B', ' ', ' ', 'B', ' ', 'B', ' ', 'B', ' ', 'B', ' '],
+  [' ', ' ', 'B', ' ', ' ', ' ', 'B', 'B', ' ', 'W', 'B', ' ', 'B', ' ', 'B', ' ', ' ', 'B', ' ', ' '],
+  [' ', 'W', 'W', 'W', ' ', 'B', ' ', 'W', ' ', ' ', 'B', ' ', 'B', ' ', 'B', ' ', ' ', ' ', 'B', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', 'W', ' ', ' ', 'B', ' ', 'B', ' ', ' ', 'B', ' ', 'B', ' ', 'B', ' '],
+  [' ', 'W', ' ', 'B', 'W', 'B', ' ', 'W', ' ', ' ', ' ', ' ', 'B', 'B', ' ', ' ', 'B', ' ', 'B', ' '],
+  [' ', ' ', ' ', ' ', 'W', ' ', ' ', 'B', 'B', 'B', 'B', 'B', ' ', ' ', ' ', 'B', ' ', ' ', 'B', ' '],
+  [' ', 'W', ' ', ' ', ' ', 'W', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'B', ' ', 'B', ' '],
+  ['W', ' ', ' ', 'W', ' ', ' ', 'B', ' ', ' ', 'B', 'B', 'B', 'B', 'B', ' ', ' ', 'B', ' ', 'B', ' '],
+  [' ', 'W', 'W', ' ', 'W', ' ', ' ', 'B', ' ', ' ', ' ', ' ', ' ', ' ', 'B', ' ', 'B', ' ', 'B', ' '],
+  ['B', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'B', 'W']
+])
+binst = solver.Board(board=board)
+solutions = binst.solve_and_print()
+```
+
+**Script Output**
+
+```python
+Solution found
+[
+    [ 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W' ],
+    [ 'W', 'B', 'B', 'W', 'B', 'W', 'B', 'B', 'B', 'B', 'B', 'B', 'W', 'B', 'W', 'B', 'B', 'W', 'B', 'W' ],
+    [ 'W', 'W', 'B', 'W', 'B', 'W', 'W', 'W', 'W', 'W', 'B', 'W', 'W', 'B', 'W', 'W', 'B', 'W', 'B', 'W' ],
+    [ 'W', 'B', 'B', 'B', 'B', 'W', 'B', 'W', 'B', 'B', 'B', 'B', 'B', 'B', 'W', 'B', 'B', 'W', 'B', 'W' ],
+    [ 'W', 'W', 'W', 'B', 'W', 'W', 'B', 'W', 'W', 'W', 'W', 'W', 'B', 'W', 'W', 'W', 'B', 'W', 'B', 'W' ],
+    [ 'W', 'B', 'W', 'B', 'W', 'B', 'B', 'B', 'W', 'B', 'B', 'W', 'B', 'W', 'B', 'W', 'B', 'W', 'B', 'W' ],
+    [ 'W', 'B', 'B', 'B', 'W', 'W', 'W', 'B', 'W', 'W', 'B', 'W', 'B', 'W', 'B', 'W', 'B', 'W', 'B', 'W' ],
+    [ 'W', 'W', 'B', 'W', 'W', 'B', 'W', 'B', 'B', 'W', 'B', 'W', 'B', 'W', 'B', 'W', 'B', 'W', 'B', 'W' ],
+    [ 'W', 'B', 'B', 'B', 'B', 'B', 'W', 'W', 'B', 'W', 'B', 'W', 'B', 'W', 'B', 'W', 'B', 'W', 'B', 'W' ],
+    [ 'W', 'W', 'W', 'W', 'W', 'B', 'W', 'B', 'B', 'W', 'B', 'W', 'B', 'W', 'B', 'W', 'B', 'W', 'B', 'W' ],
+    [ 'W', 'B', 'W', 'B', 'W', 'B', 'W', 'W', 'B', 'B', 'B', 'W', 'B', 'W', 'B', 'W', 'B', 'W', 'B', 'W' ],
+    [ 'W', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'W', 'B', 'W', 'B', 'W', 'B', 'W', 'B', 'B', 'B', 'W' ],
+    [ 'W', 'W', 'W', 'W', 'W', 'B', 'W', 'W', 'W', 'W', 'B', 'W', 'B', 'W', 'B', 'W', 'W', 'W', 'B', 'W' ],
+    [ 'W', 'B', 'B', 'B', 'B', 'B', 'W', 'B', 'B', 'B', 'B', 'B', 'B', 'W', 'B', 'W', 'B', 'W', 'B', 'W' ],
+    [ 'W', 'W', 'W', 'B', 'W', 'B', 'W', 'W', 'W', 'W', 'W', 'W', 'B', 'B', 'B', 'W', 'B', 'W', 'B', 'W' ],
+    [ 'W', 'B', 'B', 'B', 'W', 'B', 'W', 'B', 'B', 'B', 'B', 'B', 'B', 'W', 'B', 'B', 'B', 'W', 'B', 'W' ],
+    [ 'W', 'W', 'B', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'B', 'W', 'B', 'W' ],
+    [ 'W', 'B', 'B', 'W', 'B', 'B', 'B', 'B', 'W', 'B', 'B', 'B', 'B', 'B', 'B', 'W', 'B', 'W', 'B', 'W' ],
+    [ 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'B', 'W', 'W', 'W', 'W', 'W', 'W', 'B', 'W', 'B', 'W', 'B', 'W' ],
+    [ 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'W' ],
+]
+Solutions found: 1
+status: OPTIMAL
+Time taken: 3.10 seconds
+```
+
+**Solved puzzle**
+
+Applying the solution to the puzzle visually:
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/yin_yang_solved.png" alt="Yin-Yang solved" width="500">
+
+---
+
 ---
 
 ## Why SAT / CP-SAT?
@@ -3456,3 +3553,4 @@ Issues and PRs welcome!
 [37]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/unequal "puzzle_solver/src/puzzle_solver/puzzles/unequal at master · Ar-Kareem/puzzle_solver · GitHub"
 [38]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/norinori "puzzle_solver/src/puzzle_solver/puzzles/norinori at master · Ar-Kareem/puzzle_solver · GitHub"
 [39]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/slitherlink "puzzle_solver/src/puzzle_solver/puzzles/slitherlink at master · Ar-Kareem/puzzle_solver · GitHub"
+[40]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/yin_yang "puzzle_solver/src/puzzle_solver/puzzles/yin_yang at master · Ar-Kareem/puzzle_solver · GitHub"
