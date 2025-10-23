@@ -24,7 +24,11 @@ You are given some of the numbers as clues; your aim is to place the rest of the
 
 Code to utilize this package and solve the puzzle:
 
-Note: The solver also supports solving the ["Sandwich" sudoku variant](https://dkmgames.com/SandwichSudoku/) through the optional parameter.
+Note: 
+
+- The solver also supports solving the ["Sandwich" sudoku variant](https://dkmgames.com/SandwichSudoku/) through the optional parameter ``sandwich={'side': [...], 'bottom': [...] }``。
+
+- The solver also supports solving the ["Sudoku-X" variant](https://www.sudopedia.org/wiki/Sudoku-X) through the optional parameter ``unique_diagonal=True``。
 
 ```python
 import numpy as np
