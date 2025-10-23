@@ -3,6 +3,7 @@
     Look at the ./input_output/ directory for examples of input images and output json files.
     The output json is used in the test_solve.py file to test the solver.
 """
+# import json
 from pathlib import Path
 import numpy as np
 cv = None
@@ -72,6 +73,8 @@ def mean_consecutives(arr: np.ndarray) -> np.ndarray:
     return np.array(sums) // np.array(counts)
 
 def dfs(x, y, out, output, current_num):
+    # if current_num == '48':
+    #     print('dfs', x, y, current_num)
     if x < 0 or x >= out.shape[1] or y < 0 or y >= out.shape[0]:
         return
     if out[y, x] != '  ':
@@ -136,6 +139,8 @@ def main(image):
             cell = src[hidx1:hidx2, vidx1:vidx2]
             mid_x = cell.shape[1] // 2
             mid_y = cell.shape[0] // 2
+            # if j > height - 4 and i > width - 6:
+            #     show_wait_destroy(f"cell_{i}_{j}", cell)
             # show_wait_destroy(f"cell_{i}_{j}", cell)
             cell = cv.bitwise_not(cell)  # invert colors
             top = cell[0:10, mid_y-5:mid_y+5]
@@ -156,10 +161,18 @@ def main(image):
     axs[1, 0].set_title('Right')
     axs[1, 1].hist(list(hists['bottom'].values()), bins=100)
     axs[1, 1].set_title('Bottom')
+    global_target = None
+    # global_target = 28_000
     target_top = np.mean(list(hists['top'].values()))
     target_left = np.mean(list(hists['left'].values()))
     target_right = np.mean(list(hists['right'].values()))
     target_bottom = np.mean(list(hists['bottom'].values()))
+    if global_target is not None:
+        target_top = global_target
+        target_left = global_target
+        target_right = global_target
+        target_bottom = global_target
+
     axs[0, 0].axvline(target_top, color='red')
     axs[0, 1].axvline(target_left, color='red')
     axs[1, 0].axvline(target_right, color='red')
@@ -185,12 +198,18 @@ def main(image):
             print('   Sums: ', hists['top'][j, i], hists['left'][j, i], hists['right'][j, i], hists['bottom'][j, i])
 
     current_count = 0
-    out = np.full_like(output['top'], '  ', dtype='U2')
+    z_fill = 2
+    out = np.full_like(output['top'], '  ', dtype='U32')
     for j in range(out.shape[0]):
+        if current_count > 99:
+            z_fill = 3
         for i in range(out.shape[1]):
             if out[j, i] == '  ':
-                dfs(i, j, out, output, str(current_count).zfill(2))
+                if current_count == 48:
+                    print(f"current_count: {current_count}, x: {i}, y: {j}")
+                dfs(i, j, out, output, str(current_count).zfill(z_fill))
                 current_count += 1
+    print(out)
 
     with open(output_path, 'w') as f:
         f.write('[\n')
@@ -202,6 +221,18 @@ def main(image):
         f.write(']')
     print('output json: ', output_path)
 
+    # with open(output_path.parent / 'debug.json', 'w') as f:
+    #     debug_pos = {}
+    #     for j in range(out.shape[0]):
+    #         for i in range(out.shape[1]):
+    #             out_str = ''
+    #             out_str += 'T' if output['top'][j, i] else ''
+    #             out_str += 'L' if output['left'][j, i] else ''
+    #             out_str += 'R' if output['right'][j, i] else ''
+    #             out_str += 'B' if output['bottom'][j, i] else ''
+    #             debug_pos[f'{j}_{i}'] = out_str
+    #     json.dump(debug_pos, f, indent=2)
+
 if __name__ == '__main__':
     # to run this script and visualize the output, in the root run:
     #  python .\src\puzzle_solver\puzzles\stitches\parse_map\parse_map.py | python .\src\puzzle_solver\utils\visualizer.py --read_stdin
@@ -209,4 +240,6 @@ if __name__ == '__main__':
     # main(Path(__file__).parent / 'input_output' / 'weekly_oct_3rd_2025.png')
     # main(Path(__file__).parent / 'input_output' / 'star_battle_67f73ff90cd8cdb4b3e30f56f5261f4968f5dac940bc6.png')
     # main(Path(__file__).parent / 'input_output' / 'LITS_MDoxNzksNzY3.png')
-    main(Path(__file__).parent / 'input_output' / 'lits_OTo3LDMwNiwwMTU=.png')
+    # main(Path(__file__).parent / 'input_output' / 'lits_OTo3LDMwNiwwMTU=.png')
+    # main(Path(__file__).parent / 'input_output' / 'norinori_501d93110d6b4b818c268378973afbf268f96cfa8d7b4.png')
+    main(Path(__file__).parent / 'input_output' / 'norinori_OTo0LDc0Miw5MTU.png')
