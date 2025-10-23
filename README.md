@@ -3091,6 +3091,7 @@ Code to utilize this package and solve the puzzle:
 Note: For an NxM board you need an (2N-1)x(2M-1) array because the puzzle involves input in between the cells. Each numbered cell has neighbors horizontally to represent ">", "<", and "|" (where "|" represents adjacency) and vertically to represent "∧", "∨" and "-" (where "-" represents adjacency). The "X" in the input are unused corners that shouldnt contain anything (just a corner). The numbers should never appear orthogonal to an "X", only diagonally to it. vice-versa for the comparison operators.
 
 ```python
+from puzzle_solver import unequal_solver as solver
 board = np.array([
     [' ', ' ', ' ', ' ', '9', ' ', '1', ' ', '7', '>', ' ', '>', ' ', ' ', ' ', ' ', ' ', '>', ' '],
     [' ', 'X', 'V', 'X', ' ', 'X', ' ', 'X', ' ', 'X', ' ', 'X', '∧', 'X', ' ', 'X', ' ', 'X', ' '],
