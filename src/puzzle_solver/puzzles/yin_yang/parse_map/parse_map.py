@@ -1,3 +1,4 @@
+# THIS PARSER IS STILL VERY BUGGY
 
 def extract_lines(bw):
     horizontal = np.copy(bw)
@@ -157,11 +158,13 @@ def extract_yinyang_board(image_path, debug=False):
     return board
 
 if __name__ == "__main__":
+    # THIS PARSER IS STILL VERY BUGGY
     #  python .\src\puzzle_solver\puzzles\yin_yang\parse_map\parse_map.py | python .\src\puzzle_solver\utils\visualizer.py --read_stdin
     import cv2
     import numpy as np
     from pathlib import Path
-    image_path = Path(__file__).parent / "input_output" / "MzoyLDcwMSw2NTY=.png"
+    image_path = Path(__file__).parent / "input_output" / "OTozLDY2MSw3MjE=.png"
+    # image_path = Path(__file__).parent / "input_output" / "MzoyLDcwMSw2NTY=.png"
     # image_path = Path(__file__).parent / "input_output" / "Njo5MDcsNDk4.png"
     # image_path = Path(__file__).parent / "input_output" / "MTE6Niw0NjEsMTIx.png"
     assert image_path.exists(), f"Image file does not exist: {image_path}"

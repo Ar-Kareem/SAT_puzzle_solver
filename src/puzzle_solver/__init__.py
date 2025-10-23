@@ -1,5 +1,6 @@
 from puzzle_solver.puzzles.aquarium import aquarium as aquarium_solver
 from puzzle_solver.puzzles.battleships import battleships as battleships_solver
+from puzzle_solver.puzzles.binairo import binairo as binairo_solver
 from puzzle_solver.puzzles.black_box import black_box as black_box_solver
 from puzzle_solver.puzzles.bridges import bridges as bridges_solver
 from puzzle_solver.puzzles.chess_range import chess_range as chess_range_solver
@@ -41,4 +42,4 @@ from puzzle_solver.puzzles.yin_yang import yin_yang as yin_yang_solver
 
 from puzzle_solver.puzzles.inertia.parse_map.parse_map import main as inertia_image_parser
 
-__version__ = '0.9.22'
+__version__ = '0.9.23'
