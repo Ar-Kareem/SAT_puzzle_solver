@@ -35,7 +35,7 @@ def get_block_pos(i: int, Bv: int, Bh: int) -> list[Pos]:
 
 
 class Board:
-    def __init__(self, board: np.array, block_size: Optional[tuple[int, int]] = None, sandwich: Optional[dict[str, list[int]]] = None):
+    def __init__(self, board: np.array, block_size: Optional[tuple[int, int]] = None, sandwich: Optional[dict[str, list[int]]] = None, unique_diagonal: bool = False):
         assert board.ndim == 2, f'board must be 2d, got {board.ndim}'
         assert board.shape[0] == board.shape[1], 'board must be square'
         assert all(isinstance(i.item(), str) and len(i.item()) == 1 and (i.item().isalnum() or i.item() == ' ') for i in np.nditer(board)), 'board must contain only alphanumeric characters or space'
@@ -59,7 +59,8 @@ class Board:
             self.sandwich = sandwich
         else:
             self.sandwich = None
-
+        self.unique_diagonal = unique_diagonal
+    
         self.model = cp_model.CpModel()
         self.model_vars: dict[Pos, cp_model.IntVar] = {}
 
@@ -91,6 +92,8 @@ class Board:
             self.model.AddAllDifferent(block_vars)
         if self.sandwich is not None:
             self.add_sandwich_constraints()
+        if self.unique_diagonal:
+            self.add_unique_diagonal_constraints()
 
     def add_sandwich_constraints(self):
         for c, clue in enumerate(self.sandwich['bottom']):
@@ -104,12 +107,14 @@ class Board:
             row_vars = [self.model_vars[p] for p in get_row_pos(r, H=self.H)]
             add_single_sandwich(row_vars, int(clue), self.model, name=f"sand_bottom_{r}")
 
+    def add_unique_diagonal_constraints(self):
+        main_diagonal_vars = [self.model_vars[get_pos(x=i, y=i)] for i in range(min(self.V, self.H))]
+        self.model.AddAllDifferent(main_diagonal_vars)
+        anti_diagonal_vars = [self.model_vars[get_pos(x=i, y=self.V-i-1)] for i in range(min(self.V, self.H))]
+        self.model.AddAllDifferent(anti_diagonal_vars)
+
     def solve_and_print(self, verbose: bool = True):
-        count = 0
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
-            nonlocal count
-            count += 1
-            print(f"count: {count}", f'number of variables: {len(board.model.Proto().variables)}')
             assignment: dict[Pos, int] = {}
             for pos, var in board.model_vars.items():
                 assignment[pos] = solver.value(var)

@@ -132,7 +132,45 @@ def test_ground_sandwich_sudoku():
     ['3', '9', '5', '4', '7', '6', '1', '2', '8'],
   ])
 
+
+def test_ground_x():
+  # x variant, no diagonal dups
+  # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/solo.html#3x3x:h1a5a8_7c2a1_3b6d6d3c8e9c9d2d6b2_5a3c5_7a4a5h
+  board = np.array([
+    [ ' ', ' ', ' ',  ' ', ' ', ' ',  ' ', ' ', '1' ],
+    [ ' ', '5', ' ',  '8', '7', ' ',  ' ', ' ', '2' ],
+    [ ' ', '1', '3',  ' ', ' ', '6',  ' ', ' ', ' ' ],
+
+    [ ' ', '6', ' ',  ' ', ' ', ' ',  '3', ' ', ' ' ],
+    [ ' ', '8', ' ',  ' ', ' ', ' ',  ' ', '9', ' ' ],
+    [ ' ', ' ', '9',  ' ', ' ', ' ',  ' ', '2', ' ' ],
+
+    [ ' ', ' ', ' ',  '6', ' ', ' ',  '2', '5', ' ' ],
+    [ '3', ' ', ' ',  ' ', '5', '7',  ' ', '4', ' ' ],
+    [ '5', ' ', ' ',  ' ', ' ', ' ',  ' ', ' ', ' ' ],
+  ])
+  binst = solver.Board(board=board, unique_diagonal=True)
+  solutions = binst.solve_and_print()
+  assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+  solution = solutions[0].assignment
+  ground = np.array([
+    ['7', '9', '2', '4', '3', '5', '8', '6', '1'],
+    ['6', '5', '4', '8', '7', '1', '9', '3', '2'],
+    ['8', '1', '3', '2', '9', '6', '4', '7', '5'],
+    ['4', '6', '5', '1', '2', '9', '3', '8', '7'],
+    ['2', '8', '7', '5', '6', '3', '1', '9', '4'],
+    ['1', '3', '9', '7', '4', '8', '5', '2', '6'],
+    ['9', '7', '8', '6', '1', '4', '2', '5', '3'],
+    ['3', '2', '1', '9', '5', '7', '6', '4', '8'],
+    ['5', '4', '6', '3', '8', '2', '7', '1', '9'],
+  ])
+  ground_assignment = {get_pos(x=x, y=y): ord(ground[y][x]) - ord('a') + 10 if ground[y][x].isalpha() else int(ground[y][x]) for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+  assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys())} != {set(ground_assignment.keys())}'
+  for pos in solution.keys():
+    assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
+
 if __name__ == '__main__':
   test_ground()
   test_ground_2()
   test_ground_sandwich_sudoku()
+  test_ground_x()
