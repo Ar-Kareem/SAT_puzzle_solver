@@ -273,6 +273,11 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/unequal_solved.png" alt="Unequal" width="140">
     </a>
   </td>
+  <td align="center">
+    <a href="#norinori-puzzle-type-38"><b>Norinori</b><br><br>
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/norinori_solved.png" alt="Norinori" width="140">
+    </a>
+  </td>
 </tr>
 </table>
 
@@ -325,6 +330,7 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   - [Galaxies (Puzzle Type #35)](#galaxies-puzzle-type-35)
   - [Slant (Puzzle Type #36)](#slant-puzzle-type-36)
   - [Unequal (Puzzle Type #37)](#unequal-puzzle-type-37)
+  - [Norinori (Puzzle Type #38)](#norinori-puzzle-type-38)
   - [Why SAT / CP-SAT?](#why-sat--cp-sat)
   - [Testing](#testing)
   - [Contributing](#contributing)
@@ -3145,6 +3151,96 @@ Applying the solution to the puzzle visually:
 
 ---
 
+## Norinori (Puzzle Type #38)
+
+* [**Play online**](https://www.puzzle-norinori.com)
+
+* [**Solver Code**][38]
+
+<details>
+  <summary><strong>Rules</strong></summary>
+
+You have to shade some of the cells in such a way that:
+- Exactly 2 cells are shaded in each region.
+- Each shaded cell should be a part of a domino*. Dominoes can cross the region borders.
+- The dominoes cannot touch each other except diagonally.
+
+* A domino is a shape made of 2 shaded cells next to each other (1x2 or 2x1).
+
+</details>
+
+**Unsolved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/norinori_unsolved.png" alt="Norinori unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+
+```python
+from puzzle_solver import norinori_solver as solver
+board = np.array([
+    ['00', '01', '01', '01', '01', '02', '03', '03', '04', '04', '04', '05', '05', '05', '06', '07', '08', '08', '09', '09'],
+    ['00', '00', '01', '01', '01', '02', '03', '04', '04', '10', '11', '11', '05', '06', '06', '07', '08', '08', '12', '12'],
+    ['13', '13', '13', '01', '01', '03', '03', '10', '10', '10', '11', '14', '05', '14', '07', '07', '07', '12', '12', '12'],
+    ['13', '15', '13', '16', '16', '16', '17', '17', '17', '18', '18', '14', '14', '14', '07', '07', '07', '07', '07', '12'],
+    ['13', '15', '15', '16', '19', '19', '17', '17', '17', '18', '18', '18', '14', '20', '07', '07', '21', '21', '21', '21'],
+    ['13', '19', '19', '19', '19', '19', '17', '22', '22', '22', '22', '18', '14', '20', '20', '07', '21', '23', '23', '21'],
+    ['24', '24', '25', '25', '25', '25', '26', '27', '27', '27', '28', '28', '20', '20', '29', '29', '30', '30', '31', '31'],
+    ['24', '24', '25', '32', '33', '33', '26', '27', '27', '34', '28', '35', '35', '36', '36', '29', '37', '30', '31', '31'],
+    ['38', '32', '32', '32', '33', '27', '27', '27', '27', '34', '28', '28', '35', '35', '29', '29', '37', '37', '31', '37'],
+    ['38', '38', '32', '39', '33', '40', '34', '34', '34', '34', '28', '35', '35', '35', '41', '37', '37', '37', '37', '37'],
+    ['42', '38', '39', '39', '40', '40', '43', '43', '34', '44', '28', '35', '45', '45', '41', '41', '41', '41', '46', '46'],
+    ['42', '42', '39', '47', '47', '40', '40', '44', '44', '44', '48', '48', '48', '48', '48', '41', '49', '49', '49', '46'],
+    ['50', '50', '39', '39', '40', '40', '40', '40', '51', '51', '51', '52', '48', '48', '53', '41', '54', '54', '49', '46'],
+    ['50', '39', '39', '55', '55', '40', '40', '40', '56', '51', '51', '52', '53', '48', '53', '41', '41', '54', '49', '46'],
+    ['39', '39', '39', '57', '56', '56', '56', '56', '56', '56', '53', '53', '53', '53', '53', '58', '58', '58', '59', '59'],
+    ['60', '39', '39', '57', '57', '61', '61', '61', '62', '56', '56', '63', '63', '63', '63', '63', '59', '59', '59', '59'],
+    ['60', '64', '65', '65', '61', '61', '66', '66', '62', '62', '62', '67', '63', '63', '68', '69', '69', '69', '69', '69'],
+    ['60', '64', '65', '65', '65', '65', '66', '70', '70', '70', '70', '67', '67', '71', '68', '69', '72', '73', '73', '69'],
+    ['60', '60', '60', '65', '66', '66', '66', '66', '74', '75', '75', '75', '67', '71', '68', '68', '72', '73', '73', '73'],
+    ['76', '76', '76', '76', '76', '77', '77', '74', '74', '74', '74', '67', '67', '71', '71', '71', '72', '73', '78', '78']
+])
+binst = solver.Board(board=board)
+solutions = binst.solve_and_print()
+```
+**Script Output**
+
+```python
+Solution found
+[
+    [ 'X', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' ', 'X', ' ', 'X', ' ', ' ', 'X', ' ', 'X', ' ', 'X', 'X' ],
+    [ 'X', ' ', 'X', ' ', ' ', 'X', ' ', 'X', ' ', 'X', ' ', 'X', ' ', ' ', 'X', ' ', 'X', ' ', ' ', ' ' ],
+    [ ' ', ' ', 'X', ' ', 'X', ' ', 'X', ' ', 'X', ' ', 'X', ' ', 'X', 'X', ' ', ' ', ' ', 'X', ' ', ' ' ],
+    [ 'X', 'X', ' ', ' ', 'X', ' ', 'X', ' ', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X' ],
+    [ ' ', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', ' ', 'X', 'X', ' ', ' ', 'X' ],
+    [ ' ', 'X', ' ', ' ', 'X', ' ', ' ', 'X', 'X', ' ', ' ', ' ', ' ', 'X', 'X', ' ', ' ', 'X', 'X', ' ' ],
+    [ ' ', 'X', ' ', ' ', 'X', ' ', 'X', ' ', ' ', 'X', ' ', 'X', ' ', ' ', ' ', 'X', 'X', ' ', ' ', 'X' ],
+    [ 'X', ' ', 'X', 'X', ' ', ' ', 'X', ' ', ' ', 'X', ' ', 'X', ' ', 'X', 'X', ' ', ' ', 'X', ' ', 'X' ],
+    [ 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' ', ' ' ],
+    [ ' ', 'X', 'X', ' ', 'X', ' ', ' ', ' ', 'X', ' ', 'X', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ' ],
+    [ 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', 'X', ' ', ' ', 'X', 'X', ' ', ' ', ' ', 'X', 'X', ' ' ],
+    [ 'X', ' ', ' ', 'X', 'X', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' ', ' ', ' ' ],
+    [ ' ', 'X', 'X', ' ', ' ', ' ', ' ', 'X', 'X', ' ', ' ', 'X', ' ', ' ', 'X', ' ', 'X', ' ', 'X', 'X' ],
+    [ 'X', ' ', ' ', 'X', 'X', ' ', 'X', ' ', ' ', 'X', ' ', 'X', ' ', 'X', ' ', 'X', ' ', 'X', ' ', ' ' ],
+    [ 'X', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', 'X', ' ', ' ', ' ', 'X', ' ', 'X', ' ', 'X', ' ', ' ' ],
+    [ ' ', ' ', ' ', 'X', 'X', ' ', ' ', 'X', 'X', ' ', ' ', 'X', ' ', ' ', 'X', ' ', 'X', ' ', ' ', 'X' ],
+    [ ' ', 'X', ' ', ' ', ' ', 'X', 'X', ' ', ' ', 'X', ' ', 'X', ' ', ' ', 'X', ' ', 'X', ' ', ' ', 'X' ],
+    [ ' ', 'X', ' ', 'X', 'X', ' ', ' ', 'X', ' ', 'X', ' ', ' ', 'X', 'X', ' ', ' ', ' ', 'X', 'X', ' ' ],
+    [ 'X', ' ', 'X', ' ', ' ', ' ', ' ', 'X', ' ', ' ', 'X', 'X', ' ', ' ', 'X', ' ', 'X', ' ', ' ', ' ' ],
+    [ 'X', ' ', 'X', ' ', ' ', 'X', 'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' ', 'X', 'X' ],
+]
+Solutions found: 1
+status: OPTIMAL
+Time taken: 0.04 seconds
+```
+
+**Solved puzzle**
+
+Applying the solution to the puzzle visually:
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/norinori_solved.png" alt="Norinori solved" width="500">
+
+---
+
 ---
 
 ## Why SAT / CP-SAT?
@@ -3233,3 +3329,4 @@ Issues and PRs welcome!
 [35]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/galaxies "puzzle_solver/src/puzzle_solver/puzzles/galaxies at master · Ar-Kareem/puzzle_solver · GitHub"
 [36]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/slant "puzzle_solver/src/puzzle_solver/puzzles/slant at master · Ar-Kareem/puzzle_solver · GitHub"
 [37]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/unequal "puzzle_solver/src/puzzle_solver/puzzles/unequal at master · Ar-Kareem/puzzle_solver · GitHub"
+[38]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/norinori "puzzle_solver/src/puzzle_solver/puzzles/norinori at master · Ar-Kareem/puzzle_solver · GitHub"
