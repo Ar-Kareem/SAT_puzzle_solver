@@ -15,6 +15,7 @@
 Code to utilize this package and solve the puzzle:
 
 ```python
+import numpy as np
 from puzzle_solver import battleships_solver as solver
 board = np.array([
   [' ', ' ', ' ', ' ', ' ', 'S', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],

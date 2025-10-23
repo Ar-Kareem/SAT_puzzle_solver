@@ -18,6 +18,7 @@ Code to utilize this package and solve the puzzle:
 Note: For an NxM board you need an (N+1)x(M+1) array because the puzzle is to solve for the cells while the input is the values at the corners (there's always one more corner than cells in each dimension).
 
 ```python
+import numpy as np
 from puzzle_solver import slant_solver as solver
 board = np.array([
     [' ', ' ', '1', ' ', '1', ' ', '1', ' ', '1', ' ', ' ', ' ', ' '],

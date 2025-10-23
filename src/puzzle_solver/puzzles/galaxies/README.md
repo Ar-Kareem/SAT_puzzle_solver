@@ -18,6 +18,7 @@ Code to utilize this package and solve the puzzle:
 Note: The number are arbitrary and simply number each galaxy as an integer.
 
 ```python
+import numpy as np
 from puzzle_solver import galaxies_solver as solver
 galaxies = np.array([
     ['  ', '  ', '00', '  ', '  ', '01', '01', '02', '02', '03', '03', '  ', '04', '04', '  '],

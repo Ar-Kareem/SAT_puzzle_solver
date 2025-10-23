@@ -17,6 +17,7 @@ The numbers outside the grid show the number of filled cells horizontally and ve
 Code to utilize this package and solve the puzzle:
 
 ```python
+import numpy as np
 from puzzle_solver import aquarium_solver as solver
 board = np.array([
   ['01', '01', '01', '01', '02', '02', '02', '03', '03', '03', '03', '04', '05', '05', '05'],

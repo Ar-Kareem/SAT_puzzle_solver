@@ -17,6 +17,7 @@ The goal is to make some of the cells black in such a way that:
 Code to utilize this package and solve the puzzle:
 
 ```python
+import numpy as np
 from puzzle_solver import kakurasu_solver as solver
 side = np.array([27, 6, 1, 12, 37, 37, 11, 4, 29, 23, 66, 55])
 bottom = np.array([22, 1, 25, 36, 10, 22, 25, 35, 32, 28, 45, 45])

@@ -18,6 +18,7 @@ The numbers outside the grid show the number of filled cells horizontally and ve
 Code to utilize this package and solve the puzzle:
 
 ```python
+import numpy as np
 from puzzle_solver import thermometers_solver as solver
 board = np.array([
   ['R', 'R', 'D', 'R', 'D', 'R', 'X', 'D', 'L', 'X', 'L', 'L', 'L', 'L', 'L'],

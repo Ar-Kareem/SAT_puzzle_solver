@@ -15,6 +15,7 @@
 Code to utilize this package and solve the puzzle:
 
 ```python
+import numpy as np
 from puzzle_solver import stitches_solver as solver
 board = np.array([
   ["00", "00", "00", "00", "00", "01", "01", "01", "01", "01", "01", "01", "01", "02", "02"],

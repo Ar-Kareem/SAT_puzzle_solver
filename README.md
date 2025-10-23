@@ -2207,6 +2207,7 @@ The numbers outside the grid show the number of filled cells horizontally and ve
 Code to utilize this package and solve the puzzle:
 
 ```python
+import numpy as np
 from puzzle_solver import thermometers_solver as solver
 board = np.array([
   ['R', 'R', 'D', 'R', 'D', 'R', 'X', 'D', 'L', 'X', 'L', 'L', 'L', 'L', 'L'],
@@ -2286,6 +2287,7 @@ The numbers outside the grid show the number of filled cells horizontally and ve
 Code to utilize this package and solve the puzzle:
 
 ```python
+import numpy as np
 from puzzle_solver import aquarium_solver as solver
 board = np.array([
   ['01', '01', '01', '01', '02', '02', '02', '03', '03', '03', '03', '04', '05', '05', '05'],
@@ -2363,6 +2365,7 @@ Time taken: 0.02 seconds
 Code to utilize this package and solve the puzzle:
 
 ```python
+import numpy as np
 from puzzle_solver import stitches_solver as solver
 board = np.array([
   ["00", "00", "00", "00", "00", "01", "01", "01", "01", "01", "01", "01", "01", "02", "02"],
@@ -2443,6 +2446,7 @@ Time taken: 0.01 seconds
 Code to utilize this package and solve the puzzle:
 
 ```python
+import numpy as np
 from puzzle_solver import battleships_solver as solver
 board = np.array([
   [' ', ' ', ' ', ' ', ' ', 'S', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -2525,6 +2529,7 @@ The goal is to make some of the cells black in such a way that:
 Code to utilize this package and solve the puzzle:
 
 ```python
+import numpy as np
 from puzzle_solver import kakurasu_solver as solver
 side = np.array([27, 6, 1, 12, 37, 37, 11, 4, 29, 23, 66, 55])
 bottom = np.array([22, 1, 25, 36, 10, 22, 25, 35, 32, 28, 45, 45])
@@ -2585,6 +2590,7 @@ Code to utilize this package and solve the puzzle:
 Note that as usual the board is an id of the shape (id is meaningless, just used to identify one shape), and the `star_count` parameter depenends on the puzzle type.
 
 ```python
+import numpy as np
 from puzzle_solver import star_battle_solver as solver
 board = np.array([
   ['00', '00', '00', '00', '00', '01', '01', '01', '01', '01', '01', '01', '01', '01', '02', '02', '02', '03', '03', '03', '03', '03', '03', '03', '03'],
@@ -2684,7 +2690,8 @@ Code to utilize this package and solve the puzzle:
 The `star_count` parameter depenends on the puzzle type.
 
 ```python
-from puzzle_solver import star_battle_shapeless_solver as shapeless_solver
+import numpy as np
+from puzzle_solver import star_battle_shapeless as solver
 board = np.array([
   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '], 
   ['B', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '], 
@@ -2697,7 +2704,7 @@ board = np.array([
   ['B', 'B', ' ', ' ', ' ', ' ', 'B', 'B', 'B', ' '], 
   ['B', ' ', ' ', ' ', 'B', ' ', ' ', ' ', ' ', ' '], 
 ])
-binst = shapeless_solver.Board(board=board, star_count=2)
+binst = solver.Board(board=board, star_count=2)
 solutions = binst.solve_and_print()
 ```
 
@@ -2754,6 +2761,8 @@ Note: The solver is capable of solving variations where the puzzle pieces the ma
 Code to utilize this package and solve the puzzle:
 
 ```python
+import numpy as np
+from puzzle_solver import lits_solver as solver
 board = np.array([
   ['00', '00', '00', '01', '01', '02', '02', '02', '03', '03', '03', '04', '04', '05', '06', '07', '07', '08', '08', '09'],
   ['00', '00', '00', '00', '01', '02', '03', '03', '03', '10', '04', '04', '05', '05', '06', '07', '08', '08', '09', '09'],
@@ -2950,6 +2959,7 @@ Code to utilize this package and solve the puzzle:
 Note: The number are arbitrary and simply number each galaxy as an integer.
 
 ```python
+import numpy as np
 from puzzle_solver import galaxies_solver as solver
 galaxies = np.array([
     ['  ', '  ', '00', '  ', '  ', '01', '01', '02', '02', '03', '03', '  ', '04', '04', '  '],
@@ -3034,6 +3044,7 @@ Code to utilize this package and solve the puzzle:
 Note: For an NxM board you need an (N+1)x(M+1) array because the puzzle is to solve for the cells while the input is the values at the corners (there's always one more corner than cells in each dimension).
 
 ```python
+import numpy as np
 from puzzle_solver import slant_solver as solver
 board = np.array([
     [' ', ' ', '1', ' ', '1', ' ', '1', ' ', '1', ' ', ' ', ' ', ' '],
@@ -3118,6 +3129,7 @@ Code to utilize this package and solve the puzzle:
 Note: For an NxM board you need an (2N-1)x(2M-1) array because the puzzle involves input in between the cells. Each numbered cell has neighbors horizontally to represent ">", "<", and "|" (where "|" represents adjacency) and vertically to represent "∧", "∨" and "-" (where "-" represents adjacency). The "X" in the input are unused corners that shouldnt contain anything (just a corner). The numbers should never appear orthogonal to an "X", only diagonally to it. vice-versa for the comparison operators.
 
 ```python
+import numpy as np
 from puzzle_solver import unequal_solver as solver
 board = np.array([
     [' ', ' ', ' ', ' ', '9', ' ', '1', ' ', '7', '>', ' ', '>', ' ', ' ', ' ', ' ', ' ', '>', ' '],
@@ -3197,6 +3209,7 @@ You have to shade some of the cells in such a way that:
 Code to utilize this package and solve the puzzle:
 
 ```python
+import numpy as np
 from puzzle_solver import norinori_solver as solver
 board = np.array([
     ['00', '01', '01', '01', '01', '02', '03', '03', '04', '04', '04', '05', '05', '05', '06', '07', '08', '08', '09', '09'],
@@ -3286,6 +3299,7 @@ A line forming a single loop without crossings or branches means that every corn
 Code to utilize this package and solve the puzzle:
 
 ```python
+import numpy as np
 from puzzle_solver import slitherlink_solver as solver
 board = np.array([
     ['3', ' ', ' ', '2', ' ', ' ', ' ', ' ', ' ', '3', ' ', ' ', ' ', ' ', ' ', '3', ' ', ' ', '1', ' '],

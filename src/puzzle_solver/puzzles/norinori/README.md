@@ -16,6 +16,7 @@ You have to shade some of the cells in such a way that:
 Code to utilize this package and solve the puzzle:
 
 ```python
+import numpy as np
 from puzzle_solver import norinori_solver as solver
 board = np.array([
     ['00', '01', '01', '01', '01', '02', '03', '03', '04', '04', '04', '05', '05', '05', '06', '07', '08', '08', '09', '09'],

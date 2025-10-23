@@ -15,6 +15,7 @@ A line forming a single loop without crossings or branches means that every corn
 Code to utilize this package and solve the puzzle:
 
 ```python
+import numpy as np
 from puzzle_solver import slitherlink_solver as solver
 board = np.array([
     ['3', ' ', ' ', '2', ' ', ' ', ' ', ' ', ' ', '3', ' ', ' ', ' ', ' ', ' ', '3', ' ', ' ', '1', ' '],
