@@ -25,6 +25,7 @@ from puzzle_solver.puzzles.range import range as range_solver
 from puzzle_solver.puzzles.signpost import signpost as signpost_solver
 from puzzle_solver.puzzles.singles import singles as singles_solver
 from puzzle_solver.puzzles.slant import slant as slant_solver
+from puzzle_solver.puzzles.slitherlink import slitherlink as slitherlink_solver
 from puzzle_solver.puzzles.star_battle import star_battle as star_battle_solver
 from puzzle_solver.puzzles.star_battle import star_battle_shapeless as star_battle_shapeless_solver
 from puzzle_solver.puzzles.stitches import stitches as stitches_solver
@@ -39,4 +40,4 @@ from puzzle_solver.puzzles.unruly import unruly as unruly_solver
 
 from puzzle_solver.puzzles.inertia.parse_map.parse_map import main as inertia_image_parser
 
-__version__ = '0.9.19'
+__version__ = '0.9.20'
