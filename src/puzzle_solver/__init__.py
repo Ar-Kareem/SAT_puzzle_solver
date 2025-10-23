@@ -23,6 +23,7 @@ from puzzle_solver.puzzles.norinori import norinori as norinori_solver
 from puzzle_solver.puzzles.lits import lits as lits_solver
 from puzzle_solver.puzzles.pearl import pearl as pearl_solver
 from puzzle_solver.puzzles.range import range as range_solver
+from puzzle_solver.puzzles.rectangles import rectangles as rectangles_solver
 from puzzle_solver.puzzles.signpost import signpost as signpost_solver
 from puzzle_solver.puzzles.singles import singles as singles_solver
 from puzzle_solver.puzzles.slant import slant as slant_solver
@@ -42,4 +43,4 @@ from puzzle_solver.puzzles.yin_yang import yin_yang as yin_yang_solver
 
 from puzzle_solver.puzzles.inertia.parse_map.parse_map import main as inertia_image_parser
 
-__version__ = '0.9.23'
+__version__ = '0.9.24'
