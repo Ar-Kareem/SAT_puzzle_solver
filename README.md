@@ -295,6 +295,11 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/binairo_solved.png" alt="Binairo" width="140">
     </a>
   </td>
+  <td align="center">
+    <a href="#rectangles-puzzle-type-42"><b>Rectangles</b><br><br>
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/rectangles_solved.png" alt="Rectangles" width="140">
+    </a>
+  </td>
 </tr>
 </table>
 
@@ -351,6 +356,7 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   - [Slitherlink (Puzzle Type #39)](#slitherlink-puzzle-type-39)
   - [Yin-Yang (Puzzle Type #40)](#yin-yang-puzzle-type-40)
   - [Binairo (Puzzle Type #41)](#binairo-puzzle-type-41)
+  - [Rectangles (Puzzle Type #42)](#rectangles-puzzle-type-42)
   - [Why SAT / CP-SAT?](#why-sat--cp-sat)
   - [Testing](#testing)
   - [Contributing](#contributing)
@@ -3394,7 +3400,6 @@ Applying the solution to the puzzle visually:
 
 ---
 
-
 ## Yin-Yang (Puzzle Type #40)
 
 * [**Play online**](https://www.puzzle-yin-yang.com)
@@ -3485,7 +3490,6 @@ Applying the solution to the puzzle visually:
 
 ---
 
-
 ## Binairo (Puzzle Type #41)
 
 * [**Play online**](https://www.puzzle-binairo.com)
@@ -3574,6 +3578,119 @@ Time taken: 0.03 seconds
 Applying the solution to the puzzle visually:
 
 <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/binairo_solved.png" alt="Binairo solved" width="500">
+
+---
+
+## Rectangles (Puzzle Type #42)
+
+Also called "Shikaku".
+
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/rect.html)
+
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/rect.html#rect)
+
+* [**Solver Code**][42]
+
+<details>
+  <summary><strong>Rules</strong></summary>
+
+You have a grid of squares, with numbers written in some (but not all) of the squares. Your task is to subdivide the grid into rectangles of various sizes, such that both:
+
+- (a) every rectangle contains exactly one numbered square
+- (b) the area of each rectangle is equal to the number written in its numbered square. 
+
+
+</details>
+
+**Unsolved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/rectangles_unsolved.png" alt="Rectangles unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+
+```python
+import numpy as np
+from puzzle_solver import rectangles_solver as solver
+board = np.array([
+    ['3', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '15',' ', ' ', ' ', ' ' ],
+    [' ', ' ', '2', '2', ' ', ' ', ' ', ' ', ' ', ' ', '11',' ', ' ', ' ', ' ', ' ', ' ', '3', '2' ],
+    [' ', ' ', ' ', ' ', '2', ' ', ' ', ' ', '11',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '2', ' ' ],
+    [' ', ' ', ' ', '2', ' ', ' ', ' ', ' ', ' ', ' ', '6', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' ],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '3', ' ', ' ', ' ', ' ', ' ', ' ', ' ' ],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '2', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' ],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '2', ' ', ' ', ' ', ' ', ' ', ' ', ' ' ],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '28','4', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' ],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '10',' ', '10',' ', ' ', ' ', ' ', '45',' ' ],
+    [' ', ' ', '3', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' ],
+    [' ', '22',' ', ' ', ' ', ' ', ' ', '28',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '17'],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' ],
+    [' ', '8', '3', ' ', ' ', '2', '2', ' ', ' ', ' ', '5', ' ', ' ', '4', ' ', ' ', ' ', ' ', ' ' ],
+    [' ', ' ', ' ', ' ', '4', ' ', ' ', '8', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '2', ' ', ' ', ' ' ],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '3', ' ' ],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' ],
+    ['2', ' ', ' ', ' ', '12',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' ],
+    ['2', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' ],
+    [' ', ' ', '3', '2', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '60',' ', ' ', ' ', ' ', ' ', '4', ' ' ],
+])
+binst = solver.Board(board=board)
+solutions = binst.solve_and_print()
+```
+
+**Script Output**
+
+```python
+Solution found
+    0   0   0   0   0   0   0   0   0   0   1   1   1   1   1   1   1   1   1  
+    0   1   2   3   4   5   6   7   8   9   0   1   2   3   4   5   6   7   8
+  ┌───────────┬───────────────────────────────────────────────────────────┬───┐
+ 0│ 3         │                                            15             │   │
+  ├───────┬───┼───┬───────────────────────────────────────────┬───────────┤   │
+ 1│       │ 2 │ 2 │                        11                 │         3 │ 2 │
+  │       │   │   ├───┬───────────────────────────────────────┴───┬───────┼───┤
+ 2│       │   │   │ 2 │            11                             │     2 │   │
+  │       ├───┴───┤   ├───────────────────────┬───┬───┬───────────┴───────┤   │
+ 3│       │     2 │   │                     6 │   │   │                   │   │
+  │       ├───────┴───┴───────────────┬───┬───┤   │   │                   │   │
+ 4│       │                           │   │   │ 3 │   │                   │   │
+  │       │                           │   │   │   │   │                   │   │
+ 5│       │                           │   │ 2 │   │   │                   │   │
+  │       │                           │   ├───┴───┤   │                   │   │
+ 6│       │                           │   │     2 │   │                   │   │
+  │       │                           │   ├───────┤   │                   │   │
+ 7│       │                        28 │ 4 │       │   │                   │   │
+  │       ├───┬───────────────────────┴───┤       │   │                   │   │
+ 8│       │   │                           │10     │10 │                45 │   │
+  │       │   │                           │       │   │                   │   │
+ 9│       │ 3 │                           │       │   │                   │   │
+  │       │   │                           │       │   │                   │   │
+10│    22 │   │                28         │       │   │                   │17 │
+  │       ├───┤                           │       │   │                   │   │
+11│       │   │                           │       │   │                   │   │
+  ├───────┤   ├───────┬───┬───┬───────────┴───────┤   ├───────────────┬───┤   │
+12│     8 │ 3 │       │ 2 │ 2 │             5     │   │ 4             │   │   │
+  │       │   │       │   │   ├───────────────────┴───┴───────┬───────┤   │   │
+13│       │   │     4 │   │   │ 8                             │ 2     │   │   │
+  │       ├───┴───────┼───┴───┴───────────────────────────────┴───────┤   │   │
+14│       │           │                                               │ 3 │   │
+  │       │           │                                               ├───┤   │
+15│       │           │                                               │   │   │
+  ├───────┤           │                                               │   │   │
+16│ 2     │        12 │                                               │   │   │
+  ├───────┤           │                                               │   │   │
+17│ 2     │           │                                               │   │   │
+  ├───────┴───┬───────┤                                               │   │   │
+18│         3 │ 2     │                        60                     │ 4 │   │
+  └───────────┴───────┴───────────────────────────────────────────────┴───┴───┘
+Solutions found: 1
+status: OPTIMAL
+Time taken: 0.01 seconds
+```
+
+**Solved puzzle**
+
+Applying the solution to the puzzle visually:
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/rectangles_solved.png" alt="Rectangles solved" width="500">
 
 ---
 
@@ -3669,3 +3786,4 @@ Issues and PRs welcome!
 [39]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/slitherlink "puzzle_solver/src/puzzle_solver/puzzles/slitherlink at master · Ar-Kareem/puzzle_solver · GitHub"
 [40]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/yin_yang "puzzle_solver/src/puzzle_solver/puzzles/yin_yang at master · Ar-Kareem/puzzle_solver · GitHub"
 [41]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/binairo "puzzle_solver/src/puzzle_solver/puzzles/binairo at master · Ar-Kareem/puzzle_solver · GitHub"
+[42]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/rectangles "puzzle_solver/src/puzzle_solver/puzzles/rectangles at master · Ar-Kareem/puzzle_solver · GitHub"
