@@ -1,5 +1,7 @@
 # Unequal (Puzzle Type #37)
 
+Also called "Futoshiki" or Renzoku"
+
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/unequal.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/unequal.html#unequal)
