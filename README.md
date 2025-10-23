@@ -278,6 +278,11 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/norinori_solved.png" alt="Norinori" width="140">
     </a>
   </td>
+  <td align="center">
+    <a href="#slitherlink-puzzle-type-39"><b>Slitherlink</b><br><br>
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/slitherlink_solved.png" alt="Slitherlink" width="140">
+    </a>
+  </td>
 </tr>
 </table>
 
@@ -331,6 +336,7 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   - [Slant (Puzzle Type #36)](#slant-puzzle-type-36)
   - [Unequal (Puzzle Type #37)](#unequal-puzzle-type-37)
   - [Norinori (Puzzle Type #38)](#norinori-puzzle-type-38)
+  - [Slitherlink (Puzzle Type #39)](#slitherlink-puzzle-type-39)
   - [Why SAT / CP-SAT?](#why-sat--cp-sat)
   - [Testing](#testing)
   - [Contributing](#contributing)
@@ -3243,6 +3249,116 @@ Applying the solution to the puzzle visually:
 
 ---
 
+## Slitherlink (Puzzle Type #39)
+
+Also known as Fences and Loop the Loop
+
+* [**Play online**](https://www.puzzle-loop.com)
+
+* [**Solver Code**][39]
+
+<details>
+  <summary><strong>Rules</strong></summary>
+
+You have to draw lines between the dots to form a single loop without crossings or branches. The numbers indicate how many lines surround it.
+
+A line forming a single loop without crossings or branches means that every corner has either 2 or 0 lines touching it.
+
+</details>
+
+**Unsolved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/slitherlink_unsolved.png" alt="Slitherlink unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+
+```python
+from puzzle_solver import slitherlink_solver as solver
+board = np.array([
+    ['3', ' ', ' ', '2', ' ', ' ', ' ', ' ', ' ', '3', ' ', ' ', ' ', ' ', ' ', '3', ' ', ' ', '1', ' '],
+    [' ', ' ', '3', ' ', '3', ' ', ' ', ' ', '3', ' ', '2', '2', ' ', '2', ' ', '2', '2', ' ', '2', '3'],
+    ['2', '2', ' ', ' ', ' ', '2', '1', ' ', '1', '1', ' ', ' ', '3', '1', ' ', '2', ' ', ' ', ' ', '2'],
+    [' ', ' ', '2', ' ', ' ', '2', '2', ' ', ' ', ' ', '3', ' ', ' ', ' ', ' ', ' ', '2', '2', '3', ' '],
+    ['1', '2', '1', ' ', ' ', ' ', '2', '1', ' ', '3', '2', ' ', '3', '2', '2', '3', ' ', '3', '2', '2'],
+    [' ', '3', '2', '2', '1', '2', ' ', '3', ' ', ' ', ' ', ' ', '2', '2', '3', ' ', '1', '1', ' ', '2'],
+    ['1', ' ', ' ', ' ', ' ', ' ', '2', ' ', ' ', '2', ' ', '1', '3', ' ', ' ', ' ', ' ', '2', '2', '2'],
+    [' ', '3', ' ', '2', '0', '1', '2', '1', ' ', '1', '3', ' ', '2', ' ', ' ', '2', ' ', '2', '1', ' '],
+    ['2', ' ', ' ', ' ', '2', ' ', '3', ' ', ' ', ' ', ' ', '2', ' ', ' ', '1', '2', ' ', ' ', '1', '3'],
+    [' ', ' ', '1', ' ', ' ', ' ', ' ', '2', '0', ' ', '1', ' ', '2', ' ', '0', ' ', '2', ' ', '3', '2'],
+    [' ', '3', ' ', '3', ' ', '1', '3', ' ', '3', ' ', '2', ' ', ' ', '2', '2', '2', '3', ' ', ' ', ' '],
+    ['3', ' ', ' ', ' ', ' ', ' ', ' ', '0', '2', '1', ' ', ' ', '2', ' ', ' ', '1', ' ', '0', '2', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', '3', ' ', '3', '2', '3', ' ', ' ', '2', ' ', '1', ' ', ' ', ' ', ' '],
+    ['2', '2', ' ', '3', '0', ' ', ' ', '3', ' ', ' ', '2', ' ', ' ', ' ', ' ', '2', '2', ' ', '3', ' '],
+    [' ', '2', '0', ' ', ' ', '3', ' ', '1', ' ', ' ', '2', ' ', '2', '2', ' ', ' ', ' ', '2', ' ', '2'],
+    [' ', ' ', '1', '3', '1', ' ', ' ', ' ', ' ', ' ', '2', ' ', '2', '1', ' ', '1', '2', '2', ' ', ' '],
+    ['2', ' ', '2', '2', ' ', '1', '3', ' ', '2', ' ', '3', '1', '2', ' ', '3', '2', ' ', '1', '1', ' '],
+    [' ', ' ', '2', ' ', '1', ' ', ' ', ' ', '2', ' ', ' ', ' ', '2', ' ', '1', '0', ' ', ' ', ' ', '3'],
+    [' ', '2', ' ', ' ', '2', ' ', '2', '3', '2', ' ', '2', '2', ' ', '3', '2', '2', '3', '3', '1', ' '],
+    ['0', '0', ' ', '3', '2', ' ', ' ', ' ', ' ', ' ', '2', '1', '2', '1', ' ', ' ', ' ', '2', '1', ' '],
+])
+binst = solver.Board(board=board)
+solutions = binst.solve_and_print()
+```
+**Script Output**
+
+```python
+Solution found
+    0   0   0   0   0   0   0   0   0   0   1   1   1   1   1   1   1   1   1   1  
+    0   1   2   3   4   5   6   7   8   9   0   1   2   3   4   5   6   7   8   9
+  ┌───┐   ┌───────┐   ┌───────────────────┐       ┌───────┐   ┌───┐   ┌───────────┐
+ 0│ 3 │ · │ ·   2 │ · │ ·   ·   ·   ·   3 │ ·   · │ ·   · │ · │ 3 │ · │ ·   1   · │
+  │   │   └───┐   │   │   ┌───────┐   ┌───┘   ┌───┘   ┌───┘   │   │   └───┐   ┌───┘
+ 1│ · │ ·   3 │ · │ 3 │ · │ ·   · │ 3 │ ·   2 │ 2   · │ 2   · │ 2 │ 2   · │ 2 │ 3
+  │   │   ┌───┘   └───┘   │       └───┘   ┌───┘   ┌───┘       │   └───────┘   └───┐
+ 2│ 2 │ 2 │ ·   ·   ·   2 │ 1   ·   1   1 │ ·   · │ 3   1   · │ 2   ·   ·   ·   2 │
+  │   │   │   ┌───────────┘   ┌───┐       └───┐   └───────┐   └───────┐   ┌───┐   │
+ 3│ · │ · │ 2 │ ·   ·   2   2 │ · │ ·   ·   3 │ ·   ·   · │ ·   ·   2 │ 2 │ 3 │ · │
+  │   └───┘   └───────────────┘   └───┐   ┌───┘   ┌───┐   │   ┌───┐   │   │   │   │
+ 4│ 1   2   1   ·   ·   ·   2   1   · │ 3 │ 2   · │ 3 │ 2 │ 2 │ 3 │ · │ 3 │ 2 │ 2 │
+  │   ┌───────────────────────────┐   └───┘   ┌───┘   │   │   │   │   └───┘   │   │
+ 5│ · │ 3   2   2   1   2   ·   3 │ ·   ·   · │ ·   2 │ 2 │ 3 │ · │ 1   1   · │ 2 │
+  │   └───────────┐   ┌───────────┘   ┌───────┘   ┌───┘   └───┘   │       ┌───┘   │
+ 6│ 1   ·   ·   · │ · │ ·   2   ·   · │ 2   ·   1 │ 3   ·   ·   · │ ·   2 │ 2   2 │
+  │   ┌───────────┘   └───────────────┘   ┌───┐   └───────────┐   └───────┘   ┌───┘
+ 7│ · │ 3   ·   2   0   1   2   1   ·   1 │ 3 │ ·   2   ·   · │ 2   ·   2   1 │ ·
+  │   └───┐   ┌───┐       ┌───┐   ┌───┐   │   └───────────┐   └───┐   ┌───┐   └───┐
+ 8│ 2   · │ · │ · │ 2   · │ 3 │ · │ · │ · │ ·   2   ·   · │ 1   2 │ · │ · │ 1   3 │
+  └───┐   └───┘   └───┐   │   └───┘   └───┘   ┌───┐   ┌───┘       └───┘   │   ┌───┘
+ 9  · │ ·   1   ·   · │ · │ ·   2   0   ·   1 │ · │ 2 │ ·   0   ·   2   · │ 3 │ 2
+      └───┐   ┌───────┘   │   ┌───┐   ┌───┐   │   │   │       ┌───────┐   └───┘
+10  ·   3 │ · │ 3   ·   1 │ 3 │ · │ 3 │ · │ 2 │ · │ · │ 2   2 │ 2   3 │ ·   ·   ·
+  ┌───────┘   └───────┐   └───┘   └───┘   │   │   │   └───────┘   ┌───┘       ┌───┐
+11│ 3   ·   ·   ·   · │ ·   ·   0   2   1 │ · │ · │ 2   ·   ·   1 │ ·   0   2 │ · │
+  └───┐   ┌───────┐   │   ┌───┐   ┌───┐   │   │   └───┐   ┌───┐   └───┐   ┌───┘   │
+12  · │ · │ ·   · │ · │ · │ 3 │ · │ 3 │ 2 │ 3 │ ·   · │ 2 │ · │ 1   · │ · │ ·   · │
+  ┌───┘   │   ┌───┘   └───┘   │   │   │   └───┘   ┌───┘   │   │   ┌───┘   └───┐   │
+13│ 2   2 │ · │ 3   0   ·   · │ 3 │ · │ ·   2   · │ ·   · │ · │ 2 │ 2   ·   3 │ · │
+  │   ┌───┘   └───┐   ┌───┐   └───┘   └───────────┘   ┌───┘   │   │   ┌───────┘   │
+14│ · │ 2   0   · │ · │ 3 │ ·   1   ·   ·   2   ·   2 │ 2   · │ · │ · │ 2   ·   2 │
+  │   │       ┌───┘   │   │       ┌───────────────────┘       └───┘   │   ┌───────┘
+15│ · │ ·   1 │ 3   1 │ · │ ·   · │ ·   ·   2   ·   2   1   ·   1   2 │ 2 │ ·   ·
+  │   └───┐   └───┐   │   └───┐   │       ┌───────────────────┐   ┌───┘   └───────┐
+16│ 2   · │ 2   2 │ · │ 1   3 │ · │ 2   · │ 3   1   2   ·   3 │ 2 │ ·   1   1   · │
+  └───┐   └───┐   └───┘   ┌───┘   └───┐   └───┐   ┌───────────┘   └───────┐   ┌───┘
+17  · │ ·   2 │ ·   1   · │ ·   ·   2 │ ·   · │ · │ 2   ·   1   0   ·   · │ · │ 3
+      └───┐   └───┐   ┌───┘   ┌───┐   │       │   │   ┌───┐       ┌───┐   │   └───┐
+18  ·   2 │ ·   · │ 2 │ ·   2 │ 3 │ 2 │ ·   2 │ 2 │ · │ 3 │ 2   2 │ 3 │ 3 │ 1   · │
+          └───┐   │   │   ┌───┘   │   └───────┘   └───┘   └───────┘   └───┘       │
+19  0   0   · │ 3 │ 2 │ · │ ·   · │ ·   ·   2   1   2   1   ·   ·   ·   2   1   · │
+              └───┘   └───┘       └───────────────────────────────────────────────┘
+Solutions found: 1
+status: OPTIMAL
+Time taken: 2.39 seconds
+```
+
+**Solved puzzle**
+
+Applying the solution to the puzzle visually:
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/slitherlink_solved.png" alt="Slitherlink solved" width="500">
+
+---
+
 ---
 
 ## Why SAT / CP-SAT?
@@ -3332,3 +3448,4 @@ Issues and PRs welcome!
 [36]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/slant "puzzle_solver/src/puzzle_solver/puzzles/slant at master · Ar-Kareem/puzzle_solver · GitHub"
 [37]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/unequal "puzzle_solver/src/puzzle_solver/puzzles/unequal at master · Ar-Kareem/puzzle_solver · GitHub"
 [38]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/norinori "puzzle_solver/src/puzzle_solver/puzzles/norinori at master · Ar-Kareem/puzzle_solver · GitHub"
+[39]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/slitherlink "puzzle_solver/src/puzzle_solver/puzzles/slitherlink at master · Ar-Kareem/puzzle_solver · GitHub"
