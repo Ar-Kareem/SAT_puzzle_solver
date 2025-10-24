@@ -3291,9 +3291,13 @@ Applying the solution to the puzzle visually:
 
 ## Slitherlink (Puzzle Type #39)
 
-Also known as Fences and Loop the Loop
+Also known as Fences, Loop the Loop, and Loopy
 
-* [**Play online**](https://www.puzzle-loop.com)
+* [**Play online 1**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/loopy.html)
+
+* [**Play online 2**](https://www.puzzle-loop.com)
+
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/loopy.html#loopy)
 
 * [**Solver Code**][39]
 
