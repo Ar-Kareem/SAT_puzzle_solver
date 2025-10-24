@@ -242,4 +242,6 @@ if __name__ == '__main__':
     # main(Path(__file__).parent / 'input_output' / 'LITS_MDoxNzksNzY3.png')
     # main(Path(__file__).parent / 'input_output' / 'lits_OTo3LDMwNiwwMTU=.png')
     # main(Path(__file__).parent / 'input_output' / 'norinori_501d93110d6b4b818c268378973afbf268f96cfa8d7b4.png')
-    main(Path(__file__).parent / 'input_output' / 'norinori_OTo0LDc0Miw5MTU.png')
+    # main(Path(__file__).parent / 'input_output' / 'norinori_OTo0LDc0Miw5MTU.png')
+    # main(Path(__file__).parent / 'input_output' / 'heyawake_MDoxNiwxNDQ=.png')
+    main(Path(__file__).parent / 'input_output' / 'heyawake_MTQ6ODQ4LDEzOQ==.png')
