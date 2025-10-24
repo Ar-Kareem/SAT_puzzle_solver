@@ -11,6 +11,7 @@ from puzzle_solver.puzzles.filling import filling as filling_solver
 from puzzle_solver.puzzles.flip import flip as flip_solver
 from puzzle_solver.puzzles.galaxies import galaxies as galaxies_solver
 from puzzle_solver.puzzles.guess import guess as guess_solver
+from puzzle_solver.puzzles.heyawake import heyawake as heyawake_solver
 from puzzle_solver.puzzles.inertia import inertia as inertia_solver
 from puzzle_solver.puzzles.kakurasu import kakurasu as kakurasu_solver
 from puzzle_solver.puzzles.keen import keen as keen_solver
@@ -46,4 +47,4 @@ from puzzle_solver.puzzles.yin_yang import yin_yang as yin_yang_solver
 
 from puzzle_solver.puzzles.inertia.parse_map.parse_map import main as inertia_image_parser
 
-__version__ = '0.9.27'
+__version__ = '0.9.28'
