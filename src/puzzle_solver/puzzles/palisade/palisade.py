@@ -44,7 +44,7 @@ def get_valid_translations(shape: Shape, board: np.array) -> set[Pos]:
                 if c != ' ' and c != str(shape_borders[i]):  # there is a clue and it doesn't match my translated shape, skip
                     break
             else:
-                yield tuple(get_pos(x=p[0], y=p[1]) for p in body)
+                yield frozenset(get_pos(x=p[0], y=p[1]) for p in body)
 
 
 
