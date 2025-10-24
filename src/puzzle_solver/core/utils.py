@@ -42,7 +42,9 @@ def get_next_pos(cur_pos: Pos, direction: Union[Direction, Direction8]) -> Pos:
     return get_pos(cur_pos.x+delta_x, cur_pos.y+delta_y)
 
 
-def get_neighbors4(pos: Pos, V: int, H: int) -> Iterable[Pos]:
+def get_neighbors4(pos: Pos, V: int, H: int, include_self: bool = False) -> Iterable[Pos]:
+    if include_self:
+        yield pos
     for dx, dy in ((1,0),(-1,0),(0,1),(0,-1)):
         p2 = get_pos(x=pos.x+dx, y=pos.y+dy)
         if in_bounds(p2, V, H):
