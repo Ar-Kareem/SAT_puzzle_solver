@@ -239,122 +239,114 @@ def render_grid(cell_flags: np.ndarray,
     center_char: np.ndarray of shape (N, N) with the center of the cells, or a string to use for all cells, or None to not show centers.
     scale_x: horizontal stretch factor (>=1). Try 2 or 3 for squarer cells.
     """
-    if cell_flags is not None:
-        N = cell_flags.shape[0]
-        H = np.zeros((N+1, N), dtype=bool)
-        V = np.zeros((N, N+1), dtype=bool)
-        for r in range(N):
-            for c in range(N):
-                s = cell_flags[r, c]
-                if 'U' in s: H[r, c]   = True          # edge between (r,c) and (r, c+1) above the cell
-                if 'D' in s: H[r+1, c] = True          # edge below the cell
-                if 'L' in s: V[r, c]   = True          # edge left of the cell
-                if 'R' in s: V[r, c+1] = True          # edge right of the cell
-    assert H is not None and V is not None, 'H and V must be provided'
+    assert cell_flags is not None and cell_flags.ndim == 2
+    R, C = cell_flags.shape
+
+    # Edge presence arrays (note the rectangular shapes)
+    H = np.zeros((R+1, C), dtype=bool)  # horizontal edges between rows
+    V = np.zeros((R, C+1), dtype=bool)  # vertical edges between cols
+    for r in range(R):
+        for c in range(C):
+            s = cell_flags[r, c]
+            if 'U' in s: H[r,   c] = True
+            if 'D' in s: H[r+1, c] = True
+            if 'L' in s: V[r,   c] = True
+            if 'R' in s: V[r, c+1] = True
+
     # Bitmask for corner connections
-    U, R, D, L = 1, 2, 4, 8
+    U, Rb, D, Lb = 1, 2, 4, 8
     JUNCTION = {
         0: ' ',
         U: '│', D: '│', U|D: '│',
-        L: '─', R: '─', L|R: '─',
-        U|R: '└', R|D: '┌', D|L: '┐', L|U: '┘',
-        U|D|L: '┤', U|D|R: '├', L|R|U: '┴', L|R|D: '┬',
-        U|R|D|L: '┼',
+        Lb: '─', Rb: '─', Lb|Rb: '─',
+        U|Rb: '└', Rb|D: '┌', D|Lb: '┐', Lb|U: '┘',
+        U|D|Lb: '┤', U|D|Rb: '├', Lb|Rb|U: '┴', Lb|Rb|D: '┬',
+        U|Rb|D|Lb: '┼',
     }
 
     assert scale_x >= 1
-    N = V.shape[0]
-    assert H.shape == (N+1, N) and V.shape == (N, N+1)
+    assert H.shape == (R+1, C) and V.shape == (R, C+1)
 
-    rows = 2*N + 1
-    cols = 2*N*scale_x + 1                 # stretched width
+    rows = 2*R + 1
+    cols = 2*C*scale_x + 1
     canvas = [[' ']*cols for _ in range(rows)]
 
-    def x_corner(c):     # x of corner column c
+    def x_corner(c):     # x of corner column c  (0..C)
         return (2*c) * scale_x
-    def x_between(c,k):  # kth in-between column (1..scale_x) between c and c+1 corners
+    def x_between(c,k):  # kth in-between col (1..2*scale_x-1) between corners c and c+1
         return (2*c) * scale_x + k
 
     # horizontal edges: fill the stretched band between corners with '─'
-    for r in range(N+1):
+    for r in range(R+1):
         rr = 2*r
-        for c in range(N):
+        for c in range(C):
             if H[r, c]:
-                # previously: for k in range(1, scale_x*2, 2):
-                for k in range(1, scale_x*2):          # 1..(2*scale_x-1), no gaps
+                for k in range(1, scale_x*2):  # 1..(2*scale_x-1)
                     canvas[rr][x_between(c, k)] = '─'
 
-    # vertical edges: draw at the corner columns (no horizontal stretching needed)
-    for r in range(N):
+    # vertical edges: at the corner columns
+    for r in range(R):
         rr = 2*r + 1
-        for c in range(N+1):
+        for c in range(C+1):
             if V[r, c]:
                 canvas[rr][x_corner(c)] = '│'
 
-    # junctions at corners
-    for r in range(N+1):
+    # junctions at every corner grid point
+    for r in range(R+1):
         rr = 2*r
-        for c in range(N+1):
+        for c in range(C+1):
             m = 0
             if r > 0   and V[r-1, c]: m |= U
-            if c < N   and H[r, c]:   m |= R
-            if r < N   and V[r, c]:   m |= D
-            if c > 0   and H[r, c-1]: m |= L
+            if c < C   and H[r, c]:   m |= Rb
+            if r < R   and V[r, c]:   m |= D
+            if c > 0   and H[r, c-1]: m |= Lb
             canvas[rr][x_corner(c)] = JUNCTION[m]
 
-    # centers
-    # ── Centers (now safe for multi-character strings) ──────────────────────
-    # We render center text within the interior span (between corner columns),
-    # centered if it fits; otherwise we truncate to the span width.
+    # centers (safe for multi-character strings)
     def put_center_text(rr: int, c: int, text: str):
-        # interior span (exclusive of the corner columns)
         left  = x_corner(c) + 1
         right = x_corner(c+1) - 1
         if right < left:
-            return  # no interior space (shouldn’t happen when scale_x>=1)
+            return
         span_width = right - left + 1
-
         s = str(text)
         if len(s) > span_width:
-            s = s[:span_width]  # hard truncate if it doesn't fit
-        # center within the span
+            s = s[:span_width]  # truncate to protect borders
         start = left + (span_width - len(s)) // 2
         for i, ch in enumerate(s):
             canvas[rr][start + i] = ch
 
     if center_char is not None:
-        for r in range(N):
+        for r in range(R):
             rr = 2*r + 1
-            for c in range(N):
+            for c in range(C):
                 val = center_char if isinstance(center_char, str) else center_char[r, c]
                 put_center_text(rr, c, '' if val is None else str(val))
 
-    # turn canvas rows into strings
+    # rows -> strings
     art_rows = [''.join(row) for row in canvas]
-
     if not show_axes:
         return '\n'.join(art_rows)
 
-    # ── Axes ────────────────────────────────────────────────────────────────
-    gut = max(2, len(str(N-1)))       # left gutter width
+    # Axes labels: row indices on the left, column indices on top (handle C, not R)
+    gut = max(2, len(str(R-1)))  # gutter width based on row index width
     gutter = ' ' * gut
     top_tens = list(gutter + ' ' * cols)
     top_ones = list(gutter + ' ' * cols)
 
-    for c in range(N):
+    for c in range(C):
         xc_center = x_corner(c) + scale_x
-        if N >= 10:
+        if C >= 10:
             top_tens[gut + xc_center] = str((c // 10) % 10)
         top_ones[gut + xc_center] = str(c % 10)
 
-    # tiny corner labels
     if gut >= 2:
         top_tens[gut-2:gut] = list('  ')
         top_ones[gut-2:gut] = list('  ')
 
     labeled = []
     for r, line in enumerate(art_rows):
-        if r % 2 == 1:                     # cell-center row
+        if r % 2 == 1:  # cell-center row
             label = str(r//2).rjust(gut)
         else:
             label = ' ' * gut
