@@ -1264,7 +1264,11 @@ Time taken: 0.03 seconds
 
 ## Range (Puzzle Type #13)
 
-* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/range.html)
+Also known as "Kurodoko"
+
+* [**Play online 1**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/range.html)
+
+* [**Play online 2**](https://www.puzzle-kurodoko.com/)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/range.html#range)
 
