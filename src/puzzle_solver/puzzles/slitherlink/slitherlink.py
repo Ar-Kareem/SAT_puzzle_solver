@@ -2,8 +2,9 @@ import numpy as np
 from collections import defaultdict
 from ortools.sat.python import cp_model
 
-from puzzle_solver.core.utils import Pos, get_all_pos, get_char, set_char, get_pos, Direction, get_row_pos, get_col_pos, get_next_pos, in_bounds, get_opposite_direction, render_grid
+from puzzle_solver.core.utils import Pos, get_all_pos, get_char, set_char, Direction, get_row_pos, get_col_pos, get_next_pos, in_bounds, get_opposite_direction
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, force_connected_component
+from puzzle_solver.core.utils_visualizer import render_grid
 
 
 CellBorder = tuple[Pos, Direction]
