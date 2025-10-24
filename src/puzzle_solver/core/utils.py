@@ -353,3 +353,31 @@ def render_grid(cell_flags: np.ndarray,
         labeled.append(label + line)
 
     return ''.join(top_tens) + '\n' + ''.join(top_ones) + '\n' + '\n'.join(labeled)
+
+def id_board_to_wall_board(id_board: np.array, border_is_wall = True) -> np.array:
+    """In many instances, we have a 2d array where cell values are arbitrary ids
+    and we want to convert it to a 2d array where cell values are walls "U", "D", "L", "R" to represent the edges that separate me from my neighbors that have different ids.
+    Args:
+        id_board: np.array of shape (N, N) with arbitrary ids.
+        border_is_wall: if True, the edges of the board are considered to be walls.
+    Returns:
+        np.array of shape (N, N) with walls "U", "D", "L", "R".
+    """
+    res = np.full((id_board.shape[0], id_board.shape[1]), '', dtype=object)
+    V, H = id_board.shape
+    def append_char(pos: Pos, s: str):
+        set_char(res, pos, get_char(res, pos) + s)
+    def handle_pos_direction(pos: Pos, direction: Direction, s: str):
+        pos2 = get_next_pos(pos, direction)
+        if in_bounds(pos2, V, H):
+            if get_char(id_board, pos2) != get_char(id_board, pos):
+                append_char(pos, s)
+        else:
+            if border_is_wall:
+                append_char(pos, s)
+    for pos in get_all_pos(V, H):
+        handle_pos_direction(pos, Direction.LEFT, 'L')
+        handle_pos_direction(pos, Direction.RIGHT, 'R')
+        handle_pos_direction(pos, Direction.UP, 'U')
+        handle_pos_direction(pos, Direction.DOWN, 'D')
+    return res
