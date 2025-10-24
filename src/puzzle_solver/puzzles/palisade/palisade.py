@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from collections import defaultdict
 
-from tqdm import tqdm
 import numpy as np
 from ortools.sat.python import cp_model
 
@@ -67,10 +66,9 @@ class Board:
         self.pos_to_shapes: dict[Pos, set[ShapeOnBoard]] = defaultdict(set)
         self.create_vars()
         self.add_all_constraints()
-        print('Number of variables:', len(self.model.proto.variables))
 
     def create_vars(self):
-        for shape in tqdm(self.polyominoes):
+        for shape in self.polyominoes:
             for body in get_valid_translations(shape, self.board):
                 uid = len(self.shapes_on_board)
                 shape_on_board = ShapeOnBoard(
@@ -101,76 +99,6 @@ class Board:
             for pos in get_all_pos(self.V, self.H):
                 region_idx = single_res.assignment[pos]
                 set_char(id_board, pos, region_idx)
-            print('[')
-            for row in id_board:
-                print('       ', row.tolist(), end=',\n')
-            print('    ])')
             board = np.where(self.board == ' ', '·', self.board)
             print(render_grid(id_board_to_wall_board(id_board), center_char=board))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)
-
-
-
-# BEFORE OPTIMIZATION (1.15 hours to solve)
-#     0   0   0   0   0   0   0   0   0   0   1   1   1   1   1
-#     0   1   2   3   4   5   6   7   8   9   0   1   2   3   4
-#   ┌───────────────────┬───────────────────────┬───────────────┐
-#  0│ 2                 │ 3           1   1   3 │               │
-#   │   ┌───────────┐   ├───────┬───┐       ┌───┴───┐           │
-#  1│ 3 │ 2   1     │ 2 │ 3     │   │       │     2 │     0     │
-#   ├───┘           │   └───┐   │   └───┐   └───┐   └───┐       │
-#  2│             1 │ 1     │   │ 1     │       │ 1     │       │
-#   │   ┌───┐       │   ┌───┘   │   ┌───┴───────┘       └───┐   │
-#  3│   │ 3 │ 2     │   │       │ 2 │ 3               1     │   │
-#   ├───┘   └───────┼───┘   ┌───┘   └───┬───────────────┬───┴───┤
-#  4│     0   1     │ 2     │     0     │         1     │ 3   2 │
-#   │           ┌───┘       │           │   ┌───┐       └───┐   │
-#  5│ 1   0     │         2 │ 2       2 │   │ 3 │     0   2 │   │
-#   │       ┌───┴───────────┼───┬───────┴───┤   ├───┐       │   │
-#  6│       │             3 │   │         2 │   │   │       │   │
-#   ├───────┘   ┌───────────┤   └───┐       │   │   └───────┘   │
-#  7│     1     │         3 │ 1     │ 1     │   │         1     │
-#   │       ┌───┘       ┌───┘       │       │   └───────┐   ┌───┤
-#  8│       │     0     │     0     │     1 │ 2         │   │ 3 │
-#   │   ┌───┘       ┌───┤           ├───┐   └───┐       ├───┘   │
-#  9│   │           │   │     1     │   │ 2     │     1 │ 2   1 │
-#   ├───┤   ┌───────┘   ├───────┐   │   └───┐   │       │       │
-# 10│   │   │         1 │     2 │ 3 │ 1     │   │     2 │     1 │
-#   │   └───┘           │       └───┘       ├───┴───────┘       │
-# 11│ 2       1       2 │ 2   1           2 │                   │
-#   └───────────────────┴───────────────────┴───────────────────┘
-# Solutions found: 1
-# status: OPTIMAL
-# Time taken: 4214.79 seconds
-
-# AFTER OPTIMIZATION (11.56 seconds to solve)
-#     0   0   0   0   0   0   0   0   0   0   1   1   1   1   1
-#     0   1   2   3   4   5   6   7   8   9   0   1   2   3   4
-#   ┌───────────────────┬───────────────────────┬───────────────┐
-#  0│ 2   ·   ·   ·   · │ 3   ·   ·   1   1   3 │ ·   ·   ·   · │
-#   │   ┌───────────┐   ├───────┬───┐       ┌───┴───┐           │
-#  1│ 3 │ 2   1   · │ 2 │ 3   · │ · │ ·   · │ ·   2 │ ·   0   · │
-#   ├───┘           │   └───┐   │   └───┐   └───┐   └───┐       │
-#  2│ ·   ·   ·   1 │ 1   · │ · │ 1   · │ ·   · │ 1   · │ ·   · │
-#   │   ┌───┐       │   ┌───┘   │   ┌───┴───────┘       └───┐   │
-#  3│ · │ 3 │ 2   · │ · │ ·   · │ 2 │ 3   ·   ·   ·   1   · │ · │
-#   ├───┘   └───────┼───┘   ┌───┘   └───┬───────────────┬───┴───┤
-#  4│ ·   0   1   · │ 2   · │ ·   0   · │ ·   ·   1   · │ 3   2 │
-#   │           ┌───┘       │           │   ┌───┐       └───┐   │
-#  5│ 1   0   · │ ·   ·   2 │ 2   ·   2 │ · │ 3 │ ·   0   2 │ · │
-#   │       ┌───┴───────────┼───┬───────┴───┤   ├───┐       │   │
-#  6│ ·   · │ ·   ·   ·   3 │ · │ ·   ·   2 │ · │ · │ ·   · │ · │
-#   ├───────┘   ┌───────────┤   └───┐       │   │   └───────┘   │
-#  7│ ·   1   · │ ·   ·   3 │ 1   · │ 1   · │ · │ ·   ·   1   · │
-#   │       ┌───┘       ┌───┘       │       │   └───────┐   ┌───┤
-#  8│ ·   · │ ·   0   · │ ·   0   · │ ·   1 │ 2   ·   · │ · │ 3 │
-#   │   ┌───┘       ┌───┤           ├───┐   └───┐       ├───┘   │
-#  9│ · │ ·   ·   · │ · │ ·   1   · │ · │ 2   · │ ·   1 │ 2   1 │
-#   ├───┤   ┌───────┘   ├───────┐   │   └───┐   │       │       │
-# 10│ · │ · │ ·   ·   1 │ ·   2 │ 3 │ 1   · │ · │ ·   2 │ ·   1 │
-#   │   └───┘           │       └───┘       ├───┴───────┘       │
-# 11│ 2   ·   1   ·   2 │ 2   1   ·   ·   2 │ ·   ·   ·   ·   · │
-#   └───────────────────┴───────────────────┴───────────────────┘
-# Solutions found: 1
-# status: OPTIMAL
-# Time taken: 11.56 seconds
