@@ -1,8 +1,7 @@
 import numpy as np
 from ortools.sat.python import cp_model
-from ortools.sat.python.cp_model import LinearExpr as lxp
 
-from puzzle_solver.core.utils import Pos, get_all_pos, get_neighbors4, get_pos, set_char, get_char, get_neighbors8
+from puzzle_solver.core.utils import Pos, get_all_pos, get_neighbors4, get_pos, set_char, get_char
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, force_connected_component
 from puzzle_solver.core.utils_visualizer import render_shaded_grid
 
@@ -45,16 +44,17 @@ class Board:
     def create_vars(self):
         for pos in get_all_pos(self.V, self.H):
             self.B[pos] = self.model.NewBoolVar(f'B:{pos}')
-            self.W[pos] = self.B[pos].Not()
+            self.W[pos] = self.model.NewBoolVar(f'W:{pos}')
+            self.model.AddExactlyOne([self.B[pos], self.W[pos]])
 
     def add_all_constraints(self):
         # Regions with a number should contain black cells matching the number.
         for rid, clue in self.region_to_clue.items():
-            self.model.Add(lxp.sum([self.B[p] for p in self.region_to_pos[rid]]) == clue)
+            self.model.Add(sum([self.B[p] for p in self.region_to_pos[rid]]) == clue)
         # 2 black cells cannot be adjacent horizontally or vertically.
         for pos in get_all_pos(self.V, self.H):
             for neighbor in get_neighbors4(pos, self.V, self.H):
-                self.model.AddBoolOr([self.B[pos].Not(), self.B[neighbor].Not()])
+                self.model.AddBoolOr([self.W[pos], self.W[neighbor]])
         # All white cells should be connected in a single group.
         force_connected_component(self.model, self.W)
         # A straight (orthogonal) line of connected white cells cannot span across more than 2 regions.
@@ -62,8 +62,8 @@ class Board:
 
     def disallow_white_lines_spanning_3_regions(self):
         # A straight (orthogonal) line of connected white cells cannot span across more than 2 regions.
-        row_to_region = {row: [] for row in range(self.V)}
-        col_to_region = {col: [] for col in range(self.H)}
+        row_to_region: dict[int, list[int]] = {row: [] for row in range(self.V)}
+        col_to_region: dict[int, list[int]] = {col: [] for col in range(self.H)}
         for pos in get_all_pos(self.V, self.H):  # must traverse from least to most (both row and col)
             rid = int(get_char(self.board, pos))
             row_to_region[pos.y].append(rid)
@@ -71,11 +71,11 @@ class Board:
         for row_num, row in row_to_region.items():
             for begin_idx, end_idx in return_3_consecutives(row):
                 pos_list = [get_pos(x=x, y=row_num) for x in range(begin_idx, end_idx+1)]
-                self.model.AddBoolOr([self.W[p].Not() for p in pos_list])
+                self.model.AddBoolOr([self.B[p] for p in pos_list])
         for col_num, col in col_to_region.items():
             for begin_idx, end_idx in return_3_consecutives(col):
                 pos_list = [get_pos(x=col_num, y=y) for y in range(begin_idx, end_idx+1)]
-                self.model.AddBoolOr([self.W[p].Not() for p in pos_list])
+                self.model.AddBoolOr([self.B[p] for p in pos_list])
 
     def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
@@ -91,4 +91,4 @@ class Board:
                 set_char(res, pos, c)
             print(res)
             print(render_shaded_grid(self.V, self.H, lambda r, c: single_res.assignment[get_pos(x=c, y=r)] == 1, empty_text=lambda r, c: self.region_to_clue.get(int(self.board[r, c]), ' ')))
-        return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)
+        return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose, max_solutions=1)
