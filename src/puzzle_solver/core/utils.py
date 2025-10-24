@@ -133,7 +133,7 @@ def get_deltas(direction: Union[Direction, Direction8]) -> Tuple[int, int]:
         raise ValueError(f'invalid direction: {direction}')
 
 
-def polyominoes(N):
+def polyominoes(N) -> set[Shape]:
     """Generate all polyominoes of size N. Every rotation and reflection is considered different and included in the result.
     Translation is not considered different and is removed from the result (otherwise the result would be infinite).
 
@@ -165,7 +165,7 @@ def polyominoes(N):
     shapes: set[FastShape] = {frozenset({(0, 0)})}
     for i in range(1, N):
         next_shapes: set[FastShape] = set()
-        directions = ((1,0),(-1,0),(0,1)) if i > 1 else (((1,0),(0,1)))  # cannot take left on first step, if confused read: https://louridas.github.io/rwa/assignments/polyominoes/
+        directions = ((1,0),(-1,0),(0,1),(0,-1)) if i > 1 else (((1,0),(0,1)))  # cannot take left on first step, if confused read: https://louridas.github.io/rwa/assignments/polyominoes/
         for s in shapes:
             # frontier of a single shape: all 4-neighbors of existing cells not already in the shape
             frontier = set()
