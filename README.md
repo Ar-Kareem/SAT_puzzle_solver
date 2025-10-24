@@ -315,6 +315,8 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nurikabe_solved.png" alt="Nurikabe" width="140">
     </a>
   </td>
+</tr>
+<tr>
   <td align="center">
     <a href="#heyawake-puzzle-type-46"><b>Heyawake</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/heyawake_solved.png" alt="Heyawake" width="140">
