@@ -146,16 +146,12 @@ def force_connected_component(model: cp_model.CpModel, vars_to_force: dict[Any, 
     for p in keys_in_order:
         model.Add(node_height[p] > 0).OnlyEnforceIf(vs[p])
 
-    all_new_vars: dict[str, cp_model.IntVar] = {}
-    for k, v in is_root.items():
-        all_new_vars[f"{prefix_name}is_root[{k}]"] = v
-    for k, v in prefix_zero.items():
-        all_new_vars[f"{prefix_name}prefix_zero[{k}]"] = v
-    for k, v in node_height.items():
-        all_new_vars[f"{prefix_name}node_height[{k}]"] = v
-    for k, v in max_neighbor_height.items():
-        all_new_vars[f"{prefix_name}max_neighbor_height[{k}]"] = v
-
+    all_new_vars = {
+        "is_root": is_root,
+        "prefix_zero": prefix_zero,
+        "node_height": node_height,
+        "max_neighbor_height": max_neighbor_height,
+    }
     return all_new_vars
 
 
