@@ -322,6 +322,11 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/heyawake_solved.png" alt="Heyawake" width="140">
     </a>
   </td>
+  <td align="center">
+    <a href="#shingoki-puzzle-type-47"><b>Shingoki</b><br><br>
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/shingoki_solved.png" alt="Shingoki" width="140">
+    </a>
+  </td>
 </tr>
 </table>
 
@@ -383,6 +388,7 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   - [Flip (Puzzle Type #44)](#flip-puzzle-type-44)
   - [Nurikabe (Puzzle Type #45)](#nurikabe-puzzle-type-45)
   - [Heyawake (Puzzle Type #46)](#heyawake-puzzle-type-46)
+  - [Shingoki (Puzzle Type #47)](#shingoki-puzzle-type-47)
   - [Why SAT / CP-SAT?](#why-sat--cp-sat)
   - [Testing](#testing)
   - [Contributing](#contributing)
@@ -3879,6 +3885,7 @@ This picture won't mean much as the game is about the sequence of moves not the 
 <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/flip_solved.png" alt="Flip solved" width="500">
 
 ---
+
 ## Nurikabe (Puzzle Type #45)
 
 * [**Play online**](https://www.puzzle-nurikabe.com/)
@@ -4111,6 +4118,120 @@ Time taken: 38.04 seconds
 
 ---
 
+## Shingoki (Puzzle Type #47)
+
+Also called "Semaphores".
+
+* [**Play online**](https://www.puzzle-shingoki.com/)
+
+* [**Solver Code**][47]
+
+<details>
+  <summary><strong>Rules</strong></summary>
+
+You have to draw lines between the dots to form a single loop without crossings or branches. The loop should pass through all black and white circles in such a way that:
+- White circles must be passed through in a straight line
+- Black circles must be turned upon
+- The numbers in the circles show the sum of the lengths of the 2 straight lines going out of that circle. 
+
+</details>
+
+**Unsolved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/shingoki_unsolved.png" alt="Shingoki unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+
+```python
+import numpy as np
+from puzzle_solver import shingoki_solver as solver
+board = np.array([
+    ['  ', '  ', '  ', '  ', '  ', '4B', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  '],
+    ['  ', '  ', '  ', '  ', '5B', '  ', '  ', '2B', '  ', '  ', '3B', '  ', '  ', '  ', '3W', '  ', '  ', '  ', '  ', '2B', '  '],
+    ['2B', '2B', '  ', '2W', '  ', '  ', '  ', '  ', '  ', '  ', '2B', '  ', '2B', '  ', '  ', '  ', '3B', '5W', '  ', '  ', '11W'],
+    ['  ', '  ', '  ', '  ', '  ', '3B', '  ', '3B', '  ', '  ', '  ', '  ', '2B', '  ', '  ', '  ', '  ', '  ', '3W', '  ', '  '],
+    ['  ', '2W', '  ', '  ', '2B', '  ', '2W', '  ', '3W', '  ', '2W', '2B', '2B', '  ', '  ', '  ', '  ', '  ', '  ', '8W', '  '],
+    ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '6B', '  ', '  ', '  ', '  ', '4B', '2W', '  ', '  ', '  ', '  ', '  '],
+    ['  ', '  ', '  ', '2B', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '2W', '  ', '  ', '  ', '4B', '  ', '  '],
+    ['  ', '2B', '2W', '  ', '  ', '  ', '3B', '  ', '  ', '  ', '  ', '3W', '  ', '  ', '  ', '  ', '  ', '  ', '3B', '  ', '  '],
+    ['4W', '3B', '  ', '  ', '3W', '  ', '  ', '  ', '  ', '  ', '3B', '  ', '6B', '  ', '  ', '  ', '2B', '  ', '  ', '  ', '  '],
+    ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '2W', '7B', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  '],
+    ['  ', '  ', '  ', '3W', '  ', '3W', '4W', '5B', '  ', '  ', '  ', '  ', '5W', '  ', '4W', '  ', '  ', '  ', '2W', '  ', '  '],
+    ['7B', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '3B', '  '],
+    ['  ', '  ', '  ', '  ', '2B', '  ', '4W', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '5B', '  ', '  ', '  '],
+    ['  ', '  ', '2W', '  ', '  ', '2B', '  ', '4W', '3W', '  ', '  ', '  ', '  ', '  ', '  ', '5B', '2B', '  ', '3W', '  ', '  '],
+    ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '3B', '  ', '7W', '  ', '2B', '5B', '  ', '  ', '  ', '  ', '  ', '  '],
+    ['  ', '  ', '  ', '  ', '  ', '3B', '2B', '  ', '  ', '  ', '3W', '  ', '2B', '  ', '  ', '  ', '2W', '  ', '  ', '  ', '  '],
+    ['  ', '  ', '  ', '2W', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '3B', '  '],
+    ['  ', '4W', '  ', '  ', '2B', '3B', '  ', '  ', '  ', '2B', '4B', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '3W', '  ', '  '],
+    ['7W', '  ', '3B', '  ', '  ', '2B', '  ', '  ', '  ', '4B', '  ', '  ', '  ', '  ', '2W', '3B', '  ', '2B', '  ', '  ', '  '],
+    ['  ', '  ', '  ', '3W', '  ', '3W', '  ', '  ', '2B', '  ', '  ', '  ', '  ', '  ', '  ', '  ', '3W', '  ', '2W', '  ', '  '],
+    ['  ', '2B', '  ', '  ', '  ', '  ', '5W', '  ', '  ', '  ', '  ', '5W', '  ', '  ', '  ', '6B', '  ', '  ', '  ', '  ', '  '],
+])
+binst = solver.Board(board=board)
+solutions = binst.solve_and_print()
+```
+
+**Script Output**
+
+Note that the solver is much slower for large puzzles like this example and take ~3 minutes to find a valid solution and ~7 minutes to verify that no other solutions exist.
+
+```python
+Solution found
+    0   0   0   0   0   0   0   0   0   0   1   1   1   1   1   1   1   1   1   1  
+    0   1   2   3   4   5   6   7   8   9   0   1   2   3   4   5   6   7   8   9
+                      ┌───────────┐   ┌───────────────────────────┐   ┌───┐   ┌───┐
+ 0  .   .   .   .   . │ .   .   . │ . │ .   .   .   .   .   .   . │ . │ . │ . │ . │
+  ┌───────────────┐   └───┐   ┌───┘   │   ┌───────┐   ┌───────────┘   │   └───┘   │
+ 1│ .   .   .   . │ .   . │ . │ .   . │ . │ .   . │ . │ .   .   .   . │ .   .   . │
+  └───┐   ┌───────┘   ┌───┘   └───┐   │   └───┐   └───┘       ┌───┐   │   ┌───┐   │
+ 2  . │ . │ .   .   . │ .   .   . │ . │ .   . │ .   .   .   . │ . │ . │ . │ . │ . │
+  ┌───┘   └───┐       └───────┐   │   │   ┌───┘   ┌───┐   ┌───┘   │   │   │   │   │
+ 3│ .   .   . │ .   .   .   . │ . │ . │ . │ .   . │ . │ . │ .   . │ . │ . │ . │ . │
+  └───────┐   └───┐   ┌───────┘   │   │   │   ┌───┘   └───┘   ┌───┘   │   │   │   │
+ 4  .   . │ .   . │ . │ .   .   . │ . │ . │ . │ .   .   .   . │ .   . │ . │ . │ . │
+  ┌───────┘   ┌───┘   └───────┐   └───┘   └───┘   ┌───────┐   │       └───┘   │   │
+ 5│ .   .   . │ .   .   .   . │ .   .   .   .   . │ .   . │ . │ .   .   .   . │ . │
+  └───┐   ┌───┘       ┌───┐   └───────────────────┘       │   └───────────┐   │   │
+ 6  . │ . │ .   .   . │ . │ .   .   .   .   .   .   .   . │ .   .   .   . │ . │ . │
+  ┌───┘   │       ┌───┘   └───────┐       ┌───────────┐   └───┐   ┌───────┘   │   │
+ 7│ .   . │ .   . │ .   .   .   . │ .   . │ .   .   . │ .   . │ . │ .   .   . │ . │
+  │   ┌───┘       │   ┌───────┐   └───────┘   ┌───┐   │   ┌───┘   └───┐       │   │
+ 8│ . │ .   .   . │ . │ .   . │ .   .   .   . │ . │ . │ . │ .   .   . │ .   . │ . │
+  │   │           │   │   ┌───┘   ┌───────┐   │   │   │   │   ┌───┐   │       │   │
+ 9│ . │ .   .   . │ . │ . │ .   . │ .   . │ . │ . │ . │ . │ . │ . │ . │ .   . │ . │
+  │   └───────────┘   │   │   ┌───┘       │   │   │   │   │   │   │   └───────┘   │
+10│ .   .   .   .   . │ . │ . │ .   .   . │ . │ . │ . │ . │ . │ . │ .   .   .   . │
+  └───────────┐   ┌───┘   │   │           │   │   │   │   │   │   └───────┐   ┌───┘
+11  .   .   . │ . │ .   . │ . │ .   .   . │ . │ . │ . │ . │ . │ .   .   . │ . │ .
+  ┌───┐       └───┘       │   │   ┌───┐   │   │   │   └───┘   │   ┌───┐   │   │
+12│ . │ .   .   .   .   . │ . │ . │ . │ . │ . │ . │ .   .   . │ . │ . │ . │ . │ .
+  │   └───────┐       ┌───┘   │   │   │   │   │   └───┐       └───┘   │   │   └───┐
+13│ .   .   . │ .   . │ .   . │ . │ . │ . │ . │ .   . │ .   .   .   . │ . │ .   . │
+  │   ┌───┐   │       └───────┘   │   └───┘   │   ┌───┘   ┌───────┐   │   └───┐   │
+14│ . │ . │ . │ .   .   .   .   . │ .   .   . │ . │ .   . │ .   . │ . │ .   . │ . │
+  │   │   │   └───────┐   ┌───┐   └───────────┘   └───┐   │       │   │   ┌───┘   │
+15│ . │ . │ .   .   . │ . │ . │ .   .   .   .   .   . │ . │ .   . │ . │ . │ .   . │
+  │   │   └───────┐   └───┘   │       ┌───┐           │   │       └───┘   │   ┌───┘
+16│ . │ .   .   . │ .   .   . │ .   . │ . │ .   .   . │ . │ .   .   .   . │ . │ .
+  │   │       ┌───┘   ┌───────┘   ┌───┘   └───────────┘   └───┐   ┌───┐   │   │
+17│ . │ .   . │ .   . │ .   .   . │ .   .   .   .   .   .   . │ . │ . │ . │ . │ .
+  │   └───┐   │   ┌───┘       ┌───┘   ┌───────────┐   ┌───────┘   │   └───┘   └───┐
+18│ .   . │ . │ . │ .   .   . │ .   . │ .   .   . │ . │ .   .   . │ .   .   .   . │
+  └───┐   │   │   └───────────┘   ┌───┘   ┌───────┘   └───────┐   │   ┌───────┐   │
+19  . │ . │ . │ .   .   .   .   . │ .   . │ .   .   .   .   . │ . │ . │ .   . │ . │
+      └───┘   └───────────────────┘       └───────────────────┘   └───┘       └───┘
+Solutions found: 1
+status: OPTIMAL
+Time taken: 425.97 seconds
+```
+
+**Solved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/shingoki_solved.png" alt="Shingoki solved" width="500">
+
+---
+
 ---
 
 ## Why SAT / CP-SAT?
@@ -4208,3 +4329,4 @@ Issues and PRs welcome!
 [44]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/flip "puzzle_solver/src/puzzle_solver/puzzles/flip at master · Ar-Kareem/puzzle_solver · GitHub"
 [45]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/nurikabe "puzzle_solver/src/puzzle_solver/puzzles/nurikabe at master · Ar-Kareem/puzzle_solver · GitHub"
 [46]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/heyawake "puzzle_solver/src/puzzle_solver/puzzles/heyawake at master · Ar-Kareem/puzzle_solver · GitHub"
+[47]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/shingoki "puzzle_solver/src/puzzle_solver/puzzles/shingoki at master · Ar-Kareem/puzzle_solver · GitHub"
