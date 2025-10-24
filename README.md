@@ -312,7 +312,12 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   </td>
   <td align="center">
     <a href="#nurikabe-puzzle-type-45"><b>Nurikabe</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nurikabe_unsolved.png" alt="Nurikabe" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nurikabe_solved.png" alt="Nurikabe" width="140">
+    </a>
+  </td>
+  <td align="center">
+    <a href="#heyawake-puzzle-type-46"><b>Heyawake</b><br><br>
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/heyawake_solved.png" alt="Heyawake" width="140">
     </a>
   </td>
 </tr>
@@ -4200,3 +4205,4 @@ Issues and PRs welcome!
 [43]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/palisade "puzzle_solver/src/puzzle_solver/puzzles/palisade at master · Ar-Kareem/puzzle_solver · GitHub"
 [44]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/flip "puzzle_solver/src/puzzle_solver/puzzles/flip at master · Ar-Kareem/puzzle_solver · GitHub"
 [45]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/nurikabe "puzzle_solver/src/puzzle_solver/puzzles/nurikabe at master · Ar-Kareem/puzzle_solver · GitHub"
+[46]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/heyawake "puzzle_solver/src/puzzle_solver/puzzles/heyawake at master · Ar-Kareem/puzzle_solver · GitHub"
