@@ -85,10 +85,10 @@ class Board:
             return SingleSolution(assignment=assignment)
         def callback(single_res: SingleSolution):
             print("Solution found")
-            res = np.full((self.V, self.H), ' ', dtype=object)
-            for pos in get_all_pos(self.V, self.H):
-                c = 'B' if single_res.assignment[pos] == 1 else ' '
-                set_char(res, pos, c)
-            print(res)
+            # res = np.full((self.V, self.H), ' ', dtype=object)
+            # for pos in get_all_pos(self.V, self.H):
+            #     c = 'B' if single_res.assignment[pos] == 1 else ' '
+            #     set_char(res, pos, c)
+            # print(res)
             print(render_shaded_grid(self.V, self.H, lambda r, c: single_res.assignment[get_pos(x=c, y=r)] == 1, empty_text=lambda r, c: self.region_to_clue.get(int(self.board[r, c]), ' ')))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose, max_solutions=1)
