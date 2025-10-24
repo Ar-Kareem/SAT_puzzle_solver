@@ -310,6 +310,11 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/flip_unsolved.png" alt="Flip" width="140">
     </a>
   </td>
+  <td align="center">
+    <a href="#nurikabe-puzzle-type-45"><b>Nurikabe</b><br><br>
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nurikabe_unsolved.png" alt="Nurikabe" width="140">
+    </a>
+  </td>
 </tr>
 </table>
 
@@ -369,6 +374,7 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   - [Rectangles (Puzzle Type #42)](#rectangles-puzzle-type-42)
   - [Palisade (Puzzle Type #43)](#palisade-puzzle-type-43)
   - [Flip (Puzzle Type #44)](#flip-puzzle-type-44)
+  - [Nurikabe (Puzzle Type #45)](#nurikabe-puzzle-type-45)
   - [Why SAT / CP-SAT?](#why-sat--cp-sat)
   - [Testing](#testing)
   - [Contributing](#contributing)
@@ -3861,6 +3867,125 @@ This picture won't mean much as the game is about the sequence of moves not the 
 <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/flip_solved.png" alt="Flip solved" width="500">
 
 ---
+## Nurikabe (Puzzle Type #45)
+
+* [**Play online**](https://www.puzzle-nurikabe.com/)
+
+* [**Instructions**](https://www.logicgamesonline.com/nurikabe/)
+
+* [**Solver Code**][45]
+
+<details>
+  <summary><strong>Rules</strong></summary>
+
+Nurikabe is a binary determination puzzle. You must decide for each cell if it is white or black according to the following rules:
+
+   - All of the black cells must be connected.
+   - Each numbered cell must be part of a white island of connected white cells.
+   - Each island must have the same number of white cells as the number it contains (including the numbered cell).
+   - Two islands may not be connected.
+   - There cannot be any 2x2 blocks of black cells.
+
+Read more about the history and methods behind nurikabe in the [Wikipedia nurikabe article](https://en.wikipedia.org/wiki/Nurikabe).
+
+</details>
+
+**Unsolved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nurikabe_unsolved.png" alt="Nurikabe unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+
+(Note: the solver also supports random mapping of squares to the neighbors they flip, see the test cases in `tests/test_flip.py` for usage examples)
+
+```python
+import numpy as np
+from puzzle_solver import nurikabe_solver as solver
+board = np.array([
+    ['2', ' ', '3', ' ', '3', ' ', ' ', ' ', '3', ' ', ' ', '3', ' ', ' ', ' ', '2', ' ', '2', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', '2', ' ', ' ', '1', ' ', ' ', '1', ' ', '3', ' ', ' ', ' ', '3', ' ', ' ', ' '],
+    ['2', ' ', ' ', '1', ' ', ' ', '3', ' ', ' ', '2', ' ', '2', ' ', ' ', ' ', '1', ' ', ' ', ' ', ' '],
+    [' ', ' ', '2', ' ', '2', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '3', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '2', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    ['1', ' ', ' ', ' ', ' ', '1', ' ', '2', ' ', ' ', '3', ' ', ' ', ' ', ' ', ' ', ' ', '1', ' ', '2'],
+    [' ', '2', ' ', '2', ' ', ' ', '1', ' ', ' ', ' ', ' ', ' ', ' ', '6', ' ', ' ', '2', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', '2', ' ', '7', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '3', ' '],
+    [' ', ' ', '3', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '2', ' ', '2', ' ', '2', ' ', ' ', ' ', ' ', ' '],
+    ['4', ' ', ' ', ' ', ' ', ' ', '7', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', '7', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '3', ' ', ' ', ' ', ' '],
+    [' ', ' ', '2', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '1', ' ', '1', ' ', ' ', ' ', ' ', ' ', '3'],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '2', ' ', '4', ' ', ' ', '7', ' ', ' ', ' ', ' '],
+    [' ', '1', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', '2', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '1', ' ', ' '],
+    ['2', ' ', ' ', ' ', ' ', ' ', ' ', '1', ' ', '3', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '2', ' '],
+    [' ', ' ', ' ', '4', ' ', ' ', ' ', ' ', '1', ' ', ' ', ' ', '2', ' ', '1', ' ', '3', ' ', ' ', ' '],
+    [' ', '1', ' ', ' ', ' ', ' ', ' ', '3', ' ', ' ', '1', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '2'],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '1', ' ', ' ', ' ', ' ', ' '],
+])
+binst = solver.Board(board=board)
+solutions = binst.solve_and_print()
+```
+
+**Script Output**
+
+The output tells you which squares to tap to solve the puzzle.
+
+```python
+Solution found
+    0   0   0   0   0   0   0   0   0   0   1   1   1   1   1   1   1   1   1   1  
+    0   1   2   3   4   5   6   7   8   9   0   1   2   3   4   5   6   7   8   9
+  ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
+ 0│ 2 │▒▒▒│ 3 │▒▒▒│ 3 │   │   │▒▒▒│ 3 │   │▒▒▒│ 3 │   │   │▒▒▒│ 2 │▒▒▒│ 2 │   │▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 1│   │▒▒▒│   │▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│   │▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│   │▒▒▒│▒▒▒│▒▒▒│▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 2│▒▒▒│▒▒▒│   │▒▒▒│ 2 │   │▒▒▒│ 1 │▒▒▒│▒▒▒│ 1 │▒▒▒│ 3 │   │▒▒▒│▒▒▒│ 3 │   │   │▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 3│ 2 │▒▒▒│▒▒▒│ 1 │▒▒▒│▒▒▒│ 3 │▒▒▒│▒▒▒│ 2 │▒▒▒│ 2 │▒▒▒│   │▒▒▒│ 1 │▒▒▒│▒▒▒│▒▒▒│▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 4│   │▒▒▒│ 2 │▒▒▒│ 2 │▒▒▒│   │   │▒▒▒│   │▒▒▒│   │▒▒▒│▒▒▒│▒▒▒│▒▒▒│ 3 │   │   │▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 5│▒▒▒│▒▒▒│   │▒▒▒│   │▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│ 2 │▒▒▒│   │▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 6│ 1 │▒▒▒│▒▒▒│▒▒▒│▒▒▒│ 1 │▒▒▒│ 2 │   │▒▒▒│ 3 │▒▒▒│   │▒▒▒│   │   │▒▒▒│ 1 │▒▒▒│ 2 │
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 7│▒▒▒│ 2 │▒▒▒│ 2 │▒▒▒│▒▒▒│ 1 │▒▒▒│▒▒▒│▒▒▒│   │   │▒▒▒│ 6 │   │▒▒▒│ 2 │▒▒▒│▒▒▒│   │
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 8│▒▒▒│   │▒▒▒│   │▒▒▒│ 2 │▒▒▒│ 7 │   │▒▒▒│▒▒▒│▒▒▒│▒▒▒│   │▒▒▒│▒▒▒│   │▒▒▒│ 3 │▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 9│▒▒▒│▒▒▒│ 3 │▒▒▒│▒▒▒│   │▒▒▒│▒▒▒│   │▒▒▒│ 2 │▒▒▒│ 2 │▒▒▒│ 2 │▒▒▒│▒▒▒│▒▒▒│   │▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+10│ 4 │▒▒▒│   │   │▒▒▒│▒▒▒│ 7 │▒▒▒│   │▒▒▒│   │▒▒▒│   │▒▒▒│   │▒▒▒│   │▒▒▒│   │▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+11│   │▒▒▒│▒▒▒│▒▒▒│ 7 │▒▒▒│   │▒▒▒│   │   │▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│ 3 │   │▒▒▒│▒▒▒│▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+12│   │▒▒▒│ 2 │▒▒▒│   │▒▒▒│   │▒▒▒│▒▒▒│   │▒▒▒│ 1 │▒▒▒│ 1 │▒▒▒│▒▒▒│▒▒▒│   │▒▒▒│ 3 │
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+13│   │▒▒▒│   │▒▒▒│   │▒▒▒│   │   │▒▒▒│▒▒▒│ 2 │▒▒▒│ 4 │▒▒▒│▒▒▒│ 7 │   │   │▒▒▒│   │
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+14│▒▒▒│ 1 │▒▒▒│▒▒▒│   │▒▒▒│▒▒▒│   │   │▒▒▒│   │▒▒▒│   │   │▒▒▒│   │▒▒▒│▒▒▒│▒▒▒│   │
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+15│▒▒▒│▒▒▒│ 2 │▒▒▒│   │   │▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│   │▒▒▒│   │▒▒▒│ 1 │▒▒▒│▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+16│ 2 │▒▒▒│   │▒▒▒│▒▒▒│   │▒▒▒│ 1 │▒▒▒│ 3 │   │   │▒▒▒│▒▒▒│▒▒▒│   │▒▒▒│▒▒▒│ 2 │   │
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+17│   │▒▒▒│▒▒▒│ 4 │▒▒▒│▒▒▒│▒▒▒│▒▒▒│ 1 │▒▒▒│▒▒▒│▒▒▒│ 2 │▒▒▒│ 1 │▒▒▒│ 3 │▒▒▒│▒▒▒│▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+18│▒▒▒│ 1 │▒▒▒│   │   │   │▒▒▒│ 3 │▒▒▒│▒▒▒│ 1 │▒▒▒│   │▒▒▒│▒▒▒│▒▒▒│   │   │▒▒▒│ 2 │
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+19│▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│   │   │▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│ 1 │▒▒▒│▒▒▒│▒▒▒│▒▒▒│   │
+  └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+Solutions found: 1
+status: OPTIMAL
+Time taken: 1.62 seconds
+```
+
+**Solved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nurikabe_solved.png" alt="Nurikabe solved" width="500">
+
+---
 
 ---
 
@@ -3957,3 +4082,4 @@ Issues and PRs welcome!
 [42]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/rectangles "puzzle_solver/src/puzzle_solver/puzzles/rectangles at master · Ar-Kareem/puzzle_solver · GitHub"
 [43]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/palisade "puzzle_solver/src/puzzle_solver/puzzles/palisade at master · Ar-Kareem/puzzle_solver · GitHub"
 [44]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/flip "puzzle_solver/src/puzzle_solver/puzzles/flip at master · Ar-Kareem/puzzle_solver · GitHub"
+[45]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/nurikabe "puzzle_solver/src/puzzle_solver/puzzles/nurikabe at master · Ar-Kareem/puzzle_solver · GitHub"
