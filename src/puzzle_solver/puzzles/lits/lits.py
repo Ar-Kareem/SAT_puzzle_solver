@@ -1,7 +1,5 @@
-import json
-import time
 from dataclasses import dataclass
-from typing import Optional, Union
+from typing import Optional
 
 from ortools.sat.python import cp_model
 import numpy as np
@@ -12,19 +10,6 @@ from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, 
 
 # a shape on the 2d board is just a set of positions
 Shape = frozenset[Pos]
-
-
-@dataclass(frozen=True)
-class SingleSolution:
-    assignment: dict[Pos, Union[str, int]]
-    all_other_variables: dict
-
-    def get_hashable_solution(self) -> str:
-        result = []
-        for pos, v in self.assignment.items():
-            result.append((pos.x, pos.y, v))
-        return json.dumps(result, sort_keys=True)
-
 
 
 @dataclass
@@ -63,7 +48,6 @@ class Board:
     def create_vars(self):
         for pos in get_all_pos(self.V, self.H):
             self.model_vars[pos] = self.model.NewBoolVar(f'{pos}')
-        # print('base vars:', len(self.model_vars))
 
     def init_shapes_on_board(self):
         for idx, (shape, shape_id) in enumerate(self.polyominoes):
@@ -84,7 +68,6 @@ class Board:
                     body=body,
                     disallow_same_shape=disallow_same_shape,
                 ))
-        # print('shapes on board:', len(self.shapes_on_board))
 
     def add_all_constraints(self):
         # RULES:
@@ -99,10 +82,8 @@ class Board:
         self.force_one_shape_per_block()  # Rule #1
         self.disallow_same_shape_touching()  # Rule #2
         self.fc = force_connected_component(self.model, self.model_vars)  # Rule #3
-        # print('force connected vars:', len(fc))
         shape_2_by_2 = frozenset({Pos(0, 0), Pos(0, 1), Pos(1, 0), Pos(1, 1)})
         self.disallow_shape(shape_2_by_2)  # Rule #4
-
 
     def only_allow_shapes_on_board(self):
         for shape_on_board in self.shapes_on_board:
@@ -118,7 +99,6 @@ class Board:
         for block_i in self.block_numbers:
             shapes_on_block = [s for s in self.shapes_on_board if s.body & self.blocks[block_i]]
             assert all(s.body.issubset(self.blocks[block_i]) for s in shapes_on_block), 'expected all shapes on block to be fully contained in the block'
-            # print(f'shapes on block {block_i} has {len(shapes_on_block)} shapes')
             self.model.Add(sum(s.is_active for s in shapes_on_block) == 1)
 
     def disallow_same_shape_touching(self):
@@ -138,8 +118,6 @@ class Board:
             self.model.Add(sum(self.model_vars[p] for p in cur_body) < len(cur_body))
 
 
-
-
     def solve_and_print(self, verbose: bool = True, max_solutions: Optional[int] = None, verbose_callback: Optional[bool] = None):
         if verbose_callback is None:
             verbose_callback = verbose
@@ -147,10 +125,7 @@ class Board:
             assignment: dict[Pos, int] = {}
             for pos, var in board.model_vars.items():
                 assignment[pos] = solver.Value(var)
-            all_other_variables = {
-                'fc': {k: solver.Value(v) for k, v in board.fc.items()}
-            }
-            return SingleSolution(assignment=assignment, all_other_variables=all_other_variables)
+            return SingleSolution(assignment=assignment)
         def callback(single_res: SingleSolution):
             print("Solution found")
             res = np.full((self.V, self.H), ' ', dtype=str)
@@ -158,5 +133,4 @@ class Board:
                 c = 'X' if val == 1 else ' '
                 set_char(res, pos, c)
             print('[\n' + '\n'.join(['  ' + str(res[row].tolist()) + ',' for row in range(self.V)]) + '\n]')
-            pass
         return generic_solve_all(self, board_to_solution, callback=callback if verbose_callback else None, verbose=verbose, max_solutions=max_solutions)
