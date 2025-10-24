@@ -20,8 +20,6 @@ Read more about the history and methods behind nurikabe in the [Wikipedia nurika
 
 Code to utilize this package and solve the puzzle:
 
-(Note: the solver also supports random mapping of squares to the neighbors they flip, see the test cases in `tests/test_flip.py` for usage examples)
-
 ```python
 import numpy as np
 from puzzle_solver import nurikabe_solver as solver
@@ -52,8 +50,6 @@ solutions = binst.solve_and_print()
 ```
 
 **Script Output**
-
-The output tells you which squares to tap to solve the puzzle.
 
 ```python
 Solution found
