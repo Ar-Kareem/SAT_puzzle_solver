@@ -305,6 +305,11 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/palisade_solved.png" alt="Palisade" width="140">
     </a>
   </td>
+  <td align="center">
+    <a href="#flip-puzzle-type-44"><b>Flip</b><br><br>
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/flip_unsolved.png" alt="Flip" width="140">
+    </a>
+  </td>
 </tr>
 </table>
 
@@ -363,6 +368,7 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   - [Binairo (Puzzle Type #41)](#binairo-puzzle-type-41)
   - [Rectangles (Puzzle Type #42)](#rectangles-puzzle-type-42)
   - [Palisade (Puzzle Type #43)](#palisade-puzzle-type-43)
+  - [Flip (Puzzle Type #44)](#flip-puzzle-type-44)
   - [Why SAT / CP-SAT?](#why-sat--cp-sat)
   - [Testing](#testing)
   - [Contributing](#contributing)
@@ -3704,14 +3710,13 @@ Applying the solution to the puzzle visually:
 
 ---
 
-
 ## Palisade (Puzzle Type #43)
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/palisade.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/palisade.html#palisade)
 
-* [**Solver Code**][42]
+* [**Solver Code**][43]
 
 <details>
   <summary><strong>Rules</strong></summary>
@@ -3790,6 +3795,70 @@ Time taken: 11.94 seconds
 Applying the solution to the puzzle visually:
 
 <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/palisade_solved.png" alt="Palisade solved" width="500">
+
+---
+
+## Flip (Puzzle Type #44)
+
+* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/flip.html)
+
+* [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/flip.html#flip)
+
+* [**Solver Code**][44]
+
+<details>
+  <summary><strong>Rules</strong></summary>
+
+You have a grid of squares, some light and some dark. Your aim is to light all the squares up at the same time. You can choose any square and flip its state from light to dark or dark to light, but when you do so, other squares around it change state as well. 
+
+</details>
+
+**Unsolved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/flip_unsolved.png" alt="Flip unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+
+(Note: the solver also supports random mapping of squares to the neighbors they flip, see the test cases in `tests/test_flip.py` for usage examples)
+
+```python
+import numpy as np
+from puzzle_solver import flip_solver as solver
+board = np.array([
+    ['B', 'W', 'W', 'W', 'W', 'W', 'W'],
+    ['B', 'B', 'W', 'W', 'W', 'B', 'B'],
+    ['W', 'B', 'W', 'W', 'B', 'B', 'W'],
+    ['B', 'B', 'B', 'W', 'W', 'B', 'W'],
+    ['W', 'W', 'B', 'B', 'W', 'B', 'W'],
+    ['B', 'W', 'B', 'B', 'W', 'W', 'W'],
+    ['B', 'W', 'B', 'W', 'W', 'B', 'B'],
+])
+binst = solver.Board(board=board)
+solutions = binst.solve_and_print()
+```
+
+**Script Output**
+
+The output tells you which squares to tap to solve the puzzle.
+
+```python
+Solution found
+[['T' ' ' 'T' 'T' 'T' ' ' ' ']
+ [' ' ' ' ' ' 'T' ' ' 'T' ' ']
+ [' ' 'T' ' ' ' ' 'T' ' ' ' ']
+ ['T' ' ' 'T' ' ' ' ' 'T' ' ']
+ [' ' ' ' ' ' 'T' ' ' ' ' 'T']
+ ['T' ' ' 'T' ' ' 'T' 'T' 'T']
+ [' ' ' ' ' ' ' ' ' ' 'T' 'T']]
+Solutions found: 1
+status: OPTIMAL
+```
+
+**Solved puzzle**
+
+This picture won't mean much as the game is about the sequence of moves not the final frame as shown here.
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/flip_solved.png" alt="Flip solved" width="500">
 
 ---
 
@@ -3887,3 +3956,4 @@ Issues and PRs welcome!
 [41]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/binairo "puzzle_solver/src/puzzle_solver/puzzles/binairo at master · Ar-Kareem/puzzle_solver · GitHub"
 [42]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/rectangles "puzzle_solver/src/puzzle_solver/puzzles/rectangles at master · Ar-Kareem/puzzle_solver · GitHub"
 [43]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/palisade "puzzle_solver/src/puzzle_solver/puzzles/palisade at master · Ar-Kareem/puzzle_solver · GitHub"
+[44]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/flip "puzzle_solver/src/puzzle_solver/puzzles/flip at master · Ar-Kareem/puzzle_solver · GitHub"
