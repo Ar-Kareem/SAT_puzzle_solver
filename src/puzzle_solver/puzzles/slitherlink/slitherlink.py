@@ -20,6 +20,10 @@ class Board:
         self.cell_borders_to_corners: dict[CellBorder, set[Corner]] = defaultdict(set)  # for every cell border, a set of all corners it is connected to
         self.corners_to_cell_borders: dict[Corner, set[CellBorder]] = defaultdict(set)  # opposite direction
 
+        # 2N^2 + 2N edges
+        # 4*edges (fully connected component)
+        # model variables = edges (on/off) + 4*edges (fully connected component)
+        # = 9N^2 + 9N
         self.model = cp_model.CpModel()
         self.model_vars: dict[CellBorder, cp_model.IntVar] = {}  # one entry for every unique variable in the model
         self.cell_borders: dict[CellBorder, cp_model.IntVar] = {}  # for every position and direction, one entry for that edge (thus the same edge variables are used in opposite directions of neighboring cells)
@@ -87,10 +91,11 @@ class Board:
             if not val.isdecimal():
                 continue
             self.model.Add(sum(variables) == int(val))
+
+        corner_sum_domain = cp_model.Domain.FromValues([0, 2])  # sum of edges touching a corner is 0 or 2
         for corner in self.corner_vars:  # a corder always has 0 or 2 active edges
-            g = self.model.NewBoolVar(f'corner_gate_{corner}')
-            self.model.Add(sum(self.corner_vars[corner]) == 0).OnlyEnforceIf(g.Not())
-            self.model.Add(sum(self.corner_vars[corner]) == 2).OnlyEnforceIf(g)
+            self.model.AddLinearExpressionInDomain(sum(self.corner_vars[corner]), corner_sum_domain)
+
         # single connected component
         def is_neighbor(cb1: CellBorder, cb2: CellBorder) -> bool:
             cb1_corners = self.cell_borders_to_corners[cb1]
