@@ -122,15 +122,21 @@ class Board:
             # translate
             for dx in range(self.H - rectangle.max_x):
                 for dy in range(self.V - rectangle.max_y):
-                    body = {(Pos(x=p[0] + dx, y=p[1] + dy), s) for (p, s) in rectangle.body}
-                    if any(p in self.black_positions for p, _ in body) or any(not in_bounds(p, self.V, self.H) for p, _ in body):
+                    body = [None] * len(rectangle.body)
+                    for i, (p, s) in enumerate(rectangle.body):
+                        pp = (p[0] + dx, p[1] + dy)
+                        body[i] = (pp, s)
+                        if pp in self.black_positions_tuple:
+                            body = None
+                            break
+                    if body is None:
                         continue
                     disallow_white = {Pos(x=p[0] + dx, y=p[1] + dy) for p in rectangle.disallow_white}
                     rectangle_on_board = RectangleOnBoard(
                         is_active=self.model.NewBoolVar(f'{rectangle.is_rotated}:{rectangle.width}x{rectangle.height}:{dx}:{dy}:is_active'),
                         rectangle=rectangle,
-                        body=body,
-                        body_positions={p for p, _ in body},
+                        body=set((Pos(x=p[0], y=p[1]), s) for p, s in body),
+                        body_positions=set((Pos(x=p[0], y=p[1])) for p, _ in body),
                         disallow_white=disallow_white,
                         translate=Pos(x=dx, y=dy),
                         width=rectangle.width,
