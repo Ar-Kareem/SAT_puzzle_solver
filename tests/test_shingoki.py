@@ -69,6 +69,43 @@ def test_small():
         assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
 
 
+def test_small_normal():
+    # 6 x 6 normal
+    # https://www.puzzle-shingoki.com/?e=MToyLDM0OSw0NjY=
+    board = np.array([
+        ['  ', '  ', '  ', '  ', '  ', '  '],
+        ['  ', '  ', '  ', '  ', '3W', '  '],
+        ['  ', '  ', '  ', '3W', '  ', '  '],
+        ['  ', '  ', '  ', '  ', '  ', '  '],
+        ['  ', '  ', '4B', '  ', '  ', '  '],
+        ['  ', '5B', '  ', '2B', '  ', '  '],
+    ])
+    binst = solver.Board(board=board)
+    solutions = binst.solve_and_print()
+    assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+    solution = solutions[0].assignment
+
+
+
+def test_medium():
+    # 8 x 8 hard
+    # https://www.puzzle-shingoki.com/?e=NDoxLDU0NCwwNzc=
+    board = np.array([
+        ['  ', '  ', '  ', '  ', '5W', '  ', '  ', '  '],
+        ['  ', '  ', '  ', '  ', '4B', '  ', '2B', '  '],
+        ['  ', '2B', '2B', '  ', '  ', '  ', '3W', '  '],
+        ['  ', '  ', '  ', '  ', '2B', '  ', '  ', '5B'],
+        ['  ', '  ', '  ', '3B', '  ', '  ', '  ', '  '],
+        ['  ', '  ', '  ', '  ', '  ', '  ', '  ', '  '],
+        ['  ', '2W', '  ', '  ', '  ', '3W', '  ', '  '],
+        ['  ', '  ', '  ', '  ', '  ', '7W', '  ', '  '],
+    ])
+    binst = solver.Board(board=board)
+    solutions = binst.solve_and_print()
+    assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+    solution = solutions[0].assignment
+
+
 def test_ground():
     # 21 x 21 hard
     # https://www.puzzle-shingoki.com/?e=MTM6Niw3NDgsODc0
@@ -127,10 +164,8 @@ def test_ground():
         assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
 
 
-
-
-
-
 if __name__ == '__main__':
     test_small()
+    test_small_normal()
+    test_medium()
     test_ground()
