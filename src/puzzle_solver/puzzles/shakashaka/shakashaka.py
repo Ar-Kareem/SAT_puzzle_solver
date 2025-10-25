@@ -1,13 +1,16 @@
+from collections import defaultdict
 from dataclasses import dataclass
 from enum import Enum
+
 import numpy as np
 from ortools.sat.python import cp_model
-from ortools.sat.python.cp_model import LinearExpr as lxp
 
-from puzzle_solver.core.utils import Direction, Pos, get_all_pos, set_char, get_char, get_neighbors4, in_bounds
+from puzzle_solver.core.utils import Pos, get_all_pos, set_char, get_char, get_neighbors4, in_bounds
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution
 from puzzle_solver.core.utils_visualizer import render_bw_tiles_split
 
+
+TPos = tuple[int, int]
 
 class State(Enum):
     WHITE = 'W'
@@ -17,7 +20,6 @@ class State(Enum):
     BOTTOM_LEFT = 'BL'
     BOTTOM_RIGHT = 'BR'
 
-TPos = tuple[int, int]
 @dataclass
 class Rectangle:
     is_rotated: bool
@@ -27,7 +29,6 @@ class Rectangle:
     disallow_white: frozenset[tuple[TPos]]
     max_x: int
     max_y: int
-
 
 @dataclass
 class RectangleOnBoard:
@@ -42,7 +43,9 @@ class RectangleOnBoard:
 
 
 def init_rectangles(V: int, H: int) -> list[Rectangle]:
+    """Returns all possible upright and 45 degree rotated rectangles on a VxH board that are NOT translated (i.e. both min_x and min_y are always 0)"""
     rectangles = []
+    # up right rectangles
     for height in range(1, V+1):
         for width in range(1, H+1):
             body = {(x, y) for x in range(width) for y in range(height)}
@@ -58,22 +61,17 @@ def init_rectangles(V: int, H: int) -> list[Rectangle]:
                 max_x=width-1,
                 max_y=height-1,
             ))
-    # now imagine rectangles rotated clockwise by 90 degrees
+    # now imagine rectangles rotated clockwise by 45 degrees
     for height in range(1, V+1):
         for width in range(1, H+1):
             if width + height > V or width + height > H:  # this rotated rectangle wont fit
                 continue
             body = {}
-            # top left edge
-            tl_body = {(i, height-1-i) for i in range(height)}
-            # top right edge
-            tr_body = {(height+i, i) for i in range(width)}
-            # bottom right edge
-            br_body = {(width+height-i-1, width+i) for i in range(height)}
-            # bottom left edge
-            bl_body = {(width-i-1, width+height-i-1) for i in range(width)}
-            # inner body is anything to the right of L and to the left of R
-            inner_body = set()
+            tl_body = {(i, height-1-i) for i in range(height)}  # top left edge
+            tr_body = {(height+i, i) for i in range(width)}  # top right edge
+            br_body = {(width+height-i-1, width+i) for i in range(height)}  # bottom right edge
+            bl_body = {(width-i-1, width+height-i-1) for i in range(width)}  # bottom left edge
+            inner_body = set()  # inner body is anything to the right of L and to the left of R
             for y in range(width+height):
                 row_is_active = False
                 for x in range(width+height):
@@ -89,11 +87,8 @@ def init_rectangles(V: int, H: int) -> list[Rectangle]:
             br_body = {(p, State.BOTTOM_RIGHT) for p in br_body}
             bl_body = {(p, State.BOTTOM_LEFT) for p in bl_body}
             inner_body = {(p, State.WHITE) for p in inner_body}
-            body = tl_body | tr_body | br_body | bl_body | inner_body
             rectangles.append(Rectangle(
-                is_rotated=True,
-                width=width, height=height, body=body,
-                disallow_white=set(),
+                is_rotated=True, width=width, height=height, body=tl_body | tr_body | br_body | bl_body | inner_body, disallow_white=set(),
                 # clear from vizualization, both width and height contribute to both dimensions since it is rotated
                 max_x=width + height - 1,
                 max_y=width + height - 1,
@@ -104,10 +99,12 @@ def init_rectangles(V: int, H: int) -> list[Rectangle]:
 class Board:
     def __init__(self, board: np.array):
         assert board.ndim == 2, f'board must be 2d, got {board.ndim}'
+        assert all((c.item() in [' ', 'B', '0', '1', '2', '3', '4']) for c in np.nditer(board)), 'board must contain only space, B, 0, 1, 2, 3, 4'
         self.board = board
         self.V, self.H = board.shape
         self.black_positions: set[Pos] = {pos for pos in get_all_pos(self.V, self.H) if get_char(self.board, pos).strip() != ''}
-        self.pos_to_rectangle_on_board: dict[Pos, RectangleOnBoard] = {}
+        self.black_positions_tuple: set[TPos] = {(p.x, p.y) for p in self.black_positions}
+        self.pos_to_rectangle_on_board: dict[Pos, list[RectangleOnBoard]] = defaultdict(list)
         self.model = cp_model.CpModel()
         self.B: dict[Pos, cp_model.IntVar] = {}
         self.W: dict[Pos, cp_model.IntVar] = {}
@@ -122,7 +119,7 @@ class Board:
             # translate
             for dx in range(self.H - rectangle.max_x):
                 for dy in range(self.V - rectangle.max_y):
-                    body = [None] * len(rectangle.body)
+                    body: list[tuple[Pos, State]] = [None] * len(rectangle.body)
                     for i, (p, s) in enumerate(rectangle.body):
                         pp = (p[0] + dx, p[1] + dy)
                         body[i] = (pp, s)
@@ -132,19 +129,20 @@ class Board:
                     if body is None:
                         continue
                     disallow_white = {Pos(x=p[0] + dx, y=p[1] + dy) for p in rectangle.disallow_white}
+                    body_positions = set((Pos(x=p[0], y=p[1])) for p, _ in body)
                     rectangle_on_board = RectangleOnBoard(
                         is_active=self.model.NewBoolVar(f'{rectangle.is_rotated}:{rectangle.width}x{rectangle.height}:{dx}:{dy}:is_active'),
                         rectangle=rectangle,
                         body=set((Pos(x=p[0], y=p[1]), s) for p, s in body),
-                        body_positions=set((Pos(x=p[0], y=p[1])) for p, _ in body),
+                        body_positions=body_positions,
                         disallow_white=disallow_white,
                         translate=Pos(x=dx, y=dy),
                         width=rectangle.width,
                         height=rectangle.height,
                     )
                     self.rectangles_on_board.append(rectangle_on_board)
-                    for p, _ in body:
-                        self.pos_to_rectangle_on_board[p] = rectangle_on_board
+                    for p in body_positions:
+                        self.pos_to_rectangle_on_board[p].append(rectangle_on_board)
 
     def create_vars(self):
         for pos in get_all_pos(self.V, self.H):
@@ -158,11 +156,9 @@ class Board:
         for pos in get_all_pos(self.V, self.H):
             if pos in self.black_positions:
                 continue
-            rectangles_on_pos = [r for r in self.rectangles_on_board if pos in r.body_positions]
-            self.model.AddExactlyOne([r.is_active for r in rectangles_on_pos])
+            self.model.AddExactlyOne([r.is_active for r in self.pos_to_rectangle_on_board[pos]])
         # if a rectangle is active then all its body is black and all its disallow_white is white
         for rectangle_on_board in self.rectangles_on_board:
-            # print(f'rectangle {rectangle_on_board.translate} {rectangle_on_board.width}x{rectangle_on_board.height}:{rectangle_on_board.rectangle.is_rotated}')
             for pos, state in rectangle_on_board.body:
                 if state == State.WHITE:
                     self.model.Add(self.W[pos] == 1).OnlyEnforceIf(rectangle_on_board.is_active)
