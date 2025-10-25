@@ -327,6 +327,11 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/shingoki_solved.png" alt="Shingoki" width="140">
     </a>
   </td>
+  <td align="center">
+    <a href="#tapa-puzzle-type-48"><b>Tapa</b><br><br>
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tapa_unsolved.png" alt="Tapa" width="140">
+    </a>
+  </td>
 </tr>
 </table>
 
@@ -389,6 +394,7 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   - [Nurikabe (Puzzle Type #45)](#nurikabe-puzzle-type-45)
   - [Heyawake (Puzzle Type #46)](#heyawake-puzzle-type-46)
   - [Shingoki (Puzzle Type #47)](#shingoki-puzzle-type-47)
+  - [Tapa (Puzzle Type #48)](#tapa-puzzle-type-48)
   - [Why SAT / CP-SAT?](#why-sat--cp-sat)
   - [Testing](#testing)
   - [Contributing](#contributing)
@@ -4232,6 +4238,129 @@ Time taken: 425.97 seconds
 
 ---
 
+## Tapa (Puzzle Type #48)
+
+* [**Play online**](https://www.puzzle-tapa.com/)
+
+* [**Instructions**](https://www.gmpuzzles.com/blog/tapa-rules-and-info/)
+
+* [**Solver Code**][48]
+
+<details>
+  <summary><strong>Rules</strong></summary>
+
+You are given a grid where some cells have numbers. Your goal is to shade some cells black to satisfy the following rules:
+
+   - Cells with numbers cannot be shaded
+   - The shaded cells cannot form a 2×2 square
+   - Numbers in a cell indicate the length of consecutive shaded blocks in the neighboring cells. If there is more than one number in a cell, then there must be at least one white (unshaded) cell between the black cell groups.
+   - The shaded cells should form a single connected area.
+   - The numbers in a cell represent the length of consecutive shaded blocks in the 8 neighboring cells. 
+     - A single number N represents N consecutive shaded cells around the number.
+     - Multiple numbers represent multiple consecutive shaded cells around the number, each separated by at least one white cell.
+
+</details>
+
+**Unsolved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tapa_unsolved.png" alt="Tapa unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+
+```python
+import numpy as np
+from puzzle_solver import tapa_solver as solver
+board = np.array([
+    ['   ', '   ', '   ', '   ', '   ', '3  ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '3  ', '   ', '   ', '   ', '   ', '   '],
+    ['   ', '   ', '   ', '   ', '2/3', '   ', '   ','1/2/2','   ', '3/3', '7  ', '   ', '7  ', '   ', '   ', '2/3', '   ', '   ', '   ', '   '],
+    ['   ', '2/4', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '2/3', '   '],
+    ['   ', '   ', '   ', '1/3','1/1/2','   ', '   ', '7  ', '   ', '   ', '   ', '   ', '7  ', '   ','   ','1/1/1/1','1/3','   ', '   ', '   '],
+    ['   ', '   ','1/1/3','   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '1/4', '   ', '   '],
+
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ','1/1/3','1/2', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
+    ['   ', '   ', '5  ', '   ', '   ','1/1/1','1/1', '   ', '   ', '   ', '   ', '   ', '   ', '1/3', '2/3', '   ', '   ', '3/3', '   ', '   '],
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
+
+    ['   ', '   ','1/1/2','   ', '   ', '   ', '   ', '   ', '7  ', '3/3', '3/3', '2/4', '   ', '   ', '   ', '   ', '   ', '6  ', '   ', '   '],
+    ['   ', '1/4', '   ', '   ', '2/3', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '2/4', '   ', '   ', '1/3', '   '],
+    ['   ', '1/3', '   ', '   ', '1/4', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '2/3', '   ', '   ','1/1/2','   '],
+    ['   ', '   ', '6  ', '   ', '   ', '   ', '   ', '   ', '1/1', '1/2','1/1/2','1/4', '   ', '   ', '   ', '   ', '   ', '6  ', '   ', '   '],
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
+
+    ['   ', '   ', '3/3', '   ', '   ', '1/2', '1/1', '   ', '   ', '   ', '   ', '   ', '   ', '1/3','1/1/3','   ', '   ', '2/3', '   ', '   '],
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '4  ', '1/3', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
+    ['   ', '   ', '1/4', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '1/3', '   ', '   '],
+
+    ['   ', '   ', '   ', '1/3','1/1/3','   ', '   ', '6  ', '   ', '   ', '   ', '   ', '7  ', '   ', '   ','1/1/2','1/3', '   ', '   ', '   '],
+    ['   ', '2/3', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '2/3', '   '],
+    ['   ', '   ', '   ', '   ', '2/3', '   ', '   ', '6  ', '   ', '1/3', '4  ', '   ', '6  ', '   ', '   ', '2/3', '   ', '   ', '   ', '   '],
+    ['   ', '   ', '   ', '   ', '   ', '1/1', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '1/1', '   ', '   ', '   ', '   ', '   '],
+])
+binst = solver.Board(board=board)
+solutions = binst.solve_and_print()
+
+```
+
+**Script Output**
+
+Note that the solver is much slower for large puzzles like this example and take ~3 minutes to find a valid solution and ~7 minutes to verify that no other solutions exist.
+
+```python
+Solution found
+    0   0   0   0   0   0   0   0   0   0   1   1   1   1   1   1   1   1   1   1  
+    0   1   2   3   4   5   6   7   8   9   0   1   2   3   4   5   6   7   8   9  
+  ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
+ 0│   │▒▒▒│▒▒▒│▒▒▒│   │ 3 │▒▒▒│   │▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│ 3 │   │▒▒▒│▒▒▒│▒▒▒│▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 1│▒▒▒│▒▒▒│   │▒▒▒│2/3│▒▒▒│▒▒▒│...│   │3/3│ 7 │▒▒▒│ 7 │▒▒▒│▒▒▒│2/3│▒▒▒│   │   │▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 2│▒▒▒│2/4│▒▒▒│▒▒▒│   │▒▒▒│   │▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│   │▒▒▒│   │▒▒▒│▒▒▒│2/3│▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 3│▒▒▒│   │▒▒▒│1/3│...│▒▒▒│▒▒▒│ 7 │▒▒▒│   │   │▒▒▒│ 7 │▒▒▒│   │...│1/3│▒▒▒│   │▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 4│▒▒▒│▒▒▒│...│▒▒▒│   │   │▒▒▒│▒▒▒│▒▒▒│   │▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│   │▒▒▒│1/4│   │▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 5│▒▒▒│   │▒▒▒│▒▒▒│▒▒▒│   │▒▒▒│   │▒▒▒│...│1/2│   │   │   │▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 6│▒▒▒│   │ 5 │▒▒▒│   │...│1/1│   │▒▒▒│   │▒▒▒│   │   │1/3│2/3│▒▒▒│   │3/3│   │▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 7│▒▒▒│   │▒▒▒│▒▒▒│▒▒▒│   │   │▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│   │▒▒▒│▒▒▒│▒▒▒│▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 8│▒▒▒│▒▒▒│...│   │▒▒▒│▒▒▒│   │▒▒▒│ 7 │3/3│3/3│2/4│▒▒▒│   │   │▒▒▒│▒▒▒│ 6 │   │▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 9│▒▒▒│1/4│   │▒▒▒│2/3│▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│   │   │▒▒▒│2/4│▒▒▒│▒▒▒│1/3│▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+10│▒▒▒│1/3│▒▒▒│▒▒▒│1/4│   │▒▒▒│   │   │▒▒▒│   │▒▒▒│▒▒▒│▒▒▒│▒▒▒│2/3│▒▒▒│   │...│▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+11│▒▒▒│   │ 6 │▒▒▒│▒▒▒│   │▒▒▒│   │1/1│1/2│...│1/4│▒▒▒│   │   │   │▒▒▒│ 6 │▒▒▒│   │
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+12│▒▒▒│▒▒▒│▒▒▒│▒▒▒│   │   │▒▒▒│   │   │▒▒▒│▒▒▒│   │▒▒▒│▒▒▒│   │▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+13│▒▒▒│   │3/3│   │   │1/2│1/1│   │▒▒▒│▒▒▒│   │▒▒▒│▒▒▒│1/3│...│▒▒▒│   │2/3│   │▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+14│▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│▒▒▒│   │   │▒▒▒│ 4 │1/3│▒▒▒│   │▒▒▒│   │▒▒▒│▒▒▒│▒▒▒│   │▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+15│▒▒▒│   │1/4│▒▒▒│   │▒▒▒│▒▒▒│▒▒▒│▒▒▒│   │   │▒▒▒│▒▒▒│▒▒▒│   │   │▒▒▒│1/3│   │▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+16│▒▒▒│   │▒▒▒│1/3│...│▒▒▒│   │ 6 │▒▒▒│▒▒▒│▒▒▒│▒▒▒│ 7 │▒▒▒│▒▒▒│...│1/3│▒▒▒│   │▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+17│▒▒▒│2/3│▒▒▒│▒▒▒│   │▒▒▒│   │▒▒▒│▒▒▒│   │   │▒▒▒│▒▒▒│   │▒▒▒│   │▒▒▒│▒▒▒│2/3│▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+18│▒▒▒│   │   │▒▒▒│2/3│▒▒▒│   │ 6 │▒▒▒│1/3│ 4 │▒▒▒│ 6 │   │▒▒▒│2/3│▒▒▒│   │   │▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+19│▒▒▒│▒▒▒│▒▒▒│▒▒▒│   │1/1│▒▒▒│▒▒▒│▒▒▒│   │▒▒▒│▒▒▒│▒▒▒│▒▒▒│1/1│   │▒▒▒│▒▒▒│▒▒▒│▒▒▒│
+  └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+Solutions found: 1
+status: OPTIMAL
+Time taken: 14.20 seconds
+```
+
+**Solved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tapa_solved.png" alt="Tapa solved" width="500">
+
+---
+
 ---
 
 ## Why SAT / CP-SAT?
@@ -4330,3 +4459,4 @@ Issues and PRs welcome!
 [45]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/nurikabe "puzzle_solver/src/puzzle_solver/puzzles/nurikabe at master · Ar-Kareem/puzzle_solver · GitHub"
 [46]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/heyawake "puzzle_solver/src/puzzle_solver/puzzles/heyawake at master · Ar-Kareem/puzzle_solver · GitHub"
 [47]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/shingoki "puzzle_solver/src/puzzle_solver/puzzles/shingoki at master · Ar-Kareem/puzzle_solver · GitHub"
+[48]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/tapa "puzzle_solver/src/puzzle_solver/puzzles/tapa at master · Ar-Kareem/puzzle_solver · GitHub"
