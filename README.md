@@ -4319,12 +4319,9 @@ board = np.array([
 ])
 binst = solver.Board(board=board)
 solutions = binst.solve_and_print()
-
 ```
 
 **Script Output**
-
-Note that the solver is much slower for large puzzles like this example and take ~3 minutes to find a valid solution and ~7 minutes to verify that no other solutions exist.
 
 ```python
 Solution found
