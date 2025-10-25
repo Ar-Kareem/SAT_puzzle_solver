@@ -185,6 +185,7 @@ class Board:
         def callback(single_res: SingleSolution):
             print("Solution found")
             res = np.full((self.V, self.H), 'W', dtype=object)
+            text = np.full((self.V, self.H), '', dtype=object)
             for pos in get_all_pos(self.V, self.H):
                 if pos in single_res.assignment:
                     val = single_res.assignment[pos]
@@ -192,6 +193,7 @@ class Board:
                     c = get_char(self.board, pos)
                     if c.strip() != '':
                         val = 'B'
+                        text[pos.y][pos.x] = c
                 set_char(res, pos, val)
-            print(render_bw_tiles_split(res, cell_w=4, cell_h=2, borders=True, mode="ansi"))
+            print(render_bw_tiles_split(res, cell_w=6, cell_h=3, borders=True, mode="text", cell_text=lambda r, c: text[r][c]))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)
