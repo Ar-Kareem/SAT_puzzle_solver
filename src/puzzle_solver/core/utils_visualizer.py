@@ -1,5 +1,5 @@
 import numpy as np
-from typing import Union, Callable, Optional
+from typing import Union, Callable, Optional, List, Sequence, Literal
 from puzzle_solver.core.utils import Pos, get_all_pos, get_next_pos, in_bounds, set_char, get_char, Direction
 
 
@@ -308,3 +308,189 @@ def render_shaded_grid(V: int,
         labeled.append(label + line)
 
     return ''.join(top_tens) + '\n' + ''.join(top_ones) + '\n' + '\n'.join(labeled)
+
+
+
+
+
+
+
+
+
+CellVal = Literal["B", "W", "TL", "TR", "BL", "BR"]
+GridLike = Sequence[Sequence[CellVal]]
+
+def render_bw_tiles_split(
+    grid: GridLike,
+    cell_w: int = 6,
+    cell_h: int = 3,
+    borders: bool = False,
+    mode: Literal["ansi", "text"] = "ansi",
+    # Palettes for TEXT mode:
+    #   - "solid": black='█', white=' '  (highest contrast)
+    #   - "hatch": black='▓', white='░'  (both filled; slash remains visible)
+    text_palette: Literal["solid", "hatch"] = "solid",
+) -> str:
+    """
+    Render a VxH grid whose cells are one of:
+      "B" (full black), "W" (full white),
+      "TL","TR","BL","BR" (half black triangles split by '/' or '\\').
+
+    - '\\' for TL→BR diagonal (used by "TR","BL")
+    - '/'  for TR→BL diagonal (used by "TL","BR")
+
+    `mode="ansi"` uses ANSI background colors for terminals.
+    `mode="text"` uses Unicode shading so it copies cleanly to README code blocks.
+    """
+
+    V = len(grid)
+    if V == 0:
+        return ""
+    H = len(grid[0])
+    if any(len(row) != H for row in grid):
+        raise ValueError("All rows must have the same length")
+    if cell_w < 1 or cell_h < 1:
+        raise ValueError("cell_w and cell_h must be >= 1")
+
+    allowed = {"B","W","TL","TR","BL","BR"}
+    for r in range(V):
+        for c in range(H):
+            if grid[r][c] not in allowed:
+                raise ValueError(f"Invalid cell value at ({r},{c}): {grid[r][c]}")
+
+    # ── Mode setup ─────────────────────────────────────────────────────────
+    use_color = (mode == "ansi")
+
+    # ANSI helpers
+    def sgr(bg: int | None = None, fg: int | None = None) -> str:
+        if not use_color:
+            return ""
+        parts = []
+        if fg is not None: parts.append(str(fg))
+        if bg is not None: parts.append(str(bg))
+        return ("\x1b[" + ";".join(parts) + "m") if parts else ""
+
+    RESET = "\x1b[0m" if use_color else ""
+
+    # ANSI color codes
+    BG_BLACK, BG_WHITE = 40, 47
+    FG_BLACK, FG_WHITE = 30, 37
+
+    # TEXT (no ANSI) palettes
+    if text_palette == "solid":
+        TXT_BLACK, TXT_WHITE = "█", " "
+    elif text_palette == "hatch":
+        TXT_BLACK, TXT_WHITE = "▓", "░"
+    else:
+        raise ValueError("text_palette must be 'solid' or 'hatch'")
+
+    # ── Tile generator ─────────────────────────────────────────────────────
+    def make_tile(val: CellVal) -> List[str]:
+        rows: List[str] = []
+
+        if val in ("TR", "BL"):
+            diagonal = "main"   # y = x → '\'
+            slash_ch = "\\"
+        elif val in ("TL", "BR"):
+            diagonal = "anti"   # y = 1 - x → '/'
+            slash_ch = "/"
+        else:
+            diagonal = None
+            slash_ch = "?"
+
+        for y in range(cell_h):
+            fy = (y + 0.5) / cell_h
+            parts: List[str] = []
+            for x in range(cell_w):
+                fx = (x + 0.5) / cell_w
+
+                # Full tiles first
+                if val == "B":
+                    if use_color:
+                        parts.append(sgr(bg=BG_BLACK) + " " + RESET)
+                    else:
+                        parts.append(TXT_BLACK)
+                    continue
+                if val == "W":
+                    if use_color:
+                        parts.append(sgr(bg=BG_WHITE) + " " + RESET)
+                    else:
+                        parts.append(TXT_WHITE)
+                    continue
+
+                # Half tiles
+                if diagonal == "main":
+                    # boundary y = x
+                    black_side = (fy < fx) if val == "TR" else (fy > fx)
+                    on_boundary = abs(fy - fx) <= (0.5 / max(cell_w, cell_h))
+                else:
+                    # boundary y = 1 - x
+                    black_side = (fy < 1 - fx) if val == "TL" else (fy > 1 - fx)
+                    on_boundary = abs(fy - (1 - fx)) <= (0.5 / max(cell_w, cell_h))
+
+                if use_color:
+                    bg = BG_BLACK if black_side else BG_WHITE
+                    if on_boundary:
+                        fg = FG_WHITE if bg == BG_BLACK else FG_BLACK
+                        parts.append(sgr(bg=bg, fg=fg) + slash_ch + RESET)
+                    else:
+                        parts.append(sgr(bg=bg) + " " + RESET)
+                else:
+                    # TEXT MODE: show slash + shaded sides (no ANSI)
+                    if on_boundary:
+                        parts.append(slash_ch)
+                    else:
+                        parts.append(TXT_BLACK if black_side else TXT_WHITE)
+
+            rows.append("".join(parts))
+        return rows
+
+    tile_cache = {val: make_tile(val) for val in ("B","W","TL","TR","BL","BR")}
+
+    # Borders
+    if borders:
+        horiz = "─" * cell_w
+        top = "┌" + "┬".join(horiz for _ in range(H)) + "┐"
+        mid = "├" + "┼".join(horiz for _ in range(H)) + "┤"
+        bot = "└" + "┴".join(horiz for _ in range(H)) + "┘"
+
+    out: List[str] = []
+    if borders:
+        out.append(top)
+
+    for r in range(V):
+        for y in range(cell_h):
+            if borders:
+                line = ["│"]
+                for c in range(H):
+                    line.append(tile_cache[grid[r][c]][y])
+                    line.append("│")
+                out.append("".join(line))
+            else:
+                out.append("".join(tile_cache[grid[r][c]][y] for c in range(H)))
+        if borders and r < V - 1:
+            out.append(mid)
+
+    if borders:
+        out.append(bot)
+
+    return "\n".join(out) + (RESET if use_color else "")
+
+
+
+
+# demo = [
+#     ["TL","TR","BL","BR","B","W","BL","BR","B","W","TL","TR","BL","BR","B","W","BL","BR","B","W","W","BL","BR","B","W"],
+#     ["W","BL","TR","BL","TL","BR","BL","BR","W","W","W","B","TR","BL","TL","BR","BL","BR","B","W","BR","BL","BR","B","W"],
+#     ["BR","BL","TR","TL","W","B","BL","BR","B","W","BR","BL","TR","TL","W","B","BL","BR","B","W","B","BL","BR","B","W"],
+# ]
+# print(render_bw_tiles_split(demo, cell_w=8, cell_h=4, borders=True, mode="ansi"))
+# art = render_bw_tiles_split(
+#     demo,
+#     cell_w=8,
+#     cell_h=4,
+#     borders=True,
+#     mode="text",        # ← key change
+#     text_palette="solid"  # try "solid" for stark black/white
+# )
+# print("```text\n" + art + "\n```")
