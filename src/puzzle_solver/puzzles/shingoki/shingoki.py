@@ -144,7 +144,6 @@ class Board:
                 min_y = min(pos.y, neighbor.y)
                 dx = abs(pos.x - neighbor.x)
                 dy = abs(pos.y - neighbor.y)
-                # print(f'{pos} {neighbor} gives min_x {min_x} and min_y {min_y} and dx {dx} and dy {dy}')
                 if min_x == self.H - 1:  # only way to get right
                     res[min_y][min_x - 1] += 'R'
                 elif min_y == self.V - 1:  # only way to get down
@@ -156,4 +155,4 @@ class Board:
                 else:
                     raise ValueError(f'Invalid position: {pos} and {neighbor}')
             print(render_grid(res, center_char='.'))
-        return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose, max_solutions=1)
+        return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)
