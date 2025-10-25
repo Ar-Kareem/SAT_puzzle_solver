@@ -1,8 +1,9 @@
 import numpy as np
 from ortools.sat.python import cp_model
 
-from puzzle_solver.core.utils import Pos, get_all_pos, get_char, set_char, get_neighbors4, get_all_pos_to_idx_dict, get_row_pos, get_col_pos
+from puzzle_solver.core.utils import Pos, get_all_pos, get_char, get_neighbors4, get_all_pos_to_idx_dict, get_row_pos, get_col_pos, get_pos
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, force_connected_component
+from puzzle_solver.core.utils_visualizer import render_shaded_grid
 
 
 class Board:
@@ -14,62 +15,35 @@ class Board:
         self.H = board.shape[1]
         self.N = self.V * self.H
         self.idx_of: dict[Pos, int] = get_all_pos_to_idx_dict(self.V, self.H)
-
         self.model = cp_model.CpModel()
-        self.B = {} # black squares
-        self.W = {} # white squares
+        self.B = {}
+        self.W = {}
         self.Num = {} # value of squares (Num = N + idx if black, else board[pos])
-
         self.create_vars()
         self.add_all_constraints()
 
     def create_vars(self):
         for pos in get_all_pos(self.V, self.H):
             self.B[pos] = self.model.NewBoolVar(f'B:{pos}')
-            self.W[pos] = self.model.NewBoolVar(f'W:{pos}')
-            # either black or white
-            self.model.AddExactlyOne([self.B[pos], self.W[pos]])
+            self.W[pos] = self.B[pos].Not()
             self.Num[pos] = self.model.NewIntVar(0, 2*self.N, f'{pos}')
             self.model.Add(self.Num[pos] == self.N + self.idx_of[pos]).OnlyEnforceIf(self.B[pos])
-            self.model.Add(self.Num[pos] == int(get_char(self.board, pos))).OnlyEnforceIf(self.B[pos].Not())
+            self.model.Add(self.Num[pos] == int(get_char(self.board, pos))).OnlyEnforceIf(self.W[pos])
 
     def add_all_constraints(self):
-        self.no_adjacent_blacks()
-        self.no_number_appears_twice()
-        self.force_connected_component()
-
-    def no_adjacent_blacks(self):
-        # no two black squares are adjacent 
-        for pos in get_all_pos(self.V, self.H):
+        for pos in get_all_pos(self.V, self.H):  # no two black squares are adjacent
             for neighbor in get_neighbors4(pos, self.V, self.H):
                 self.model.Add(self.B[pos] + self.B[neighbor] <= 1)
-
-    def no_number_appears_twice(self):
-        # no number appears twice in any row or column (numbers are ignored if black)
-        for row in range(self.V):
-            var_list = [self.Num[pos] for pos in get_row_pos(row, self.H)]
-            self.model.AddAllDifferent(var_list)
-        for col in range(self.H):
-            var_list = [self.Num[pos] for pos in get_col_pos(col, self.V)]
-            self.model.AddAllDifferent(var_list)
-
-    def force_connected_component(self):
-        force_connected_component(self.model, self.W)
-
-
+        for row in range(self.V):  # no number appears twice in any row (numbers are ignored if black)
+            self.model.AddAllDifferent([self.Num[pos] for pos in get_row_pos(row, self.H)])
+        for col in range(self.H):  # no number appears twice in any column (numbers are ignored if black)
+            self.model.AddAllDifferent([self.Num[pos] for pos in get_col_pos(col, self.V)])
+        force_connected_component(self.model, self.W)  # all white squares must be a single connected component
 
     def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
-            assignment: dict[Pos, int] = {}
-            for pos, var in board.B.items():
-                assignment[pos] = solver.value(var)
-            return SingleSolution(assignment=assignment)
+            return SingleSolution(assignment={pos: 1 if solver.Value(val) == 1 else 0 for pos, val in board.B.items()})
         def callback(single_res: SingleSolution):
             print("Solution found")
-            res = np.full((self.V, self.H), ' ', dtype=object)
-            for pos in get_all_pos(self.V, self.H):
-                c = get_char(self.board, pos)
-                c = 'B' if single_res.assignment[pos] == 1 else ' '
-                set_char(res, pos, c)
-            print(res)
+            print(render_shaded_grid(self.V, self.H, lambda r, c: single_res.assignment[get_pos(x=c, y=r)] == 1, empty_text=lambda r, c: self.board[r, c]))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)
