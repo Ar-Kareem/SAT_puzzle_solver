@@ -326,21 +326,14 @@ def render_bw_tiles_split(
     cell_h: int = 3,
     borders: bool = False,
     mode: Literal["ansi", "text"] = "ansi",
-    # Palettes for TEXT mode:
-    #   - "solid": black='█', white=' '  (highest contrast)
-    #   - "hatch": black='▓', white='░'  (both filled; slash remains visible)
     text_palette: Literal["solid", "hatch"] = "solid",
+    cell_text: Optional[Callable[[int, int], str]] = None,
 ) -> str:
     """
-    Render a VxH grid whose cells are one of:
-      "B" (full black), "W" (full white),
-      "TL","TR","BL","BR" (half black triangles split by '/' or '\\').
+    Render a VxH grid with '/' or '\\' splits and optional per-cell centered text.
 
-    - '\\' for TL→BR diagonal (used by "TR","BL")
-    - '/'  for TR→BL diagonal (used by "TL","BR")
-
-    `mode="ansi"` uses ANSI background colors for terminals.
-    `mode="text"` uses Unicode shading so it copies cleanly to README code blocks.
+    `cell_text(r, c) -> str`: if returns non-empty, its first character is drawn
+    near the geometric center of cell (r,c), nudged to the black side for halves.
     """
 
     V = len(grid)
@@ -361,7 +354,6 @@ def render_bw_tiles_split(
     # ── Mode setup ─────────────────────────────────────────────────────────
     use_color = (mode == "ansi")
 
-    # ANSI helpers
     def sgr(bg: int | None = None, fg: int | None = None) -> str:
         if not use_color:
             return ""
@@ -372,109 +364,153 @@ def render_bw_tiles_split(
 
     RESET = "\x1b[0m" if use_color else ""
 
-    # ANSI color codes
     BG_BLACK, BG_WHITE = 40, 47
     FG_BLACK, FG_WHITE = 30, 37
 
-    # TEXT (no ANSI) palettes
     if text_palette == "solid":
-        TXT_BLACK, TXT_WHITE = "█", " "
+        TXT_BLACK, TXT_WHITE = " ", "█"
     elif text_palette == "hatch":
-        TXT_BLACK, TXT_WHITE = "▓", "░"
+        TXT_BLACK, TXT_WHITE = "░", "▓"
     else:
         raise ValueError("text_palette must be 'solid' or 'hatch'")
 
-    # ── Tile generator ─────────────────────────────────────────────────────
-    def make_tile(val: CellVal) -> List[str]:
-        rows: List[str] = []
-
+    def diag_kind_and_slash(val: CellVal):
         if val in ("TR", "BL"):
-            diagonal = "main"   # y = x → '\'
-            slash_ch = "\\"
+            return "main", "\\"
         elif val in ("TL", "BR"):
-            diagonal = "anti"   # y = 1 - x → '/'
-            slash_ch = "/"
+            return "anti", "/"
+        return None, "?"
+
+    def is_black(val: CellVal, fx: float, fy: float) -> bool:
+        if val == "B":
+            return True
+        if val == "W":
+            return False
+        kind, _ = diag_kind_and_slash(val)
+        if kind == "main":         # y = x
+            return (fy < fx) if val == "TR" else (fy > fx)
+        else:                      # y = 1 - x
+            return (fy < 1 - fx) if val == "TL" else (fy > 1 - fx)
+
+    def on_boundary(val: CellVal, fx: float, fy: float) -> bool:
+        if val in ("B","W"):
+            return False
+        kind, _ = diag_kind_and_slash(val)
+        eps = 0.5 / max(cell_w, cell_h)   # thin boundary
+        if kind == "main":
+            return abs(fy - fx) <= eps
         else:
-            diagonal = None
-            slash_ch = "?"
+            return abs(fy - (1 - fx)) <= eps
+
+    # Build one tile as a matrix of 1-char tokens (already colorized if ANSI)
+    def make_tile(val: CellVal) -> List[List[str]]:
+        rows: List[List[str]] = []
+        kind, slash_ch = diag_kind_and_slash(val)
 
         for y in range(cell_h):
             fy = (y + 0.5) / cell_h
-            parts: List[str] = []
+            line: List[str] = []
             for x in range(cell_w):
                 fx = (x + 0.5) / cell_w
 
-                # Full tiles first
                 if val == "B":
-                    if use_color:
-                        parts.append(sgr(bg=BG_BLACK) + " " + RESET)
-                    else:
-                        parts.append(TXT_BLACK)
+                    line.append(sgr(bg=BG_BLACK) + " " + RESET if use_color else TXT_BLACK)
                     continue
                 if val == "W":
-                    if use_color:
-                        parts.append(sgr(bg=BG_WHITE) + " " + RESET)
-                    else:
-                        parts.append(TXT_WHITE)
+                    line.append(sgr(bg=BG_WHITE) + " " + RESET if use_color else TXT_WHITE)
                     continue
 
-                # Half tiles
-                if diagonal == "main":
-                    # boundary y = x
-                    black_side = (fy < fx) if val == "TR" else (fy > fx)
-                    on_boundary = abs(fy - fx) <= (0.5 / max(cell_w, cell_h))
-                else:
-                    # boundary y = 1 - x
-                    black_side = (fy < 1 - fx) if val == "TL" else (fy > 1 - fx)
-                    on_boundary = abs(fy - (1 - fx)) <= (0.5 / max(cell_w, cell_h))
+                black_side = is_black(val, fx, fy)
+                boundary   = on_boundary(val, fx, fy)
 
                 if use_color:
                     bg = BG_BLACK if black_side else BG_WHITE
-                    if on_boundary:
+                    if boundary:
                         fg = FG_WHITE if bg == BG_BLACK else FG_BLACK
-                        parts.append(sgr(bg=bg, fg=fg) + slash_ch + RESET)
+                        line.append(sgr(bg=bg, fg=fg) + slash_ch + RESET)
                     else:
-                        parts.append(sgr(bg=bg) + " " + RESET)
+                        line.append(sgr(bg=bg) + " " + RESET)
                 else:
-                    # TEXT MODE: show slash + shaded sides (no ANSI)
-                    if on_boundary:
-                        parts.append(slash_ch)
+                    if boundary:
+                        line.append(slash_ch)
                     else:
-                        parts.append(TXT_BLACK if black_side else TXT_WHITE)
-
-            rows.append("".join(parts))
+                        line.append(TXT_BLACK if black_side else TXT_WHITE)
+            rows.append(line)
         return rows
 
-    tile_cache = {val: make_tile(val) for val in ("B","W","TL","TR","BL","BR")}
+    # Overlay a single character centered (nudged into black side if needed)
+    def overlay_center_char(tile: List[List[str]], val: CellVal, ch: str):
+        if not ch:
+            return
+        ch = ch[0]  # keep one character (user said single number)
+        cx, cy = cell_w // 2, cell_h // 2
+        fx = (cx + 0.5) / cell_w
+        fy = (cy + 0.5) / cell_h
 
-    # Borders
+        # If center is boundary or not black, nudge horizontally toward black side
+        if val in ("TL","TR","BL","BR"):
+            kind, _ = diag_kind_and_slash(val)
+            # Determine which side is black relative to x at this y
+            if kind == "main":  # boundary y=x → compare fx vs fy
+                want_right = (val == "TR")  # black is to the right of boundary
+                if on_boundary(val, fx, fy) or (is_black(val, fx, fy) is False):
+                    if want_right and cx + 1 < cell_w:  cx += 1
+                    elif not want_right and cx - 1 >= 0: cx -= 1
+            else:               # boundary y=1-x → compare fx vs 1-fy
+                want_left = (val == "TL")  # black is to the left of boundary
+                if on_boundary(val, fx, fy) or (is_black(val, fx, fy) is False):
+                    if want_left and cx - 1 >= 0:        cx -= 1
+                    elif not want_left and cx + 1 < cell_w: cx += 1
+
+        # Compose the glyph for that spot
+        if use_color:
+            # Force black bg + white fg so it pops
+            token = sgr(bg=BG_BLACK, fg=FG_WHITE) + ch + RESET
+        else:
+            # In text mode, just put the raw character
+            token = ch
+        tile[cy][cx] = token
+
+    # Optional borders
     if borders:
         horiz = "─" * cell_w
         top = "┌" + "┬".join(horiz for _ in range(H)) + "┐"
         mid = "├" + "┼".join(horiz for _ in range(H)) + "┤"
         bot = "└" + "┴".join(horiz for _ in range(H)) + "┘"
 
-    out: List[str] = []
+    out_lines: List[str] = []
     if borders:
-        out.append(top)
+        out_lines.append(top)
 
     for r in range(V):
+        # Build tiles for this row (so we can overlay per-cell text)
+        row_tiles: List[List[List[str]]] = []
+        for c in range(H):
+            t = make_tile(grid[r][c])
+            if cell_text is not None:
+                label = cell_text(r, c)
+                if label:
+                    overlay_center_char(t, grid[r][c], label)
+            row_tiles.append(t)
+
+        # Emit tile rows
         for y in range(cell_h):
             if borders:
-                line = ["│"]
+                parts = ["│"]
                 for c in range(H):
-                    line.append(tile_cache[grid[r][c]][y])
-                    line.append("│")
-                out.append("".join(line))
+                    parts.append("".join(row_tiles[c][y]))
+                    parts.append("│")
+                out_lines.append("".join(parts))
             else:
-                out.append("".join(tile_cache[grid[r][c]][y] for c in range(H)))
+                out_lines.append("".join("".join(row_tiles[c][y]) for c in range(H)))
+
         if borders and r < V - 1:
-            out.append(mid)
+            out_lines.append(mid)
 
     if borders:
-        out.append(bot)
+        out_lines.append(bot)
 
-    return "\n".join(out) + (RESET if use_color else "")
+    return "\n".join(out_lines) + (RESET if use_color else "")
 
 
 
