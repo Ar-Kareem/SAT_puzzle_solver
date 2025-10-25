@@ -309,14 +309,6 @@ def render_shaded_grid(V: int,
 
     return ''.join(top_tens) + '\n' + ''.join(top_ones) + '\n' + '\n'.join(labeled)
 
-
-
-
-
-
-
-
-
 CellVal = Literal["B", "W", "TL", "TR", "BL", "BR"]
 GridLike = Sequence[Sequence[CellVal]]
 
@@ -327,8 +319,7 @@ def render_bw_tiles_split(
     borders: bool = False,
     mode: Literal["ansi", "text"] = "ansi",
     text_palette: Literal["solid", "hatch"] = "solid",
-    cell_text: Optional[Callable[[int, int], str]] = None,
-) -> str:
+    cell_text: Optional[Callable[[int, int], str]] = None) -> str:
     """
     Render a VxH grid with '/' or '\\' splits and optional per-cell centered text.
 

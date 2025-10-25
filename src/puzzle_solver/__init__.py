@@ -15,6 +15,7 @@ from puzzle_solver.puzzles.guess import guess as guess_solver
 from puzzle_solver.puzzles.heyawake import heyawake as heyawake_solver
 from puzzle_solver.puzzles.inertia import inertia as inertia_solver
 from puzzle_solver.puzzles.kakurasu import kakurasu as kakurasu_solver
+from puzzle_solver.puzzles.kakuro import kakuro as kakuro_solver
 from puzzle_solver.puzzles.keen import keen as keen_solver
 from puzzle_solver.puzzles.light_up import light_up as light_up_solver
 from puzzle_solver.puzzles.magnets import magnets as magnets_solver
@@ -51,4 +52,4 @@ from puzzle_solver.puzzles.yin_yang import yin_yang as yin_yang_solver
 
 from puzzle_solver.puzzles.inertia.parse_map.parse_map import main as inertia_image_parser
 
-__version__ = '0.9.29'
+__version__ = '0.9.30'
