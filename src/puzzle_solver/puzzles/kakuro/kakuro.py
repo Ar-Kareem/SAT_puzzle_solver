@@ -54,6 +54,7 @@ class Board:
                 clue = self.row_sums[row][i]
                 if clue != '#':
                     self.model.Add(lxp.sum([self.model_vars[p] for p in consecutive]) == clue)
+            assert len(self.row_sums[row]) == i + 1, f'row_sums[{row}] has {len(self.row_sums[row])} clues, but {i + 1} consecutive cells'
         for col in range(self.H):
             col_consecutives = self.get_consecutives(get_pos(x=col, y=0), Direction.DOWN)
             for i, consecutive in enumerate(col_consecutives):
@@ -62,6 +63,7 @@ class Board:
                 clue = self.col_sums[col][i]
                 if clue != '#':
                     self.model.Add(lxp.sum([self.model_vars[p] for p in consecutive]) == clue)
+            assert len(self.col_sums[col]) == i + 1, f'col_sums[{col}] has {len(self.col_sums[col])} clues, but {i + 1} consecutive cells'
 
     def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
