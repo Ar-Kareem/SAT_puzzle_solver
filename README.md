@@ -332,6 +332,11 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tapa_solved.png" alt="Tapa" width="140">
     </a>
   </td>
+  <td align="center">
+    <a href="#binairo-plus-puzzle-type-49"><b>Binairo Plus</b><br><br>
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/binairo_plus_solved.png" alt="Binairo Plus" width="140">
+    </a>
+  </td>
 </tr>
 </table>
 
@@ -395,6 +400,7 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   - [Heyawake (Puzzle Type #46)](#heyawake-puzzle-type-46)
   - [Shingoki (Puzzle Type #47)](#shingoki-puzzle-type-47)
   - [Tapa (Puzzle Type #48)](#tapa-puzzle-type-48)
+  - [Binairo Plus (Puzzle Type #49)](#binairo-plus-puzzle-type-49)
   - [Why SAT / CP-SAT?](#why-sat--cp-sat)
   - [Testing](#testing)
   - [Contributing](#contributing)
@@ -4379,6 +4385,131 @@ Time taken: 14.20 seconds
 
 ---
 
+## Binairo Plus (Puzzle Type #49)
+
+* [**Play online**](https://www.puzzle-binairo.com/binairo-plus-6x6-easy/)
+
+* [**Solver Code**][49]
+
+<details>
+  <summary><strong>Rules</strong></summary>
+
+Binairo+ is played on a rectangular grid with no standard size. Some cells start out filled with black or white circles. The rest of the cells are empty. The goal is to place circles in all cells in such a way that:
+1. Each row and each column must contain an equal number of white and black circles.
+2. More than two circles of the same color can't be adjacent.
+3. Two cells with a "=" sign between them should contain circles of the same type.
+4. Two cells with a "x" sign between them should contain circles of the opposite type. 
+
+</details>
+
+**Unsolved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/binairo_plus_unsolved.png" alt="Binairo Plus unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+
+```python
+import numpy as np
+from puzzle_solver import binairo_plus_solver as solver
+board = np.array([
+    [' ', ' ', 'W', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'B', ' ', ' '],
+    ['B', ' ', ' ', ' ', 'W', ' ', ' ', ' ', ' ', 'B', ' ', ' ', ' ', 'B'],
+    [' ', ' ', ' ', ' ', ' ', 'W', ' ', ' ', 'W', ' ', ' ', ' ', ' ', ' '],
+    ['B', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'W'],
+    [' ', ' ', ' ', 'B', ' ', ' ', ' ', ' ', ' ', ' ', 'B', ' ', ' ', ' '],
+    ['W', ' ', 'B', ' ', 'W', ' ', ' ', ' ', ' ', 'W', ' ', 'B', ' ', 'B'],
+    [' ', ' ', 'W', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'B', ' ', ' '],
+    [' ', ' ', 'B', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'W', ' ', ' '],
+    ['B', ' ', 'W', ' ', 'B', ' ', ' ', ' ', ' ', 'W', ' ', 'W', ' ', 'B'],
+    [' ', ' ', ' ', 'B', ' ', ' ', ' ', ' ', ' ', ' ', 'W', ' ', ' ', ' '],
+    ['W', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'B'],
+    [' ', ' ', ' ', ' ', ' ', 'W', ' ', ' ', 'W', ' ', ' ', ' ', ' ', ' '],
+    ['W', ' ', ' ', ' ', 'W', ' ', ' ', ' ', ' ', 'B', ' ', ' ', ' ', 'W'],
+    [' ', ' ', 'B', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'W', ' ', ' '],
+])
+# between cells horizontally
+arith_rows = np.array([
+    [' ', ' ', ' ', '=', ' ', 'x', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', '=', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', 'x', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    ['x', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', '=', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', '=', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '=', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', 'x', 'x', ' ', ' ', ' ', 'x', ' ', ' ', ' ', ' '],
+])
+# between cells vertically
+arith_cols = np.array([
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', '=', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', '=', ' ', '=', ' ', ' ', 'x', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x', '=', ' ', '=', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', '=', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '=', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', '=', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', '=', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', 'x', ' ', ' ', ' ', ' ', ' ', 'x', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', '=', ' ', 'x', ' ', ' ', ' ', 'x', ' '],
+])
+binst = solver.Board(board=board, arith_rows=arith_rows, arith_cols=arith_cols)
+solutions = binst.solve_and_print()
+```
+
+**Script Output**
+
+```python
+Solution found
+    0   0   0   0   0   0   0   0   0   0   1   1   1   1
+    0   1   2   3   4   5   6   7   8   9   0   1   2   3
+  ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
+ 0│▒▒▒│   │   │▒▒▒│▒▒▒│   │▒▒▒│▒▒▒│   │   │▒▒▒│▒▒▒│   │   │
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 1│▒▒▒│   │   │▒▒▒│   │▒▒▒│   │   │▒▒▒│▒▒▒│   │   │▒▒▒│▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 2│   │▒▒▒│▒▒▒│   │▒▒▒│   │   │▒▒▒│   │   │▒▒▒│   │▒▒▒│▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 3│▒▒▒│▒▒▒│   │   │▒▒▒│   │▒▒▒│   │▒▒▒│▒▒▒│   │▒▒▒│   │   │
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 4│▒▒▒│   │   │▒▒▒│   │▒▒▒│▒▒▒│   │   │▒▒▒│▒▒▒│   │▒▒▒│   │
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 5│   │▒▒▒│▒▒▒│   │   │▒▒▒│   │▒▒▒│▒▒▒│   │   │▒▒▒│   │▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 6│   │▒▒▒│   │   │▒▒▒│   │▒▒▒│   │▒▒▒│▒▒▒│   │▒▒▒│▒▒▒│   │
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 7│▒▒▒│   │▒▒▒│▒▒▒│   │   │▒▒▒│▒▒▒│   │   │▒▒▒│   │▒▒▒│   │
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 8│▒▒▒│▒▒▒│   │   │▒▒▒│▒▒▒│   │▒▒▒│   │   │▒▒▒│   │   │▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 9│   │   │▒▒▒│▒▒▒│   │▒▒▒│   │   │▒▒▒│▒▒▒│   │▒▒▒│▒▒▒│   │
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+10│   │▒▒▒│▒▒▒│   │▒▒▒│   │▒▒▒│   │▒▒▒│   │   │▒▒▒│   │▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+11│▒▒▒│▒▒▒│   │   │▒▒▒│   │▒▒▒│▒▒▒│   │   │▒▒▒│   │   │▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+12│   │   │▒▒▒│▒▒▒│   │▒▒▒│   │   │▒▒▒│▒▒▒│   │▒▒▒│▒▒▒│   │
+  ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+13│   │   │▒▒▒│▒▒▒│   │▒▒▒│   │▒▒▒│   │▒▒▒│▒▒▒│   │   │▒▒▒│
+  └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+Solutions found: 1
+status: OPTIMAL
+Time taken: 0.00 seconds
+```
+
+**Solved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/binairo_plus_solved.png" alt="Binairo Plus solved" width="500">
+
+---
+
 ---
 
 ## Why SAT / CP-SAT?
@@ -4478,3 +4609,4 @@ Issues and PRs welcome!
 [46]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/heyawake "puzzle_solver/src/puzzle_solver/puzzles/heyawake at master · Ar-Kareem/puzzle_solver · GitHub"
 [47]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/shingoki "puzzle_solver/src/puzzle_solver/puzzles/shingoki at master · Ar-Kareem/puzzle_solver · GitHub"
 [48]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/tapa "puzzle_solver/src/puzzle_solver/puzzles/tapa at master · Ar-Kareem/puzzle_solver · GitHub"
+[49]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/binairo_plus "puzzle_solver/src/puzzle_solver/puzzles/binairo_plus at master · Ar-Kareem/puzzle_solver · GitHub"
