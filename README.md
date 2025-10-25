@@ -329,7 +329,7 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   </td>
   <td align="center">
     <a href="#tapa-puzzle-type-48"><b>Tapa</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tapa_unsolved.png" alt="Tapa" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tapa_solved.png" alt="Tapa" width="140">
     </a>
   </td>
 </tr>
