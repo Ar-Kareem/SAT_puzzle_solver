@@ -435,23 +435,9 @@ def render_bw_tiles_split(
             return
         ch = ch[0]  # keep one character (user said single number)
         cx, cy = cell_w // 2, cell_h // 2
+        cx -= 1
         fx = (cx + 0.5) / cell_w
         fy = (cy + 0.5) / cell_h
-
-        # If center is boundary or not black, nudge horizontally toward black side
-        if val in ("TL","TR","BL","BR"):
-            kind, _ = diag_kind_and_slash(val)
-            # Determine which side is black relative to x at this y
-            if kind == "main":  # boundary y=x → compare fx vs fy
-                want_right = (val == "TR")  # black is to the right of boundary
-                if on_boundary(val, fx, fy) or (is_black(val, fx, fy) is False):
-                    if want_right and cx + 1 < cell_w:  cx += 1
-                    elif not want_right and cx - 1 >= 0: cx -= 1
-            else:               # boundary y=1-x → compare fx vs 1-fy
-                want_left = (val == "TL")  # black is to the left of boundary
-                if on_boundary(val, fx, fy) or (is_black(val, fx, fy) is False):
-                    if want_left and cx - 1 >= 0:        cx -= 1
-                    elif not want_left and cx + 1 < cell_w: cx += 1
 
         # Compose the glyph for that spot
         if use_color:
