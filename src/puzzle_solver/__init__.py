@@ -29,6 +29,7 @@ from puzzle_solver.puzzles.lits import lits as lits_solver
 from puzzle_solver.puzzles.pearl import pearl as pearl_solver
 from puzzle_solver.puzzles.range import range as range_solver
 from puzzle_solver.puzzles.rectangles import rectangles as rectangles_solver
+from puzzle_solver.puzzles.shakashaka import shakashaka as shakashaka_solver
 from puzzle_solver.puzzles.shingoki import shingoki as shingoki_solver
 from puzzle_solver.puzzles.signpost import signpost as signpost_solver
 from puzzle_solver.puzzles.singles import singles as singles_solver
