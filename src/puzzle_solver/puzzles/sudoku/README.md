@@ -90,13 +90,8 @@ Time taken: 0.04 seconds
 
 * [**Play online**](https://www.puzzle-jigsaw-sudoku.com/)
 
-<details>
-  <summary><strong>Rules</strong></summary>
-
-   1. The basic Sudoku rules apply.
-   2. The difference is that instead of having 3x3 rectangular blocks these blocks have irregular shapes
-
-</details>
+1. The basic Sudoku rules apply.
+2. The difference is that instead of having 3x3 rectangular blocks these blocks have irregular shapes
 
 **Unsolved puzzle**
 
@@ -156,3 +151,66 @@ Time taken: 0.01 seconds
 **Solved puzzle**
 
 <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_jigsaw_solved.png" alt="Sudoku Jigsaw solved" width="500">
+
+# Sudoku Killer (Puzzle Type #53)
+
+* [**Play online**](https://www.puzzle-killer-sudoku.com/)
+
+1. The basic Sudoku rules apply.
+2. The sum of all numbers in a cage must match the small number printed in its corner.
+3. No number appears more than once in a cage.
+
+**Unsolved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_killer_unsolved.png" alt="Sudoku Killer unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+
+(Note: the ids are arbitrary and simply represent cells that share a cage)
+
+```python
+import numpy as np
+from puzzle_solver import sudoku_solver as solver
+board = np.full((9, 9), ' ')
+killer_board = np.array([
+  ['01', '01', '03', '03', '03', '12', '12', '13', '14'],
+  ['02', '01', '04', '16', '16', '17', '17', '13', '14'],
+  ['02', '02', '04', '18', '19', '19', '15', '15', '14'],
+  ['11', '11', '05', '18', '19', '19', '20', '15', '23'],
+  ['10', '10', '05', '30', '31', '32', '20', '22', '23'],
+  ['08', '07', '06', '30', '31', '32', '21', '22', '24'],
+  ['08', '07', '06', '29', '31', '33', '21', '24', '24'],
+  ['09', '34', '34', '29', '28', '33', '26', '26', '25'],
+  ['09', '34', '34', '28', '28', '27', '27', '25', '25'],
+])
+killer_clues = {
+  '01': 16, '02': 11, '03': 24, '04': 10, '05': 11, '06': 7, '07': 10, '08': 10, '09': 16,
+  '10': 11, '11': 10, '12': 7, '13': 11, '14': 16, '15': 16, '16': 8, '17': 12, '18': 8, '19': 15,
+  '20': 7, '21': 10, '22': 5, '23': 13, '24': 16, '25': 9, '26': 14, '27': 15, '28': 13, '29': 11,
+  '30': 9, '31': 15, '32': 13, '33': 11, '34': 15,
+}
+binst = solver.Board(board=board, block_size=(3, 3), killer=(killer_board, killer_clues))
+solutions = binst.solve_and_print()
+```
+
+**Script Output**
+
+```python
+Solution found
+[['5' '4' '8' '7' '9' '1' '6' '2' '3']
+ ['3' '7' '1' '6' '2' '8' '4' '9' '5']
+ ['2' '6' '9' '5' '4' '3' '1' '7' '8']
+ ['1' '9' '4' '3' '6' '2' '5' '8' '7']
+ ['8' '3' '7' '1' '5' '9' '2' '4' '6']
+ ['6' '2' '5' '8' '7' '4' '3' '1' '9']
+ ['4' '8' '2' '9' '3' '5' '7' '6' '1']
+ ['7' '1' '3' '2' '8' '6' '9' '5' '4']
+ ['9' '5' '6' '4' '1' '7' '8' '3' '2']]
+Solutions found: 1
+status: OPTIMAL
+Time taken: 0.01 seconds
+```
+
+**Solved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_killer_solved.png" alt="Sudoku Killer solved" width="500">

@@ -356,6 +356,21 @@ def test_ground_killer():
   solutions = binst.solve_and_print()
   assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
   solution = solutions[0].assignment
+  ground = np.array([
+    ['5', '4', '8', '7', '9', '1', '6', '2', '3'],
+    ['3', '7', '1', '6', '2', '8', '4', '9', '5'],
+    ['2', '6', '9', '5', '4', '3', '1', '7', '8'],
+    ['1', '9', '4', '3', '6', '2', '5', '8', '7'],
+    ['8', '3', '7', '1', '5', '9', '2', '4', '6'],
+    ['6', '2', '5', '8', '7', '4', '3', '1', '9'],
+    ['4', '8', '2', '9', '3', '5', '7', '6', '1'],
+    ['7', '1', '3', '2', '8', '6', '9', '5', '4'],
+    ['9', '5', '6', '4', '1', '7', '8', '3', '2'],
+  ])
+  ground_assignment = {get_pos(x=x, y=y): ord(ground[y][x]) - ord('a') + 10 if ground[y][x].isalpha() else int(ground[y][x]) for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+  assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys())} != {set(ground_assignment.keys())}'
+  for pos in solution.keys():
+    assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
 
 
 
