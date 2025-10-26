@@ -1,5 +1,5 @@
-from cgi import test
 import numpy as np
+
 from puzzle_solver import flood_it_solver as solver
 
 
@@ -28,7 +28,7 @@ def test_toy3():
         ['B', 'G', 'B'],
     ])
     solution = solver.solve_minimum_steps(board=board)
-    assert solution is not None, f'No solution found'
+    assert solution is not None, 'No solution found'
     ground = ('B', 'G')
     assert tuple(solution) == ground, f"Found solution != expected solution, {tuple(solution)} != {ground}"
 
@@ -118,6 +118,35 @@ def test_ground3():
     assert solution is not None, 'No solution found'
     assert len(solution) == 36, f'Expected 36 steps, found {len(solution)}'  # WEBSITE SAYS 38
 
+
+def test_ground4():
+    # 20 x 20 with 4 colors
+    board = np.array([
+        ["R", "Y", "R", "G", "R", "R", "B", "G", "Y", "G", "G", "B", "B", "B", "Y", "R", "B", "Y", "Y", "R"],
+        ["Y", "Y", "B", "Y", "G", "B", "Y", "G", "G", "B", "R", "G", "B", "B", "B", "Y", "G", "Y", "G", "R"],
+        ["G", "B", "Y", "R", "Y", "R", "B", "R", "Y", "B", "B", "B", "G", "R", "B", "Y", "B", "G", "G", "G"],
+        ["G", "Y", "B", "R", "Y", "Y", "Y", "R", "G", "Y", "Y", "G", "B", "B", "G", "R", "G", "R", "G", "Y"],
+        ["G", "G", "B", "B", "B", "G", "R", "G", "G", "G", "Y", "R", "Y", "B", "G", "Y", "Y", "B", "Y", "R"],
+        ["B", "G", "R", "B", "G", "B", "R", "Y", "B", "G", "B", "B", "Y", "Y", "Y", "G", "G", "B", "Y", "R"],
+        ["B", "B", "R", "B", "R", "Y", "B", "Y", "R", "B", "R", "R", "R", "B", "Y", "Y", "G", "G", "B", "B"],
+        ["Y", "R", "Y", "B", "Y", "Y", "G", "R", "R", "Y", "G", "Y", "R", "G", "G", "B", "R", "G", "R", "G"],
+        ["G", "G", "R", "Y", "G", "Y", "Y", "Y", "B", "R", "Y", "B", "Y", "G", "G", "B", "B", "Y", "R", "R"],
+        ["G", "R", "B", "R", "R", "Y", "Y", "R", "Y", "R", "B", "Y", "G", "B", "B", "G", "R", "R", "G", "Y"],
+        ["B", "B", "R", "Y", "R", "Y", "B", "B", "R", "R", "B", "Y", "B", "G", "R", "B", "Y", "R", "B", "G"],
+        ["B", "B", "Y", "Y", "G", "B", "R", "G", "R", "Y", "R", "Y", "B", "Y", "R", "R", "Y", "Y", "R", "R"],
+        ["B", "B", "G", "Y", "Y", "B", "G", "B", "R", "Y", "B", "R", "B", "R", "Y", "G", "B", "R", "B", "B"],
+        ["B", "G", "Y", "G", "Y", "R", "Y", "B", "R", "Y", "Y", "B", "Y", "Y", "B", "R", "G", "B", "G", "Y"],
+        ["R", "G", "G", "Y", "R", "Y", "R", "Y", "B", "Y", "B", "G", "G", "Y", "G", "B", "G", "G", "Y", "B"],
+        ["Y", "G", "B", "G", "B", "B", "G", "G", "B", "B", "B", "B", "G", "B", "Y", "G", "R", "Y", "B", "Y"],
+        ["B", "G", "R", "G", "R", "Y", "Y", "R", "G", "R", "Y", "Y", "G", "B", "Y", "Y", "G", "B", "G", "R"],
+        ["R", "Y", "B", "G", "R", "R", "R", "Y", "Y", "Y", "B", "Y", "G", "G", "Y", "Y", "R", "R", "B", "R"],
+        ["R", "Y", "G", "R", "Y", "Y", "G", "G", "R", "R", "B", "R", "Y", "Y", "Y", "B", "R", "G", "G", "G"],
+        ["R", "Y", "Y", "Y", "R", "B", "G", "Y", "Y", "B", "B", "G", "B", "G", "B", "B", "G", "R", "Y", "G"]
+    ])
+    solution = solver.solve_minimum_steps(board=board, verbose=True)
+    assert solution is not None, 'No solution found'
+
+
 if __name__ == '__main__':
     test_toy()
     test_toy2()
@@ -126,3 +155,4 @@ if __name__ == '__main__':
     test_ground()
     test_ground2()
     test_ground3()
+    test_ground4()
