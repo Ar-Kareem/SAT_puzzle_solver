@@ -14,6 +14,8 @@ class SingleSolution:
     assignment: dict[Pos, Union[str, int]]
 
     def get_hashable_solution(self) -> str:
+        if isinstance(self.assignment, list):
+            return json.dumps(self.assignment)
         result = []
         for pos, v in self.assignment.items():
             result.append((pos.x, pos.y, v))

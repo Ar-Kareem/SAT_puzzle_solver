@@ -9,6 +9,7 @@ from puzzle_solver.puzzles.chess_range import chess_solo as chess_solo_solver
 from puzzle_solver.puzzles.chess_range import chess_melee as chess_melee_solver
 from puzzle_solver.puzzles.dominosa import dominosa as dominosa_solver
 from puzzle_solver.puzzles.filling import filling as filling_solver
+from puzzle_solver.puzzles.flood_it import flood_it as flood_it_solver
 from puzzle_solver.puzzles.flip import flip as flip_solver
 from puzzle_solver.puzzles.galaxies import galaxies as galaxies_solver
 from puzzle_solver.puzzles.guess import guess as guess_solver
@@ -52,7 +53,7 @@ from puzzle_solver.puzzles.yin_yang import yin_yang as yin_yang_solver
 
 from puzzle_solver.puzzles.inertia.parse_map.parse_map import main as inertia_image_parser
 
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 
 __all__ = [
     aquarium_solver,
@@ -66,6 +67,7 @@ __all__ = [
     chess_melee_solver,
     dominosa_solver,
     filling_solver,
+    flood_it_solver,
     flip_solver,
     galaxies_solver,
     guess_solver,

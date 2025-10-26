@@ -1,0 +1,22 @@
+[
+  ["Orange", "Yellow", "Purple", "Green", "Red", "Brown", "Green", "Orange", "Brown", "Yellow", "Cyan", "Red", "Green", "Orange", "Purple", "Green", "Blue", "Red", "Blue", "Cyan"],
+  ["Purple", "Red", "Yellow", "Purple", "Green", "Yellow", "Purple", "Brown", "Cyan", "Red", "Brown", "Yellow", "Red", "Red", "Orange", "Green", "Red", "Yellow", "Blue", "Blue"],
+  ["Orange", "Red", "Blue", "Green", "Green", "Cyan", "Yellow", "Blue", "Purple", "Blue", "Cyan", "Yellow", "Green", "Green", "Cyan", "Blue", "Green", "Brown", "Brown", "Green"],
+  ["Orange", "Green", "Green", "Cyan", "Green", "Purple", "Cyan", "Brown", "Purple", "Cyan", "Red", "Blue", "Red", "Green", "Brown", "Cyan", "Purple", "Brown", "Blue", "Cyan"],
+  ["Red", "Brown", "Orange", "Cyan", "Yellow", "Yellow", "Orange", "Brown", "Blue", "Brown", "Cyan", "Purple", "Blue", "Red", "Blue", "Red", "Purple", "Blue", "Brown", "Blue"],
+  ["Orange", "Blue", "Blue", "Blue", "Yellow", "Brown", "Yellow", "Blue", "Yellow", "Brown", "Green", "Orange", "Orange", "Purple", "Yellow", "Cyan", "Purple", "Yellow", "Orange", "Yellow"],
+  ["Orange", "Brown", "Brown", "Red", "Yellow", "Cyan", "Purple", "Red", "Green", "Blue", "Purple", "Green", "Green", "Purple", "Purple", "Red", "Orange", "Red", "Cyan", "Blue"],
+  ["Brown", "Cyan", "Purple", "Blue", "Red", "Cyan", "Green", "Orange", "Cyan", "Green", "Cyan", "Green", "Blue", "Red", "Brown", "Orange", "Yellow", "Brown", "Cyan", "Green"],
+  ["Orange", "Purple", "Cyan", "Red", "Cyan", "Brown", "Orange", "Green", "Brown", "Red", "Brown", "Orange", "Brown", "Purple", "Red", "Green", "Yellow", "Orange", "Red", "Orange"],
+  ["Cyan", "Orange", "Yellow", "Blue", "Brown", "Orange", "Blue", "Yellow", "Cyan", "Red", "Brown", "Green", "Cyan", "Brown", "Blue", "Yellow", "Green", "Yellow", "Red", "Orange"],
+  ["Blue", "Cyan", "Purple", "Yellow", "Cyan", "Blue", "Purple", "Orange", "Yellow", "Cyan", "Blue", "Green", "Yellow", "Orange", "Yellow", "Yellow", "Cyan", "Blue", "Red", "Red"],
+  ["Green", "Cyan", "Red", "Orange", "Brown", "Green", "Brown", "Blue", "Purple", "Orange", "Purple", "Cyan", "Blue", "Red", "Orange", "Blue", "Red", "Brown", "Green", "Orange"],
+  ["Blue", "Yellow", "Green", "Orange", "Cyan", "Cyan", "Blue", "Red", "Purple", "Cyan", "Orange", "Green", "Blue", "Red", "Orange", "Blue", "Orange", "Brown", "Red", "Yellow"],
+  ["Yellow", "Orange", "Orange", "Yellow", "Purple", "Green", "Brown", "Brown", "Brown", "Cyan", "Red", "Brown", "Red", "Yellow", "Orange", "Yellow", "Red", "Blue", "Purple", "Cyan"],
+  ["Red", "Yellow", "Green", "Cyan", "Purple", "Brown", "Brown", "Blue", "Orange", "Purple", "Red", "Cyan", "Orange", "Cyan", "Cyan", "Cyan", "Purple", "Green", "Purple", "Brown"],
+  ["Brown", "Purple", "Blue", "Orange", "Brown", "Orange", "Red", "Yellow", "Yellow", "Purple", "Green", "Brown", "Cyan", "Blue", "Green", "Blue", "Cyan", "Blue", "Purple", "Red"],
+  ["Brown", "Yellow", "Brown", "Red", "Brown", "Purple", "Green", "Red", "Brown", "Green", "Red", "Purple", "Purple", "Brown", "Green", "Brown", "Green", "Orange", "Green", "Orange"],
+  ["Yellow", "Orange", "Yellow", "Orange", "Blue", "Brown", "Cyan", "Cyan", "Green", "Yellow", "Cyan", "Yellow", "Red", "Blue", "Blue", "Purple", "Orange", "Green", "Blue", "Green"],
+  ["Orange", "Yellow", "Orange", "Green", "Orange", "Red", "Brown", "Yellow", "Blue", "Cyan", "Green", "Orange", "Red", "Orange", "Brown", "Cyan", "Yellow", "Purple", "Orange", "Orange"],
+  ["Purple", "Blue", "Yellow", "Brown", "Cyan", "Cyan", "Yellow", "Yellow", "Purple", "Orange", "Green", "Red", "Green", "Yellow", "Cyan", "Green", "Purple", "Yellow", "Cyan", "Blue"]
+]
