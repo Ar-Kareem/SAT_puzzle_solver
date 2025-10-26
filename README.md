@@ -343,6 +343,13 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
     </a>
   </td>
 </tr>
+<tr>
+  <td align="center">
+    <a href="#kakuro-puzzle-type-51"><b>Kakuro</b><br><br>
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/kakuro_solved.png" alt="Kakuro" width="140">
+    </a>
+  </td>
+</tr>
 </table>
 
 </div>
