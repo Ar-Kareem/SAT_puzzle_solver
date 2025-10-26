@@ -1,4 +1,5 @@
 from typing import Union, Optional
+from collections import defaultdict
 
 import numpy as np
 from ortools.sat.python import cp_model
@@ -35,31 +36,62 @@ def get_block_pos(i: int, Bv: int, Bh: int) -> list[Pos]:
 
 
 class Board:
-    def __init__(self, board: np.array, block_size: Optional[tuple[int, int]] = None, sandwich: Optional[dict[str, list[int]]] = None, unique_diagonal: bool = False):
+    def __init__(self,
+            board: np.array,
+            constrain_blocks: bool = True,
+            block_size: Optional[tuple[int, int]] = None,
+            sandwich: Optional[dict[str, list[int]]] = None,
+            unique_diagonal: bool = False,
+            jigsaw: Optional[np.array] = None,
+            ):
+        """
+        board: 2d array of characters
+        constrain_blocks: whether to constrain the blocks. If True, each block must contain all numbers from 1 to 9 exactly once.
+        block_size: tuple of block size (vertical, horizontal). If not provided, the block size is the square root of the board size.
+        sandwich: dictionary of sandwich clues (side, bottom). If provided, the sum of the values between 1 and 9 for each row and column is equal to the clue.
+        unique_diagonal: whether to constrain the 2 diagonals to be unique. If True, each diagonal must contain all numbers from 1 to 9 exactly once.
+        """
         assert board.ndim == 2, f'board must be 2d, got {board.ndim}'
         assert board.shape[0] == board.shape[1], 'board must be square'
         assert all(isinstance(i.item(), str) and len(i.item()) == 1 and (i.item().isalnum() or i.item() == ' ') for i in np.nditer(board)), 'board must contain only alphanumeric characters or space'
         self.board = board
         self.V, self.H = board.shape
-        if block_size is None:
-            B = np.sqrt(self.V)  # block size
-            assert B.is_integer(), 'board size must be a perfect square or provide block_size'
-            Bv, Bh = int(B), int(B)
+        self.L = max(self.V, self.H)
+        self.constrain_blocks = constrain_blocks
+        self.unique_diagonal = unique_diagonal
+        self.sandwich = None
+        self.jigsaw_id_to_pos = None
+
+        if self.constrain_blocks:
+            if block_size is None:
+                B = np.sqrt(self.V)  # block size
+                assert B.is_integer(), 'board size must be a perfect square or provide block_size'
+                Bv, Bh = int(B), int(B)
+            else:
+                Bv, Bh = block_size
+                assert Bv * Bh == self.V, 'block size must be a factor of board size'
+            # can be different in 4x3 for example
+            self.Bv = Bv
+            self.Bh = Bh
+            self.B = Bv * Bh  # block count
         else:
-            Bv, Bh = block_size
-            assert Bv * Bh == self.V, 'block size must be a factor of board size'
-        # can be different in 4x3 for example
-        self.Bv = Bv
-        self.Bh = Bh
-        self.B = Bv * Bh  # block count
+            assert block_size is None, 'cannot set block size if blocks are not constrained'
+        if jigsaw is not None:
+            assert jigsaw.ndim == 2, f'jigsaw must be 2d, got {jigsaw.ndim}'
+            assert jigsaw.shape[0] == self.V and jigsaw.shape[1] == self.H, 'jigsaw must be the same size as the board'
+            assert all(isinstance(i.item(), str) and i.item().isdecimal() for i in np.nditer(jigsaw)), 'jigsaw must contain only digits or space'
+            self.jigsaw_id_to_pos: dict[int, list[Pos]] = defaultdict(list)
+            for pos in get_all_pos(self.V, self.H):
+                v = get_char(jigsaw, pos)
+                if v.isdecimal():
+                    self.jigsaw_id_to_pos[int(v)].append(pos)
+            assert all(len(pos_list) <= self.L for pos_list in self.jigsaw_id_to_pos.values()), 'jigsaw areas cannot be larger than the number of digits'
+
         if sandwich is not None:
             assert set(sandwich.keys()) == set(['side', 'bottom']), 'sandwich must contain only side and bottom'
             assert len(sandwich['side']) == self.H, 'side must be equal to board width'
             assert len(sandwich['bottom']) == self.V, 'bottom must be equal to board height'
             self.sandwich = sandwich
-        else:
-            self.sandwich = None
-        self.unique_diagonal = unique_diagonal
     
         self.model = cp_model.CpModel()
         self.model_vars: dict[Pos, cp_model.IntVar] = {}
@@ -69,7 +101,7 @@ class Board:
 
     def create_vars(self):
         for pos in get_all_pos(self.V, self.H):
-            self.model_vars[pos] = self.model.NewIntVar(1, self.B, f'{pos}')
+            self.model_vars[pos] = self.model.NewIntVar(1, self.L, f'{pos}')
 
     def add_all_constraints(self):
         # some squares are already filled
@@ -86,16 +118,19 @@ class Board:
         for col in range(self.H):
             col_vars = [self.model_vars[pos] for pos in get_col_pos(col, V=self.V)]
             self.model.AddAllDifferent(col_vars)
-        # each block
-        for block_i in range(self.B):
-            block_vars = [self.model_vars[p] for p in get_block_pos(block_i, Bv=self.Bv, Bh=self.Bh)]
-            self.model.AddAllDifferent(block_vars)
+        if self.constrain_blocks:  # each block must contain all numbers from 1 to 9 exactly once
+            for block_i in range(self.B):
+                block_vars = [self.model_vars[p] for p in get_block_pos(block_i, Bv=self.Bv, Bh=self.Bh)]
+                self.model.AddAllDifferent(block_vars)
         if self.sandwich is not None:
             self.add_sandwich_constraints()
         if self.unique_diagonal:
             self.add_unique_diagonal_constraints()
+        if self.jigsaw_id_to_pos is not None:
+            self.add_jigsaw_constraints()
 
     def add_sandwich_constraints(self):
+        """Sandwich constraints, enforce that the sum of the values between 1 and 9 for each row and column is equal to the clue."""
         for c, clue in enumerate(self.sandwich['bottom']):
             if clue is None or int(clue) < 0:
                 continue
@@ -112,6 +147,11 @@ class Board:
         self.model.AddAllDifferent(main_diagonal_vars)
         anti_diagonal_vars = [self.model_vars[get_pos(x=i, y=self.V-i-1)] for i in range(min(self.V, self.H))]
         self.model.AddAllDifferent(anti_diagonal_vars)
+
+    def add_jigsaw_constraints(self):
+        """All digits in one jigsaw area must be unique."""
+        for pos_list in self.jigsaw_id_to_pos.values():
+            self.model.AddAllDifferent([self.model_vars[p] for p in pos_list])
 
     def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:

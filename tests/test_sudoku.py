@@ -169,8 +169,90 @@ def test_ground_x():
   for pos in solution.keys():
     assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
 
+
+def test_small_jigsaw():
+  # 5 x 5 hard jigsaw
+  # https://www.puzzle-jigsaw-sudoku.com/?e=MjoyLDc5Niw4MDY=
+  board = np.array([
+    [ ' ', '4', ' ', ' ', ' ' ],
+    [ '5', ' ', ' ', ' ', ' ' ],
+    [ ' ', '3', ' ', '1', ' ' ],
+    [ ' ', ' ', ' ', ' ', '4' ],
+    [ ' ', ' ', ' ', '5', ' ' ],
+  ])
+  jigsaw_ids = np.array([
+    [ '1', '1', '2', '2', '3' ],
+    [ '1', '1', '2', '2', '3' ],
+    [ '5', '1', '4', '2', '3' ],
+    [ '5', '5', '4', '4', '3' ],
+    [ '5', '5', '4', '4', '3' ],
+  ])
+  binst = solver.Board(board=board, jigsaw=jigsaw_ids, constrain_blocks=False)
+  solutions = binst.solve_and_print()
+  assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+  solution = solutions[0].assignment
+  ground = np.array([
+    ['1', '4', '5', '2', '3'],
+    ['5', '2', '3', '4', '1'],
+    ['4', '3', '2', '1', '5'],
+    ['2', '5', '1', '3', '4'],
+    ['3', '1', '4', '5', '2'],
+  ])
+  ground_assignment = {get_pos(x=x, y=y): ord(ground[y][x]) - ord('a') + 10 if ground[y][x].isalpha() else int(ground[y][x]) for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+  assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys())} != {set(ground_assignment.keys())}'
+  for pos in solution.keys():
+    assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
+
+
+def test_ground_jigsaw():
+  # 9 x 9 jigsaw hard
+  # https://www.puzzle-jigsaw-sudoku.com/?e=ODo5ODcsNzk2
+  board = np.array([
+    [ '1', ' ', ' ', '2', ' ', ' ', '8', '5', ' ' ],
+    [ '2', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' ],
+    [ ' ', ' ', '8', ' ', ' ', ' ', ' ', ' ', ' ' ],
+    [ '7', ' ', ' ', '5', ' ', '1', ' ', ' ', ' ' ],
+    [ ' ', ' ', ' ', '1', ' ', '3', ' ', ' ', ' ' ],
+    [ ' ', ' ', ' ', '8', ' ', '4', ' ', ' ', '6' ],
+    [ ' ', ' ', ' ', ' ', ' ', ' ', '5', ' ', ' ' ],
+    [ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '5' ],
+    [ ' ', '2', '6', ' ', ' ', '9', ' ', ' ', '1' ],
+  ])
+  jigsaw_ids = np.array([
+    ['00', '00', '01', '01', '01', '01', '02', '02', '02'],
+    ['00', '00', '01', '01', '03', '01', '01', '02', '02'],
+    ['00', '00', '01', '04', '03', '03', '02', '02', '02'],
+    ['00', '04', '04', '04', '03', '03', '03', '03', '02'],
+    ['00', '00', '04', '04', '03', '03', '05', '05', '05'],
+    ['06', '04', '04', '04', '05', '05', '05', '07', '05'],
+    ['06', '08', '08', '08', '08', '05', '05', '07', '07'],
+    ['06', '06', '06', '06', '08', '07', '07', '07', '07'],
+    ['06', '06', '06', '08', '08', '08', '08', '07', '07'],
+  ])
+  binst = solver.Board(board=board, jigsaw=jigsaw_ids, constrain_blocks=False)
+  solutions = binst.solve_and_print()
+  assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+  solution = solutions[0].assignment
+  ground = np.array([
+    ['1', '9', '4', '2', '3', '6', '8', '5', '7'],
+    ['2', '8', '5', '9', '4', '7', '1', '6', '3'],
+    ['6', '3', '8', '4', '7', '5', '9', '1', '2'],
+    ['7', '6', '3', '5', '9', '1', '2', '8', '4'],
+    ['4', '5', '2', '1', '6', '3', '7', '9', '8'],
+    ['5', '7', '9', '8', '1', '4', '3', '2', '6'],
+    ['3', '1', '7', '6', '8', '2', '5', '4', '9'],
+    ['9', '4', '1', '7', '2', '8', '6', '3', '5'],
+    ['8', '2', '6', '3', '5', '9', '4', '7', '1'],
+  ])
+  ground_assignment = {get_pos(x=x, y=y): ord(ground[y][x]) - ord('a') + 10 if ground[y][x].isalpha() else int(ground[y][x]) for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+  assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys())} != {set(ground_assignment.keys())}'
+  for pos in solution.keys():
+    assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
+
+
 if __name__ == '__main__':
   test_ground()
   test_ground_2()
   test_ground_sandwich_sudoku()
   test_ground_x()
+  test_small_jigsaw()
