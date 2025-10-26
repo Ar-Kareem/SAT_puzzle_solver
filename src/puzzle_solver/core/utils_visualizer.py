@@ -383,24 +383,14 @@ def render_bw_tiles_split(
         else:                      # y = 1 - x
             return (fy < 1 - fx) if val == "TL" else (fy > 1 - fx)
 
-    def on_boundary(val: CellVal, fx: float, fy: float) -> bool:
-        if val in ("B","W"):
-            return False
-        kind, _ = diag_kind_and_slash(val)
-        eps = 0.5 / max(cell_w, cell_h)   # thin boundary
-        if kind == "main":
-            return abs(fy - fx) <= eps
-        else:
-            return abs(fy - (1 - fx)) <= eps
-
     # Build one tile as a matrix of 1-char tokens (already colorized if ANSI)
     def make_tile(val: CellVal) -> List[List[str]]:
         rows: List[List[str]] = []
-        kind, slash_ch = diag_kind_and_slash(val)
-
+        _, slash_ch = diag_kind_and_slash(val)
         for y in range(cell_h):
             fy = (y + 0.5) / cell_h
             line: List[str] = []
+            prev = None
             for x in range(cell_w):
                 fx = (x + 0.5) / cell_w
 
@@ -412,7 +402,7 @@ def render_bw_tiles_split(
                     continue
 
                 black_side = is_black(val, fx, fy)
-                boundary   = on_boundary(val, fx, fy)
+                boundary = prev is not None and prev != black_side
 
                 if use_color:
                     bg = BG_BLACK if black_side else BG_WHITE
@@ -426,6 +416,7 @@ def render_bw_tiles_split(
                         line.append(slash_ch)
                     else:
                         line.append(TXT_BLACK if black_side else TXT_WHITE)
+                prev = black_side
             rows.append(line)
         return rows
 
@@ -436,8 +427,6 @@ def render_bw_tiles_split(
         ch = ch[0]  # keep one character (user said single number)
         cx, cy = cell_w // 2, cell_h // 2
         cx -= 1
-        fx = (cx + 0.5) / cell_w
-        fy = (cy + 0.5) / cell_h
 
         # Compose the glyph for that spot
         if use_color:

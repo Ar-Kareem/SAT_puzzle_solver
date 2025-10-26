@@ -36,6 +36,34 @@ def _debug_assignment(assignment, V, H):
     print('    ]')
 
 
+def _debug_render_bw_tiles_split():
+    board = np.array([
+        ['0', '', '', '', '', '1', '', '', '2', ''],
+        ['', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '2', '', ''],
+        ['', '', '', '', '', '', '', '', '', ''],
+        ['', '', '4', '', '', '', '', '', '', ''],
+        ['B', '', '', '3', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', 'B', '', ''],
+        ['2', '', '', '', '', '', '', '', '', '2'],
+        ['', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', 'B', '0', '', '', '', 'B', ''],
+    ])
+    ground = np.array([
+        [ 'B' , 'W' , 'TL', 'TR', 'W' , 'B' , 'TL', 'TR', 'B' , 'W'  ],
+        [ 'W' , 'TL', 'W' , 'W' , 'TR', 'W' , 'BL', 'BR', 'TL', 'TR' ],
+        [ 'W' , 'BL', 'W' , 'W' , 'W' , 'TR', 'W' , 'B' , 'BL', 'BR' ],
+        [ 'TL', 'TR', 'BL', 'W' , 'W' , 'W' , 'TR', 'W' , 'TL', 'TR' ],
+        [ 'BL', 'BR', 'B' , 'BL', 'W' , 'W' , 'W' , 'TR', 'BL', 'BR' ],
+        [ 'B' , 'TL', 'TR', 'B' , 'BL', 'W' , 'W' , 'BR', 'TL', 'TR' ],
+        [ 'W' , 'BL', 'BR', 'W' , 'W' , 'BL', 'BR', 'B' , 'BL', 'BR' ],
+        [ 'B' , 'TL', 'TR', 'W' , 'W' , 'TL', 'TR', 'TL', 'TR', 'B'  ],
+        [ 'TL', 'W' , 'BR', 'W' , 'W' , 'BL', 'BR', 'BL', 'BR', 'W'  ],
+        [ 'BL', 'BR', 'W' , 'B' , 'B' , 'W' , 'W' , 'W' , 'B' , 'W'  ],
+    ])
+    print(render_bw_tiles_split(ground, cell_w=6, cell_h=3, borders=True, mode="text", cell_text=lambda r, c: board[r][c]))
+
+
 def test_toy():
     board = np.array([
         ['B', ' ', ' ', 'B', ' '],
@@ -169,6 +197,7 @@ def test_ground():
 
 
 if __name__ == '__main__':
+    # _debug_render_bw_tiles_split()
     test_toy()
     test_medium()
     test_ground()
