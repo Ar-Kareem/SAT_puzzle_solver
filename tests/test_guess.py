@@ -24,7 +24,7 @@ def test_ground_2():
 
 def test_ground_3():
   binst = solver.Board()
-  binst.add_guess(('R', 'Y', 'G', 'B'), (0, 2, 2))  
+  binst.add_guess(('R', 'Y', 'G', 'B'), (0, 2, 2))
   ng, best_next_guess = binst.best_next_guess()
   assert round(best_next_guess[1], 4) == 3.2269  # entropy of best next guess
 

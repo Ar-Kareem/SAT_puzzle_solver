@@ -56,7 +56,7 @@ class Board:
         next_pos = get_next_pos(pos, direction)
         if in_bounds(next_pos, self.V, self.H):
             self.cell_borders[(next_pos, get_opposite_direction(direction))] = var
-    
+
     def add_corner_vars(self, cell_border: CellBorder, var: cp_model.IntVar):
         """
         An edge always belongs to two corners. Note that the cell xi,yi has the 4 corners (xi,yi), (xi+1,yi), (xi,yi+1), (xi+1,yi+1). (memorize these 4 coordinates or the function wont make sense)

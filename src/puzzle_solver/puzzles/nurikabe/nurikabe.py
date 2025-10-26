@@ -62,7 +62,7 @@ class Board:
             assert len(hint_shapes) > 0, f'no shapes found for hint {hint_pos} with value {hint_value}'
             self.model.AddExactlyOne([s.is_active for s in hint_shapes])
             self.shapes_on_board.extend(hint_shapes)
-        
+
         # if no shape is active on the spot then it must be black
         for pos in self.get_all_legal_pos():
             shapes_here = [s for s in self.shapes_on_board if pos in s.body]

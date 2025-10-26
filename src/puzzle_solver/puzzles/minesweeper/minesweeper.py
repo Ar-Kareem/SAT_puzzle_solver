@@ -120,5 +120,4 @@ def print_board(board: np.array, safe_positions: set[Pos], new_garuneed_mine_pos
             set_char(res, pos, 'M')
         elif get_char(board, pos) == 'F' and pos not in wrong_flag_positions:
             set_char(res, pos, 'F')
-    
     print(res)

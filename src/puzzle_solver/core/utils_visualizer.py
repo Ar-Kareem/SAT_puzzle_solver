@@ -349,8 +349,10 @@ def render_bw_tiles_split(
         if not use_color:
             return ""
         parts = []
-        if fg is not None: parts.append(str(fg))
-        if bg is not None: parts.append(str(bg))
+        if fg is not None:
+            parts.append(str(fg))
+        if bg is not None:
+            parts.append(str(bg))
         return ("\x1b[" + ";".join(parts) + "m") if parts else ""
 
     RESET = "\x1b[0m" if use_color else ""

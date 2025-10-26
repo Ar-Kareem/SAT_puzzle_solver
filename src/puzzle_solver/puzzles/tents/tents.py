@@ -45,14 +45,14 @@ class Board:
                 if get_char(self.board, neighbour) != ' ':
                     continue
                 self.model.Add(self.is_tent[neighbour] == 0).OnlyEnforceIf(self.is_tent[pos])
-        # - the number of tents in each row and column matches the numbers around the edge of the grid 
+        # - the number of tents in each row and column matches the numbers around the edge of the grid
         for row in range(self.N):
             row_vars = [self.is_tent[pos] for pos in get_row_pos(row, self.N)]
             self.model.Add(lxp.sum(row_vars) == self.sides['side'][row])
         for col in range(self.N):
             col_vars = [self.is_tent[pos] for pos in get_col_pos(col, self.N)]
             self.model.Add(lxp.sum(col_vars) == self.sides['top'][col])
-        # - it is possible to match tents to trees so that each tree is orthogonally adjacent to its own tent (but may also be adjacent to other tents). 
+        # - it is possible to match tents to trees so that each tree is orthogonally adjacent to its own tent (but may also be adjacent to other tents).
         # for each tree, one of the following must be true:
         # a tent on its left has direction RIGHT
         # a tent on its right has direction LEFT

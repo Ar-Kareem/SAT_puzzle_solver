@@ -75,9 +75,9 @@ class Board:
         for col in range(self.N):
             col_vars = [self.model_vars[pos] for pos in get_col_pos(col, self.N)]
             self.model.AddAllDifferent(col_vars)
-    
+
     def constrain_block_results(self):
-        # The digits in each block can be combined to form the number stated in the clue, using the arithmetic operation given in the clue. That is: 
+        # The digits in each block can be combined to form the number stated in the clue, using the arithmetic operation given in the clue. That is:
         for block, (op, result) in self.block_results.items():
             block_vars = [self.model_vars[p] for p in self.get_block_pos(block)]
             add_opcode_constraint(self.model, block_vars, op, result)

@@ -76,7 +76,7 @@ class Board:
                 continue
             self.enforce_corner_color(pos, self.board_colors[pos])
             self.enforce_corner_number(pos, self.board_numbers[pos])
-        
+
         # enforce single connected component
         def is_neighbor(edge1: tuple[Pos, Pos], edge2: tuple[Pos, Pos]) -> bool:
             return any(c1 == c2 for c1 in edge1 for c2 in edge2)

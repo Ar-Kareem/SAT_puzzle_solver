@@ -3,6 +3,7 @@ import numpy as np
 from puzzle_solver import binairo_plus_solver as solver
 from puzzle_solver.core.utils import get_pos
 
+
 def test_easy():
     # 6x6 easy
     # https://www.puzzle-binairo.com/binairo-plus-6x6-easy/?e=MTM6Nyw3NDcsNjMz

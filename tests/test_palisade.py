@@ -67,8 +67,6 @@ def test_easy_2():
         [169, 169, 169, 86, 185],
         [86, 86, 86, 86, 185],
     ])
-    
-    
     ground_assignment = {get_pos(x=x, y=y): ground[y][x] for x in range(ground.shape[1]) for y in range(ground.shape[0])}
     assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
     for pos in solution.keys():

@@ -15,9 +15,11 @@ cov = coverage.Coverage(
 cov.start()
 
 tic = time.time()
+
 import puzzle_solver
 # import numpy as np
 # from ortools.sat.python import cp_model
+
 toc = time.time()
 print(f"Time taken: {toc - tic} seconds")
 

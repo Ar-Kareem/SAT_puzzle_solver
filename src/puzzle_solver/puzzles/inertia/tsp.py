@@ -235,7 +235,7 @@ def solve_optimal_walk(
         for i in range(N_no_depot):
             gi = state_group[i]
             for j in range(N_no_depot):
-                if i == j: 
+                if i == j:
                     continue
                 gj = state_group[j]
                 if gi != gj:
@@ -246,7 +246,7 @@ def solve_optimal_walk(
         succ_in_cluster: Dict[int, int] = {}
         for g, order in cluster_orders.items():
             k = len(order)
-            if k == 0: 
+            if k == 0:
                 continue
             pred = {}
             for idx, v in enumerate(order):

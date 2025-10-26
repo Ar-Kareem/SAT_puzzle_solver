@@ -91,7 +91,7 @@ def test_toy():
 
 
 def test_medium():
-    # 10 x 10 
+    # 10 x 10
     # https://www.puzzle-shakashaka.com/?e=MTo0LDE5OSwyNzM=
     board = np.array([
         ['0', ' ', ' ', ' ', ' ', '1', ' ', ' ', '2', ' '],

@@ -15,12 +15,12 @@ def test_ground():
     ['  ', '\\', '\\', '\\', '  ', '  ', '  '],
     ['  ', '//', '  ', '  ', '  ', '  ', '  '],
   ])
-  t = np.array([3, 0, 3, 0, 5, 6, 0])
-  b = np.array([5, 2, 1, 3, 8, 2, 0])
-  r = np.array([0, 8, 0, 4, 2, 2, 4])
-  l = np.array([1, 4, 8, 0, 0, 2, 2])
+  side_t = np.array([3, 0, 3, 0, 5, 6, 0])
+  side_b = np.array([5, 2, 1, 3, 8, 2, 0])
+  side_r = np.array([0, 8, 0, 4, 2, 2, 4])
+  side_l = np.array([1, 4, 8, 0, 0, 2, 2])
   counts = {solver.Monster.GHOST: 5, solver.Monster.VAMPIRE: 12, solver.Monster.ZOMBIE: 11}
-  binst = solver.Board(board=board, sides={'top': t, 'bottom': b, 'right': r, 'left': l}, monster_count=counts)
+  binst = solver.Board(board=board, sides={'top': side_t, 'bottom': side_b, 'right': side_r, 'left': side_l}, monster_count=counts)
   solutions = binst.solve_and_print()
   ground = np.array([
     ['VA', '//', 'GH', 'GH', 'ZO', 'GH', '\\'],

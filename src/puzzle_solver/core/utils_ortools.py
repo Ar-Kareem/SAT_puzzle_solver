@@ -93,14 +93,14 @@ def force_connected_component(model: cp_model.CpModel, vars_to_force: dict[Any, 
     Total new variables: =4V [for N by M 2D grid total is 4NM]
     """
     if is_neighbor is None:
-        is_neighbor = lambda p1, p2: manhattan_distance(p1, p2) <= 1
+        is_neighbor = lambda p1, p2: manhattan_distance(p1, p2) <= 1  # noqa: E731
 
     vs = vars_to_force
     v_count = len(vs)
     if v_count <= 2:  # graph must have at least 3 nodes to possibly be disconnected
         return {}
     # =V model variables, one for each variable
-    is_root: dict[Pos, cp_model.IntVar] = {}  # =V, defines the unique root 
+    is_root: dict[Pos, cp_model.IntVar] = {}  # =V, defines the unique
     prefix_zero: dict[Pos, cp_model.IntVar] = {}  # =V, used for picking the unique root
     node_height: dict[Pos, cp_model.IntVar] = {}  # =V, trickles down from the root
     max_neighbor_height: dict[Pos, cp_model.IntVar] = {}  # =V, the height of the tallest neighbor
@@ -141,7 +141,7 @@ def force_connected_component(model: cp_model.CpModel, vars_to_force: dict[Any, 
         model.Add(node_height[pi] == max_neighbor_height[pi] - 1).OnlyEnforceIf([vs[pi], is_root[pi].Not()])
         model.Add(node_height[pi] == v_count).OnlyEnforceIf(is_root[pi])
         model.Add(node_height[pi] == 0).OnlyEnforceIf(vs[pi].Not())
-    
+
     # final check: all active nodes have height > 0
     for p in keys_in_order:
         model.Add(node_height[p] > 0).OnlyEnforceIf(vs[p])
@@ -161,7 +161,7 @@ def force_no_loops(model: cp_model.CpModel, vars_to_force: dict[Any, cp_model.In
     Returns a dictionary of new variables that can be used to enforce the no component constraint.
     """
     if is_neighbor is None:
-        is_neighbor = lambda p1, p2: manhattan_distance(p1, p2) <= 1
+        is_neighbor = lambda p1, p2: manhattan_distance(p1, p2) <= 1  # noqa: E731
 
     vs = vars_to_force
     v_count = len(vs)
@@ -220,8 +220,8 @@ def force_no_loops(model: cp_model.CpModel, vars_to_force: dict[Any, cp_model.In
             model.Add(tree_edge[(p_parent, p)] == 0).OnlyEnforceIf([is_root[p]])
         # every active node has exactly 1 parent except root has none
         model.AddExactlyOne([tree_edge[(p_parent, p)] for p_parent in parent_of[p]] + [vs[p].Not(), is_root[p]])
-    
-    # now each subgraph has directions where each non-root points to a single parent (and its value is parent+1). 
+
+    # now each subgraph has directions where each non-root points to a single parent (and its value is parent+1).
     # to break cycles, every non-root active node must be > all neighbors that arent children
 
     all_new_vars: dict[str, cp_model.IntVar] = {}

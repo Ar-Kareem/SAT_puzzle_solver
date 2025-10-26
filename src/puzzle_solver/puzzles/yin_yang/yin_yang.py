@@ -48,7 +48,7 @@ class Board:
                 continue
             self.model.AddBoolOr([self.B[tl], self.B[tr], self.B[bl], self.B[br]])
             self.model.AddBoolOr([self.B[tl].Not(), self.B[tr].Not(), self.B[bl].Not(), self.B[br].Not()])
-    
+
     def disallow_checkers(self):
         # from https://ralphwaldo.github.io/yinyang_summary.html
         for pos in get_all_pos(self.V, self.H):  # disallow (WB/BW) and (BW/WB)

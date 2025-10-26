@@ -131,7 +131,7 @@ class Board:
             pos = get_pos(x=i, y=self.N-1)
             beam_result = beam(self.board, pos, Direction.UP)
             self.model.add(self.get_var(beam_result) == ground)
-        
+
         if self.monster_count is not None:
             for monster, count in self.monster_count.items():
                 if count == -1:

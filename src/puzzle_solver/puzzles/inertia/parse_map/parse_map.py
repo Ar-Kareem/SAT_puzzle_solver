@@ -1,5 +1,5 @@
 """
-    This file is a simple helper that parses the images from https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/inertia.html and converts them to a json file. 
+    This file is a simple helper that parses the images from https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/inertia.html and converts them to a json file.
     Look at the ./input_output/ directory for examples of input images and output json files.
     The output json is used in the test_solve.py file to test the solver.
 """
@@ -53,10 +53,14 @@ def get_distance_robust(cell: np.ndarray, template: np.ndarray, max_shift: int =
     for dy in range(-max_shift, max_shift + 1):
         for dx in range(-max_shift, max_shift + 1):
             # compute overlapping slices for this shift
-            y0a = max(0,  dy); y1a = H + min(0,  dy)
-            x0a = max(0,  dx); x1a = W + min(0,  dx)
-            y0b = max(0, -dy); y1b = H + min(0, -dy)
-            x0b = max(0, -dx); x1b = W + min(0, -dx)
+            y0a = max(0,  dy)
+            y1a = H + min(0,  dy)
+            x0a = max(0,  dx)
+            x1a = W + min(0,  dx)
+            y0b = max(0, -dy)
+            y1b = H + min(0, -dy)
+            x0b = max(0, -dx)
+            x1b = W + min(0, -dx)
 
             if y1a <= y0a or x1a <= x0a:  # no overlap
                 continue

@@ -85,7 +85,7 @@ class Board:
             # exactly one shape is active at that position
             self.model.AddExactlyOne(s.is_active for d in self.digits for s in self.body_loc_to_shape[(d,pos)])
         # if a shape is active then all its body is active
-        
+
         for s_list in self.body_loc_to_shape.values():
             for s in s_list:
                 for p in s.body:

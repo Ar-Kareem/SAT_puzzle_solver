@@ -120,7 +120,7 @@ class Board:
         # create a single bool which decides if I can see it or not
         res = self.model.NewBoolVar(name)
         self.model.AddBoolAnd(lits).OnlyEnforceIf(res)
-        self.model.AddBoolOr([res] + [l.Not() for l in lits])
+        self.model.AddBoolOr([res] + [lit.Not() for lit in lits])
         return res
 
     def solve_and_print(self, verbose: bool = True):

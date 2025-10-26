@@ -56,13 +56,13 @@ class Board:
             self.disallow_three_in_a_row(pos, Direction.RIGHT)
             self.disallow_three_in_a_row(pos, Direction.DOWN)
 
-        # 3. Each row and column is unique. 
+        # 3. Each row and column is unique.
         if self.force_unique:
             # a list per row
             self.force_unique_double_list([[self.model_vars[pos] for pos in get_row_pos(row, self.H)] for row in range(self.V)])
             # a list per column
             self.force_unique_double_list([[self.model_vars[pos] for pos in get_col_pos(col, self.V)] for col in range(self.H)])
-        
+
         # if arithmetic is provided, add constraints for it
         if self.arith_rows is not None:
             assert self.arith_rows.shape == (self.V, self.H-1), f'arith_rows must be one column less than board, got {self.arith_rows.shape} for {self.board.shape}'
@@ -106,10 +106,10 @@ class Board:
 
         codes = []
         pow2 = [1 << k for k in range(m)]  # weights for bit positions (LSB at index 0)
-        for i, l in enumerate(model_vars):
+        for i, line in enumerate(model_vars):
             code = self.model.NewIntVar(0, (1 << m) - 1, f"code_{i}")
             # Sum 2^k * r[k] == code
-            self.model.Add(code == sum(pow2[k] * l[k] for k in range(m)))
+            self.model.Add(code == sum(pow2[k] * line[k] for k in range(m)))
             codes.append(code)
 
         self.model.AddAllDifferent(codes)

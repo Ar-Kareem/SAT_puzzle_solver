@@ -5,8 +5,9 @@ from puzzle_solver.core.utils import Pos, get_all_pos, get_neighbors4, get_pos, 
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, force_connected_component
 from puzzle_solver.core.utils_visualizer import render_shaded_grid
 
+
 def return_3_consecutives(int_list: list[int]) -> list[tuple[int, int]]:
-    """Given a list of integers (mostly with duplicates), return every consecutive sequence of 3 integer changes. 
+    """Given a list of integers (mostly with duplicates), return every consecutive sequence of 3 integer changes.
     i.e. return a list of (begin_idx, end_idx) tuples where for each r=int_list[begin_idx:end_idx] we have r[0]!=r[1] and r[-2]!=r[-1] and len(r)>=3"""
     out = []
     change_indices = [i for i in range(len(int_list) - 1) if int_list[i] != int_list[i+1]]
@@ -18,7 +19,6 @@ def return_3_consecutives(int_list: list[int]) -> list[tuple[int, int]]:
             continue
         out.append((begin_idx, end_idx))
     return out
-    
 
 class Board:
     def __init__(self, board: np.array, region_to_clue: dict[str, int]):

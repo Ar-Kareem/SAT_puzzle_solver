@@ -57,7 +57,7 @@ def test_ground():
 
 
 def test_ground_2():
-  # 3x4 
+  # 3x4
   # https://www.puzzle-sudoku.com/?e=Njo3LDE0NywwMTg=
   board = np.array([
     [' ', ' ', 'B', '1',  '2', '6', 'C', ' ',  ' ', ' ', '4', '3'],

@@ -47,7 +47,7 @@ class Board:
     def create_vars(self):
         for pos in get_all_pos(self.V, self.H):
             self.model_vars[pos] = self.model.NewBoolVar(f'{pos}')
-    
+
     def add_all_constraints(self):
         visited: set[Pos] = set()
         for cur_pos in self.tip:

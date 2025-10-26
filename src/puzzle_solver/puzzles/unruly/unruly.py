@@ -49,7 +49,7 @@ class Board:
                 continue
             v = 1 if c == 'B' else 0
             self.model.Add(self.model_vars[pos] == v)
-        # no three consecutive squares, horizontally or vertically, are the same colour 
+        # no three consecutive squares, horizontally or vertically, are the same colour
         for pos in get_all_pos(self.V, self.H):
             horiz, vert = get_3_consecutive_horiz_and_vert(pos, self.V, self.H)
             if len(horiz) == 3:

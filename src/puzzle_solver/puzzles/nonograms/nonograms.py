@@ -7,8 +7,8 @@ from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution
 
 class Board:
     def __init__(self, top: list[list[int]], side: list[list[int]]):
-        assert all(isinstance(i, int) for l in top for i in l), 'top must be a list of lists of integers'
-        assert all(isinstance(i, int) for l in side for i in l), 'side must be a list of lists of integers'
+        assert all(isinstance(i, int) for line in top for i in line), 'top must be a list of lists of integers'
+        assert all(isinstance(i, int) for line in side for i in line), 'side must be a list of lists of integers'
         self.top = top
         self.side = side
         self.V = len(side)

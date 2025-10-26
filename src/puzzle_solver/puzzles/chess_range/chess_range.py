@@ -177,7 +177,7 @@ class Board:
 
         self.model = cp_model.CpModel()
         # Input numbers: N is number of piece, T is number of time steps (=N here), B is board size (=N here because the only legal positions are the starting positions of the pieces):
-        # Number of variables 
+        # Number of variables
         # piece_positions: O(NTB)
         # is_dead: O(NT)
         # mover: O(NT)
@@ -341,7 +341,7 @@ class Board:
         for t in range(self.T - 1):
             self.model.AddExactlyOne([self.victim[(p, t)] for p in range(self.N)])
 
-        # optional parameter to force 
+        # optional parameter to force
         if self.max_moves_per_piece is not None:
             for p in range(self.N):
                 self.model.Add(sum([self.mover[(p, t)] for t in range(self.T - 1)]) <= self.max_moves_per_piece)

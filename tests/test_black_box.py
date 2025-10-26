@@ -26,7 +26,7 @@ def test_8x8_3_6_balls():
     # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/blackbox.html#w8h8m3M6:0b41bc0d0c95e1a9578c46a4
     top = ['1', 'H', 'R', 'R', 'H', 'R', '2', '3']
     left = ['H', '1', 'H', '7', '5', '6', 'H', 'H']
-    right = ['2', 'H', '4', 'H', '5', '6', 'H', 'H'] 
+    right = ['2', 'H', '4', 'H', '5', '6', 'H', 'H']
     bottom = ['7', 'R', 'H', 'R', 'H', 'R', '4', '3']
     solver.Board(top=top, left=left, bottom=bottom, right=right, ball_count=(3, 6)).solve_and_print()
 

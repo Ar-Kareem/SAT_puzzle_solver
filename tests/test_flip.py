@@ -35,7 +35,7 @@ def test_toy_random():
         Pos(x=0, y=0): ['R', 'D'],
         Pos(x=1, y=0): ['L', 'D', 'DR'],
         Pos(x=2, y=0): ['L', 'D'],
-        
+
         Pos(x=0, y=1): ['U', 'R', 'D'],
         Pos(x=1, y=1): ['U', 'UL', 'UR'],
         Pos(x=2, y=1): ['U', 'D', 'DL'],

@@ -1,10 +1,10 @@
 """
-    This file is a simple helper that parses the images from https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/inertia.html and converts them to a json file. 
+    This file is a simple helper that parses the images from https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/inertia.html and converts them to a json file.
     Look at the ./input_output/ directory for examples of input images and output json files.
     The output json is used in the test_solve.py file to test the solver.
 """
 
-import json, itertools
+import itertools
 from pathlib import Path
 import numpy as np
 cv = None
@@ -37,9 +37,11 @@ def mean_consecutives(arr):
     sums, counts = [arr[0]], [1]
     for k in arr[1:]:
         if k == sums[-1] + counts[-1]:
-            sums[-1] += k; counts[-1] += 1
+            sums[-1] += k
+            counts[-1] += 1
         else:
-            sums.append(k); counts.append(1)
+            sums.append(k)
+            counts.append(1)
     return np.array(sums)//np.array(counts)
 
 def main(img_path):

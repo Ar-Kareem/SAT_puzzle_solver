@@ -57,7 +57,6 @@ def test_ground_2():
   binst = solver.Board(board=board, top=top, side=side, ship_counts=ship_counts)
   solutions = binst.solve_and_print()
   assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
-  
 
 if __name__ == '__main__':
   # test_ground_1()

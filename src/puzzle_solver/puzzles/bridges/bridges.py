@@ -73,7 +73,7 @@ class Board:
         xhoriz_min = min(horiz_bridge[0].x, horiz_bridge[1].x)
         xhoriz_max = max(horiz_bridge[0].x, horiz_bridge[1].x)
         yhoriz = horiz_bridge[0].y
-        
+
         # no equals because thats what the puzzle says
         x_contained = xhoriz_min < xvert < xhoriz_max
         y_contained = yvert_min < yhoriz < yvert_max

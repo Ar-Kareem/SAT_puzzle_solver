@@ -65,7 +65,7 @@ class Board:
                 continue
             direction = CHAR_TO_DIRECTION8[c]
             self.constrain_plus_one(pos, direction)
-    
+
     def constrain_plus_one(self, pos: Pos, direction: Direction8):
         beam_res = beam(pos, self.V, self.H, direction)
         is_eq_list = []
@@ -75,7 +75,7 @@ class Board:
             self.model.Add(self.model_vars[p] != self.model_vars[pos] + 1).OnlyEnforceIf(aux.Not())
             is_eq_list.append(aux)
         self.model.Add(lxp.Sum(is_eq_list) == 1)
-    
+
     def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
             assignment: dict[Pos, str] = {}

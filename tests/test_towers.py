@@ -14,11 +14,11 @@ def test_ground():
     [' ', ' ', ' ', ' ', ' ', ' '],
     [' ', ' ', ' ', ' ', ' ', ' '],
   ])
-  t = np.array([2, -1, 2, 2, 2, 3])
-  b = np.array([2, 4, -1, 4, -1, -1])
-  r = np.array([3, -1, 2, -1, -1, -1])
-  l = np.array([-1, -1, -1, 2, -1, 4])
-  binst = solver.Board(board=board, sides={'top': t, 'bottom': b, 'right': r, 'left': l})
+  side_t = np.array([2, -1, 2, 2, 2, 3])
+  side_b = np.array([2, 4, -1, 4, -1, -1])
+  side_r = np.array([3, -1, 2, -1, -1, -1])
+  side_l = np.array([-1, -1, -1, 2, -1, 4])
+  binst = solver.Board(board=board, sides={'top': side_t, 'bottom': side_b, 'right': side_r, 'left': side_l})
   solutions = binst.solve_and_print()
   ground = np.array([
     [5, 6, 4, 1, 2, 3],

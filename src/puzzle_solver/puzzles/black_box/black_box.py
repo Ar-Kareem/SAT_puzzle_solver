@@ -50,7 +50,7 @@ class Board:
         self.right_values = right
         self.bottom_values = bottom
         self.left_values = left
-        
+
         self.model = cp_model.CpModel()
         self.ball_states: dict[Pos, cp_model.IntVar] = {}
         # (entry_pos, T, cell_pos, direction) -> True if the beam that entered from the board at "entry_pos" is present in "cell_pos" and is going in the direction "direction" at time T
@@ -86,7 +86,7 @@ class Board:
                 for cell in self.get_all_pos_extended():
                     for direction in Direction:
                         self.beam_states[(entry_pos, t, cell, direction)] = self.model.NewBoolVar(f'beam:{entry_pos}:{t}:{cell}:{direction}')
-        
+
         for (entry_pos, t, cell, direction) in self.beam_states.keys():
             if t not in self.beam_states_at_t:
                 self.beam_states_at_t[t] = {}
@@ -110,7 +110,7 @@ class Board:
         beam_ids.extend((beam_id, Direction.LEFT) for beam_id in self.right_cells)
         beam_ids.extend((beam_id, Direction.UP) for beam_id in self.bottom_cells)
         beam_ids.extend((beam_id, Direction.RIGHT) for beam_id in self.left_cells)
-        
+
         for (beam_id, direction) in beam_ids:
             # beam at t=0 is present at beam_id and facing direction
             self.model.Add(self.beam_states[(beam_id, 0, beam_id, direction)] == 1)
@@ -189,7 +189,7 @@ class Board:
         else:
             ball_right = False
             ball_right_not = True
-        
+
         pos_left = get_next_pos(cur_pos, direction_left)
         pos_right = get_next_pos(cur_pos, direction_right)
         pos_reflected = get_next_pos(cur_pos, reflected)
