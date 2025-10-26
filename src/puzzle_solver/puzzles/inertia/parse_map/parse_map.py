@@ -5,21 +5,20 @@
 """
 from pathlib import Path
 import numpy as np
-import numpy as np
 cv = None
 Image = None
 
 def load_cell_templates(p: Path) -> dict[str, dict]:
-    img = Image.open(p)
+    # img = Image.open(p)
     src = cv.imread(p, cv.IMREAD_COLOR)
-    rgb = np.asarray(img).astype(np.float32) / 255.0
+    # rgb = np.asarray(img).astype(np.float32) / 255.0
     if len(src.shape) != 2:
         gray = cv.cvtColor(src, cv.COLOR_BGR2GRAY)
     else:
         gray = src
     gray = cv.bitwise_not(gray)
-    bw = cv.adaptiveThreshold(gray.copy(), 255, cv.ADAPTIVE_THRESH_MEAN_C, \
-                                cv.THRESH_BINARY, 15, -2)
+    # bw = cv.adaptiveThreshold(gray.copy(), 255, cv.ADAPTIVE_THRESH_MEAN_C, \
+    #                             cv.THRESH_BINARY, 15, -2)
     return {"gray": gray}
 
 

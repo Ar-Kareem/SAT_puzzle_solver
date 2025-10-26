@@ -5,7 +5,7 @@ import numpy as np
 
 
 class Board:
-    def __init__(self, num_pegs: int = 4, all_colors: list[str] = ['R', 'Y', 'G', 'B', 'O', 'P'], show_warnings: bool = True, show_progress: bool = False):
+    def __init__(self, num_pegs: int = 4, all_colors: tuple[str] = ('R', 'Y', 'G', 'B', 'O', 'P'), show_warnings: bool = True, show_progress: bool = False):
         assert num_pegs >= 1, 'num_pegs must be at least 1'
         assert len(all_colors) == len(set(all_colors)), 'all_colors must contain only unique colors'
         self.previous_guesses = []

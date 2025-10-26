@@ -85,7 +85,7 @@ class Board:
             self.model.AddExactlyOne(pos_vars)
             for galaxy_idx, v in self.pos_to_galaxy[pos].items():
                 galaxy_vars.setdefault(galaxy_idx, {})[pos] = v
-        for galaxy_idx, pos_vars in galaxy_vars.items():
+        for pos_vars in galaxy_vars.values():
             force_connected_component(self.model, pos_vars)
 
 

@@ -26,7 +26,7 @@ def extract_lines(bw):
     # location where the horizontal lines are
     horizontal_idx = np.where(horizontal_means > horizontal_cutoff)[0]
     # print(f"horizontal_idx: {horizontal_idx}")
-    height = len(horizontal_idx)
+    # height = len(horizontal_idx)
     # show_wait_destroy("horizontal", horizontal)  # this has the horizontal lines
 
     rows = vertical.shape[0]
@@ -39,7 +39,7 @@ def extract_lines(bw):
     vertical_cutoff = np.percentile(vertical_means, 50)
     vertical_idx = np.where(vertical_means > vertical_cutoff)[0]
     # print(f"vertical_idx: {vertical_idx}")
-    width = len(vertical_idx)
+    # width = len(vertical_idx)
     # print(f"height: {height}, width: {width}")
     # print(f"vertical_means: {vertical_means}")
     # show_wait_destroy("vertical", vertical)  # this has the vertical lines
@@ -126,7 +126,6 @@ def main(image):
     print(f"vertical_idx: {vertical_idx}")
     arr = np.zeros((height - 1, width - 1), dtype=object)
     output = {'top': arr.copy(), 'left': arr.copy(), 'right': arr.copy(), 'bottom': arr.copy()}
-    target = 200_000
     hists = {'top': {}, 'left': {}, 'right': {}, 'bottom': {}}
     for j in range(height - 1):
         for i in range(width - 1):

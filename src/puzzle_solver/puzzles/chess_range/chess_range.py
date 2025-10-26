@@ -173,7 +173,7 @@ class Board:
         self.H = 8  # board size
         # the puzzle rules mean the only legal positions are the starting positions of the pieces
         self.all_legal_positions: set[Pos] = {pos for _, pos in self.pieces.values()}
-        assert len(self.all_legal_positions) == len(self.pieces), f'positions are not unique'
+        assert len(self.all_legal_positions) == len(self.pieces), 'positions are not unique'
 
         self.model = cp_model.CpModel()
         # Input numbers: N is number of piece, T is number of time steps (=N here), B is board size (=N here because the only legal positions are the starting positions of the pieces):

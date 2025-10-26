@@ -2,7 +2,7 @@ import numpy as np
 from ortools.sat.python import cp_model
 
 from puzzle_solver.core.utils import Pos, get_all_pos, set_char, get_neighbors4, in_bounds, Direction, get_next_pos, get_char
-from puzzle_solver.core.utils_ortools import and_constraint, or_constraint, generic_solve_all, SingleSolution, force_connected_component
+from puzzle_solver.core.utils_ortools import and_constraint, generic_solve_all, SingleSolution, force_connected_component
 
 
 def get_ray(pos: Pos, V: int, H: int, direction: Direction) -> list[Pos]:

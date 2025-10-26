@@ -42,6 +42,32 @@ def _ground_to_assignment(ground):
     return res
 
 
+def _debug_print_assignment(assignment, V, H):
+    res = np.full((V - 1, H - 1), ' ', dtype=object)
+    for (pos, neighbor), v in assignment.items():
+        if v == 0:
+            continue
+        min_x = min(pos.x, neighbor.x)
+        min_y = min(pos.y, neighbor.y)
+        dx = abs(pos.x - neighbor.x)
+        dy = abs(pos.y - neighbor.y)
+        if min_x == H - 1:
+            res[min_y][min_x - 1] += 'R'
+        elif min_y == V - 1:
+            res[min_y - 1][min_x] += 'D'
+        elif dx == 1:
+            res[min_y][min_x] += 'U'
+        elif dy == 1:
+            res[min_y][min_x] += 'L'
+        else:
+            raise ValueError(f'Invalid position: {pos} and {neighbor}')
+    print('    [')
+    for row in res:
+        row = [f"'{c}'" + ' ' * (2 - len(c)) for c in row]
+        print("        [ " + ", ".join(row) + " ],")
+    print('    ]')
+
+
 def test_small():
     # 6 x 6 medium
     # https://www.puzzle-shingoki.com/?e=MToyLDk3Miw1MTQ=
@@ -85,6 +111,18 @@ def test_small_normal():
     solutions = binst.solve_and_print()
     assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
     solution = solutions[0].assignment
+    # _debug_print_assignment(solution, board.shape[0], board.shape[1])
+    ground = np.array([
+        [ ' ULUL', ' UU', ' UU', ' LL', ' ULURLR' ],
+        [ ' LL', ' ULUL', ' LL', ' LL', ' LRLR' ],
+        [ ' LL', ' LL', ' LL', ' LL', ' LRLR' ],
+        [ ' LL', ' LL', ' LL', ' UU', ' RR' ],
+        [ ' LDLD', ' LL', ' UU', ' LDLD', ' ULUL' ],
+    ])
+    ground_assignment = _ground_to_assignment(ground)
+    assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
+    for pos in solution.keys():
+        assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
 
 
 def test_medium():
@@ -104,6 +142,20 @@ def test_medium():
     solutions = binst.solve_and_print()
     assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
     solution = solutions[0].assignment
+    # _debug_print_assignment(solution, board.shape[0], board.shape[1])
+    ground = np.array([
+        [ ' ULUL', ' UU', ' UU', ' UU', ' UU', ' LL', ' ULURLR' ],
+        [ ' LL', ' ULUL', ' UU', ' UU', ' LL', ' UU', ' RR' ],
+        [ ' LL', ' UU', ' LL', ' ' , ' UU', ' UU', ' UU' ],
+        [ ' LL', ' ULUL', ' ' , ' ULUL', ' LL', ' ' , ' ULURLR' ],
+        [ ' LL', ' UU', ' UU', ' ' , ' UU', ' LL', ' LRLR' ],
+        [ ' UU', ' UU', ' LL', ' ULUL', ' UU', ' ' , ' LRLR' ],
+        [ ' ULUDLD', ' UUDD', ' DD', ' UUDD', ' UUDD', ' UUDD', ' RDDR' ],
+    ])
+    ground_assignment = _ground_to_assignment(ground)
+    assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
+    for pos in solution.keys():
+        assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
 
 
 @pytest.mark.slow

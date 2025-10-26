@@ -3,7 +3,7 @@ from dataclasses import dataclass
 import numpy as np
 from ortools.sat.python import cp_model
 
-from puzzle_solver.core.utils import Pos, get_all_pos, get_neighbors4, get_pos, in_bounds, set_char, get_char, polyominoes, Shape, Direction, get_next_pos
+from puzzle_solver.core.utils import Pos, get_all_pos, get_neighbors4, get_pos, in_bounds, get_char, polyominoes, Shape, Direction, get_next_pos
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, force_connected_component
 from puzzle_solver.core.utils_visualizer import render_shaded_grid
 

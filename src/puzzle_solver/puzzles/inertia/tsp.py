@@ -197,7 +197,7 @@ def solve_optimal_walk(
             changed = False
             i = 0
             while i + 3 < len(ns):
-                u, v, w, z = ns[i], ns[i+1], ns[i+2], ns[i+3]
+                u, v, w = ns[i], ns[i+1], ns[i+2]
                 if w == u:  # u->v, v->u
                     before_edges = walk_edges(ns[:i+1])
                     removed_edges = [(u, v), (v, u)]
@@ -244,7 +244,7 @@ def solve_optimal_walk(
         # ring + shift
         INF = 10**12
         succ_in_cluster: Dict[int, int] = {}
-        for g, order in cluster_orders.items():
+        for order in cluster_orders.values():
             k = len(order)
             if k == 0:
                 continue
@@ -327,7 +327,6 @@ def solve_optimal_walk(
 
     best_nodes = None
     best_cost = float('inf')
-    best_reps = None
 
     # initial deterministic order as a baseline
     def shuffled_cluster_orders():
@@ -339,7 +338,7 @@ def solve_optimal_walk(
         return orders
 
     attempts = max(1, restarts)
-    for attempt in range(attempts):
+    for _ in range(attempts):
         cluster_orders = shuffled_cluster_orders()
         for meta in meta_list:
             # print('solve once')
@@ -382,7 +381,6 @@ def solve_optimal_walk(
             if cost < best_cost:
                 best_cost = cost
                 best_nodes = nodes_seq
-                best_reps = reps
 
     if best_nodes is None:
         raise RuntimeError("No solution found.")

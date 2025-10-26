@@ -63,7 +63,7 @@ class Board:
         # Start variables for each run. This is the most critical variable for the problem.
         starts = []
         self.extra_vars[f"{ns}_starts"] = starts
-        for i, c in enumerate(clues):
+        for i in range(len(clues)):
             s = self.model.NewIntVar(0, L, f"{ns}_s[{i}]")
             starts.append(s)
         # Enforce order and >=1 blank between consecutive runs.

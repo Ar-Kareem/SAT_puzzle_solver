@@ -3,8 +3,8 @@ from dataclasses import dataclass
 import numpy as np
 from ortools.sat.python import cp_model
 
-from puzzle_solver.core.utils import Pos, Shape, get_all_pos, get_char, set_char, polyominoes, in_bounds, get_next_pos, Direction
-from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, and_constraint
+from puzzle_solver.core.utils import Pos, get_all_pos, get_char, set_char, polyominoes, in_bounds, get_next_pos, Direction
+from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution
 
 
 @dataclass

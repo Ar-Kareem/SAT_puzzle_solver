@@ -304,10 +304,4 @@ class Board:
                 ball_state = 'O' if single_res.assignment[pos] else ' '
                 res[pos.y][pos.x] = ball_state
             print(res)
-        r = generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)
-        # print('non unique count:', count)
-
-
-
-
-
+        generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)

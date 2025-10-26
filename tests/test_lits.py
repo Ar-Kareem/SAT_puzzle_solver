@@ -84,18 +84,18 @@ def test_ground_2():
     for pos in solution.keys():
         assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
 
-def compare_performance():
-    # this board INTENTIONALLY has MANY solutions
-    board = np.array([
-        ['00', '00', '00', '01', '01', '01'],
-        ['00', '00', '00', '01', '01', '01'],
-        ['00', '00', '00', '01', '01', '01'],
-        ['00', '00', '00', '03', '03', '03'],
-        ['02', '00', '02', '03', '03', '03'],
-        ['02', '02', '02', '03', '03', '03']
-    ])
-    binst = solver.Board(board)
-    solutions = binst.solve_and_print()
+# def compare_performance():
+#     # this board INTENTIONALLY has MANY solutions
+#     board = np.array([
+#         ['00', '00', '00', '01', '01', '01'],
+#         ['00', '00', '00', '01', '01', '01'],
+#         ['00', '00', '00', '01', '01', '01'],
+#         ['00', '00', '00', '03', '03', '03'],
+#         ['02', '00', '02', '03', '03', '03'],
+#         ['02', '02', '02', '03', '03', '03']
+#     ])
+#     binst = solver.Board(board)
+#     solutions = binst.solve_and_print()
 
 
 if __name__ == '__main__':

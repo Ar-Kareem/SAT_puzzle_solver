@@ -77,7 +77,7 @@ class Board:
                 # print(f'{pos}:{direction} must == {neighbor}:{opposite_direction}')
 
         # all blocks connected exactly N times (N usually 1 but can be 2 or 3)
-        for (block_i, block_j), connections in self.block_neighbors.items():
+        for connections in self.block_neighbors.values():
             is_connected_list = []
             for pos_a, direction_a, pos_b, direction_b in connections:
                 v = self.model.NewBoolVar(f'{pos_a}:{direction_a}->{pos_b}:{direction_b}')

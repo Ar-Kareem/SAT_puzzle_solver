@@ -103,7 +103,7 @@ def give_next_guess(board: np.array, mine_count: Optional[int] = None, verbose: 
             print(new_garuneed_mine_positions)
             print('-'*10)
         if len(wrong_flag_positions) > 0:
-            print(f"WARNING | "*4 + "WARNING")
+            print("WARNING | "*4 + "WARNING")
             print(f"Found {len(wrong_flag_positions)} wrong flag positions")
             print(wrong_flag_positions)
             print('-'*10)

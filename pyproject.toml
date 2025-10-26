@@ -50,6 +50,7 @@ target-version = "py39"
 
 [tool.ruff.lint]
 select = ["E", "W"]              # PEP 8 (pycodestyle) errors/warnings only
+extend-select = ["F", "B"] # pyflakes, import order, bugbear
 
 
 # build and pypi push (bash)               rm dist/* && python -m build --sdist --wheel && python -m twine upload --repository pypi dist/*

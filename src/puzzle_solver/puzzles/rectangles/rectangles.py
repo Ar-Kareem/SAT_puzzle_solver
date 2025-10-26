@@ -97,7 +97,7 @@ class Board:
     def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
             assignment: dict[Pos, int] = {}
-            for (i, rectangle) in enumerate(self.rectangles):
+            for rectangle in self.rectangles:
                 if solver.Value(rectangle.active) == 1:
                     for pos in rectangle.body:
                         assignment[pos] = f'id{rectangle.clue_id}:N={rectangle.N}:{rectangle.height}x{rectangle.width}'

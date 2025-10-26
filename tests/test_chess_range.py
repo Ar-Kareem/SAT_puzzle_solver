@@ -8,7 +8,7 @@ def test_ground():
     board = ['Qe7', 'Nc6', 'Kb6', 'Pb5', 'Nf5', 'Pg4', 'Rb3', 'Bc3', 'Pd3', 'Pc2', 'Rg2']
     binst = solver.Board(board)
     solutions = binst.solve_and_print(max_solutions=1)
-    assert len(solutions) >= 1, f'no solutions found'
+    assert len(solutions) >= 1, 'no solutions found'
 
 def test_ground_2():
     board = ['Qc3', 'Pd3', 'Ne3', 'Pf4']
@@ -24,8 +24,7 @@ def test_chess_jumping():
     board = ['Ba1', 'Kc3', 'Ke5']
     binst = solver.Board(board)
     solutions = binst.solve_and_print()
-    assert len(solutions) > 0, f'no solutions found'
-    assert len(solutions) == 1, f'more than one solution found, jump over positions is illegal'
+    assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
 
 
 if __name__ == '__main__':

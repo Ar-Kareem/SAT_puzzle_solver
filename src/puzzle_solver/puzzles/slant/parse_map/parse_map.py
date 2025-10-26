@@ -92,7 +92,7 @@ def main(img_path):
 
     # Build KD-like search by grid proximity
     tol = int(cell*0.5)  # max distance from an intersection to accept a circle
-    for (cx, cy, r) in detected:
+    for (cx, cy, _) in detected:
         # find nearest indices
         j = int(np.argmin(np.abs(h_idx - cy)))
         i = int(np.argmin(np.abs(v_idx - cx)))

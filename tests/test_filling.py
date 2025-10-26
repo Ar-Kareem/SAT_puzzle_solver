@@ -102,7 +102,7 @@ def test_ground_simple():
     assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
 
 def test_ground():
-  print(f'setting up board')
+  print('setting up board')
   tic = time.time()
   binst = solver.Board(board=board)
   toc = time.time()
