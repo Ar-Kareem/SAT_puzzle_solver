@@ -121,10 +121,6 @@ class Board:
                     set_char(res, pos, get_char(res, pos) + 'U')
                 if bottom_pos not in single_res.assignment or single_res.assignment[bottom_pos] != cur:
                     set_char(res, pos, get_char(res, pos) + 'D')
-            # print('[')
-            # for row in id_board:
-            #     print('       ', row.tolist(), end=',\n')
-            # print('    ])')
-            print(render_grid(res, center_char=self.board))
+            print(render_grid(res, center_char=lambda r, c: self.board[r, c] if self.board[r, c] != ' ' else ' '))
 
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)

@@ -94,7 +94,7 @@ def render_grid(cell_flags: np.ndarray,
         for r in range(R):
             rr = 2*r + 1
             for c in range(C):
-                val = center_char if isinstance(center_char, str) else center_char[r, c]
+                val = center_char if isinstance(center_char, str) else (center_char(r, c) if callable(center_char) else center_char[r, c])
                 put_center_text(rr, c, '' if val is None else str(val))
 
     # rows -> strings
