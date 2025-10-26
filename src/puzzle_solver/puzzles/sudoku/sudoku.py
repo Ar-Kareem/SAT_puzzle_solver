@@ -43,6 +43,7 @@ class Board:
             sandwich: Optional[dict[str, list[int]]] = None,
             unique_diagonal: bool = False,
             jigsaw: Optional[np.array] = None,
+            killer: Optional[tuple[np.array, dict[str, int]]] = None,
             ):
         """
         board: 2d array of characters
@@ -50,6 +51,8 @@ class Board:
         block_size: tuple of block size (vertical, horizontal). If not provided, the block size is the square root of the board size.
         sandwich: dictionary of sandwich clues (side, bottom). If provided, the sum of the values between 1 and 9 for each row and column is equal to the clue.
         unique_diagonal: whether to constrain the 2 diagonals to be unique. If True, each diagonal must contain all numbers from 1 to 9 exactly once.
+        killer: tuple of (killer board, killer clues). If provided, the killer board must be a 2d array of ids of the killer blocks. The killer clues must be a dictionary of killer block ids to clues.
+            Each numbers in a killer block must be unique and sum to the clue.
         """
         assert board.ndim == 2, f'board must be 2d, got {board.ndim}'
         assert board.shape[0] == board.shape[1], 'board must be square'
@@ -61,6 +64,7 @@ class Board:
         self.unique_diagonal = unique_diagonal
         self.sandwich = None
         self.jigsaw_id_to_pos = None
+        self.killer = None
 
         if self.constrain_blocks:
             if block_size is None:
@@ -76,7 +80,10 @@ class Board:
             self.B = Bv * Bh  # block count
         else:
             assert block_size is None, 'cannot set block size if blocks are not constrained'
+
         if jigsaw is not None:
+            if self.constrain_blocks is not None:
+                print('Warning: jigsaw and blocks are both constrained, are you sure you want to do this?')
             assert jigsaw.ndim == 2, f'jigsaw must be 2d, got {jigsaw.ndim}'
             assert jigsaw.shape[0] == self.V and jigsaw.shape[1] == self.H, 'jigsaw must be the same size as the board'
             assert all(isinstance(i.item(), str) and i.item().isdecimal() for i in np.nditer(jigsaw)), 'jigsaw must contain only digits or space'
@@ -92,7 +99,14 @@ class Board:
             assert len(sandwich['side']) == self.H, 'side must be equal to board width'
             assert len(sandwich['bottom']) == self.V, 'bottom must be equal to board height'
             self.sandwich = sandwich
-    
+
+        if killer is not None:
+            assert killer[0].ndim == 2, f'killer board must be 2d, got {killer[0].ndim}'
+            assert killer[0].shape[0] == self.V and killer[0].shape[1] == self.H, 'killer board must be the same size as the board'
+            assert all(isinstance(i.item(), str) and i.item().isdecimal() for i in np.nditer(killer[0])), 'killer board must contain only digits or space'
+            assert set(killer[1].keys()).issubset(set(killer[0].flatten())), f'killer clues must contain all killer block ids, {set(killer[0].flatten()) - set(killer[1].keys())}'
+            self.killer = killer
+
         self.model = cp_model.CpModel()
         self.model_vars: dict[Pos, cp_model.IntVar] = {}
 
@@ -128,6 +142,8 @@ class Board:
             self.add_unique_diagonal_constraints()
         if self.jigsaw_id_to_pos is not None:
             self.add_jigsaw_constraints()
+        if self.killer is not None:
+            self.add_killer_constraints()
 
     def add_sandwich_constraints(self):
         """Sandwich constraints, enforce that the sum of the values between 1 and 9 for each row and column is equal to the clue."""
@@ -152,6 +168,21 @@ class Board:
         """All digits in one jigsaw area must be unique."""
         for pos_list in self.jigsaw_id_to_pos.values():
             self.model.AddAllDifferent([self.model_vars[p] for p in pos_list])
+
+    def add_killer_constraints(self):
+        """Killer constraints, enforce that the sum of the values in each killer block is equal to the clue and all numbers in a block are unique."""
+        killer_board, killer_clues = self.killer
+        # change clue keys to ints
+        killer_clues = {int(k): v for k, v in killer_clues.items()}
+        killer_id_to_pos = defaultdict(list)
+        for pos in get_all_pos(self.V, self.H):
+            v = get_char(killer_board, pos)
+            if v.isdecimal():
+                killer_id_to_pos[int(v)].append(pos)
+        for killer_id, pos_list in killer_id_to_pos.items():
+            self.model.AddAllDifferent([self.model_vars[p] for p in pos_list])
+            clue = killer_clues[killer_id]
+            self.model.Add(sum([self.model_vars[p] for p in pos_list]) == clue)
 
     def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:

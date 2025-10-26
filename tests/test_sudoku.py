@@ -250,9 +250,120 @@ def test_ground_jigsaw():
     assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
 
 
+def test_small_killer():
+  # 6 x 6 killer
+  # https://www.puzzle-killer-sudoku.com/?e=MzoyODEsNTY2
+  board = np.full((6, 6), ' ')
+  killer_board = np.array([
+    ['01', '01', '02', '02', '03', '03'],
+    ['04', '05', '05', '06', '07', '07'],
+    ['04', '16', '15', '06', '06', '08'],
+    ['17', '16', '15', '10', '09', '08'],
+    ['17', '14', '14', '10', '09', '11'],
+    ['13', '13', '12', '12', '11', '11'],
+  ])
+  killer_clues = {
+    '01': 7,
+    '02': 9,
+    '03': 5,
+    '04': 9,
+    '05': 5,
+    '06': 7,
+    '07': 11,
+    '08': 5,
+    '09': 8,
+    '10': 11,
+    '11': 12,
+    '12': 5,
+    '13': 8,
+    '14': 8,
+    '15': 8,
+    '16': 3,
+    '17': 5,
+  }
+  binst = solver.Board(board=board, block_size=(2, 3), killer=(killer_board, killer_clues))
+  solutions = binst.solve_and_print()
+  assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+  solution = solutions[0].assignment
+  ground = np.array([
+    ['2', '5', '6', '3', '4', '1'],
+    ['3', '4', '1', '2', '6', '5'],
+    ['6', '2', '5', '4', '1', '3'],
+    ['4', '1', '3', '6', '5', '2'],
+    ['1', '6', '2', '5', '3', '4'],
+    ['5', '3', '4', '1', '2', '6'],
+  ])
+  ground_assignment = {get_pos(x=x, y=y): ord(ground[y][x]) - ord('a') + 10 if ground[y][x].isalpha() else int(ground[y][x]) for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+  assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys())} != {set(ground_assignment.keys())}'
+  for pos in solution.keys():
+    assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
+
+
+def test_ground_killer():
+  # 9 x 9 killer
+  # https://www.puzzle-killer-sudoku.com/?e=ODo1LDk4OCwzNzM=
+  board = np.full((9, 9), ' ')
+  killer_board = np.array([
+    ['01', '01', '03', '03', '03', '12', '12', '13', '14'],
+    ['02', '01', '04', '16', '16', '17', '17', '13', '14'],
+    ['02', '02', '04', '18', '19', '19', '15', '15', '14'],
+
+    ['11', '11', '05', '18', '19', '19', '20', '15', '23'],
+    ['10', '10', '05', '30', '31', '32', '20', '22', '23'],
+    ['08', '07', '06', '30', '31', '32', '21', '22', '24'],
+
+    ['08', '07', '06', '29', '31', '33', '21', '24', '24'],
+    ['09', '34', '34', '29', '28', '33', '26', '26', '25'],
+    ['09', '34', '34', '28', '28', '27', '27', '25', '25'],
+  ])
+  killer_clues = {
+    '01': 16,
+    '02': 11,
+    '03': 24,
+    '04': 10,
+    '05': 11,
+    '06': 7,
+    '07': 10,
+    '08': 10,
+    '09': 16,
+    '10': 11,
+    '11': 10,
+    '12': 7,
+    '13': 11,
+    '14': 16,
+    '15': 16,
+    '16': 8,
+    '17': 12,
+    '18': 8,
+    '19': 15,
+    '20': 7,
+    '21': 10,
+    '22': 5,
+    '23': 13,
+    '24': 16,
+    '25': 9,
+    '26': 14,
+    '27': 15,
+    '28': 13,
+    '29': 11,
+    '30': 9,
+    '31': 15,
+    '32': 13,
+    '33': 11,
+    '34': 15,
+  }
+  binst = solver.Board(board=board, block_size=(3, 3), killer=(killer_board, killer_clues))
+  solutions = binst.solve_and_print()
+  assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+  solution = solutions[0].assignment
+
+
+
 if __name__ == '__main__':
   test_ground()
   test_ground_2()
   test_ground_sandwich_sudoku()
   test_ground_x()
   test_small_jigsaw()
+  test_small_killer()
+  test_ground_killer()
