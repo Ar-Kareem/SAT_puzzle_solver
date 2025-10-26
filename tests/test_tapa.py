@@ -3,6 +3,7 @@ import numpy as np
 from puzzle_solver import tapa_solver as solver
 from puzzle_solver.core.utils import get_pos
 
+
 def test_toy():
     board = np.array([
         ['   ', '   ', '   ', '   ', '   ', '   '],

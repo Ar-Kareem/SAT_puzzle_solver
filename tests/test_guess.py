@@ -1,14 +1,11 @@
 from puzzle_solver import guess_solver as solver
 
+
 assert solver.get_triplets(guess=((0, 'Y'), (1, 'R'), (2, 'R'), (3, 'R')), ground_truth=((0, 'Y'), (1, 'Y'), (2, 'R'), (3, 'R'))) == (3, 0, 1)
 assert solver.get_triplets(guess=((0, 'R'), (1, 'Y'), (2, 'Y'), (3, 'Y')), ground_truth=((0, 'Y'), (1, 'Y'), (2, 'R'), (3, 'R'))) == (1, 2, 1)
 assert solver.get_triplets(guess=((0, 'Y'), (1, 'Y'), (2, 'Y'), (3, 'R'), (4, 'R'), (5, 'R')), ground_truth=((0, 'R'), (1, 'G'), (2, 'B'), (3, 'Y'), (4, 'B'), (5, 'P'))) == (0, 2, 4)
 assert solver.get_triplets(guess=((0, 'B'), (1, 'B'), (2, 'B'), (3, 'G'), (4, 'G'), (5, 'G')), ground_truth=((0, 'R'), (1, 'G'), (2, 'B'), (3, 'Y'), (4, 'B'), (5, 'P'))) == (1, 2, 3)
 assert solver.get_triplets(guess=((0, 'P'), (1, 'P'), (2, 'P'), (3, 'O'), (4, 'O'), (5, 'O')), ground_truth=((0, 'R'), (1, 'G'), (2, 'B'), (3, 'Y'), (4, 'B'), (5, 'P'))) == (0, 1, 5)
-
-
-
-
 
 def test_ground_1():
   binst = solver.Board()

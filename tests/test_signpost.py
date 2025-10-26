@@ -3,30 +3,28 @@ import numpy as np
 from puzzle_solver import signpost_solver as solver
 from puzzle_solver.core.utils import get_pos
 
-# https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/signpost.html#7x7c%23512596780210399
-# Q = up-left, W = up, E = up-right, A = left, D = right, Z = down-left, X = down, C = down-right
-board1 = np.array([
-  ['C', 'D', 'D', 'X', 'D', 'Z', 'X'],
-  ['D', 'C', 'D', 'X', 'X', 'A', 'A'],
-  ['X', 'X', 'D', 'Q', 'Z', 'W', 'A'],
-  ['W', 'D', 'W', 'W', 'X', 'Z', 'X'],
-  ['X', 'A', 'Q', 'Q', 'A', 'Q', 'X'],
-  ['D', 'W', 'W', 'A', 'E', 'A', 'Z'],
-  ['D', 'E', 'D', 'E', 'D', 'A', ' '],
-])
-board2 = np.array([
-  [ 1,  0, 23,  0,  0,  0,  0],
-  [30, 32,  0,  0,  0,  0,  0],
-  [ 0,  0,  2,  0,  0,  0,  0],
-  [ 0,  0,  0,  0,  0,  0,  0],
-  [ 0, 45,  0,  0, 33,  0,  0],
-  [ 0,  0, 22,  8, 39, 10,  0],
-  [ 0,  0,  0,  0,  0, 20, 49],
-])
-
-
 
 def test_ground():
+  # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/signpost.html#7x7c%23512596780210399
+  # Q = up-left, W = up, E = up-right, A = left, D = right, Z = down-left, X = down, C = down-right
+  board1 = np.array([
+    ['C', 'D', 'D', 'X', 'D', 'Z', 'X'],
+    ['D', 'C', 'D', 'X', 'X', 'A', 'A'],
+    ['X', 'X', 'D', 'Q', 'Z', 'W', 'A'],
+    ['W', 'D', 'W', 'W', 'X', 'Z', 'X'],
+    ['X', 'A', 'Q', 'Q', 'A', 'Q', 'X'],
+    ['D', 'W', 'W', 'A', 'E', 'A', 'Z'],
+    ['D', 'E', 'D', 'E', 'D', 'A', ' '],
+  ])
+  board2 = np.array([
+    [ 1,  0, 23,  0,  0,  0,  0],
+    [30, 32,  0,  0,  0,  0,  0],
+    [ 0,  0,  2,  0,  0,  0,  0],
+    [ 0,  0,  0,  0,  0,  0,  0],
+    [ 0, 45,  0,  0, 33,  0,  0],
+    [ 0,  0, 22,  8, 39, 10,  0],
+    [ 0,  0,  0,  0,  0, 20, 49],
+  ])
   binst = solver.Board(board=board1, values=board2)
   solutions = binst.solve_and_print()
   ground = np.array([
@@ -44,6 +42,7 @@ def test_ground():
   assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
   for pos in solution.keys():
     assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
+
 
 if __name__ == '__main__':
   test_ground()

@@ -4,6 +4,7 @@ import numpy as np
 from puzzle_solver import stitches_solver as solver
 from puzzle_solver.core.utils import get_pos
 
+
 def test_ground_1():
   # https://www.puzzle-stitches.com/?e=MDoxMiw4ODMsMTYy
   board = np.array([
@@ -30,6 +31,7 @@ def test_ground_1():
   assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())}'
   for pos in solution.keys():
     assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
+
 
 def test_ground_2():
   # https://www.puzzle-stitches.com/?e=MTM6OSw4MjEsNDAx
@@ -78,6 +80,7 @@ def test_ground_2():
   for pos in solution.keys():
     assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
 
+
 def test_ground_3():
   # weekly, oct 3rd 2025, no link, 4 stitches special
   board = np.array([
@@ -124,6 +127,7 @@ def test_ground_3():
   assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())}'
   for pos in solution.keys():
     assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
+
 
 if __name__ == '__main__':
   test_ground_1()

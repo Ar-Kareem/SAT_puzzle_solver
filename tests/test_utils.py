@@ -9,3 +9,7 @@ def test_polyominoes():
         N = len(P)
         print(f'N: {N}, target: {targets[digit-1]}')
         assert N == targets[digit-1], f'N: {N} != target: {targets[digit-1]}'
+
+
+if __name__ == '__main__':
+    test_polyominoes()

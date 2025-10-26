@@ -87,6 +87,7 @@ def test_ground():
     for pos in solution.keys():
         assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
 
+
 if __name__ == '__main__':
     test_toy()
     test_ground()

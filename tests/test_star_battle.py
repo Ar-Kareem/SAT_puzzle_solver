@@ -113,8 +113,25 @@ def test_ground_3():
   solutions = binst.solve_and_print()
   assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
   solution = solutions[0].assignment
+  ground = np.array([
+    ['*', ' ', ' ', ' ', '*', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', '*', ' ', '*', ' '],
+    [' ', ' ', '*', ' ', '*', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', '*', ' ', '*'],
+    [' ', ' ', '*', ' ', ' ', '*', ' ', ' ', ' ', ' '],
+    ['*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*', ' '],
+    [' ', ' ', ' ', '*', ' ', ' ', '*', ' ', ' ', ' '],
+    [' ', '*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
+    [' ', ' ', ' ', '*', ' ', '*', ' ', ' ', ' ', ' '],
+    [' ', '*', ' ', ' ', ' ', ' ', ' ', '*', ' ', ' ']
+  ])
+  ground_assignment = {get_pos(x=x, y=y): 1 if ground[y][x] == '*' else 0 for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+  assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
+  for pos in solution.keys():
+    assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
 
 
 if __name__ == '__main__':
   test_ground_1()
   test_ground_2()
+  test_ground_3()

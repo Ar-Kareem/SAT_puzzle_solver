@@ -199,6 +199,6 @@ def test_ground_2():
 
 
 if __name__ == '__main__':
-    # test_easy()
-    # test_ground()
+    test_easy()
+    test_ground()
     test_ground_2()

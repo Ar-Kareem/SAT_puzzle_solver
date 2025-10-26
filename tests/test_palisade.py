@@ -3,6 +3,7 @@ import numpy as np
 from puzzle_solver import palisade_solver as solver
 from puzzle_solver.core.utils import get_pos
 
+
 def test_toy():
     board = np.array([
         ['3', '2', '3'],
@@ -146,7 +147,6 @@ def test_ground_2():
     assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
     for pos in solution.keys():
         assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
-
 
 
 if __name__ == '__main__':

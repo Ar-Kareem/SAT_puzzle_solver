@@ -1,4 +1,4 @@
-import numpy as np
+import pytest
 
 from puzzle_solver import black_box_solver as solver
 
@@ -20,6 +20,7 @@ def test_6x6_4_balls():
     bottom = ['H', '6', 'H', '5', 'H', '4']
     solver.Board(top=top, left=left, bottom=bottom, right=right, ball_count=(4, 4)).solve_and_print()
 
+@pytest.mark.slow
 def test_8x8_3_6_balls():
     # 8x8 board 3-6 balls
     # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/blackbox.html#w8h8m3M6:0b41bc0d0c95e1a9578c46a4

@@ -1,7 +1,8 @@
 import numpy as np
+import pytest
 
 from puzzle_solver import shingoki_solver as solver
-from puzzle_solver.core.utils import Pos, get_all_pos, get_char, get_next_pos, Direction, in_bounds
+from puzzle_solver.core.utils import get_all_pos, get_char, get_next_pos, Direction, in_bounds
 
 
 def _ground_to_assignment(ground):
@@ -86,7 +87,6 @@ def test_small_normal():
     solution = solutions[0].assignment
 
 
-
 def test_medium():
     # 8 x 8 hard
     # https://www.puzzle-shingoki.com/?e=NDoxLDU0NCwwNzc=
@@ -106,6 +106,7 @@ def test_medium():
     solution = solutions[0].assignment
 
 
+@pytest.mark.slow
 def test_ground():
     # 21 x 21 hard
     # https://www.puzzle-shingoki.com/?e=MTM6Niw3NDgsODc0

@@ -131,6 +131,10 @@ def test_ground_sandwich_sudoku():
     ['6', '1', '8', '3', '5', '2', '9', '4', '7'],
     ['3', '9', '5', '4', '7', '6', '1', '2', '8'],
   ])
+  ground_assignment = {get_pos(x=x, y=y): ord(ground[y][x]) - ord('a') + 10 if ground[y][x].isalpha() else int(ground[y][x]) for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+  assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys())} != {set(ground_assignment.keys())}'
+  for pos in solution.keys():
+    assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
 
 
 def test_ground_x():
@@ -317,40 +321,10 @@ def test_ground_killer():
     ['09', '34', '34', '28', '28', '27', '27', '25', '25'],
   ])
   killer_clues = {
-    '01': 16,
-    '02': 11,
-    '03': 24,
-    '04': 10,
-    '05': 11,
-    '06': 7,
-    '07': 10,
-    '08': 10,
-    '09': 16,
-    '10': 11,
-    '11': 10,
-    '12': 7,
-    '13': 11,
-    '14': 16,
-    '15': 16,
-    '16': 8,
-    '17': 12,
-    '18': 8,
-    '19': 15,
-    '20': 7,
-    '21': 10,
-    '22': 5,
-    '23': 13,
-    '24': 16,
-    '25': 9,
-    '26': 14,
-    '27': 15,
-    '28': 13,
-    '29': 11,
-    '30': 9,
-    '31': 15,
-    '32': 13,
-    '33': 11,
-    '34': 15,
+    '01': 16, '02': 11, '03': 24, '04': 10, '05': 11, '06': 7, '07': 10, '08': 10, '09': 16,
+    '10': 11, '11': 10, '12': 7, '13': 11, '14': 16, '15': 16, '16': 8, '17': 12, '18': 8, '19': 15,
+    '20': 7, '21': 10, '22': 5, '23': 13, '24': 16, '25': 9, '26': 14, '27': 15, '28': 13, '29': 11,
+    '30': 9, '31': 15, '32': 13, '33': 11, '34': 15,
   }
   binst = solver.Board(board=board, block_size=(3, 3), killer=(killer_board, killer_clues))
   solutions = binst.solve_and_print()
@@ -371,7 +345,6 @@ def test_ground_killer():
   assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys())} != {set(ground_assignment.keys())}'
   for pos in solution.keys():
     assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
-
 
 
 if __name__ == '__main__':
