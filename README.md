@@ -4986,9 +4986,11 @@ A move consists of picking a new color, which then floods the connected componen
 
 The player's current area is the top-leftmost corner of the grid along with any similarly colored orthogonal cells connected to the current area.
 
-Finding an optimal solution for any graph is NP-hard. 
-
 </details>
+
+This game has a lot of interesting mathematical properties related to Graph Theory (for example many details are referenced in this [2022 Graph Theory paper](https://arxiv.org/pdf/1101.5876))
+
+Finding an optimal solution for any graph is NP-hard. 
 
 **Unsolved puzzle**
 

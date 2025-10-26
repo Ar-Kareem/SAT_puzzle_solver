@@ -4,20 +4,15 @@
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/flood.html#flood)
 
-* [**Solver Code**][54]
-
-<details>
-  <summary><strong>Rules</strong></summary>
-
 The game is a combinatorial puzzle played on a colored N by N grid where the goal is to make the entire grid a single color using the minimum number of moves.
 
 A move consists of picking a new color, which then floods the connected component of the player's current area that has that chosen color.
 
 The player's current area is the top-leftmost corner of the grid along with any similarly colored orthogonal cells connected to the current area.
 
-Finding an optimal solution for any graph is NP-hard. 
+This game has a lot of interesting mathematical properties related to Graph Theory (for example many details are referenced in this [2022 Graph Theory paper](https://arxiv.org/pdf/1101.5876))
 
-</details>
+Finding an optimal solution for any graph is NP-hard. 
 
 **Unsolved puzzle**
 
