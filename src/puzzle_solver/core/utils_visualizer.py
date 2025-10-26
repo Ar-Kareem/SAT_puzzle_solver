@@ -393,6 +393,7 @@ def render_bw_tiles_split(
             prev = None
             for x in range(cell_w):
                 fx = (x + 0.5) / cell_w
+                fx_next = (x + 1.5) / cell_w
 
                 if val == "B":
                     line.append(sgr(bg=BG_BLACK) + " " + RESET if use_color else TXT_BLACK)
@@ -402,7 +403,12 @@ def render_bw_tiles_split(
                     continue
 
                 black_side = is_black(val, fx, fy)
-                boundary = prev is not None and prev != black_side
+                next_black_side = is_black(val, fx_next, fy)
+                boundary = False  # if true places a "/" or "\" at the current position
+                if prev is not None and not prev and black_side:  # prev white and cur black => boundary now
+                    boundary = True
+                if black_side and not next_black_side:  # cur black and next white => boundary now
+                    boundary = True
 
                 if use_color:
                     bg = BG_BLACK if black_side else BG_WHITE
