@@ -159,13 +159,7 @@ def id_board_to_wall_board(id_board: np.array, border_is_wall = True) -> np.arra
 def render_shaded_grid(V: int,
                        H: int,
                        is_shaded: Callable[[int, int], bool],
-                       *,
-                       scale_x: int = 2,
-                       scale_y: int = 1,
-                       fill_char: str = '▒',
-                       empty_char: str = ' ',
-                       empty_text: Optional[Union[str, Callable[[int, int], Optional[str]]]] = None,
-                       show_axes: bool = True) -> str:
+                       empty_text: Optional[Union[str, Callable[[int, int], Optional[str]]]] = None,) -> str:
     """
     Most of this function was AI generated then modified by me, I don't currently care about the details of rendering to the terminal this looked good enough during my testing.
     Visualize a V x H grid where each cell is shaded if is_shaded(r, c) is True.
@@ -179,6 +173,11 @@ def render_shaded_grid(V: int,
                 cells. If a callable (r, c) -> str|None, used per cell. Text is
                 centered within the interior row and truncated to fit.
     """
+    scale_x: int = 2
+    scale_y: int = 1
+    fill_char: str = '▒'
+    empty_char: str = ' '
+    show_axes: bool = True
     assert V >= 1 and H >= 1
     assert scale_x >= 1 and scale_y >= 1
     assert len(fill_char) == 1 and len(empty_char) == 1
