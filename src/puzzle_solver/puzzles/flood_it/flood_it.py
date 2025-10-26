@@ -92,15 +92,14 @@ def solve_minimum_steps(board: np.array, start_pos: Optional[Pos] = None, verbos
     def print_solution(solution: SingleSolution):
         solution = solution_int_to_str(solution)
         print("Solution:", solution)
-
-    solution = _binary_search_solution(nodes, edges, graph[start_pos], callback=print_solution)
+    solution = _binary_search_solution(nodes, edges, graph[start_pos], callback=print_solution if verbose else None, verbose=verbose)
     if verbose:
         if solution is None:
             print("No solution found")
         else:
             solution = solution_int_to_str(solution)
-            print(f"Best Horizon: T={len(solution)}")
-            print("Best solution found:", solution)
+            print(f"Best Horizon is: T={len(solution)}")
+            print("Best solution is:", solution)
         toc = time.time()
         print(f"Time taken: {toc - tic:.2f} seconds")
     return solution
@@ -137,8 +136,10 @@ def _graph_to_edges(board: np.array, graph: dict[Pos, int]) -> dict[int, set[int
     return cluster_edges
 
 
-def _binary_search_solution(nodes, edges, start_node_id, callback):
-    min_T = 1
+def _binary_search_solution(nodes, edges, start_node_id, callback, verbose: bool = True):
+    if len(nodes) <= 1:
+        return SingleSolution(assignment=[])
+    min_T = 2
     max_T = len(nodes)
     hist = {}  # record historical T and best solution
     while min_T <= max_T:
@@ -150,13 +151,15 @@ def _binary_search_solution(nodes, edges, start_node_id, callback):
         if T in hist:  # already done and found solution
             solutions = hist[T]
         else:
-            print(f"Trying with exactly {T} moves...", end='')
-            sys.stdout.flush()
+            if verbose:
+                print(f"Trying with exactly {T-1} moves...", end='')
+                sys.stdout.flush()
             binst = Board(nodes=nodes, edges=edges, horizon=T, start_node_id=start_node_id)
             solutions = binst.solve()
-            print(' Possible!' if len(solutions) > 0 else ' Not possible!')
-            if len(solutions) > 0:
-                callback(solutions[0])
+            if verbose:
+                print(' Possible!' if len(solutions) > 0 else ' Not possible!')
+                if len(solutions) > 0:
+                    callback(solutions[0])
         if min_T == max_T:
             hist[T] = solutions
             break

@@ -1,0 +1,22 @@
+[
+  ["Red", "Yellow", "Red", "Green", "Red", "Red", "Blue", "Green", "Yellow", "Green", "Green", "Blue", "Blue", "Blue", "Yellow", "Red", "Blue", "Yellow", "Yellow", "Red"],
+  ["Yellow", "Yellow", "Blue", "Yellow", "Green", "Blue", "Yellow", "Green", "Green", "Blue", "Red", "Green", "Blue", "Blue", "Blue", "Yellow", "Green", "Yellow", "Green", "Red"],
+  ["Green", "Blue", "Yellow", "Red", "Yellow", "Red", "Blue", "Red", "Yellow", "Blue", "Blue", "Blue", "Green", "Red", "Blue", "Yellow", "Blue", "Green", "Green", "Green"],
+  ["Green", "Yellow", "Blue", "Red", "Yellow", "Yellow", "Yellow", "Red", "Green", "Yellow", "Yellow", "Green", "Blue", "Blue", "Green", "Red", "Green", "Red", "Green", "Yellow"],
+  ["Green", "Green", "Blue", "Blue", "Blue", "Green", "Red", "Green", "Green", "Green", "Yellow", "Red", "Yellow", "Blue", "Green", "Yellow", "Yellow", "Blue", "Yellow", "Red"],
+  ["Blue", "Green", "Red", "Blue", "Green", "Blue", "Red", "Yellow", "Blue", "Green", "Blue", "Blue", "Yellow", "Yellow", "Yellow", "Green", "Green", "Blue", "Yellow", "Red"],
+  ["Blue", "Blue", "Red", "Blue", "Red", "Yellow", "Blue", "Yellow", "Red", "Blue", "Red", "Red", "Red", "Blue", "Yellow", "Yellow", "Green", "Green", "Blue", "Blue"],
+  ["Yellow", "Red", "Yellow", "Blue", "Yellow", "Yellow", "Green", "Red", "Red", "Yellow", "Green", "Yellow", "Red", "Green", "Green", "Blue", "Red", "Green", "Red", "Green"],
+  ["Green", "Green", "Red", "Yellow", "Green", "Yellow", "Yellow", "Yellow", "Blue", "Red", "Yellow", "Blue", "Yellow", "Green", "Green", "Blue", "Blue", "Yellow", "Red", "Red"],
+  ["Green", "Red", "Blue", "Red", "Red", "Yellow", "Yellow", "Red", "Yellow", "Red", "Blue", "Yellow", "Green", "Blue", "Blue", "Green", "Red", "Red", "Green", "Yellow"],
+  ["Blue", "Blue", "Red", "Yellow", "Red", "Yellow", "Blue", "Blue", "Red", "Red", "Blue", "Yellow", "Blue", "Green", "Red", "Blue", "Yellow", "Red", "Blue", "Green"],
+  ["Blue", "Blue", "Yellow", "Yellow", "Green", "Blue", "Red", "Green", "Red", "Yellow", "Red", "Yellow", "Blue", "Yellow", "Red", "Red", "Yellow", "Yellow", "Red", "Red"],
+  ["Blue", "Blue", "Green", "Yellow", "Yellow", "Blue", "Green", "Blue", "Red", "Yellow", "Blue", "Red", "Blue", "Red", "Yellow", "Green", "Blue", "Red", "Blue", "Blue"],
+  ["Blue", "Green", "Yellow", "Green", "Yellow", "Red", "Yellow", "Blue", "Red", "Yellow", "Yellow", "Blue", "Yellow", "Yellow", "Blue", "Red", "Green", "Blue", "Green", "Yellow"],
+  ["Red", "Green", "Green", "Yellow", "Red", "Yellow", "Red", "Yellow", "Blue", "Yellow", "Blue", "Green", "Green", "Yellow", "Green", "Blue", "Green", "Green", "Yellow", "Blue"],
+  ["Yellow", "Green", "Blue", "Green", "Blue", "Blue", "Green", "Green", "Blue", "Blue", "Blue", "Blue", "Green", "Blue", "Yellow", "Green", "Red", "Yellow", "Blue", "Yellow"],
+  ["Blue", "Green", "Red", "Green", "Red", "Yellow", "Yellow", "Red", "Green", "Red", "Yellow", "Yellow", "Green", "Blue", "Yellow", "Yellow", "Green", "Blue", "Green", "Red"],
+  ["Red", "Yellow", "Blue", "Green", "Red", "Red", "Red", "Yellow", "Yellow", "Yellow", "Blue", "Yellow", "Green", "Green", "Yellow", "Yellow", "Red", "Red", "Blue", "Red"],
+  ["Red", "Yellow", "Green", "Red", "Yellow", "Yellow", "Green", "Green", "Red", "Red", "Blue", "Red", "Yellow", "Yellow", "Yellow", "Blue", "Red", "Green", "Green", "Green"],
+  ["Red", "Yellow", "Yellow", "Yellow", "Red", "Blue", "Green", "Yellow", "Yellow", "Blue", "Blue", "Green", "Blue", "Green", "Blue", "Blue", "Green", "Red", "Yellow", "Green"]
+]
