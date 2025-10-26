@@ -349,6 +349,11 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/kakuro_solved.png" alt="Kakuro" width="140">
     </a>
   </td>
+  <td align="center">
+    <a href="#sudoku-jigsaw-puzzle-type-52"><b>Sudoku Jigsaw</b><br><br>
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_jigsaw_solved.png" alt="Sudoku Jigsaw" width="140">
+    </a>
+  </td>
 </tr>
 </table>
 
@@ -415,6 +420,7 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   - [Binairo Plus (Puzzle Type #49)](#binairo-plus-puzzle-type-49)
   - [Shakashaka (Puzzle Type #50)](#shakashaka-puzzle-type-50)
   - [Kakuro (Puzzle Type #51)](#kakuro-puzzle-type-51)
+  - [Sudoku Jigsaw (Puzzle Type #52)](#sudoku-jigsaw-puzzle-type-52)
   - [Why SAT / CP-SAT?](#why-sat--cp-sat)
   - [Testing](#testing)
   - [Contributing](#contributing)
@@ -4804,6 +4810,81 @@ Time taken: 0.00 seconds
 
 ---
 
+## Sudoku Jigsaw (Puzzle Type #52)
+
+* [**Play online**](https://www.puzzle-jigsaw-sudoku.com/)
+
+* [**Solver Code**][52]
+
+<details>
+  <summary><strong>Rules</strong></summary>
+
+   1. The basic Sudoku rules apply.
+   2. The difference is that instead of having 3x3 rectangular blocks these blocks have irregular shapes
+
+</details>
+
+**Unsolved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_jigsaw_unsolved.png" alt="Sudoku Jigsaw unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+
+(Note: the ids are arbitrary and simply represent cells that share a block)
+
+```python
+import numpy as np
+from puzzle_solver import sudoku_solver as solver
+board = np.array([
+  [ '1', ' ', ' ', '2', ' ', ' ', '8', '5', ' ' ],
+  [ '2', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' ],
+  [ ' ', ' ', '8', ' ', ' ', ' ', ' ', ' ', ' ' ],
+  [ '7', ' ', ' ', '5', ' ', '1', ' ', ' ', ' ' ],
+  [ ' ', ' ', ' ', '1', ' ', '3', ' ', ' ', ' ' ],
+  [ ' ', ' ', ' ', '8', ' ', '4', ' ', ' ', '6' ],
+  [ ' ', ' ', ' ', ' ', ' ', ' ', '5', ' ', ' ' ],
+  [ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '5' ],
+  [ ' ', '2', '6', ' ', ' ', '9', ' ', ' ', '1' ],
+])
+jigsaw_ids = np.array([
+  ['00', '00', '01', '01', '01', '01', '02', '02', '02'],
+  ['00', '00', '01', '01', '03', '01', '01', '02', '02'],
+  ['00', '00', '01', '04', '03', '03', '02', '02', '02'],
+  ['00', '04', '04', '04', '03', '03', '03', '03', '02'],
+  ['00', '00', '04', '04', '03', '03', '05', '05', '05'],
+  ['06', '04', '04', '04', '05', '05', '05', '07', '05'],
+  ['06', '08', '08', '08', '08', '05', '05', '07', '07'],
+  ['06', '06', '06', '06', '08', '07', '07', '07', '07'],
+  ['06', '06', '06', '08', '08', '08', '08', '07', '07'],
+])
+binst = solver.Board(board=board, jigsaw=jigsaw_ids, constrain_blocks=False)
+solutions = binst.solve_and_print()
+```
+
+**Script Output**
+
+```python
+Solution found
+[['1' '9' '4' '2' '3' '6' '8' '5' '7']
+ ['2' '8' '5' '9' '4' '7' '1' '6' '3']
+ ['6' '3' '8' '4' '7' '5' '9' '1' '2']
+ ['7' '6' '3' '5' '9' '1' '2' '8' '4']
+ ['4' '5' '2' '1' '6' '3' '7' '9' '8']
+ ['5' '7' '9' '8' '1' '4' '3' '2' '6']
+ ['3' '1' '7' '6' '8' '2' '5' '4' '9']
+ ['9' '4' '1' '7' '2' '8' '6' '3' '5']
+ ['8' '2' '6' '3' '5' '9' '4' '7' '1']]
+Solutions found: 1
+status: OPTIMAL
+Time taken: 0.01 seconds
+```
+
+**Solved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_jigsaw_solved.png" alt="Sudoku Jigsaw solved" width="500">
+
+---
+
 ---
 
 ## Why SAT / CP-SAT?
@@ -4906,3 +4987,4 @@ Issues and PRs welcome!
 [49]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/binairo_plus "puzzle_solver/src/puzzle_solver/puzzles/binairo_plus at master · Ar-Kareem/puzzle_solver · GitHub"
 [50]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/shakashaka "puzzle_solver/src/puzzle_solver/puzzles/shakashaka at master · Ar-Kareem/puzzle_solver · GitHub"
 [51]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/kakuro "puzzle_solver/src/puzzle_solver/puzzles/kakuro at master · Ar-Kareem/puzzle_solver · GitHub"
+[52]: https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/sudoku "puzzle_solver/src/puzzle_solver/puzzles/sudoku at master · Ar-Kareem/puzzle_solver · GitHub"
