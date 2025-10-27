@@ -6,6 +6,7 @@ from ortools.sat.python import cp_model
 
 from puzzle_solver.core.utils import Pos, get_all_pos, set_char, Direction, get_next_pos, in_bounds, get_opposite_direction, get_pos
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, force_connected_component
+from puzzle_solver.core.utils_visualizer import id_board_to_wall_board, render_grid
 
 
 def parse_numpy(galaxies: np.ndarray) -> list[tuple[Pos, ...]]:
@@ -102,9 +103,6 @@ class Board:
             print("Solution found")
             res = np.full((self.V, self.H), ' ', dtype=object)
             for pos in get_all_pos(self.V, self.H):
-                set_char(res, pos, str(single_res.assignment[pos]).zfill(2))
-            print('[')
-            for row in range(self.V):
-                print('   ', res[row].tolist(), end=',\n')
-            print(']')
+                set_char(res, pos, single_res.assignment[pos])
+            print(render_grid(id_board_to_wall_board(res), center_char=lambda r, c: '.' if (Pos(x=c, y=r) in self.prelocated_positions) else ' '))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)
