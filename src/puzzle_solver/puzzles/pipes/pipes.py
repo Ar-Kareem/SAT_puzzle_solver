@@ -21,7 +21,11 @@ class Board:
     def create_vars(self):
         for pos in get_all_pos(self.V, self.H):
             for direction in Direction:
-                self.model_vars[(pos, direction)] = self.model.NewBoolVar(f'{pos}:{direction}')
+                mirrored = (get_next_pos(pos, direction), get_opposite_direction(direction))
+                if mirrored in self.model_vars:
+                    self.model_vars[(pos, direction)] = self.model_vars[mirrored]
+                else:
+                    self.model_vars[(pos, direction)] = self.model.NewBoolVar(f'{pos}:{direction}')
 
     def add_all_constraints(self):
         for pos in get_all_pos(self.V, self.H):
