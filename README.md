@@ -1825,6 +1825,8 @@ Time taken: 0.98 seconds
 
 ## Bridges (Puzzle Type #20)
 
+Also known as Hashiwokakero
+
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/bridges.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/bridges.html#bridges)
