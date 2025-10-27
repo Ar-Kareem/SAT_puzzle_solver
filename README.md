@@ -984,6 +984,8 @@ Time taken: 0.10 seconds
 
 ## Keen (Puzzle Type #8)
 
+Also known as KenKen
+
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/keen.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/keen.html#keen)
