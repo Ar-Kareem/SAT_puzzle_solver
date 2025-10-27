@@ -6,6 +6,7 @@ import numpy as np
 
 from puzzle_solver.core.utils import Pos, get_all_pos, get_char, set_char, get_pos, in_bounds, Direction, get_next_pos, polyominoes_with_shape_id
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, force_connected_component
+from puzzle_solver.core.utils_visualizer import id_board_to_wall_board, render_grid
 
 
 # a shape on the 2d board is just a set of positions
@@ -128,9 +129,8 @@ class Board:
             return SingleSolution(assignment=assignment)
         def callback(single_res: SingleSolution):
             print("Solution found")
-            res = np.full((self.V, self.H), ' ', dtype=str)
+            res = np.full((self.V, self.H), ' ', dtype=object)
             for pos, val in single_res.assignment.items():
-                c = 'X' if val == 1 else ' '
-                set_char(res, pos, c)
-            print('[\n' + '\n'.join(['  ' + str(res[row].tolist()) + ',' for row in range(self.V)]) + '\n]')
+                set_char(res, pos, '▒▒▒' if val == 1 else ' ')
+            print(render_grid(id_board_to_wall_board(self.board), center_char=lambda r, c: res[r][c]))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose_callback else None, verbose=verbose, max_solutions=max_solutions)
