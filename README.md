@@ -925,6 +925,8 @@ Time taken: 0.02 seconds
 
 ## Filling (Puzzle Type #7)
 
+Also known as Fillomino
+
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/filling.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/filling.html#filling)
