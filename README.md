@@ -452,7 +452,7 @@ The puzzles that have solvers implemented are listed below. Each puzzle has a si
 
 ## Nonograms (Puzzle Type #1)
 
-Called "Pattern" in the website.
+Also known as Hanjie, Paint by Numbers, Griddlers, Pic-a-Pix, Picross, and Pattern.
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/pattern.html)
 
@@ -540,7 +540,7 @@ Time taken: 0.04 seconds
 
 ## Sudoku (Puzzle Type #2)
 
-Called "Solo" in the website.
+Also known as Number Place and Solo.
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/solo.html)
 
@@ -1132,7 +1132,7 @@ Time taken: 0.03 seconds
 
 ## Singles (Puzzle Type #10)
 
-Also known as "Hitori",
+Also known as Hitori.
 
 * [**Play online 1**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/singles.html)
 
@@ -1355,7 +1355,7 @@ Time taken: 0.03 seconds
 
 ## Range (Puzzle Type #13)
 
-Also known as "Kurodoko"
+Also known as Kurodoko.
 
 * [**Play online 1**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/range.html)
 
@@ -3305,7 +3305,11 @@ Applying the solution to the puzzle visually:
 
 Also called "Futoshiki" or Renzoku"
 
-* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/unequal.html)
+* [**Play online 1**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/unequal.html)
+
+* [**Play online 2**](https://www.puzzle-futoshiki.com/futoshiki-4x4-easy/) (Futoshiki variant)
+
+* [**Play online 3**](https://www.puzzle-futoshiki.com/renzoku-4x4-easy/) (Renzoku variant)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/unequal.html#unequal)
 
@@ -3508,7 +3512,7 @@ Applying the solution to the puzzle visually:
 
 ## Slitherlink (Puzzle Type #39)
 
-Also known as Fences, Loop the Loop, and Loopy
+Also known as Fences, Loop the Loop, and Loopy.
 
 * [**Play online 1**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/loopy.html)
 
@@ -3825,7 +3829,7 @@ Applying the solution to the puzzle visually:
 
 ## Rectangles (Puzzle Type #42)
 
-Also called "Shikaku".
+Also known as Shikaku.
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/rect.html)
 
@@ -4322,7 +4326,7 @@ Time taken: 38.04 seconds
 
 ## Shingoki (Puzzle Type #47)
 
-Also called "Semaphores".
+Also known as Semaphores.
 
 * [**Play online**](https://www.puzzle-shingoki.com/)
 
@@ -4681,7 +4685,7 @@ Time taken: 0.00 seconds
 
 ## Shakashaka (Puzzle Type #50)
 
-Also called "Proof of Quilt"
+Also known as Proof of Quilt.
 
 * [**Play online**](https://www.puzzle-shakashaka.com/)
 
@@ -5166,7 +5170,7 @@ Note that the solved solution on the bottom left says that only 18 moves were us
 
 ## Pipes (Puzzle Type #55)
 
-Also called "Net"
+Also known as Net.
 
 * [**Play online 1**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/net.html)
 

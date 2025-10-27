@@ -1,6 +1,6 @@
 # Rectangles (Puzzle Type #42)
 
-Also called "Shikaku".
+Also known as Shikaku.
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/rect.html)
 

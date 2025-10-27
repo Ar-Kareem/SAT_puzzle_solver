@@ -1,6 +1,6 @@
 # Range (Puzzle Type #13)
 
-This is a dedicated solver for Range (also known as "Kurodoko").
+This is a dedicated solver for Range. Also known as Kurodoko.
 
 Below are the details of how to utilize the solver. In addition, the solver gives all possible solutions to the input thus it can be utilized to figure out if a single partial input board has multiple possible solutions.
 

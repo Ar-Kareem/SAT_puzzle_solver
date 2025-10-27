@@ -1,6 +1,6 @@
 # Slitherlink (Puzzle Type #39)
 
-Also known as Fences, Loop the Loop, and Loopy
+Also known as Fences, Loop the Loop, and Loopy.
 
 * [**Play online 1**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/loopy.html)
 

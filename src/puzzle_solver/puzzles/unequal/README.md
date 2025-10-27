@@ -2,7 +2,11 @@
 
 Also called "Futoshiki" or Renzoku"
 
-* [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/unequal.html)
+* [**Play online 1**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/unequal.html)
+
+* [**Play online 2**](https://www.puzzle-futoshiki.com/futoshiki-4x4-easy/) (Futoshiki variant)
+
+* [**Play online 3**](https://www.puzzle-futoshiki.com/renzoku-4x4-easy/) (Renzoku variant)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/unequal.html#unequal)
 

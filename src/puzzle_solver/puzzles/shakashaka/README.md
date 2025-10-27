@@ -1,6 +1,6 @@
 # Shakashaka (Puzzle Type #50)
 
-Also called "Proof of Quilt"
+Also known as Proof of Quilt.
 
 * [**Play online**](https://www.puzzle-shakashaka.com/)
 

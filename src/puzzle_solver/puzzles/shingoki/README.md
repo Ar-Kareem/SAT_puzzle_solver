@@ -1,6 +1,6 @@
 # Shingoki (Puzzle Type #47)
 
-Also called "Semaphores".
+Also known as Semaphores.
 
 * [**Play online**](https://www.puzzle-shingoki.com/)
 

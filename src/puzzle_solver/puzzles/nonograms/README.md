@@ -1,6 +1,6 @@
 # Nonograms (Puzzle Type #1)
 
-This is a dedicated solver for Nonograms (Called "Pattern" in the website)
+This is a dedicated solver for Nonograms. Also known as Hanjie, Paint by Numbers, Griddlers, Pic-a-Pix, Picross, and Pattern
 
 Below are the details of how to utilize the solver. In addition, the solver gives all possible solutions to the input thus it can be utilized to figure out if a single partial input board has multiple possible solutions.
 

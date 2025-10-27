@@ -1,6 +1,6 @@
 # Pipes (Puzzle Type #55)
 
-Also called "Net"
+Also known as Net.
 
 * [**Play online 1**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/net.html)
 
