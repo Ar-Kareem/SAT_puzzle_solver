@@ -772,6 +772,8 @@ Time taken: 0.02 seconds
 
 ## Light Up (Puzzle Type #5)
 
+Also called Akari.
+
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/lightup.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/lightup.html#lightup)
