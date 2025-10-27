@@ -29,6 +29,7 @@ from puzzle_solver.puzzles.nurikabe import nurikabe as nurikabe_solver
 from puzzle_solver.puzzles.palisade import palisade as palisade_solver
 from puzzle_solver.puzzles.lits import lits as lits_solver
 from puzzle_solver.puzzles.pearl import pearl as pearl_solver
+from puzzle_solver.puzzles.pipes import pipes as pipes_solver
 from puzzle_solver.puzzles.range import range as range_solver
 from puzzle_solver.puzzles.rectangles import rectangles as rectangles_solver
 from puzzle_solver.puzzles.shakashaka import shakashaka as shakashaka_solver
@@ -85,6 +86,7 @@ __all__ = [
     palisade_solver,
     lits_solver,
     pearl_solver,
+    pipes_solver,
     range_solver,
     rectangles_solver,
     shakashaka_solver,
