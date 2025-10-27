@@ -1761,6 +1761,8 @@ Time taken: 0.01 seconds
 
 ## Pearl (Puzzle Type #19)
 
+Also known as Masyu
+
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/pearl.html)
 
 * [**Instructions**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/pearl.html#pearl)
