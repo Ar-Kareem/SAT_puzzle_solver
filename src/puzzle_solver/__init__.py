@@ -47,6 +47,7 @@ from puzzle_solver.puzzles.tents import tents as tents_solver
 from puzzle_solver.puzzles.thermometers import thermometers as thermometers_solver
 from puzzle_solver.puzzles.towers import towers as towers_solver
 from puzzle_solver.puzzles.tracks import tracks as tracks_solver
+from puzzle_solver.puzzles.twiddle import twiddle as twiddle_solver
 from puzzle_solver.puzzles.undead import undead as undead_solver
 from puzzle_solver.puzzles.unequal import unequal as unequal_solver
 from puzzle_solver.puzzles.unruly import unruly as unruly_solver
@@ -104,6 +105,7 @@ __all__ = [
     thermometers_solver,
     towers_solver,
     tracks_solver,
+    twiddle_solver,
     undead_solver,
     unequal_solver,
     unruly_solver,
