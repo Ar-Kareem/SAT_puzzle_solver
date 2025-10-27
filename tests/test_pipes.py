@@ -43,6 +43,19 @@ def test_ground():
     solutions = binst.solve_and_print()
     assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
     solution = solutions[0].assignment
+    ground = np.array([
+        ['R  ', 'DLR', 'LR ', 'L  ', 'DR ', 'L  ', 'D  '],
+        ['D  ', 'UDR', 'DLR', 'L  ', 'UD ', 'DR ', 'UL '],
+        ['UR ', 'UDL', 'UR ', 'DLR', 'UDL', 'UDR', 'L  '],
+        ['DR ', 'UL ', 'R  ', 'UDL', 'U  ', 'UD ', 'D  '],
+        ['UD ', 'R  ', 'DLR', 'ULR', 'DLR', 'UDL', 'UD '],
+        ['U  ', 'R  ', 'UDL', 'DR ', 'UDL', 'UR ', 'UL '],
+        ['R  ', 'LR ', 'UL ', 'U  ', 'UR ', 'LR ', 'L  '],
+    ])
+    ground_assignment = {get_pos(x=x, y=y): ground[y][x].strip() for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+    assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
+    for pos in solution.keys():
+        assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
 
 
 def test_ground2():
@@ -64,6 +77,22 @@ def test_ground2():
     solutions = binst.solve_and_print()
     assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
     solution = solutions[0].assignment
+    ground = np.array([
+        ['R  ', 'DLR', 'DLR', 'DLR', 'L  ', 'R  ', 'DL ', 'DR ', 'LR ', 'L  '],
+        ['D  ', 'U  ', 'U  ', 'UDR', 'LR ', 'L  ', 'UD ', 'UDR', 'LR ', 'L  '],
+        ['UD ', 'D  ', 'R  ', 'ULR', 'DL ', 'R  ', 'UDL', 'UD ', 'D  ', 'D  '],
+        ['UD ', 'UD ', 'R  ', 'DLR', 'ULR', 'DLR', 'UL ', 'UDR', 'ULR', 'UL '],
+        ['UDR', 'ULR', 'LR ', 'ULR', 'L  ', 'UDR', 'LR ', 'UL ', 'R  ', 'DL '],
+        ['U  ', 'R  ', 'DLR', 'LR ', 'DLR', 'UL ', 'D  ', 'D  ', 'DR ', 'UL '],
+        ['D  ', 'R  ', 'UDL', 'D  ', 'U  ', 'D  ', 'UDR', 'ULR', 'ULR', 'DL '],
+        ['UDR', 'LR ', 'ULR', 'UDL', 'DR ', 'ULR', 'ULR', 'LR ', 'DL ', 'U  '],
+        ['U  ', 'R  ', 'DLR', 'ULR', 'ULR', 'DLR', 'L  ', 'DR ', 'ULR', 'DL '],
+        ['R  ', 'LR ', 'ULR', 'LR ', 'L  ', 'U  ', 'R  ', 'ULR', 'L  ', 'U  '],
+    ])
+    ground_assignment = {get_pos(x=x, y=y): ground[y][x].strip() for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+    assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
+    for pos in solution.keys():
+        assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
 
 
 if __name__ == '__main__':

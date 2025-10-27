@@ -75,7 +75,6 @@ def mean_consecutives(arr: np.ndarray) -> np.ndarray:
 def main(image):
     global Image
     global cv
-    import matplotlib.pyplot as plt
     from PIL import Image as Image_module
     import cv2 as cv_module
     Image = Image_module

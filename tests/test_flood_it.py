@@ -7,7 +7,7 @@ def test_toy():
     solution = solver.solve_minimum_steps(board=np.array([
         ['R'],
     ]))
-    assert solution is not None, f'No solution found'
+    assert solution is not None, 'No solution found'
     ground = tuple()
     assert tuple(solution) == ground
 
