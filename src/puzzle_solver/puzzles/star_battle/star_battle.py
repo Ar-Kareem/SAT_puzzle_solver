@@ -3,6 +3,7 @@ from ortools.sat.python import cp_model
 
 from puzzle_solver.core.utils import Pos, get_all_pos, get_char, set_char, get_neighbors8, get_row_pos, get_col_pos
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution
+from puzzle_solver.core.utils_visualizer import id_board_to_wall_board, render_grid
 
 
 class Board:
@@ -61,11 +62,13 @@ class Board:
             print("Solution found")
             res = np.full((self.V, self.H), ' ', dtype=object)
             for pos in get_all_pos(self.V, self.H):
-                c = '*' if single_res.assignment[pos] == 1 else ' '
-                set_char(res, pos, c)
-            for row in range(self.V):
-                print(res[row].tolist(), end='')
-                if row != self.V - 1:
-                    print(',', end='')
-                print()
+                if single_res.assignment[pos] == 1:
+                    set_char(res, pos, 'X')
+                else:
+                    b = get_char(self.board, pos)
+                    if b == 'B':
+                        set_char(res, pos, ' ')
+                    else:
+                        set_char(res, pos, '.')
+            print(render_grid(id_board_to_wall_board(self.board), center_char=lambda r, c: res[r][c]))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)
