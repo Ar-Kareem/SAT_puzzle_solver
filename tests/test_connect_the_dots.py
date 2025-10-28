@@ -135,6 +135,6 @@ def test_ground():
 
 if __name__ == "__main__":
     test_easy()
-    # test_medium()
+    test_medium()
     test_medium2()
     test_ground()

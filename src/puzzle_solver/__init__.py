@@ -115,4 +115,4 @@ __all__ = [
     inertia_image_parser,
 ]
 
-__version__ = '1.0.3'
+__version__ = '1.0.4'
