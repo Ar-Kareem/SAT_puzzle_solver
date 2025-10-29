@@ -2,11 +2,13 @@ import numpy as np
 from typing import Callable, Optional, List, Sequence, Literal
 from puzzle_solver.core.utils import Pos, get_all_pos, get_next_pos, in_bounds, set_char, get_char, Direction
 
+
 def combined_function(V: int,
                       H: int,
                       cell_flags: Optional[Callable[[int, int], str]] = None,
                       is_shaded: Optional[Callable[[int, int], bool]] = None,
                       center_char: Optional[Callable[[int, int], str]] = None,
+                      special_content: Optional[Callable[[int, int], str]] = None,
                       text_on_shaded_cells: bool = True,
                       scale_x: int = 2,
                       scale_y: int = 1,
@@ -14,11 +16,13 @@ def combined_function(V: int,
                       show_grid: bool = True,
                     ) -> str:
     """
-    most of this function was AI generated then modified by me, I don't currently care about the details of rendering to the terminal this looked good enough during my testing.
     Render a V x H grid that can:
       • draw selective edges per cell via cell_flags(r, c) containing any of 'U','D','L','R'
       • shade cells via is_shaded(r, c)
       • place centered text per cell via center_char(r, c)
+      • draw interior arms via special_content(r, c) returning any combo of 'U','D','L','R'
+             (e.g., 'UR', 'DL', 'ULRD', or '' to leave the interior unchanged).
+             Arms extend from the cell’s interior center toward the indicated sides.
       • horizontal stretch (>=1). Interior width per cell = 2*scale_x - 1 (default 2)
       • vertical stretch (>=1). Interior height per cell = scale_y (default 1)
       • show_axes: bool = True, show the axes (columns on top, rows on the left).
@@ -28,13 +32,20 @@ def combined_function(V: int,
       - If cell_flags is None, draws a full grid (all interior and outer borders present).
       - Shading is applied first, borders are drawn on top, and center text is drawn last unless text_on_shaded_cells is False in which case the text is not drawn on shaded cells.
       - Axes are shown (columns on top, rows on the left).
+
+    Draw order:
+      1) shading
+      2) borders
+      3) special_content (interior line arms)
+      4) center_char (unless text_on_shaded_cells=False and cell is shaded)
     """
     assert V >= 1 and H >= 1, f'V and H must be >= 1, got {V} and {H}'
     assert cell_flags is None or callable(cell_flags), f'cell_flags must be None or callable, got {cell_flags}'
     assert is_shaded is None or callable(is_shaded), f'is_shaded must be None or callable, got {is_shaded}'
     assert center_char is None or callable(center_char), f'center_char must be None or callable, got {center_char}'
+    assert special_content is None or callable(special_content), f'special_content must be None or callable, got {special_content}'
 
-    # Rendering constants (kept consistent with Function #2)
+    # Rendering constants
     fill_char: str = '▒'     # single char for shaded interiors
     empty_char: str = ' '    # single char for unshaded interiors
 
@@ -51,7 +62,7 @@ def combined_function(V: int,
     cols = x_corner(H) + 1
     canvas = [[empty_char] * cols for _ in range(rows)]
 
-    # ── Edge presence arrays (like Function #1), derived from cell_flags ──
+    # ── Edge presence arrays derived from cell_flags ──
     # H_edges[r, c] is the horizontal edge between rows r and r+1 above column segment c (shape: (V+1, H))
     # V_edges[r, c] is the vertical edge between cols c and c+1 left of row segment r (shape: (V, H+1))
     if cell_flags is None:
@@ -120,7 +131,7 @@ def combined_function(V: int,
                 for ky in range(1, scale_y + 1):
                     canvas[y_border(r) + ky][xx] = '│'
 
-    # Junctions at intersections (computed from adjacent segment presence)
+    # Junctions at intersections
     for r in range(V + 1):
         yy = y_border(r)
         for c in range(H + 1):
@@ -136,7 +147,59 @@ def combined_function(V: int,
                 m |= Rb
             canvas[yy][xx] = JUNCTION[m]
 
-    # ── Center text (drawn last so it sits atop shading) ───────────────────
+    # ── Special interior content (arms) + cross-cell bridges ──────────────
+    def draw_special_arms(r_cell: int, c_cell: int, code: Optional[str]):
+        if not code:
+            return
+        # interior box
+        left  = x_corner(c_cell) + 1
+        right = x_corner(c_cell + 1) - 1
+        top   = y_border(r_cell) + 1
+        bottom= y_border(r_cell + 1) - 1
+        if left > right or top > bottom:
+            return
+
+        # center of interior
+        cx = left + (right - left) // 2
+        cy = top  + (bottom - top) // 2
+
+        # normalize to a set of unique flags
+        s = set(ch for ch in str(code) if ch in 'UDLR')
+
+        # draw arms out from center (keep inside interior; don't touch borders)
+        if 'U' in s and cy - 1 >= top:
+            for yy in range(cy - 1, top - 1, -1):
+                canvas[yy][cx] = '│'
+        if 'D' in s and cy + 1 <= bottom:
+            for yy in range(cy + 1, bottom + 1):
+                canvas[yy][cx] = '│'
+        if 'L' in s and cx - 1 >= left:
+            for xx in range(cx - 1, left - 1, -1):
+                canvas[cy][xx] = '─'
+        if 'R' in s and cx + 1 <= right:
+            for xx in range(cx + 1, right + 1):
+                canvas[cy][xx] = '─'
+
+        # center junction
+        U_b, R_b, D_b, L_b = 1, 2, 4, 8
+        m = 0
+        if 'U' in s: m |= U_b
+        if 'D' in s: m |= D_b
+        if 'L' in s: m |= L_b
+        if 'R' in s: m |= R_b
+        canvas[cy][cx] = JUNCTION.get(m, ' ')
+
+    # pass 1: draw interior arms per cell
+    special_map = [[set() for _ in range(H)] for _ in range(V)]
+    if callable(special_content):
+        for r in range(V):
+            for c in range(H):
+                flags = set(ch for ch in str(special_content(r, c) or '') if ch in 'UDLR')
+                special_map[r][c] = flags
+                if flags:
+                    draw_special_arms(r, c, ''.join(flags))
+
+    # ── Center text (drawn last so it sits atop shading/arms) ─────────────
     def put_center_text(r_cell: int, c_cell: int, s: Optional[str]):
         if s is None:
             return
@@ -156,10 +219,59 @@ def combined_function(V: int,
         for i, ch in enumerate(s):
             canvas[yy][start + i] = ch
 
+
+    # helper: place a connector on a border cell, merging if something is there
+    def place_connector(y: int, x: int, kind: str):  # kind in {'h','v'}
+        ch = canvas[y][x]
+        if ch in ('┼','├','┤','┬','┴'):
+            return  # already a full junction from the outer grid; don't touch
+        if kind == 'h':
+            if ch == '│':
+                canvas[y][x] = '┼'
+            elif ch.strip() == '':
+                canvas[y][x] = '─'
+            elif ch == '─':
+                pass  # already fine
+            else:
+                canvas[y][x] = '┼'
+        else:  # kind == 'v'
+            if ch == '─':
+                canvas[y][x] = '┼'
+            elif ch.strip() == '':
+                canvas[y][x] = '│'
+            elif ch == '│':
+                pass
+            else:
+                canvas[y][x] = '┼'
+
+    # pass 2: bridge across missing borders where neighbors point at each other
+    if callable(special_content):
+        for r in range(V):
+            for c in range(H):
+                s = special_map[r][c]
+                # horizontal neighbor (r, c) ↔ (r, c+1)
+                if 'R' in s and c + 1 < H and 'L' in special_map[r][c + 1]:
+                    # only bridge if the vertical grid line between cells is absent
+                    if not V_edges[r][c + 1]:
+                        cy = y_border(r) + 1 + (scale_y - 1) // 2  # same cy as interior center
+                        xx = x_corner(c + 1)                      # border column
+                        place_connector(cy, xx, 'h')
+                # vertical neighbor (r, c) ↔ (r+1, c)
+                if 'D' in s and r + 1 < V and 'U' in special_map[r + 1][c]:
+                    # only bridge if the horizontal grid line between cells is absent
+                    if not H_edges[r + 1][c]:
+                        yy = y_border(r + 1)                      # border row
+                        cx = x_corner(c) + 1 + (2 * scale_x - 2) // 2  # interior center x
+                        place_connector(yy, cx, 'v')
+                if len(s) == 1:
+                    put_center_text(r, c, 'O')
+
     if callable(center_char):
         for r in range(V):
             for c in range(H):
                 if not text_on_shaded_cells and shaded_map[r][c]:
+                    continue
+                if not text_on_shaded_cells and special_map[r][c]:
                     continue
                 put_center_text(r, c, center_char(r, c))
 

@@ -5234,16 +5234,29 @@ solutions = binst.solve_and_print()
 
 ```python
 Solution found
-[['R' 'DLR' 'DLR' 'DLR' 'L' 'R' 'DL' 'DR' 'LR' 'L']
- ['D' 'U' 'U' 'UDR' 'LR' 'L' 'UD' 'UDR' 'LR' 'L']
- ['UD' 'D' 'R' 'ULR' 'DL' 'R' 'UDL' 'UD' 'D' 'D']
- ['UD' 'UD' 'R' 'DLR' 'ULR' 'DLR' 'UL' 'UDR' 'ULR' 'UL']
- ['UDR' 'ULR' 'LR' 'ULR' 'L' 'UDR' 'LR' 'UL' 'R' 'DL']
- ['U' 'R' 'DLR' 'LR' 'DLR' 'UL' 'D' 'D' 'DR' 'UL']
- ['D' 'R' 'UDL' 'D' 'U' 'D' 'UDR' 'ULR' 'ULR' 'DL']
- ['UDR' 'LR' 'ULR' 'UDL' 'DR' 'ULR' 'ULR' 'LR' 'DL' 'U']
- ['U' 'R' 'DLR' 'ULR' 'ULR' 'DLR' 'L' 'DR' 'ULR' 'DL']
- ['R' 'LR' 'ULR' 'LR' 'L' 'U' 'R' 'ULR' 'L' 'U']]
+    0   0   0   0   0   0   0   0   0   0  
+    0   1   2   3   4   5   6   7   8   9
+
+ 0  O───┬───┬───┬───O   O───┐   ┌───────O
+        │   │   │           │   │
+ 1  O   O   O   ├───────O   │   ├───────O
+    │           │           │   │
+ 2  │   O   O───┴───┐   O───┤   │   O   O
+    │   │           │       │   │   │   │
+ 3  │   │   O───┬───┴───┬───┘   ├───┴───┘
+    │   │       │       │       │
+ 4  ├───┴───────┴───O   ├───────┘   O───┐
+    │                   │               │
+ 5  O   O───┬───────┬───┘   O   O   ┌───┘
+            │       │       │   │   │
+ 6  O   O───┤   O   O   O   ├───┴───┴───┐
+    │       │   │       │   │           │
+ 7  ├───────┴───┤   ┌───┴───┴───────┐   O
+    │           │   │               │
+ 8  O   O───┬───┴───┴───┬───O   ┌───┴───┐
+            │           │       │       │
+ 9  O───────┴───────O   O   O───┴───O   O
+
 Solutions found: 1
 status: OPTIMAL
 Time taken: 5.65 seconds
