@@ -25,6 +25,7 @@ from puzzle_solver.puzzles.map import map as map_solver
 from puzzle_solver.puzzles.minesweeper import minesweeper as minesweeper_solver
 from puzzle_solver.puzzles.mosaic import mosaic as mosaic_solver
 from puzzle_solver.puzzles.nonograms import nonograms as nonograms_solver
+from puzzle_solver.puzzles.nonograms import nonograms_colored as nonograms_colored_solver
 from puzzle_solver.puzzles.norinori import norinori as norinori_solver
 from puzzle_solver.puzzles.nurikabe import nurikabe as nurikabe_solver
 from puzzle_solver.puzzles.palisade import palisade as palisade_solver
@@ -85,6 +86,7 @@ __all__ = [
     mosaic_solver,
     nonograms_solver,
     norinori_solver,
+    nonograms_colored_solver,
     nurikabe_solver,
     palisade_solver,
     lits_solver,
