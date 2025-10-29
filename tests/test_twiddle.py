@@ -1,8 +1,10 @@
 import numpy as np
+import pytest
 
 from puzzle_solver import twiddle_solver as solver
 
 
+@pytest.mark.very_slow
 def test_toy():
     board = np.array([
         [6, 8, 2],

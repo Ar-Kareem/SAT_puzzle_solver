@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 
 from puzzle_solver import flood_it_solver as solver
 
@@ -89,6 +90,7 @@ def test_ground2():
     assert len(solution) == 19, f'Expected 19 steps, found {len(solution)}'
 
 
+@pytest.mark.slow
 def test_ground3():
     # 20 x 20 with 8 colors hard (no extra moves allowed)
     # https://www.chiark.Gend.org.uk/~sgtatham/puzzles/js/flood.html#20x20c8m0%23991967486182787

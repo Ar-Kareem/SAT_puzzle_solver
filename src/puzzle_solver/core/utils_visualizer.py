@@ -10,6 +10,7 @@ def combined_function(V: int,
                       text_on_shaded_cells: bool = True,
                     ) -> str:
     """
+    most of this function was AI generated then modified by me, I don't currently care about the details of rendering to the terminal this looked good enough during my testing.
     Render a V x H grid that can:
       • draw selective edges per cell via cell_flags(r, c) containing any of 'U','D','L','R'
       • shade cells via is_shaded(r, c)
@@ -17,7 +18,7 @@ def combined_function(V: int,
 
     Behavior:
       - If cell_flags is None, draws a full grid (all interior and outer borders present).
-      - Shading is applied first, borders are drawn on top, and center text is drawn last.
+      - Shading is applied first, borders are drawn on top, and center text is drawn last unless text_on_shaded_cells is False in which case the text is not drawn on shaded cells.
       - Axes are shown (columns on top, rows on the left).
     """
     assert V >= 1 and H >= 1, f'V and H must be >= 1, got {V} and {H}'
