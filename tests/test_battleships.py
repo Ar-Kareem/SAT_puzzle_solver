@@ -1,7 +1,17 @@
 import numpy as np
 
 from puzzle_solver import battleships_solver as solver
-from puzzle_solver.core.utils import get_pos
+from puzzle_solver.core.utils import get_pos, Pos
+
+
+def assignment_to_printable(assignment: dict[Pos, int], V: int, H: int):
+  arr = np.array([[assignment[get_pos(x=x, y=y)] for x in range(H)] for y in range(V)])
+  print('[')
+  for row in arr:
+    print('    [ ' + ', '.join([f"'{x}'" for x in row]) + ' ],')
+  print(']')
+
+
 
 def test_ground_1():
   board = np.array([
@@ -57,7 +67,54 @@ def test_ground_2():
   binst = solver.Board(board=board, top=top, side=side, ship_counts=ship_counts)
   solutions = binst.solve_and_print()
   assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+  solution = solutions[0].assignment
+  # assignment_to_printable(solution, V=board.shape[0], H=board.shape[1])
+  ground = np.array([
+    [ '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0' ],
+    [ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '1', '0', '0' ],
+    [ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0' ],
+    [ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0' ],
+    [ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0' ],
+    [ '0', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1', '1', '1', '0' ],
+    [ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0' ],
+    [ '0', '0', '1', '0', '0', '1', '1', '1', '1', '1', '0', '0', '1', '1', '1' ],
+    [ '1', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0' ],
+    [ '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '1', '0', '0', '0' ],
+    [ '1', '1', '1', '1', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0' ],
+    [ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0' ],
+    [ '0', '0', '0', '0', '0', '0', '0', '1', '1', '0', '1', '0', '0', '0', '0' ],
+    [ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0' ],
+    [ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1' ],
+  ])
+  ground_assignment = {get_pos(x=x, y=y): 1 if ground[y][x] == '1' else 0 for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+  assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
+  for pos, val in solution.items():
+    assert val == ground_assignment[pos], f'solution value != ground assignment value, {pos} = {val} != {ground_assignment[pos]}'
+
+def test_toy():
+  board = np.array([
+    [' ', ' ', 'S'],
+    [' ', ' ', ' '],
+    [' ', ' ', ' '],
+  ])
+  top = np.array([2, 0, 2])
+  side = np.array([2, 1, 1])
+  ship_counts = {1: 2, 2: 1}
+  binst = solver.Board(board=board, top=top, side=side, ship_counts=ship_counts)
+  solutions = binst.solve_and_print()
+  assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+  solution = solutions[0].assignment
+  ground = np.array([
+    ['1', '0', '1'],
+    ['1', '0', '0'],
+    ['0', '0', '1'],
+  ])
+  ground_assignment = {get_pos(x=x, y=y): 1 if ground[y][x] == '1' else 0 for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+  assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
+  for pos, val in solution.items():
+    assert val == ground_assignment[pos], f'solution value != ground assignment value, {pos} = {val} != {ground_assignment[pos]}'
 
 if __name__ == '__main__':
-  # test_ground_1()
+  test_ground_1()
   test_ground_2()
+  test_toy()
