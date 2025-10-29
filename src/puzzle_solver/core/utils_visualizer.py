@@ -59,10 +59,14 @@ def combined_function(V: int,
         for r in range(V):
             for c in range(H):
                 s = cell_flags(r, c) or ''
-                if 'U' in s: H_edges[r    ][c] = True
-                if 'D' in s: H_edges[r + 1][c] = True
-                if 'L' in s: V_edges[r][c    ] = True
-                if 'R' in s: V_edges[r][c + 1] = True
+                if 'U' in s:
+                    H_edges[r    ][c] = True
+                if 'D' in s:
+                    H_edges[r + 1][c] = True
+                if 'L' in s:
+                    V_edges[r][c    ] = True
+                if 'R' in s:
+                    V_edges[r][c + 1] = True
 
     # ── Shading first (borders will overwrite) ─────────────────────────────
     shaded_map = [[False]*H for _ in range(V)]
@@ -117,10 +121,14 @@ def combined_function(V: int,
         for c in range(H + 1):
             xx = x_corner(c)
             m = 0
-            if r > 0   and V_edges[r - 1][c]: m |= U
-            if r < V   and V_edges[r][c]:     m |= D
-            if c > 0   and H_edges[r][c - 1]: m |= Lb
-            if c < H   and H_edges[r][c]:     m |= Rb
+            if r > 0   and V_edges[r - 1][c]:
+                m |= U
+            if r < V   and V_edges[r][c]:
+                m |= D
+            if c > 0   and H_edges[r][c - 1]:
+                m |= Lb
+            if c < H   and H_edges[r][c]:
+                m |= Rb
             canvas[yy][xx] = JUNCTION[m]
 
     # ── Center text (drawn last so it sits atop shading) ───────────────────

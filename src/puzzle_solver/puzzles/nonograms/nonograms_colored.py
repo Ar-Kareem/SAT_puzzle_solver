@@ -79,7 +79,7 @@ class Board:
         # Early infeasibility check:
         # Minimum required blanks equals number of adjacent pairs with same color.
         same_color_separators = sum(1 for (len_i, col_i), (len_j, col_j) in zip(clues, clues[1:]) if col_i == col_j)
-        min_needed = sum(l for l, _ in clues) + same_color_separators
+        min_needed = sum(len_i for len_i, _ in clues) + same_color_separators
         if min_needed > L:
             print(f"Infeasible: clues {clues} need {min_needed} cells but line length is {L} for {ns}")
             self.model.Add(0 == 1)
@@ -95,7 +95,7 @@ class Board:
         # Start vars per run
         starts: list[cp_model.IntVar] = []
         self.extra_vars[f"{ns}_starts"] = starts
-        for i, (run_len, run_col) in enumerate(clues):
+        for i in range(len(clues)):
             # s_i in [0, L] but we will bound by containment constraint below
             s = self.model.NewIntVar(0, L, f"{ns}_s[{i}]")
             starts.append(s)
@@ -226,9 +226,9 @@ class Board:
                 char_to_int = {c: i for i, c in enumerate(visualize_colors_keys)}
                 nums = [[char_to_int[c] for c in row] for row in res]
                 plt.imshow(nums,
-                           aspect='equal',
-                           cmap=ListedColormap([visualize_colors[c] for c in visualize_colors_keys]),
-                           extent=[0, self.H, self.V, 0])
+                        aspect='equal',
+                        cmap=ListedColormap([visualize_colors[c] for c in visualize_colors_keys]),
+                        extent=[0, self.H, self.V, 0])
                 plt.colorbar()
                 # plt.grid(True)
                 plt.show()

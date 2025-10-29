@@ -16,7 +16,7 @@ cov.start()
 
 tic = time.time()
 
-import puzzle_solver
+import puzzle_solver  # noqa: F401, E402
 # import numpy as np
 # from ortools.sat.python import cp_model
 

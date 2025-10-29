@@ -3,7 +3,7 @@ from dataclasses import dataclass
 import numpy as np
 from ortools.sat.python import cp_model
 
-from puzzle_solver.core.utils import Pos, Shape, get_all_pos, get_char, set_char, in_bounds, get_next_pos, Direction
+from puzzle_solver.core.utils import Pos, Shape, get_all_pos, get_char, in_bounds, get_next_pos, Direction
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution
 from puzzle_solver.core.utils_visualizer import combined_function, id_board_to_wall_fn
 

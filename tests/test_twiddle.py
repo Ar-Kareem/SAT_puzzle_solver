@@ -13,7 +13,7 @@ def test_toy():
     ])
     binst = solver.Board(board=board, time_horizon=20)
     solutions = binst.solve_and_print()
-    # assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+    assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
     # solution = solutions[0].assignment
 
 
@@ -25,6 +25,7 @@ def test_toy2():
     ])
     binst = solver.Board(board=board, time_horizon=20)
     solutions = binst.solve_and_print()
+    assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
 
 
 def test_toy3():
@@ -35,6 +36,7 @@ def test_toy3():
     ])
     binst = solver.Board(board=board, time_horizon=20)
     solutions = binst.solve_and_print()
+    assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
 
 
 if __name__ == '__main__':

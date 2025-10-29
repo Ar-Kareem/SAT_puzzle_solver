@@ -91,7 +91,7 @@ class Board:
             #     set_char(res, pos, c)
             # print(res)
             print(combined_function(self.V, self.H,
-                is_shaded=lambda r, c: single_res.assignment[get_pos(x=c, y=r)] == 1, 
+                is_shaded=lambda r, c: single_res.assignment[get_pos(x=c, y=r)] == 1,
                 center_char=lambda r, c: self.region_to_clue.get(int(self.board[r, c]), ''),
                 text_on_shaded_cells=False
             ))

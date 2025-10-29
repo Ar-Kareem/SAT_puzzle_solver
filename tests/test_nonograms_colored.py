@@ -23,7 +23,7 @@ def viz_matplotlib(arr: list[list[str]]):
         'b': 'black',
     }
     colors_as_num = [[{'M': 0, 'R': 1, 'G': 2, 'P': 3, 'L': 4, 'F': 5, 'b': 6}[c] for c in row] for row in colors]
-    plt.imshow(colors_as_num, 
+    plt.imshow(colors_as_num,
                cmap=ListedColormap(colors_dict.values()),
                aspect='equal')
     # add text to each cell
@@ -157,14 +157,15 @@ def test_ground():
         ['7M', '8R', '8M', '5P', '3R'], ['24M', '2P', '3R'], ['16M', '7M'], ['12M']
     ]
     binst = solver.Board(top=top, side=side)
-    solutions = binst.solve_and_print(visualize_colors={
-        'M': 'darkmagenta',
-        'R': 'magenta',
-        'G': 'green',
-        'P': 'pink',
-        'L': 'lime',
-        'F': 'forestgreen',
-    })
+    solutions = binst.solve_and_print()
+    #     visualize_colors={
+    #     'M': 'darkmagenta',
+    #     'R': 'magenta',
+    #     'G': 'green',
+    #     'P': 'pink',
+    #     'L': 'lime',
+    #     'F': 'forestgreen',
+    # })
     assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
     solution = solutions[0].assignment
     # print(solution)
