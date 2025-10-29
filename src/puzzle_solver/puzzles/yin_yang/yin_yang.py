@@ -3,8 +3,9 @@ import numpy as np
 from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
 
-from puzzle_solver.core.utils import Pos, get_all_pos, set_char, get_char, in_bounds, Direction, get_next_pos, get_pos
+from puzzle_solver.core.utils import Pos, get_all_pos, get_char, in_bounds, Direction, get_next_pos, get_pos
 from puzzle_solver.core.utils_ortools import and_constraint, generic_solve_all, SingleSolution, force_connected_component
+from puzzle_solver.core.utils_visualizer import combined_function
 
 
 class Board:
@@ -98,13 +99,5 @@ class Board:
             return SingleSolution(assignment=assignment)
         def callback(single_res: SingleSolution):
             print("Solution found")
-            res = np.full((self.V, self.H), ' ', dtype=object)
-            for pos in get_all_pos(self.V, self.H):
-                c = get_char(self.board, pos)
-                c = single_res.assignment[pos]
-                set_char(res, pos, c)
-            print('[')
-            for row in res:
-                print("    [ '" + "', '".join(row.tolist()) + "' ],")
-            print(']')
+            print(combined_function(self.V, self.H, is_shaded=lambda r, c: single_res.assignment[get_pos(x=c, y=r)] == 'B'))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)
