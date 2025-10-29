@@ -8,6 +8,10 @@ def combined_function(V: int,
                       is_shaded: Optional[Callable[[int, int], bool]] = None,
                       center_char: Optional[Callable[[int, int], str]] = None,
                       text_on_shaded_cells: bool = True,
+                      scale_x: int = 2,
+                      scale_y: int = 1,
+                      show_axes: bool = True,
+                      show_grid: bool = True,
                     ) -> str:
     """
     most of this function was AI generated then modified by me, I don't currently care about the details of rendering to the terminal this looked good enough during my testing.
@@ -15,6 +19,10 @@ def combined_function(V: int,
       • draw selective edges per cell via cell_flags(r, c) containing any of 'U','D','L','R'
       • shade cells via is_shaded(r, c)
       • place centered text per cell via center_char(r, c)
+      • horizontal stretch (>=1). Interior width per cell = 2*scale_x - 1 (default 2)
+      • vertical stretch (>=1). Interior height per cell = scale_y (default 1)
+      • show_axes: bool = True, show the axes (columns on top, rows on the left).
+      • show_grid: bool = True, show the grid lines.
 
     Behavior:
       - If cell_flags is None, draws a full grid (all interior and outer borders present).
@@ -27,11 +35,8 @@ def combined_function(V: int,
     assert center_char is None or callable(center_char), f'center_char must be None or callable, got {center_char}'
 
     # Rendering constants (kept consistent with Function #2)
-    scale_x: int = 2         # horizontal stretch (>=1). Interior width per cell = 2*scale_x - 1.
-    scale_y: int = 1         # vertical stretch (>=1). Interior height per cell = scale_y.
     fill_char: str = '▒'     # single char for shaded interiors
     empty_char: str = ' '    # single char for unshaded interiors
-    show_axes: bool = True
 
     assert scale_x >= 1 and scale_y >= 1
     assert len(fill_char) == 1 and len(empty_char) == 1
@@ -51,8 +56,8 @@ def combined_function(V: int,
     # V_edges[r, c] is the vertical edge between cols c and c+1 left of row segment r (shape: (V, H+1))
     if cell_flags is None:
         # Full grid: all horizontal and vertical segments are present
-        H_edges = [[True for _ in range(H)] for _ in range(V + 1)]
-        V_edges = [[True for _ in range(H + 1)] for _ in range(V)]
+        H_edges = [[show_grid for _ in range(H)] for _ in range(V + 1)]
+        V_edges = [[show_grid for _ in range(H + 1)] for _ in range(V)]
     else:
         H_edges = [[False for _ in range(H)] for _ in range(V + 1)]
         V_edges = [[False for _ in range(H + 1)] for _ in range(V)]
