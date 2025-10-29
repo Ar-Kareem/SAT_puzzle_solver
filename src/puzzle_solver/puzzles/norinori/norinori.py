@@ -90,16 +90,7 @@ class Board:
             return SingleSolution(assignment=assignment)
         def callback(single_res: SingleSolution):
             print("Solution found")
-            # res = np.full((self.V, self.H), ' ', dtype=object)
-            # for pos in get_all_pos(self.V, self.H):
-            #     c = get_char(self.board, pos)
-            #     c = 'X' if pos in single_res.assignment else ' '
-            #     set_char(res, pos, c)
-            # print('[')
-            # for row in res:
-            #     print("    [ '" + "', '".join(row.tolist()) + "' ],")
-            # print(']')
             print(combined_function(self.V, self.H,
                 cell_flags=id_board_to_wall_fn(self.board),
-                center_char=lambda r, c: 'X' if (Pos(x=c, y=r) in single_res.assignment) else ' '))
+                is_shaded=lambda r, c: Pos(x=c, y=r) in single_res.assignment))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)
