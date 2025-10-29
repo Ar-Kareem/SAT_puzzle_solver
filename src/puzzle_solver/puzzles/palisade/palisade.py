@@ -6,7 +6,7 @@ from ortools.sat.python import cp_model
 
 from puzzle_solver.core.utils import Pos, get_all_pos, get_pos, set_char, in_bounds, get_next_pos, Direction, polyominoes
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution
-from puzzle_solver.core.utils_visualizer import id_board_to_wall_board, render_grid
+from puzzle_solver.core.utils_visualizer import combined_function, id_board_to_wall_fn
 
 
 
@@ -100,6 +100,7 @@ class Board:
             for pos in get_all_pos(self.V, self.H):
                 region_idx = single_res.assignment[pos]
                 set_char(id_board, pos, region_idx)
-            board = np.where(self.board == ' ', '·', self.board)
-            print(render_grid(id_board_to_wall_board(id_board), center_char=board))
+            print(combined_function(self.V, self.H,
+                cell_flags=id_board_to_wall_fn(id_board),
+                center_char=lambda r, c: self.board[r, c] if self.board[r, c] != ' ' else '·'))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)

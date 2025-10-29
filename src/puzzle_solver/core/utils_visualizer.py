@@ -1,184 +1,37 @@
 import numpy as np
-from typing import Union, Callable, Optional, List, Sequence, Literal
+from typing import Callable, Optional, List, Sequence, Literal
 from puzzle_solver.core.utils import Pos, get_all_pos, get_next_pos, in_bounds, set_char, get_char, Direction
 
-
-def render_grid(cell_flags: np.ndarray,
-                center_char: Union[np.ndarray, str, None] = None,
-                show_axes: bool = True,
-                scale_x: int = 2) -> str:
+def combined_function(V: int,
+                      H: int,
+                      cell_flags: Optional[Callable[[int, int], str]] = None,
+                      is_shaded: Optional[Callable[[int, int], bool]] = None,
+                      center_char: Optional[Callable[[int, int], str]] = None,
+                      text_on_shaded_cells: bool = True,
+                    ) -> str:
     """
-    most of this function was AI generated then modified by me, I don't currently care about the details of rendering to the terminal this looked good enough during my testing.
-    cell_flags: np.ndarray of shape (N, N) with characters 'U', 'D', 'L', 'R' to represent the edges of the cells.
-    center_char: np.ndarray of shape (N, N) with the center of the cells, or a string to use for all cells, or None to not show centers.
-    scale_x: horizontal stretch factor (>=1). Try 2 or 3 for squarer cells.
+    Render a V x H grid that can:
+      • draw selective edges per cell via cell_flags(r, c) containing any of 'U','D','L','R'
+      • shade cells via is_shaded(r, c)
+      • place centered text per cell via center_char(r, c)
+
+    Behavior:
+      - If cell_flags is None, draws a full grid (all interior and outer borders present).
+      - Shading is applied first, borders are drawn on top, and center text is drawn last.
+      - Axes are shown (columns on top, rows on the left).
     """
-    assert cell_flags is not None and cell_flags.ndim == 2
-    R, C = cell_flags.shape
+    assert V >= 1 and H >= 1, f'V and H must be >= 1, got {V} and {H}'
+    assert cell_flags is None or callable(cell_flags), f'cell_flags must be None or callable, got {cell_flags}'
+    assert is_shaded is None or callable(is_shaded), f'is_shaded must be None or callable, got {is_shaded}'
+    assert center_char is None or callable(center_char), f'center_char must be None or callable, got {center_char}'
 
-    # Edge presence arrays (note the rectangular shapes)
-    H = np.zeros((R+1, C), dtype=bool)  # horizontal edges between rows
-    V = np.zeros((R, C+1), dtype=bool)  # vertical edges between cols
-    for r in range(R):
-        for c in range(C):
-            s = cell_flags[r, c]
-            if 'U' in s: H[r,   c] = True
-            if 'D' in s: H[r+1, c] = True
-            if 'L' in s: V[r,   c] = True
-            if 'R' in s: V[r, c+1] = True
-
-    # Bitmask for corner connections
-    U, Rb, D, Lb = 1, 2, 4, 8
-    JUNCTION = {
-        0: ' ',
-        U: '│', D: '│', U|D: '│',
-        Lb: '─', Rb: '─', Lb|Rb: '─',
-        U|Rb: '└', Rb|D: '┌', D|Lb: '┐', Lb|U: '┘',
-        U|D|Lb: '┤', U|D|Rb: '├', Lb|Rb|U: '┴', Lb|Rb|D: '┬',
-        U|Rb|D|Lb: '┼',
-    }
-
-    assert scale_x >= 1
-    assert H.shape == (R+1, C) and V.shape == (R, C+1)
-
-    rows = 2*R + 1
-    cols = 2*C*scale_x + 1
-    canvas = [[' ']*cols for _ in range(rows)]
-
-    def x_corner(c):     # x of corner column c  (0..C)
-        return (2*c) * scale_x
-    def x_between(c,k):  # kth in-between col (1..2*scale_x-1) between corners c and c+1
-        return (2*c) * scale_x + k
-
-    # horizontal edges: fill the stretched band between corners with '─'
-    for r in range(R+1):
-        rr = 2*r
-        for c in range(C):
-            if H[r, c]:
-                for k in range(1, scale_x*2):  # 1..(2*scale_x-1)
-                    canvas[rr][x_between(c, k)] = '─'
-
-    # vertical edges: at the corner columns
-    for r in range(R):
-        rr = 2*r + 1
-        for c in range(C+1):
-            if V[r, c]:
-                canvas[rr][x_corner(c)] = '│'
-
-    # junctions at every corner grid point
-    for r in range(R+1):
-        rr = 2*r
-        for c in range(C+1):
-            m = 0
-            if r > 0   and V[r-1, c]: m |= U
-            if c < C   and H[r, c]:   m |= Rb
-            if r < R   and V[r, c]:   m |= D
-            if c > 0   and H[r, c-1]: m |= Lb
-            canvas[rr][x_corner(c)] = JUNCTION[m]
-
-    # centers (safe for multi-character strings)
-    def put_center_text(rr: int, c: int, text: str):
-        left  = x_corner(c) + 1
-        right = x_corner(c+1) - 1
-        if right < left:
-            return
-        span_width = right - left + 1
-        s = str(text)
-        if len(s) > span_width:
-            s = s[:span_width]  # truncate to protect borders
-        start = left + (span_width - len(s)) // 2
-        for i, ch in enumerate(s):
-            canvas[rr][start + i] = ch
-
-    if center_char is not None:
-        for r in range(R):
-            rr = 2*r + 1
-            for c in range(C):
-                val = center_char if isinstance(center_char, str) else (center_char(r, c) if callable(center_char) else center_char[r, c])
-                put_center_text(rr, c, '' if val is None else str(val))
-
-    # rows -> strings
-    art_rows = [''.join(row) for row in canvas]
-    if not show_axes:
-        return '\n'.join(art_rows)
-
-    # Axes labels: row indices on the left, column indices on top (handle C, not R)
-    gut = max(2, len(str(R-1)))  # gutter width based on row index width
-    gutter = ' ' * gut
-    top_tens = list(gutter + ' ' * cols)
-    top_ones = list(gutter + ' ' * cols)
-
-    for c in range(C):
-        xc_center = x_corner(c) + scale_x
-        if C >= 10:
-            top_tens[gut + xc_center] = str((c // 10) % 10)
-        top_ones[gut + xc_center] = str(c % 10)
-
-    if gut >= 2:
-        top_tens[gut-2:gut] = list('  ')
-        top_ones[gut-2:gut] = list('  ')
-
-    labeled = []
-    for r, line in enumerate(art_rows):
-        if r % 2 == 1:  # cell-center row
-            label = str(r//2).rjust(gut)
-        else:
-            label = ' ' * gut
-        labeled.append(label + line)
-
-    return ''.join(top_tens) + '\n' + ''.join(top_ones) + '\n' + '\n'.join(labeled)
-
-def id_board_to_wall_board(id_board: np.array, border_is_wall = True) -> np.array:
-    """In many instances, we have a 2d array where cell values are arbitrary ids
-    and we want to convert it to a 2d array where cell values are walls "U", "D", "L", "R" to represent the edges that separate me from my neighbors that have different ids.
-    Args:
-        id_board: np.array of shape (N, N) with arbitrary ids.
-        border_is_wall: if True, the edges of the board are considered to be walls.
-    Returns:
-        np.array of shape (N, N) with walls "U", "D", "L", "R".
-    """
-    res = np.full((id_board.shape[0], id_board.shape[1]), '', dtype=object)
-    V, H = id_board.shape
-    def append_char(pos: Pos, s: str):
-        set_char(res, pos, get_char(res, pos) + s)
-    def handle_pos_direction(pos: Pos, direction: Direction, s: str):
-        pos2 = get_next_pos(pos, direction)
-        if in_bounds(pos2, V, H):
-            if get_char(id_board, pos2) != get_char(id_board, pos):
-                append_char(pos, s)
-        else:
-            if border_is_wall:
-                append_char(pos, s)
-    for pos in get_all_pos(V, H):
-        handle_pos_direction(pos, Direction.LEFT, 'L')
-        handle_pos_direction(pos, Direction.RIGHT, 'R')
-        handle_pos_direction(pos, Direction.UP, 'U')
-        handle_pos_direction(pos, Direction.DOWN, 'D')
-    return res
-
-def render_shaded_grid(V: int,
-                       H: int,
-                       is_shaded: Callable[[int, int], bool],
-                       empty_text: Optional[Union[str, Callable[[int, int], Optional[str]]]] = None,) -> str:
-    """
-    Most of this function was AI generated then modified by me, I don't currently care about the details of rendering to the terminal this looked good enough during my testing.
-    Visualize a V x H grid where each cell is shaded if is_shaded(r, c) is True.
-    The grid lines are always present.
-
-    scale_x: horizontal stretch (>=1). Interior width per cell = 2*scale_x - 1.
-    scale_y: vertical stretch (>=1). Interior height per cell = scale_y.
-    fill_char: character to fill shaded cell interiors (single char).
-    empty_char: background character for unshaded interiors (single char).
-    empty_text: Optional text for unshaded cells. If a string, used for all unshaded
-                cells. If a callable (r, c) -> str|None, used per cell. Text is
-                centered within the interior row and truncated to fit.
-    """
-    scale_x: int = 2
-    scale_y: int = 1
-    fill_char: str = '▒'
-    empty_char: str = ' '
+    # Rendering constants (kept consistent with Function #2)
+    scale_x: int = 2         # horizontal stretch (>=1). Interior width per cell = 2*scale_x - 1.
+    scale_y: int = 1         # vertical stretch (>=1). Interior height per cell = scale_y.
+    fill_char: str = '▒'     # single char for shaded interiors
+    empty_char: str = ' '    # single char for unshaded interiors
     show_axes: bool = True
-    assert V >= 1 and H >= 1
+
     assert scale_x >= 1 and scale_y >= 1
     assert len(fill_char) == 1 and len(empty_char) == 1
 
@@ -192,7 +45,25 @@ def render_shaded_grid(V: int,
     cols = x_corner(H) + 1
     canvas = [[empty_char] * cols for _ in range(rows)]
 
-    # ── Shading first (borders will overwrite as needed) ───────────────────
+    # ── Edge presence arrays (like Function #1), derived from cell_flags ──
+    # H_edges[r, c] is the horizontal edge between rows r and r+1 above column segment c (shape: (V+1, H))
+    # V_edges[r, c] is the vertical edge between cols c and c+1 left of row segment r (shape: (V, H+1))
+    if cell_flags is None:
+        # Full grid: all horizontal and vertical segments are present
+        H_edges = [[True for _ in range(H)] for _ in range(V + 1)]
+        V_edges = [[True for _ in range(H + 1)] for _ in range(V)]
+    else:
+        H_edges = [[False for _ in range(H)] for _ in range(V + 1)]
+        V_edges = [[False for _ in range(H + 1)] for _ in range(V)]
+        for r in range(V):
+            for c in range(H):
+                s = cell_flags(r, c) or ''
+                if 'U' in s: H_edges[r    ][c] = True
+                if 'D' in s: H_edges[r + 1][c] = True
+                if 'L' in s: V_edges[r][c    ] = True
+                if 'R' in s: V_edges[r][c + 1] = True
+
+    # ── Shading first (borders will overwrite) ─────────────────────────────
     shaded_map = [[False]*H for _ in range(V)]
     for r in range(V):
         top = y_border(r) + 1
@@ -204,14 +75,14 @@ def render_shaded_grid(V: int,
             right = x_corner(c + 1) - 1          # inclusive
             if left > right:
                 continue
-            shaded = bool(is_shaded(r, c))
+            shaded = bool(is_shaded(r, c)) if callable(is_shaded) else False
             shaded_map[r][c] = shaded
             ch = fill_char if shaded else empty_char
             for yy in range(top, bottom + 1):
                 for xx in range(left, right + 1):
                     canvas[yy][xx] = ch
 
-    # ── Grid lines ─────────────────────────────────────────────────────────
+    # ── Grid lines (respect edge presence) ─────────────────────────────────
     U, Rb, D, Lb = 1, 2, 4, 8
     JUNCTION = {
         0: ' ',
@@ -222,35 +93,40 @@ def render_shaded_grid(V: int,
         U | Rb | D | Lb: '┼',
     }
 
-    # Horizontal borders (every y_border row)
+    # Horizontal segments
     for r in range(V + 1):
         yy = y_border(r)
         for c in range(H):
-            base = x_corner(c)
-            for k in range(1, 2 * scale_x):      # 1..(2*scale_x-1)
-                canvas[yy][base + k] = '─'
+            if H_edges[r][c]:
+                base = x_corner(c)
+                for k in range(1, 2 * scale_x):  # 1..(2*scale_x-1)
+                    canvas[yy][base + k] = '─'
 
-    # Vertical borders (every x_corner col)
-    for c in range(H + 1):
-        xx = x_corner(c)
-        for r in range(V):
-            for ky in range(1, scale_y + 1):
-                canvas[y_border(r) + ky][xx] = '│'
+    # Vertical segments
+    for r in range(V):
+        for c in range(H + 1):
+            if V_edges[r][c]:
+                xx = x_corner(c)
+                for ky in range(1, scale_y + 1):
+                    canvas[y_border(r) + ky][xx] = '│'
 
-    # Junctions at intersections
+    # Junctions at intersections (computed from adjacent segment presence)
     for r in range(V + 1):
         yy = y_border(r)
         for c in range(H + 1):
             xx = x_corner(c)
             m = 0
-            if r > 0: m |= U
-            if r < V: m |= D
-            if c > 0: m |= Lb
-            if c < H: m |= Rb
+            if r > 0   and V_edges[r - 1][c]: m |= U
+            if r < V   and V_edges[r][c]:     m |= D
+            if c > 0   and H_edges[r][c - 1]: m |= Lb
+            if c < H   and H_edges[r][c]:     m |= Rb
             canvas[yy][xx] = JUNCTION[m]
 
-    # ── Optional per-cell text for UNshaded cells ──────────────────────────
-    def put_center_text(r_cell: int, c_cell: int, s: str):
+    # ── Center text (drawn last so it sits atop shading) ───────────────────
+    def put_center_text(r_cell: int, c_cell: int, s: Optional[str]):
+        if s is None:
+            return
+        s = str(s)
         # interior box
         left  = x_corner(c_cell) + 1
         right = x_corner(c_cell + 1) - 1
@@ -259,24 +135,21 @@ def render_shaded_grid(V: int,
         if left > right or top > bottom:
             return
         span_w = right - left + 1
-        # choose middle interior row for text
         yy = top + (bottom - top) // 2
-        s = '' if s is None else str(s)
         if len(s) > span_w:
-            s = s[:span_w]
+            s = s[:span_w]  # truncate to protect borders
         start = left + (span_w - len(s)) // 2
         for i, ch in enumerate(s):
             canvas[yy][start + i] = ch
 
-    if empty_text is not None:
+    if callable(center_char):
         for r in range(V):
             for c in range(H):
-                if not shaded_map[r][c]:
-                    s = empty_text(r, c) if callable(empty_text) else empty_text
-                    if s:
-                        put_center_text(r, c, s)
+                if not text_on_shaded_cells and shaded_map[r][c]:
+                    continue
+                put_center_text(r, c, center_char(r, c))
 
-    # ── Stringify ──────────────────────────────────────────────────────────
+    # ── Stringify with axes ────────────────────────────────────────────────
     art_rows = [''.join(row) for row in canvas]
     if not show_axes:
         return '\n'.join(art_rows)
@@ -307,6 +180,34 @@ def render_shaded_grid(V: int,
         labeled.append(label + line)
 
     return ''.join(top_tens) + '\n' + ''.join(top_ones) + '\n' + '\n'.join(labeled)
+
+def id_board_to_wall_fn(id_board: np.array, border_is_wall = True) -> Callable[[int, int], str]:
+    """In many instances, we have a 2d array where cell values are arbitrary ids
+    and we want to convert it to a 2d array where cell values are walls "U", "D", "L", "R" to represent the edges that separate me from my neighbors that have different ids.
+    Args:
+        id_board: np.array of shape (N, N) with arbitrary ids.
+        border_is_wall: if True, the edges of the board are considered to be walls.
+    Returns:
+        Callable[[int, int], str] that returns the walls "U", "D", "L", "R" for the cell at (r, c).
+    """
+    res = np.full((id_board.shape[0], id_board.shape[1]), '', dtype=object)
+    V, H = id_board.shape
+    def append_char(pos: Pos, s: str):
+        set_char(res, pos, get_char(res, pos) + s)
+    def handle_pos_direction(pos: Pos, direction: Direction, s: str):
+        pos2 = get_next_pos(pos, direction)
+        if in_bounds(pos2, V, H):
+            if get_char(id_board, pos2) != get_char(id_board, pos):
+                append_char(pos, s)
+        else:
+            if border_is_wall:
+                append_char(pos, s)
+    for pos in get_all_pos(V, H):
+        handle_pos_direction(pos, Direction.LEFT, 'L')
+        handle_pos_direction(pos, Direction.RIGHT, 'R')
+        handle_pos_direction(pos, Direction.UP, 'U')
+        handle_pos_direction(pos, Direction.DOWN, 'D')
+    return lambda r, c: res[r][c]
 
 CellVal = Literal["B", "W", "TL", "TR", "BL", "BR"]
 GridLike = Sequence[Sequence[CellVal]]

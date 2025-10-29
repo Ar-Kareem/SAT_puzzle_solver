@@ -7,7 +7,7 @@ from ortools.sat.python import cp_model
 
 from puzzle_solver.core.utils import Direction, Pos, get_all_pos, get_neighbors4, get_next_pos, get_char, in_bounds
 from puzzle_solver.core.utils_ortools import generic_solve_all, force_connected_component, and_constraint
-from puzzle_solver.core.utils_visualizer import render_grid
+from puzzle_solver.core.utils_visualizer import combined_function
 
 
 @dataclass(frozen=True)
@@ -154,5 +154,5 @@ class Board:
                     res[min_y][min_x] += 'L'
                 else:
                     raise ValueError(f'Invalid position: {pos} and {neighbor}')
-            print(render_grid(res, center_char='.'))
+            print(combined_function(self.V - 1, self.H - 1, cell_flags=lambda r, c: res[r, c], center_char=lambda r, c: '.'))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)

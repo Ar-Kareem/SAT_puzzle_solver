@@ -3,7 +3,7 @@ from ortools.sat.python import cp_model
 
 from puzzle_solver.core.utils import Pos, get_all_pos, set_char, get_char
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, force_connected_component
-from puzzle_solver.core.utils_visualizer import id_board_to_wall_board, render_grid
+from puzzle_solver.core.utils_visualizer import combined_function, id_board_to_wall_fn
 
 
 class Board:
@@ -44,5 +44,7 @@ class Board:
             res = np.full((self.V, self.H), ' ', dtype=object)
             for pos in get_all_pos(self.V, self.H):
                 set_char(res, pos, single_res.assignment[pos])
-            print(render_grid(id_board_to_wall_board(res), center_char=lambda r, c: res[r][c]))
+            print(combined_function(self.V, self.H,
+                cell_flags=id_board_to_wall_fn(res),
+                center_char=lambda r, c: res[r][c]))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)

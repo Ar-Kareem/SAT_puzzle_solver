@@ -3,7 +3,7 @@ from ortools.sat.python import cp_model
 
 from puzzle_solver.core.utils import Pos, get_all_pos, get_neighbors4, get_pos, get_char
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, force_connected_component
-from puzzle_solver.core.utils_visualizer import render_shaded_grid
+from puzzle_solver.core.utils_visualizer import combined_function
 
 
 def return_3_consecutives(int_list: list[int]) -> list[tuple[int, int]]:
@@ -90,5 +90,9 @@ class Board:
             #     c = 'B' if single_res.assignment[pos] == 1 else ' '
             #     set_char(res, pos, c)
             # print(res)
-            print(render_shaded_grid(self.V, self.H, lambda r, c: single_res.assignment[get_pos(x=c, y=r)] == 1, empty_text=lambda r, c: self.region_to_clue.get(int(self.board[r, c]), ' ')))
+            print(combined_function(self.V, self.H,
+                is_shaded=lambda r, c: single_res.assignment[get_pos(x=c, y=r)] == 1, 
+                center_char=lambda r, c: self.region_to_clue.get(int(self.board[r, c]), ''),
+                text_on_shaded_cells=False
+            ))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose, max_solutions=1)

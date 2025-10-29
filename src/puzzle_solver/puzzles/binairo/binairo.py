@@ -6,7 +6,7 @@ from ortools.sat.python.cp_model import LinearExpr as lxp
 
 from puzzle_solver.core.utils import Direction, Pos, get_all_pos, get_next_pos, get_pos, in_bounds, get_char, get_row_pos, get_col_pos
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution
-from puzzle_solver.core.utils_visualizer import render_shaded_grid
+from puzzle_solver.core.utils_visualizer import combined_function
 
 
 class Board:
@@ -122,5 +122,5 @@ class Board:
             return SingleSolution(assignment=assignment)
         def callback(single_res: SingleSolution):
             print("Solution found")
-            print(render_shaded_grid(self.V, self.H, lambda r, c: single_res.assignment[get_pos(x=c, y=r)] == 1))
+            print(combined_function(self.V, self.H, is_shaded=lambda r, c: single_res.assignment[get_pos(x=c, y=r)] == 1))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)

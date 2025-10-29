@@ -2,7 +2,7 @@ import numpy as np
 
 from puzzle_solver import heyawake_solver as solver
 from puzzle_solver.core.utils import get_pos
-from puzzle_solver.core.utils_visualizer import id_board_to_wall_board, render_grid
+from puzzle_solver.core.utils_visualizer import combined_function, id_board_to_wall_fn
 
 
 def _viz_board(board: np.array, region_to_clue: dict[str, int]):
@@ -11,7 +11,7 @@ def _viz_board(board: np.array, region_to_clue: dict[str, int]):
         for x in range(board.shape[1]):
             rid = board[y, x]
             center_char[y, x] = str(region_to_clue[rid]) if rid in region_to_clue else ' '
-    print(render_grid(id_board_to_wall_board(board), center_char=center_char))
+    print(combined_function(board.shape[0], board.shape[1], cell_flags=id_board_to_wall_fn(board), center_char=lambda r, c: center_char[r, c]))
 
 def test_easy():
     # 6 x 6 easy

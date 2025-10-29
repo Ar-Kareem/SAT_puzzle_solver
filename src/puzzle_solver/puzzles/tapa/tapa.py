@@ -6,7 +6,7 @@ from ortools.sat.python import cp_model
 
 from puzzle_solver.core.utils import Direction8, Pos, get_all_pos, set_char, get_char, in_bounds, Direction, get_next_pos, get_pos
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, force_connected_component
-from puzzle_solver.core.utils_visualizer import render_shaded_grid
+from puzzle_solver.core.utils_visualizer import combined_function
 
 
 def rotated_assignments_N_nums(Xs: tuple[int, ...], target_length: int = 8) -> set[tuple[bool, ...]]:
@@ -94,5 +94,9 @@ class Board:
                 if len(c) > 3:
                     c = '...'
                 set_char(board_justified, pos, ' ' * (2 - len(c)) + c)
-            print(render_shaded_grid(self.V, self.H, lambda r, c: single_res.assignment[get_pos(x=c, y=r)] == 1, empty_text=lambda r, c: str(board_justified[r, c])))
+            print(combined_function(self.V, self.H,
+                is_shaded=lambda r, c: single_res.assignment[get_pos(x=c, y=r)] == 1,
+                center_char=lambda r, c: str(board_justified[r, c]),
+                text_on_shaded_cells=False
+            ))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose, max_solutions=5)

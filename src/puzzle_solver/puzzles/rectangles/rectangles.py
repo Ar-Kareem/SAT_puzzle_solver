@@ -6,7 +6,7 @@ from ortools.sat.python import cp_model
 
 from puzzle_solver.core.utils import Pos, get_all_pos, in_bounds, set_char, get_char, Direction, get_next_pos
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution
-from puzzle_solver.core.utils_visualizer import render_grid
+from puzzle_solver.core.utils_visualizer import combined_function
 
 
 def factor_pairs(N: int, upper_limit_i: int, upper_limit_j: int):
@@ -121,6 +121,8 @@ class Board:
                     set_char(res, pos, get_char(res, pos) + 'U')
                 if bottom_pos not in single_res.assignment or single_res.assignment[bottom_pos] != cur:
                     set_char(res, pos, get_char(res, pos) + 'D')
-            print(render_grid(res, center_char=lambda r, c: self.board[r, c] if self.board[r, c] != ' ' else ' '))
+            print(combined_function(self.V, self.H,
+                cell_flags=lambda r, c: res[r, c],
+                center_char=lambda r, c: self.board[r, c] if self.board[r, c] != ' ' else ' '))
 
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)

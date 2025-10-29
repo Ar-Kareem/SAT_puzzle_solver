@@ -5,7 +5,7 @@ from ortools.sat.python import cp_model
 
 from puzzle_solver.core.utils import Pos, get_all_pos, get_neighbors4, get_pos, in_bounds, get_char, polyominoes, Shape, Direction, get_next_pos
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, force_connected_component
-from puzzle_solver.core.utils_visualizer import render_shaded_grid
+from puzzle_solver.core.utils_visualizer import combined_function
 
 
 @dataclass
@@ -122,5 +122,9 @@ class Board:
             return SingleSolution(assignment=assignment)
         def callback(single_res: SingleSolution):
             print("Solution found")
-            print(render_shaded_grid(self.V, self.H, lambda r, c: single_res.assignment[get_pos(x=c, y=r)] == 1, empty_text=lambda r, c: str(self.board[r, c])))
+            print(combined_function(self.V, self.H,
+                is_shaded=lambda r, c: single_res.assignment[get_pos(x=c, y=r)] == 1,
+                center_char=lambda r, c: str(self.board[r, c]),
+                text_on_shaded_cells=False
+            ))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)

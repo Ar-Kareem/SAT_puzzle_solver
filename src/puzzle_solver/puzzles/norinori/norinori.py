@@ -5,7 +5,7 @@ from ortools.sat.python import cp_model
 
 from puzzle_solver.core.utils import Pos, Shape, get_all_pos, get_char, set_char, in_bounds, get_next_pos, Direction
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution
-from puzzle_solver.core.utils_visualizer import id_board_to_wall_board, render_grid
+from puzzle_solver.core.utils_visualizer import combined_function, id_board_to_wall_fn
 
 
 @dataclass
@@ -99,5 +99,7 @@ class Board:
             # for row in res:
             #     print("    [ '" + "', '".join(row.tolist()) + "' ],")
             # print(']')
-            print(render_grid(id_board_to_wall_board(self.board), center_char=lambda r, c: 'X' if (Pos(x=c, y=r) in single_res.assignment) else ' '))
+            print(combined_function(self.V, self.H,
+                cell_flags=id_board_to_wall_fn(self.board),
+                center_char=lambda r, c: 'X' if (Pos(x=c, y=r) in single_res.assignment) else ' '))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)

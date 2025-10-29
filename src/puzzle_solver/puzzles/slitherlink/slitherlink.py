@@ -4,7 +4,7 @@ from ortools.sat.python import cp_model
 
 from puzzle_solver.core.utils import Pos, get_all_pos, get_char, set_char, Direction, get_row_pos, get_col_pos, get_next_pos, in_bounds, get_opposite_direction
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, force_connected_component
-from puzzle_solver.core.utils_visualizer import render_grid
+from puzzle_solver.core.utils_visualizer import combined_function
 
 
 CellBorder = tuple[Pos, Direction]
@@ -126,5 +126,5 @@ class Board:
                 set_char(res, pos, c)
             # replace " " with "·"
             board = np.where(self.board == ' ', '·', self.board)
-            print(render_grid(cell_flags=res, center_char=board))
+            print(combined_function(self.V, self.H, cell_flags=lambda r, c: res[r, c], center_char=lambda r, c: board[r, c]))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose, max_solutions=999)
