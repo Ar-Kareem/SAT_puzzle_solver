@@ -8,7 +8,7 @@ from puzzle_solver.core.utils import get_pos
 
 def test_dummy():
     # 3x3 toy example
-    # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/slant.html#3x3:a2a0b2b3a1c0
+    # https:/www.chiark.greenend.org.uk/~sgtatham/puzzles/js/slant.html#3x3:a2a0b2b3a1c0
     numbers = [
         (get_pos(x=1, y=0), 2),
         (get_pos(x=3, y=0), 0),
@@ -22,11 +22,11 @@ def test_dummy():
     assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
     solution = solutions[0].assignment
     ground = np.array([
-        [ '//', '\\', '\\' ],
-        [ '//', '//', '//' ],
-        [ '//', '\\', '//' ],
+        [ '/', '\\', '\\' ],
+        [ '/', '/', '/' ],
+        [ '/', '\\', '/' ],
     ])
-    ground_assignment = {get_pos(x=x, y=y): '//' if ground[y][x] == '//' else '\\' for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+    ground_assignment = {get_pos(x=x, y=y): '/' if ground[y][x] == '/' else '\\' for x in range(ground.shape[1]) for y in range(ground.shape[0])}
     assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
     for pos in solution.keys():
         assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
@@ -44,10 +44,10 @@ def test_dummy_2():
     assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
     solution = solutions[0].assignment
     ground = np.array([
-        ['//', '\\'],
+        ['/', '\\'],
         ['\\', '\\'],
     ])
-    ground_assignment = {get_pos(x=x, y=y): '//' if ground[y][x] == '//' else '\\' for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+    ground_assignment = {get_pos(x=x, y=y): '/' if ground[y][x] == '/' else '\\' for x in range(ground.shape[1]) for y in range(ground.shape[0])}
     assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
     for pos in solution.keys():
         assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
@@ -55,7 +55,7 @@ def test_dummy_2():
 
 def test_ground():
     # 12x10 hard
-    # https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/slant.html#12x10:b1a1a1a1e12b2a2a2a11a22a232a3b1a11a312a1b3d11c113a3a12a22a2b12c222b232e12b2a2c1d322a31c1a2112a1a1a11k1b
+    # https:/www.chiark.greenend.org.uk/~sgtatham/puzzles/js/slant.html#12x10:b1a1a1a1e12b2a2a2a11a22a232a3b1a11a312a1b3d11c113a3a12a22a2b12c222b232e12b2a2c1d322a31c1a2112a1a1a11k1b
     numbers_arr = np.array([
         [' ', ' ', '1', ' ', '1', ' ', '1', ' ', '1', ' ', ' ', ' ', ' '],
         [' ', '1', '2', ' ', ' ', '2', ' ', '2', ' ', '2', ' ', '1', '1'],
@@ -74,18 +74,18 @@ def test_ground():
     assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
     solution = solutions[0].assignment
     ground = np.array([
-        [ '//', '\\', '\\', '//', '//', '//', '//', '\\', '\\', '\\', '//', '\\' ],
-        [ '\\', '\\', '\\', '\\', '\\', '\\', '//', '\\', '//', '//', '\\', '\\' ],
-        [ '\\', '\\', '\\', '//', '//', '\\', '//', '\\', '\\', '\\', '\\', '//' ],
-        [ '\\', '//', '\\', '\\', '//', '\\', '//', '//', '\\', '//', '\\', '//' ],
-        [ '//', '\\', '\\', '//', '\\', '\\', '\\', '//', '//', '//', '\\', '\\' ],
-        [ '//', '\\', '\\', '//', '\\', '\\', '\\', '//', '\\', '//', '\\', '\\' ],
-        [ '//', '\\', '\\', '//', '\\', '//', '//', '//', '\\', '//', '//', '\\' ],
-        [ '\\', '\\', '\\', '\\', '\\', '//', '//', '//', '\\', '//', '\\', '\\' ],
-        [ '//', '//', '//', '\\', '\\', '//', '//', '\\', '\\', '//', '\\', '\\' ],
-        [ '\\', '\\', '//', '//', '//', '\\', '//', '\\', '//', '\\', '\\', '//' ],
+        [ '/', '\\', '\\', '/', '/', '/', '/', '\\', '\\', '\\', '/', '\\' ],
+        [ '\\', '\\', '\\', '\\', '\\', '\\', '/', '\\', '/', '/', '\\', '\\' ],
+        [ '\\', '\\', '\\', '/', '/', '\\', '/', '\\', '\\', '\\', '\\', '/' ],
+        [ '\\', '/', '\\', '\\', '/', '\\', '/', '/', '\\', '/', '\\', '/' ],
+        [ '/', '\\', '\\', '/', '\\', '\\', '\\', '/', '/', '/', '\\', '\\' ],
+        [ '/', '\\', '\\', '/', '\\', '\\', '\\', '/', '\\', '/', '\\', '\\' ],
+        [ '/', '\\', '\\', '/', '\\', '/', '/', '/', '\\', '/', '/', '\\' ],
+        [ '\\', '\\', '\\', '\\', '\\', '/', '/', '/', '\\', '/', '\\', '\\' ],
+        [ '/', '/', '/', '\\', '\\', '/', '/', '\\', '\\', '/', '\\', '\\' ],
+        [ '\\', '\\', '/', '/', '/', '\\', '/', '\\', '/', '\\', '\\', '/' ],
     ])
-    ground_assignment = {get_pos(x=x, y=y): '//' if ground[y][x] == '//' else '\\' for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+    ground_assignment = {get_pos(x=x, y=y): '/' if ground[y][x] == '/' else '\\' for x in range(ground.shape[1]) for y in range(ground.shape[0])}
     assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
     for pos in solution.keys():
         assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'

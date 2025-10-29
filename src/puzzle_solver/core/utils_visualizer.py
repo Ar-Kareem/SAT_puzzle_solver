@@ -151,6 +151,7 @@ def combined_function(V: int,
     def draw_special_arms(r_cell: int, c_cell: int, code: Optional[str]):
         if not code:
             return
+        s = set(code)
         # interior box
         left  = x_corner(c_cell) + 1
         right = x_corner(c_cell + 1) - 1
@@ -162,9 +163,6 @@ def combined_function(V: int,
         # center of interior
         cx = left + (right - left) // 2
         cy = top  + (bottom - top) // 2
-
-        # normalize to a set of unique flags
-        s = set(ch for ch in str(code) if ch in 'UDLR')
 
         # draw arms out from center (keep inside interior; don't touch borders)
         if 'U' in s and cy - 1 >= top:
@@ -179,6 +177,14 @@ def combined_function(V: int,
         if 'R' in s and cx + 1 <= right:
             for xx in range(cx + 1, right + 1):
                 canvas[cy][xx] = '─'
+        if '/' in s:
+            for xx in range(right - left + 1):
+                for yy in range(top - bottom + 1):
+                    canvas[top + yy][left + xx] = '/'
+        if '\\' in s:
+            for xx in range(right - left + 1):
+                for yy in range(top - bottom + 1):
+                    canvas[top + yy][left + xx] = '\\'
 
         # center junction
         U_b, R_b, D_b, L_b = 1, 2, 4, 8
@@ -194,7 +200,7 @@ def combined_function(V: int,
     if callable(special_content):
         for r in range(V):
             for c in range(H):
-                flags = set(ch for ch in str(special_content(r, c) or '') if ch in 'UDLR')
+                flags = set(ch for ch in str(special_content(r, c) or ''))
                 special_map[r][c] = flags
                 if flags:
                     draw_special_arms(r, c, ''.join(flags))
@@ -263,7 +269,8 @@ def combined_function(V: int,
                         yy = y_border(r + 1)                      # border row
                         cx = x_corner(c) + 1 + (2 * scale_x - 2) // 2  # interior center x
                         place_connector(yy, cx, 'v')
-                if len(s) == 1:
+                if len(s) == 1 and '\\' not in s and '/' not in s:
+                    print(s)
                     put_center_text(r, c, 'O')
 
     if callable(center_char):
