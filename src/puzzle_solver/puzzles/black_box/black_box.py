@@ -1,24 +1,10 @@
-from dataclasses import dataclass
-from typing import Optional, Union
-import json
+from typing import Optional
 
-import numpy as np
 from ortools.sat.python import cp_model
 
-from puzzle_solver.core.utils import Pos, get_all_pos, get_row_pos, get_col_pos, in_bounds, get_opposite_direction, get_next_pos, Direction
-from puzzle_solver.core.utils_ortools import generic_solve_all
-
-
-@dataclass(frozen=True)
-class SingleSolution:
-    assignment: dict[Pos, Union[str, int]]
-    beam_assignments: dict[Pos, list[tuple[int, Pos, Direction]]]
-
-    def get_hashable_solution(self) -> str:
-        result = []
-        for pos, v in self.assignment.items():
-            result.append((pos.x, pos.y, v))
-        return json.dumps(result, sort_keys=True)
+from puzzle_solver.core.utils import Pos, get_all_pos, get_pos, get_row_pos, get_col_pos, in_bounds, get_opposite_direction, get_next_pos, Direction
+from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution
+from puzzle_solver.core.utils_visualizer import combined_function
 
 
 class Board:
@@ -33,18 +19,12 @@ class Board:
         else:
             self.T = max_travel_steps
         self.ball_count = ball_count
-
         # top and bottom entry cells are at -1 and V
         self.top_cells = set(get_row_pos(row_idx=-1, H=self.H))
         self.bottom_cells = set(get_row_pos(row_idx=self.V, H=self.H))
         # left and right entry cells are at -1 and H
         self.left_cells = set(get_col_pos(col_idx=-1, V=self.V))
         self.right_cells = set(get_col_pos(col_idx=self.H, V=self.V))
-        # self.top_cells = set([Pos(x=1, y=-1)])
-        # self.bottom_cells = set()
-        # self.left_cells = set()
-        # self.right_cells = set()
-        # print(self.top_cells)
 
         self.top_values = top
         self.right_values = right
@@ -115,12 +95,9 @@ class Board:
             # beam at t=0 is present at beam_id and facing direction
             self.model.Add(self.beam_states[(beam_id, 0, beam_id, direction)] == 1)
             for p in self.get_all_pos_extended():
-                # print(f'beam can be at {p}')
                 for direction in Direction:
                     if (p, direction) != (beam_id, direction):
                         self.model.Add(self.beam_states[(beam_id, 0, p, direction)] == 0)
-        # for p in self.get_all_pos_extended():
-        #     print(f'beam can be at {p}')
 
 
     def constrain_beam_movement(self):
@@ -128,24 +105,18 @@ class Board:
             for entry_pos in self.beam_states_at_t[t].keys():
                 next_state_dict = self.beam_states_at_t[t][entry_pos]
                 self.model.AddExactlyOne(list(next_state_dict.values()))
-                # print('add exactly one constraint for beam id', entry_pos, 'at time', t, next_state_dict.keys(), '\n')
                 if t == self.T - 1:
                     continue
                 for (cell, direction), prev_state in next_state_dict.items():
-                    # print(f'for beam id {entry_pos}, time {t}\nif its at {cell} facing {direction}')
                     self.constrain_next_beam_state(entry_pos, t+1, cell, direction, prev_state)
 
 
     def constrain_next_beam_state(self, entry_pos: Pos, t: int, cur_pos: Pos, direction: Direction, prev_state: cp_model.IntVar):
-        # print(f"constraining next beam state for {entry_pos}, {t}, {cur_pos}, {direction}")
         if cur_pos == "HIT":  # a beam that was "HIT" stays "HIT"
-            # print(f'                                        HIT -> stays HIT')
             self.model.Add(self.beam_states[(entry_pos, t, "HIT", "HIT")] == 1).OnlyEnforceIf(prev_state)
             return
-        # if a beam is outside the board AND it is not facing the board -> it maintains its state
         pos_ahead = get_next_pos(cur_pos, direction)
         if not in_bounds(pos_ahead, self.V, self.H) and not in_bounds(cur_pos, self.V, self.H):
-            # print(f'                                        OUTSIDE BOARD -> beam stays in the same state')
             self.model.Add(self.beam_states[(entry_pos, t, cur_pos, direction)] == 1).OnlyEnforceIf(prev_state)
             return
 
@@ -199,16 +170,6 @@ class Board:
             pos_right = cur_pos
         if not in_bounds(pos_reflected, self.V, self.H):
             pos_reflected = cur_pos
-
-        # debug_states = {
-        #     'if ball head': (entry_pos, t, "HIT", "HIT"),
-        #     'if ball in front-left': (entry_pos, t, get_next_pos(cur_pos, direction_right), direction_right),
-        #     'if ball in front-right': (entry_pos, t, get_next_pos(cur_pos, direction_left), direction_left),
-        #     'if ball in front-left and front-right': (entry_pos, t, get_next_pos(cur_pos, reflected), reflected),
-        #     'if no ball ahead': (entry_pos, t, pos_ahead, direction),
-        # }
-        # for k,v in debug_states.items():
-        #     print(f'                                        {k} -> {v}')
 
         # ball head-on -> beam is "HIT"
         self.model.Add(self.beam_states[(entry_pos, t, "HIT", "HIT")] == 1).OnlyEnforceIf([
@@ -273,35 +234,10 @@ class Board:
         for reflect in reflects:
             self.model.AddExactlyOne([self.beam_states[(reflect, self.T-1, reflect, direction)] for direction in Direction])
 
-
     def solve_and_print(self, verbose: bool = True):
-        count = 0
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
-            nonlocal count
-            count += 1
-            # if count > 99:
-            #     import sys
-            #     sys.exit(0)
-            assignment = {}
-            for pos in get_all_pos(self.V, self.H):
-                assignment[pos] = solver.value(self.ball_states[pos])
-            beam_assignments = {}
-            # for (entry_pos, t, cell, direction), v in self.beam_states.items():
-            #     if entry_pos not in beam_assignments:
-            #         beam_assignments[entry_pos] = []
-            #     if solver.value(v):  # for every beam it can only be present in one state at a time
-            #         beam_assignments[entry_pos].append((t, cell, direction))
-            # for k,v in beam_assignments.items():
-            #     beam_assignments[k] = sorted(v, key=lambda x: x[0])
-            #     print(k, beam_assignments[k], '\n')
-            # print(beam_assignments)
-            return SingleSolution(assignment=assignment, beam_assignments=beam_assignments)
-
+            return SingleSolution(assignment={pos: solver.Value(self.ball_states[pos]) for pos in get_all_pos(self.V, self.H)})
         def callback(single_res: SingleSolution):
             print("Solution found")
-            res = np.full((self.V, self.H), ' ', dtype=object)
-            for pos in get_all_pos(self.V, self.H):
-                ball_state = 'O' if single_res.assignment[pos] else ' '
-                res[pos.y][pos.x] = ball_state
-            print(res)
+            print(combined_function(self.V, self.H, center_char=lambda r, c: 'O' if single_res.assignment[get_pos(x=c, y=r)] else ''))
         generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)
