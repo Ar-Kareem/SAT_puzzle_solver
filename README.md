@@ -5421,7 +5421,7 @@ The script also visualizes the solution:
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nonograms_colored_solved" alt="Nonograms Colored solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nonograms_colored_solved.png" alt="Nonograms Colored solved" width="500">
 
 ---
 
