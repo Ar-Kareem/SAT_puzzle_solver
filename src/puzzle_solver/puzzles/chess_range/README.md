@@ -19,7 +19,7 @@ You are given a chess board with $N$ pieces distributed on it. Your aim is to ma
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_range_unsolved.png" alt="Chess range unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/chess_range_unsolved.png" alt="Chess range unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -46,7 +46,7 @@ Time taken: 6.27 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_range_solved.png" alt="Chess range solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/chess_range_solved.png" alt="Chess range solved" width="500">
 
 # Chess Solo (Puzzle Type #24)
 
@@ -62,7 +62,7 @@ You are given a chess board with $N$ pieces distributed on it. Your aim is to ma
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_solo_unsolved.png" alt="Chess solo unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/chess_solo_unsolved.png" alt="Chess solo unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -88,7 +88,7 @@ Time taken: 4.33 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_solo_solved.png" alt="Chess solo solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/chess_solo_solved.png" alt="Chess solo solved" width="500">
 
 # Chess Melee (Puzzle Type #25)
 
@@ -103,7 +103,7 @@ You are given a chess board with $N$ pieces distributed on it (equal white and b
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_melee_unsolved.png" alt="Chess melee unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/chess_melee_unsolved.png" alt="Chess melee unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -130,4 +130,4 @@ Time taken: 6.24 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_melee_solved.png" alt="Chess melee solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/chess_melee_solved.png" alt="Chess melee solved" width="500">

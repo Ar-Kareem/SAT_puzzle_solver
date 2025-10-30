@@ -9,7 +9,7 @@
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/star_battle_unsolved.png" alt="Star Battle unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/star_battle_unsolved.png" alt="Star Battle unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -114,7 +114,7 @@ Time taken: 0.39 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/star_battle_solved.png" alt="Star Battle solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/star_battle_solved.png" alt="Star Battle solved" width="500">
 
 ---
 
@@ -130,7 +130,7 @@ Time taken: 0.39 seconds
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/star_battle_shapeless_unsolved.png" alt="Star Battle Shapeless unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/star_battle_shapeless_unsolved.png" alt="Star Battle Shapeless unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -190,4 +190,4 @@ Time taken: 0.02 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/star_battle_shapeless_solved.png" alt="Star Battle Shapeless solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/star_battle_shapeless_solved.png" alt="Star Battle Shapeless solved" width="500">

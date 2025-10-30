@@ -21,7 +21,7 @@ You have a grid of white squares, all of which contain numbers. Your task is to 
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/singles_unsolved.png" alt="Singles unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/singles_unsolved.png" alt="Singles unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -83,4 +83,4 @@ Time taken: 0.04 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/singles_solved.png" alt="Singles solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/singles_solved.png" alt="Singles solved" width="500">

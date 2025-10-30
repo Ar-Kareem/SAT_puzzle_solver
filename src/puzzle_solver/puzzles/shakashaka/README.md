@@ -13,7 +13,7 @@ The objective is to place black triangles in the white cell in such a way so tha
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/shakashaka_unsolved.png" alt="Shakashaka unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/shakashaka_unsolved.png" alt="Shakashaka unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -165,4 +165,4 @@ Time taken: 0.36 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/shakashaka_solved.png" alt="Shakashaka solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/shakashaka_solved.png" alt="Shakashaka solved" width="500">

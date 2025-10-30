@@ -16,7 +16,7 @@ Your aim is to correctly place the magnets and blank dominoes such that all the 
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/magnets_unsolved.png" alt="Magnets unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/magnets_unsolved.png" alt="Magnets unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -60,4 +60,4 @@ Time taken: 0.02 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/magnets_solved.png" alt="Magnets solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/magnets_solved.png" alt="Magnets solved" width="500">

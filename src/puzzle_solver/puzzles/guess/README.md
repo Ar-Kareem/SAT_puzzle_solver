@@ -84,7 +84,7 @@ Below is an example of how to utilize the solver while in the middle of a puzzle
 
 Let's say we start and made two guesses to end up with the following puzzle:
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/guess_1.png" alt="Guess Pre Move" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/guess_1.png" alt="Guess Pre Move" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -111,7 +111,7 @@ max entropy guess is: ['P', 'Y', 'Y', 'G'] with entropy 3.4511
 
 So we make our next guess as (Purple, Yellow, Yellow, Green) and let's say we get this result: (2 black, 1 white, 1 grey)
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/guess_2.png" alt="Guess Post 1 Move" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/guess_2.png" alt="Guess Post 1 Move" width="500">
 
 So we input that again to the solver to retreive the next optimal guess:
 
@@ -135,7 +135,7 @@ So we make our fourth guess as (Green, Yellow, Yellow, Orange)
 
 When we input the guess, we see that we correctly solve the puzzle!
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/guess_3.png" alt="Guess Post 2 Moves" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/guess_3.png" alt="Guess Post 2 Moves" width="500">
 
 Note that in this case, the correct guess was among multiple possible guesses
 

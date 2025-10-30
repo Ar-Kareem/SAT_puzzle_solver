@@ -19,7 +19,7 @@ You have a grid of squares, some of which contain trees. Your aim is to place te
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tents_unsolved.png" alt="Tents unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/tents_unsolved.png" alt="Tents unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -94,4 +94,4 @@ Time taken: 0.01 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tents_solved.png" alt="Tents solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/tents_solved.png" alt="Tents solved" width="500">

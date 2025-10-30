@@ -9,7 +9,7 @@ Yin-Yang is played on a rectangular grid with no standard size. Some cells start
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/yin_yang_unsolved.png" alt="Yin-Yang unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/yin_yang_unsolved.png" alt="Yin-Yang unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -98,4 +98,4 @@ Time taken: 3.09 seconds
 
 Applying the solution to the puzzle visually:
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/yin_yang_solved.png" alt="Yin-Yang solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/yin_yang_solved.png" alt="Yin-Yang solved" width="500">

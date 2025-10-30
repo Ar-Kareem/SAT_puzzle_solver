@@ -10,7 +10,7 @@
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/stitches_unsolved.png" alt="Stitches unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/stitches_unsolved.png" alt="Stitches unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -86,4 +86,4 @@ Time taken: 0.01 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/stitches_solved.png" alt="Stitches solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/stitches_solved.png" alt="Stitches solved" width="500">

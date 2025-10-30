@@ -76,309 +76,309 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
 <tr>
   <td align="center">
     <a href="#nonograms-puzzle-type-1"><b>Nonograms</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nonogram_solved.png" alt="Nonograms" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/nonogram_solved.png" alt="Nonograms" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#sudoku-puzzle-type-2"><b>Sudoku</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_solved.png" alt="Sudoku" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/sudoku_solved.png" alt="Sudoku" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#minesweeper-puzzle-type-3"><b>Minesweeper</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/minesweeper_pre.png" alt="Minesweeper" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/minesweeper_pre.png" alt="Minesweeper" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#dominosa-puzzle-type-4"><b>Dominosa</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/dominosa_solved.png" alt="Dominosa" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/dominosa_solved.png" alt="Dominosa" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#light-up-puzzle-type-5"><b>Light Up</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/lightup_solved.png" alt="Light Up" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/lightup_solved.png" alt="Light Up" width="140">
     </a>
   </td>
 </tr>
 <tr>
   <td align="center">
     <a href="#tents-puzzle-type-6"><b>Tents</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tents_solved.png" alt="Tents" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/tents_solved.png" alt="Tents" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#filling-puzzle-type-7"><b>Filling</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/filling_solved.png" alt="Filling" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/filling_solved.png" alt="Filling" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#keen-puzzle-type-8"><b>Keen</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/keen_solved.png" alt="Keen" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/keen_solved.png" alt="Keen" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#towers-puzzle-type-9"><b>Towers</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/towers_solved.png" alt="Towers" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/towers_solved.png" alt="Towers" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#singles-puzzle-type-10"><b>Singles</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/singles_solved.png" alt="Singles" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/singles_solved.png" alt="Singles" width="140">
     </a>
   </td>
 </tr>
 <tr>
   <td align="center">
     <a href="#magnets-puzzle-type-11"><b>Magnets</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/magnets_solved.png" alt="Magnets" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/magnets_solved.png" alt="Magnets" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#signpost-puzzle-type-12"><b>Signpost</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/signpost_solved.png" alt="Signpost" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/signpost_solved.png" alt="Signpost" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#range-puzzle-type-13"><b>Range</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/range_solved.png" alt="Range" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/range_solved.png" alt="Range" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#undead-puzzle-type-14"><b>Undead</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/undead_solved.png" alt="Undead" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/undead_solved.png" alt="Undead" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#unruly-puzzle-type-15"><b>Unruly</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/unruly_solved.png" alt="Unruly" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/unruly_solved.png" alt="Unruly" width="140">
     </a>
   </td>
 </tr>
 <tr>
   <td align="center">
     <a href="#tracks-puzzle-type-16"><b>Tracks</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tracks_solved.png" alt="Tracks" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/tracks_solved.png" alt="Tracks" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#mosaic-puzzle-type-17"><b>Mosaic</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/mosaic_solved.png" alt="Mosaic" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/mosaic_solved.png" alt="Mosaic" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#map-puzzle-type-18"><b>Map</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/map_solved.png" alt="Map" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/map_solved.png" alt="Map" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#pearl-puzzle-type-19"><b>Pearl</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/pearl_solved.png" alt="Pearl" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/pearl_solved.png" alt="Pearl" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#bridges-puzzle-type-20"><b>Bridges</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/bridges_solved.png" alt="Bridges" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/bridges_solved.png" alt="Bridges" width="140">
     </a>
   </td>
 </tr>
 <tr>
   <td align="center">
     <a href="#inertia-puzzle-type-21"><b>Inertia</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/inertia_unsolved.png" alt="Inertia" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/inertia_unsolved.png" alt="Inertia" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#guess-puzzle-type-22"><b>Guess</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/guess_3.png" alt="Guess" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/guess_3.png" alt="Guess" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#chess-range-puzzle-type-23"><b>Chess Range</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_range_unsolved.png" alt="Chess range" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/chess_range_unsolved.png" alt="Chess range" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#chess-solo-puzzle-type-24"><b>Chess Solo</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_solo_unsolved.png" alt="Chess solo" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/chess_solo_unsolved.png" alt="Chess solo" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#chess-melee-puzzle-type-25"><b>Chess Melee</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_melee_unsolved.png" alt="Chess melee" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/chess_melee_unsolved.png" alt="Chess melee" width="140">
     </a>
   </td>
 </tr>
 <tr>
   <td align="center">
     <a href="#thermometers-puzzle-type-26"><b>Thermometers</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/thermometers_solved.png" alt="Thermometers" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/thermometers_solved.png" alt="Thermometers" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#aquarium-puzzle-type-27"><b>Aquarium</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/aquarium_solved.png" alt="Aquarium" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/aquarium_solved.png" alt="Aquarium" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#stitches-puzzle-type-28"><b>Stitches</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/stitches_solved.png" alt="Stitches" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/stitches_solved.png" alt="Stitches" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#battleships-puzzle-type-29"><b>Battleships</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/battleships_solved.png" alt="Battleships" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/battleships_solved.png" alt="Battleships" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#kakurasu-puzzle-type-30"><b>Kakurasu</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/kakurasu_solved.png" alt="Kakurasu" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/kakurasu_solved.png" alt="Kakurasu" width="140">
     </a>
   </td>
 </tr>
 <tr>
   <td align="center">
     <a href="#star-battle-puzzle-type-31"><b>Star Battle</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/star_battle_solved.png" alt="Star Battle" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/star_battle_solved.png" alt="Star Battle" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#star-battle-shapeless-puzzle-type-32"><b>Star Battle Shapeless</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/star_battle_shapeless_solved.png" alt="Star Battle Shapeless" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/star_battle_shapeless_solved.png" alt="Star Battle Shapeless" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#lits-puzzle-type-33"><b>Lits</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/lits_solved.png" alt="Lits" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/lits_solved.png" alt="Lits" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#black-box-puzzle-type-34"><b>Black Box</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/black_box_solved.png" alt="Black Box" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/black_box_solved.png" alt="Black Box" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#galaxies-puzzle-type-35"><b>Galaxies</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/galaxies_solved.png" alt="Galaxies" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/galaxies_solved.png" alt="Galaxies" width="140">
     </a>
   </td>
 </tr>
 <tr>
   <td align="center">
     <a href="#slant-puzzle-type-36"><b>Slant</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/slant_solved.png" alt="Slant" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/slant_solved.png" alt="Slant" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#unequal-puzzle-type-37"><b>Unequal</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/unequal_solved.png" alt="Unequal" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/unequal_solved.png" alt="Unequal" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#norinori-puzzle-type-38"><b>Norinori</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/norinori_solved.png" alt="Norinori" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/norinori_solved.png" alt="Norinori" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#slitherlink-puzzle-type-39"><b>Slitherlink</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/slitherlink_solved.png" alt="Slitherlink" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/slitherlink_solved.png" alt="Slitherlink" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#yin-yang-puzzle-type-40"><b>Yin-Yang</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/yin_yang_solved.png" alt="Yin-Yang" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/yin_yang_solved.png" alt="Yin-Yang" width="140">
     </a>
   </td>
 </tr>
 <tr>
   <td align="center">
     <a href="#binairo-puzzle-type-41"><b>Binairo</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/binairo_solved.png" alt="Binairo" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/binairo_solved.png" alt="Binairo" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#rectangles-puzzle-type-42"><b>Rectangles</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/rectangles_solved.png" alt="Rectangles" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/rectangles_solved.png" alt="Rectangles" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#palisade-puzzle-type-43"><b>Palisade</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/palisade_solved.png" alt="Palisade" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/palisade_solved.png" alt="Palisade" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#flip-puzzle-type-44"><b>Flip</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/flip_unsolved.png" alt="Flip" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/flip_unsolved.png" alt="Flip" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#nurikabe-puzzle-type-45"><b>Nurikabe</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nurikabe_solved.png" alt="Nurikabe" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/nurikabe_solved.png" alt="Nurikabe" width="140">
     </a>
   </td>
 </tr>
 <tr>
   <td align="center">
     <a href="#heyawake-puzzle-type-46"><b>Heyawake</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/heyawake_solved.png" alt="Heyawake" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/heyawake_solved.png" alt="Heyawake" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#shingoki-puzzle-type-47"><b>Shingoki</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/shingoki_solved.png" alt="Shingoki" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/shingoki_solved.png" alt="Shingoki" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#tapa-puzzle-type-48"><b>Tapa</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tapa_solved.png" alt="Tapa" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/tapa_solved.png" alt="Tapa" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#binairo-plus-puzzle-type-49"><b>Binairo Plus</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/binairo_plus_solved.png" alt="Binairo Plus" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/binairo_plus_solved.png" alt="Binairo Plus" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#shakashaka-puzzle-type-50"><b>Shakashaka</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/shakashaka_solved.png" alt="Shakashaka" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/shakashaka_solved.png" alt="Shakashaka" width="140">
     </a>
   </td>
 </tr>
 <tr>
   <td align="center">
     <a href="#kakuro-puzzle-type-51"><b>Kakuro</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/kakuro_solved.png" alt="Kakuro" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/kakuro_solved.png" alt="Kakuro" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#sudoku-jigsaw-puzzle-type-52"><b>Sudoku Jigsaw</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_jigsaw_solved.png" alt="Sudoku Jigsaw" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/sudoku_jigsaw_solved.png" alt="Sudoku Jigsaw" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#sudoku-killer-puzzle-type-53"><b>Sudoku Killer</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_killer_solved.png" alt="Sudoku Killer" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/sudoku_killer_solved.png" alt="Sudoku Killer" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#flood-it-puzzle-type-54"><b>Flood It</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/flood_it_unsolved.png" alt="Flood It" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/flood_it_unsolved.png" alt="Flood It" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#pipes-puzzle-type-55"><b>Pipes</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/pipes_solved.png" alt="Pipes" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/pipes_solved.png" alt="Pipes" width="140">
     </a>
   </td>
 </tr>
 <tr>
   <td align="center">
     <a href="#connect-the-dots-puzzle-type-56"><b>Connect the Dots</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/connect_the_dots_solved.png" alt="Connect the Dots" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/connect_the_dots_solved.png" alt="Connect the Dots" width="140">
     </a>
   </td>
   <td align="center">
     <a href="#nonograms-colored-puzzle-type-57"><b>Nonograms Colored</b><br><br>
-      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nonograms_colored_solved.png" alt="Nonograms Colored" width="140">
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/nonograms_colored_solved.png" alt="Nonograms Colored" width="140">
     </a>
   </td>
 </tr>
@@ -481,7 +481,7 @@ You have a grid of squares, which must all be filled in either black or white. B
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nonogram_unsolved.png" alt="Nonogram unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/nonogram_unsolved.png" alt="Nonogram unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -566,7 +566,7 @@ Time taken: 0.04 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nonogram_solved.png" alt="Nonogram solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/nonogram_solved.png" alt="Nonogram solved" width="500">
 
 ---
 
@@ -593,7 +593,7 @@ You are given some of the numbers as clues; your aim is to place the rest of the
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_unsolved.png" alt="Sudoku unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/sudoku_unsolved.png" alt="Sudoku unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -676,7 +676,7 @@ Time taken: 0.04 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_solved.png" alt="Sudoku solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/sudoku_solved.png" alt="Sudoku solved" width="500">
 
 ---
 
@@ -707,7 +707,7 @@ This version of it has an unusual property. By default, it will generate its min
 
 **Partially solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/minesweeper_pre.png" alt="Minesweeper partially solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/minesweeper_pre.png" alt="Minesweeper partially solved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -754,7 +754,7 @@ Time taken: 0.92 seconds
 
 **Progressed puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/minesweeper_post.png" alt="Minesweeper progressed" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/minesweeper_post.png" alt="Minesweeper progressed" width="500">
 
 ---
 
@@ -775,7 +775,7 @@ Your task is to reconstruct the pattern by arranging the set of dominoes to matc
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/dominosa_unsolved.png" alt="Dominosa unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/dominosa_unsolved.png" alt="Dominosa unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -817,7 +817,7 @@ Time taken: 0.02 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/dominosa_solved.png" alt="Dominosa solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/dominosa_solved.png" alt="Dominosa solved" width="500">
 
 ---
 
@@ -848,7 +848,7 @@ Non-numbered black squares may have any number of lights adjacent to them.
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/lightup_unsolved.png" alt="Light Up unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/lightup_unsolved.png" alt="Light Up unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -892,7 +892,7 @@ Time taken: 0.01 seconds
 
 Which exactly matches the true solutions (Remember, the goal of the puzzle is to find where to place the lights, marked as 'L' in the solution above):
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/lightup_solved.png" alt="Light Up solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/lightup_solved.png" alt="Light Up solved" width="500">
 
 ---
 
@@ -916,7 +916,7 @@ You have a grid of squares, some of which contain trees. Your aim is to place te
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tents_unsolved.png" alt="Tents unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/tents_unsolved.png" alt="Tents unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -991,7 +991,7 @@ Time taken: 0.01 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tents_solved.png" alt="Tents solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/tents_solved.png" alt="Tents solved" width="500">
 
 ---
 
@@ -1018,7 +1018,7 @@ Note: It may take a few seconds for the model to be built.
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/filling_unsolved.png" alt="Filling unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/filling_unsolved.png" alt="Filling unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -1061,7 +1061,7 @@ Time taken: 0.15 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/filling_solved.png" alt="Filling solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/filling_solved.png" alt="Filling solved" width="500">
 
 ---
 
@@ -1092,7 +1092,7 @@ You have a square grid; each square may contain a digit from 1 to the size of th
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/keen_unsolved.png" alt="Keen unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/keen_unsolved.png" alt="Keen unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -1143,7 +1143,7 @@ Time taken: 0.02 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/keen_solved.png" alt="Keen solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/keen_solved.png" alt="Keen solved" width="500">
 
 ---
 
@@ -1170,7 +1170,7 @@ In harder or larger puzzles, some towers will be specified for you as well as th
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/towers_unsolved.png" alt="Towers unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/towers_unsolved.png" alt="Towers unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -1207,7 +1207,7 @@ Time taken: 0.03 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/towers_solved.png" alt="Towers solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/towers_solved.png" alt="Towers solved" width="500">
 
 ---
 
@@ -1234,7 +1234,7 @@ You have a grid of white squares, all of which contain numbers. Your task is to 
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/singles_unsolved.png" alt="Singles unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/singles_unsolved.png" alt="Singles unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -1296,7 +1296,7 @@ Time taken: 0.04 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/singles_solved.png" alt="Singles solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/singles_solved.png" alt="Singles solved" width="500">
 
 ---
 
@@ -1317,7 +1317,7 @@ Your aim is to correctly place the magnets and blank dominoes such that all the 
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/magnets_unsolved.png" alt="Magnets unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/magnets_unsolved.png" alt="Magnets unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -1361,7 +1361,7 @@ Time taken: 0.02 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/magnets_solved.png" alt="Magnets solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/magnets_solved.png" alt="Magnets solved" width="500">
 
 
 ---
@@ -1383,7 +1383,7 @@ By convention the first and last numbers are shown; one or more interim numbers 
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/signpost_unsolved.png" alt="Signpost unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/signpost_unsolved.png" alt="Signpost unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -1429,7 +1429,7 @@ Time taken: 0.03 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/signpost_solved.png" alt="Signpost solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/signpost_solved.png" alt="Signpost solved" width="500">
 
 
 ---
@@ -1460,7 +1460,7 @@ For instance, a square containing the number one must have four black squares as
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/range_unsolved.png" alt="Range unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/range_unsolved.png" alt="Range unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -1517,7 +1517,7 @@ Time taken: 0.07 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/range_solved.png" alt="Range solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/range_solved.png" alt="Range solved" width="500">
 
 ---
 
@@ -1540,7 +1540,7 @@ You are also told the total number of each type of monster in the grid. Also aro
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/undead_unsolved.png" alt="UnDead unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/undead_unsolved.png" alt="UnDead unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -1582,7 +1582,7 @@ Time taken: 0.01 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/undead_solved.png" alt="UnDead solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/undead_solved.png" alt="UnDead solved" width="500">
 
 ---
 
@@ -1601,7 +1601,7 @@ You are given a grid of squares, which you must colour either black or white. So
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/unruly_unsolved.png" alt="Unruly unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/unruly_unsolved.png" alt="Unruly unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -1667,7 +1667,7 @@ Time taken: 0.02 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/unruly_solved.png" alt="Unruly solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/unruly_solved.png" alt="Unruly solved" width="500">
 
 ---
 
@@ -1687,7 +1687,7 @@ Complete the track from A to B so that the rows and columns contain the same num
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tracks_unsolved.png" alt="Tracks unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/tracks_unsolved.png" alt="Tracks unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -1758,7 +1758,7 @@ Time taken: 1.01 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tracks_solved.png" alt="Tracks solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/tracks_solved.png" alt="Tracks solved" width="500">
 
 ---
 
@@ -1779,7 +1779,7 @@ Some squares contain clue numbers. Each clue tells you the number of black squar
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/mosaic_unsolved.png" alt="Mosaic unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/mosaic_unsolved.png" alt="Mosaic unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -1848,7 +1848,7 @@ Time taken: 0.02 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/mosaic_solved.png" alt="Mosaic solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/mosaic_solved.png" alt="Mosaic solved" width="500">
 
 ---
 
@@ -1869,7 +1869,7 @@ Only regions which share a length of border are required to be different colours
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/map_unsolved.png" alt="Map unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/map_unsolved.png" alt="Map unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -1908,7 +1908,7 @@ Time taken: 0.01 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/map_solved.png" alt="Map solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/map_solved.png" alt="Map solved" width="500">
 
 ---
 
@@ -1937,7 +1937,7 @@ A white circle indicates that the square is a straight edge, but at least one of
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/pearl_unsolved.png" alt="Pearl unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/pearl_unsolved.png" alt="Pearl unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -1985,7 +1985,7 @@ Time taken: 0.12 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/pearl_solved.png" alt="Pearl solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/pearl_solved.png" alt="Pearl solved" width="500">
 
 ---
 
@@ -2014,7 +2014,7 @@ There are some configurable alternative modes, which involve changing the parall
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/bridges_unsolved.png" alt="Bridges unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/bridges_unsolved.png" alt="Bridges unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -2082,7 +2082,7 @@ Time taken: 0.01 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/bridges_solved.png" alt="Bridges solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/bridges_solved.png" alt="Bridges solved" width="500">
 
 ---
 
@@ -2118,7 +2118,7 @@ Running into a mine is fatal. Even if you picked up the last gem in the same mov
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/inertia_unsolved.png" alt="Inertia unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/inertia_unsolved.png" alt="Inertia unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -2171,7 +2171,7 @@ Time taken: 13.92 seconds
 
 This picture won't mean much as the game is about the sequence of moves not the final frame as shown here.
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/inertia_solved.png" alt="Inertia solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/inertia_solved.png" alt="Inertia solved" width="500">
 
 ---
 
@@ -2262,7 +2262,7 @@ Below is an example of how to utilize the solver while in the middle of a puzzle
 
 Let's say we start and made two guesses to end up with the following puzzle:
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/guess_1.png" alt="Guess Pre Move" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/guess_1.png" alt="Guess Pre Move" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -2289,7 +2289,7 @@ max entropy guess is: ['P', 'Y', 'Y', 'G'] with entropy 3.4511
 
 So we make our next guess as (Purple, Yellow, Yellow, Green) and let's say we get this result: (2 black, 1 white, 1 grey)
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/guess_2.png" alt="Guess Post 1 Move" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/guess_2.png" alt="Guess Post 1 Move" width="500">
 
 So we input that again to the solver to retreive the next optimal guess:
 
@@ -2313,7 +2313,7 @@ So we make our fourth guess as (Green, Yellow, Yellow, Orange)
 
 When we input the guess, we see that we correctly solve the puzzle!
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/guess_3.png" alt="Guess Post 2 Moves" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/guess_3.png" alt="Guess Post 2 Moves" width="500">
 
 Note that in this case, the correct guess was among multiple possible guesses
 
@@ -2341,7 +2341,7 @@ You are given a chess board with $N$ pieces distributed on it. Your aim is to ma
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_range_unsolved.png" alt="Chess range unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/chess_range_unsolved.png" alt="Chess range unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -2368,7 +2368,7 @@ Time taken: 1.16 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_range_solved.png" alt="Chess range solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/chess_range_solved.png" alt="Chess range solved" width="500">
 
 ---
 
@@ -2393,7 +2393,7 @@ You are given a chess board with $N$ pieces distributed on it. Your aim is to ma
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_solo_unsolved.png" alt="Chess solo unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/chess_solo_unsolved.png" alt="Chess solo unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -2420,7 +2420,7 @@ Time taken: 0.47 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_solo_solved.png" alt="Chess solo solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/chess_solo_solved.png" alt="Chess solo solved" width="500">
 
 ---
 
@@ -2444,7 +2444,7 @@ You are given a chess board with $N$ pieces distributed on it (equal white and b
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_melee_unsolved.png" alt="Chess melee unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/chess_melee_unsolved.png" alt="Chess melee unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -2472,7 +2472,7 @@ Time taken: 6.24 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/chess_melee_solved.png" alt="Chess melee solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/chess_melee_solved.png" alt="Chess melee solved" width="500">
 
 ---
 
@@ -2493,7 +2493,7 @@ The numbers outside the grid show the number of filled cells horizontally and ve
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/thermometers_unsolved.png" alt="Thermometers unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/thermometers_unsolved.png" alt="Thermometers unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -2548,7 +2548,7 @@ Time taken: 0.01 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/thermometers_solved.png" alt="Thermometers solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/thermometers_solved.png" alt="Thermometers solved" width="500">
 
 ---
 
@@ -2573,7 +2573,7 @@ The numbers outside the grid show the number of filled cells horizontally and ve
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/aquarium_unsolved.png" alt="Aquarium unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/aquarium_unsolved.png" alt="Aquarium unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -2646,7 +2646,7 @@ Time taken: 0.02 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/aquarium_solved.png" alt="Aquarium solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/aquarium_solved.png" alt="Aquarium solved" width="500">
 
 ---
 
@@ -2669,7 +2669,7 @@ Time taken: 0.02 seconds
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/stitches_unsolved.png" alt="Stitches unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/stitches_unsolved.png" alt="Stitches unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -2745,7 +2745,7 @@ Time taken: 0.01 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/stitches_solved.png" alt="Stitches solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/stitches_solved.png" alt="Stitches solved" width="500">
 
 ---
 
@@ -2768,7 +2768,7 @@ Time taken: 0.01 seconds
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/battleships_unsolved.png" alt="Battleships unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/battleships_unsolved.png" alt="Battleships unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -2845,7 +2845,7 @@ Solution found
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/battleships_solved.png" alt="Battleships solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/battleships_solved.png" alt="Battleships solved" width="500">
 
 ---
 
@@ -2870,7 +2870,7 @@ The goal is to make some of the cells black in such a way that:
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/kakurasu_unsolved.png" alt="Kakurasu unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/kakurasu_unsolved.png" alt="Kakurasu unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -2922,7 +2922,7 @@ Time taken: 0.00 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/kakurasu_solved.png" alt="Kakurasu solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/kakurasu_solved.png" alt="Kakurasu solved" width="500">
 
 ---
 
@@ -2944,7 +2944,7 @@ Time taken: 0.00 seconds
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/star_battle_unsolved.png" alt="Star Battle unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/star_battle_unsolved.png" alt="Star Battle unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -3049,7 +3049,7 @@ Time taken: 0.39 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/star_battle_solved.png" alt="Star Battle solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/star_battle_solved.png" alt="Star Battle solved" width="500">
 
 ---
 
@@ -3072,7 +3072,7 @@ Time taken: 0.39 seconds
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/star_battle_shapeless_unsolved.png" alt="Star Battle Shapeless unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/star_battle_shapeless_unsolved.png" alt="Star Battle Shapeless unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -3132,7 +3132,7 @@ Time taken: 0.02 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/star_battle_shapeless_solved.png" alt="Star Battle Shapeless solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/star_battle_shapeless_solved.png" alt="Star Battle Shapeless solved" width="500">
 
 ---
 
@@ -3158,7 +3158,7 @@ Note: The solver is capable of solving variations where the puzzle pieces the ma
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/lits_unsolved.png" alt="Lits unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/lits_unsolved.png" alt="Lits unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -3245,7 +3245,7 @@ Time taken: 0.09 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/lits_solved.png" alt="Lits solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/lits_solved.png" alt="Lits solved" width="500">
 
 ---
 
@@ -3309,7 +3309,7 @@ Note: This puzzle is one of the very rare puzzles where CP-SAT is not a good fit
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/black_box_unsolved.png" alt="Black Box unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/black_box_unsolved.png" alt="Black Box unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -3375,7 +3375,7 @@ Time taken: 24.53 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/black_box_solved.png" alt="Black Box solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/black_box_solved.png" alt="Black Box solved" width="500">
 
 ---
 
@@ -3398,7 +3398,7 @@ To enter your solution, you draw lines along the grid edges to mark the boundari
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/galaxies_unsolved.png" alt="Galaxies unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/galaxies_unsolved.png" alt="Galaxies unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -3475,7 +3475,7 @@ Time taken: 0.06 seconds
 
 Applying the solution to the puzzle visually:
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/galaxies_solved.png" alt="Galaxies solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/galaxies_solved.png" alt="Galaxies solved" width="500">
 
 ---
 
@@ -3499,7 +3499,7 @@ You have a grid of squares. Your aim is to draw a diagonal line through each squ
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/slant_unsolved.png" alt="Slant unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/slant_unsolved.png" alt="Slant unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -3560,7 +3560,7 @@ Time taken: 0.06 seconds
 
 Applying the solution to the puzzle visually:
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/slant_solved.png" alt="Slant solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/slant_solved.png" alt="Slant solved" width="500">
 
 ---
 
@@ -3599,7 +3599,7 @@ In 'Trivial' difficulty level (available via the 'Custom' game type selector), t
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/unequal_unsolved.png" alt="Unequal unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/unequal_unsolved.png" alt="Unequal unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -3657,7 +3657,7 @@ Time taken: 0.05 seconds
 
 Applying the solution to the puzzle visually:
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/unequal_solved.png" alt="Unequal solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/unequal_solved.png" alt="Unequal solved" width="500">
 
 ---
 
@@ -3681,7 +3681,7 @@ You have to shade some of the cells in such a way that:
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/norinori_unsolved.png" alt="Norinori unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/norinori_unsolved.png" alt="Norinori unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -3769,7 +3769,7 @@ Time taken: 0.03 seconds
 
 Applying the solution to the puzzle visually:
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/norinori_solved.png" alt="Norinori solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/norinori_solved.png" alt="Norinori solved" width="500">
 
 ---
 
@@ -3796,7 +3796,7 @@ A line forming a single loop without crossings or branches means that every corn
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/slitherlink_unsolved.png" alt="Slitherlink unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/slitherlink_unsolved.png" alt="Slitherlink unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -3884,7 +3884,7 @@ Time taken: 2.39 seconds
 
 Applying the solution to the puzzle visually:
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/slitherlink_solved.png" alt="Slitherlink solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/slitherlink_solved.png" alt="Slitherlink solved" width="500">
 
 ---
 
@@ -3906,7 +3906,7 @@ Yin-Yang is played on a rectangular grid with no standard size. Some cells start
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/yin_yang_unsolved.png" alt="Yin-Yang unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/yin_yang_unsolved.png" alt="Yin-Yang unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -3995,7 +3995,7 @@ Time taken: 3.09 seconds
 
 Applying the solution to the puzzle visually:
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/yin_yang_solved.png" alt="Yin-Yang solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/yin_yang_solved.png" alt="Yin-Yang solved" width="500">
 
 ---
 
@@ -4018,7 +4018,7 @@ Binairo is played on a rectangular grid with no standard size. Some cells start 
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/binairo_unsolved.png" alt="Binairo unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/binairo_unsolved.png" alt="Binairo unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -4107,7 +4107,7 @@ Time taken: 0.02 seconds
 
 Applying the solution to the puzzle visually:
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/binairo_solved.png" alt="Binairo solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/binairo_solved.png" alt="Binairo solved" width="500">
 
 ---
 
@@ -4134,7 +4134,7 @@ You have a grid of squares, with numbers written in some (but not all) of the sq
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/rectangles_unsolved.png" alt="Rectangles unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/rectangles_unsolved.png" alt="Rectangles unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -4220,7 +4220,7 @@ Time taken: 0.01 seconds
 
 Applying the solution to the puzzle visually:
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/rectangles_solved.png" alt="Rectangles solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/rectangles_solved.png" alt="Rectangles solved" width="500">
 
 ---
 
@@ -4241,7 +4241,7 @@ You're given a grid of N squares and a region size M, some of which contain numb
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/palisade_unsolved.png" alt="Palisade unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/palisade_unsolved.png" alt="Palisade unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -4308,7 +4308,7 @@ Time taken: 11.94 seconds
 
 Applying the solution to the puzzle visually:
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/palisade_solved.png" alt="Palisade solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/palisade_solved.png" alt="Palisade solved" width="500">
 
 ---
 
@@ -4329,7 +4329,7 @@ You have a grid of squares, some light and some dark. Your aim is to light all t
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/flip_unsolved.png" alt="Flip unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/flip_unsolved.png" alt="Flip unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -4372,7 +4372,7 @@ status: OPTIMAL
 
 This picture won't mean much as the game is about the sequence of moves not the final frame as shown here.
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/flip_solved.png" alt="Flip solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/flip_solved.png" alt="Flip solved" width="500">
 
 ---
 
@@ -4401,7 +4401,7 @@ Read more about the history and methods behind nurikabe in the [Wikipedia nurika
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nurikabe_unsolved.png" alt="Nurikabe unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/nurikabe_unsolved.png" alt="Nurikabe unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -4488,7 +4488,7 @@ Time taken: 1.62 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nurikabe_solved.png" alt="Nurikabe solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/nurikabe_solved.png" alt="Nurikabe solved" width="500">
 
 ---
 
@@ -4511,7 +4511,7 @@ Time taken: 1.62 seconds
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/heyawake_unsolved.png" alt="Heyawake unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/heyawake_unsolved.png" alt="Heyawake unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -4604,7 +4604,7 @@ Time taken: 38.04 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/heyawake_solved.png" alt="Heyawake solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/heyawake_solved.png" alt="Heyawake solved" width="500">
 
 ---
 
@@ -4628,7 +4628,7 @@ You have to draw lines between the dots to form a single loop without crossings 
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/shingoki_unsolved.png" alt="Shingoki unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/shingoki_unsolved.png" alt="Shingoki unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -4718,7 +4718,7 @@ Time taken: 425.97 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/shingoki_solved.png" alt="Shingoki solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/shingoki_solved.png" alt="Shingoki solved" width="500">
 
 ---
 
@@ -4747,7 +4747,7 @@ You are given a grid where some cells have numbers. Your goal is to shade some c
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tapa_unsolved.png" alt="Tapa unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/tapa_unsolved.png" alt="Tapa unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -4838,7 +4838,7 @@ Time taken: 14.20 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tapa_solved.png" alt="Tapa solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/tapa_solved.png" alt="Tapa solved" width="500">
 
 ---
 
@@ -4861,7 +4861,7 @@ Binairo+ is played on a rectangular grid with no standard size. Some cells start
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/binairo_plus_unsolved.png" alt="Binairo Plus unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/binairo_plus_unsolved.png" alt="Binairo Plus unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -4963,7 +4963,7 @@ Time taken: 0.00 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/binairo_plus_solved.png" alt="Binairo Plus solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/binairo_plus_solved.png" alt="Binairo Plus solved" width="500">
 
 ---
 
@@ -4989,7 +4989,7 @@ The objective is to place black triangles in the white cell in such a way so tha
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/shakashaka_unsolved.png" alt="Shakashaka unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/shakashaka_unsolved.png" alt="Shakashaka unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -5141,7 +5141,7 @@ Time taken: 0.36 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/shakashaka_solved.png" alt="Shakashaka solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/shakashaka_solved.png" alt="Shakashaka solved" width="500">
 
 ---
 
@@ -5163,7 +5163,7 @@ Kakuro is played on a rectangular grid by placing numbers in the white cells suc
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/kakuro_unsolved.png" alt="Kakuro unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/kakuro_unsolved.png" alt="Kakuro unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -5222,7 +5222,7 @@ Time taken: 0.00 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/kakuro_solved.png" alt="Kakuro solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/kakuro_solved.png" alt="Kakuro solved" width="500">
 
 ---
 
@@ -5242,7 +5242,7 @@ Time taken: 0.00 seconds
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_jigsaw_unsolved.png" alt="Sudoku Jigsaw unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/sudoku_jigsaw_unsolved.png" alt="Sudoku Jigsaw unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -5309,7 +5309,7 @@ Time taken: 0.01 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_jigsaw_solved.png" alt="Sudoku Jigsaw solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/sudoku_jigsaw_solved.png" alt="Sudoku Jigsaw solved" width="500">
 
 ---
 
@@ -5330,7 +5330,7 @@ Time taken: 0.01 seconds
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_killer_unsolved.png" alt="Sudoku Killer unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/sudoku_killer_unsolved.png" alt="Sudoku Killer unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -5393,7 +5393,7 @@ Time taken: 0.02 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_killer_solved.png" alt="Sudoku Killer solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/sudoku_killer_solved.png" alt="Sudoku Killer solved" width="500">
 
 ---
 
@@ -5422,7 +5422,7 @@ Finding an optimal solution for any graph is NP-hard.
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/flood_it_unsolved.png" alt="Flood It unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/flood_it_unsolved.png" alt="Flood It unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -5472,7 +5472,7 @@ This picture won't mean much as the game is about the sequence and number of mov
 
 Note that the solved solution on the bottom left says that only 18 moves were used (based on the above output) despite the website saying 20 total moves are permitted (and the puzzle settings specified 0 extra moves permitted). Thus the solver managed to find a more optimal solution than the website.
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/flood_it_solved.png" alt="Flood It solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/flood_it_solved.png" alt="Flood It solved" width="500">
 
 ---
 
@@ -5499,7 +5499,7 @@ The goal is to create a single fully connected graph where each cell's connectio
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/pipes_unsolved.png" alt="Pipes unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/pipes_unsolved.png" alt="Pipes unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -5558,7 +5558,7 @@ Time taken: 5.65 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/pipes_solved.png" alt="Pipes solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/pipes_solved.png" alt="Pipes solved" width="500">
 
 ---
 
@@ -5578,7 +5578,7 @@ You are given a grid of empty cells and 2 filled cell per color. The goal is to 
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/connect_the_dots_unsolved.png" alt="Connect the Dots unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/connect_the_dots_unsolved.png" alt="Connect the Dots unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -5628,7 +5628,7 @@ Time taken: 2.91 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/connect_the_dots_solved.png" alt="Connect the Dots solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/connect_the_dots_solved.png" alt="Connect the Dots solved" width="500">
 
 ---
 
@@ -5647,7 +5647,7 @@ You have a grid of squares, which must all be filled in either white or one of t
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nonograms_colored_unsolved.png" alt="Nonograms Colored unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/nonograms_colored_unsolved.png" alt="Nonograms Colored unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -5754,11 +5754,11 @@ Time taken: 0.40 seconds
 
 The script also visualizes the solution:
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nonograms_colored_script_output.png" alt="Nonograms Colored solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/nonograms_colored_script_output.png" alt="Nonograms Colored solved" width="500">
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nonograms_colored_solved.png" alt="Nonograms Colored solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/nonograms_colored_solved.png" alt="Nonograms Colored solved" width="500">
 
 ---
 

@@ -52,7 +52,7 @@ Note: This puzzle is one of the very rare puzzles where CP-SAT is not a good fit
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/black_box_unsolved.png" alt="Black Box unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/black_box_unsolved.png" alt="Black Box unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -115,4 +115,4 @@ Time taken: 24.53 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/black_box_solved.png" alt="Black Box solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/black_box_solved.png" alt="Black Box solved" width="500">

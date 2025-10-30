@@ -16,7 +16,7 @@ Read more about the history and methods behind nurikabe in the [Wikipedia nurika
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nurikabe_unsolved.png" alt="Nurikabe unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/nurikabe_unsolved.png" alt="Nurikabe unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -103,4 +103,4 @@ Time taken: 1.62 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nurikabe_solved.png" alt="Nurikabe solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/nurikabe_solved.png" alt="Nurikabe solved" width="500">

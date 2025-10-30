@@ -10,7 +10,7 @@
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/heyawake_unsolved.png" alt="Heyawake unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/heyawake_unsolved.png" alt="Heyawake unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -103,4 +103,4 @@ Time taken: 38.04 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/heyawake_solved.png" alt="Heyawake solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/heyawake_solved.png" alt="Heyawake solved" width="500">

@@ -16,7 +16,7 @@ By convention the first and last numbers are shown; one or more interim numbers 
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/signpost_unsolved.png" alt="Signpost unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/signpost_unsolved.png" alt="Signpost unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -62,4 +62,4 @@ Time taken: 0.03 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/signpost_solved.png" alt="Signpost solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/signpost_solved.png" alt="Signpost solved" width="500">

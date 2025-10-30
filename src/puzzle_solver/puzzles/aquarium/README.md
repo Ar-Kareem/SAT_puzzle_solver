@@ -12,7 +12,7 @@ The numbers outside the grid show the number of filled cells horizontally and ve
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/aquarium_unsolved.png" alt="Aquarium unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/aquarium_unsolved.png" alt="Aquarium unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -85,4 +85,4 @@ Time taken: 0.02 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/aquarium_solved.png" alt="Aquarium solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/aquarium_solved.png" alt="Aquarium solved" width="500">

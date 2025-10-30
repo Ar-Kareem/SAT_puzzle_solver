@@ -12,7 +12,7 @@ You have to draw lines between the dots to form a single loop without crossings 
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/shingoki_unsolved.png" alt="Shingoki unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/shingoki_unsolved.png" alt="Shingoki unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -102,4 +102,4 @@ Time taken: 425.97 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/shingoki_solved.png" alt="Shingoki solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/shingoki_solved.png" alt="Shingoki solved" width="500">

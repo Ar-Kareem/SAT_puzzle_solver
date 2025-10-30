@@ -14,7 +14,7 @@ The goal is to create a single fully connected graph where each cell's connectio
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/pipes_unsolved.png" alt="Pipes unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/pipes_unsolved.png" alt="Pipes unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -73,4 +73,4 @@ Time taken: 5.65 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/pipes_solved.png" alt="Pipes solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/pipes_solved.png" alt="Pipes solved" width="500">

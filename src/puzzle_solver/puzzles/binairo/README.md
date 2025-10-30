@@ -10,7 +10,7 @@ Binairo is played on a rectangular grid with no standard size. Some cells start 
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/binairo_unsolved.png" alt="Binairo unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/binairo_unsolved.png" alt="Binairo unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -99,7 +99,7 @@ Time taken: 0.02 seconds
 
 Applying the solution to the puzzle visually:
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/binairo_solved.png" alt="Binairo solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/binairo_solved.png" alt="Binairo solved" width="500">
 
 
 # Binairo Plus (Puzzle Type #49)
@@ -114,7 +114,7 @@ Binairo+ is played on a rectangular grid with no standard size. Some cells start
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/binairo_plus_unsolved.png" alt="Binairo Plus unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/binairo_plus_unsolved.png" alt="Binairo Plus unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -216,4 +216,4 @@ Time taken: 0.00 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/binairo_plus_solved.png" alt="Binairo Plus solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/binairo_plus_solved.png" alt="Binairo Plus solved" width="500">

@@ -23,7 +23,7 @@ For instance, a square containing the number one must have four black squares as
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/range_unsolved.png" alt="Range unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/range_unsolved.png" alt="Range unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -80,4 +80,4 @@ Time taken: 0.07 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/range_solved.png" alt="Range solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/range_solved.png" alt="Range solved" width="500">

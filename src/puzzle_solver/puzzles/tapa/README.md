@@ -16,7 +16,7 @@ You are given a grid where some cells have numbers. Your goal is to shade some c
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tapa_unsolved.png" alt="Tapa unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/tapa_unsolved.png" alt="Tapa unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -107,4 +107,4 @@ Time taken: 14.20 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tapa_solved.png" alt="Tapa solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/tapa_solved.png" alt="Tapa solved" width="500">

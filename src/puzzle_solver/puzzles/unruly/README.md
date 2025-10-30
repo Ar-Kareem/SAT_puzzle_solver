@@ -14,7 +14,7 @@ You are given a grid of squares, which you must colour either black or white. So
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/unruly_unsolved.png" alt="Unruly unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/unruly_unsolved.png" alt="Unruly unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -80,4 +80,4 @@ Time taken: 0.02 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/unruly_solved.png" alt="Unruly solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/unruly_solved.png" alt="Unruly solved" width="500">

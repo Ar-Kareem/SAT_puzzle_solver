@@ -11,7 +11,7 @@ To enter your solution, you draw lines along the grid edges to mark the boundari
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/galaxies_unsolved.png" alt="Galaxies unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/galaxies_unsolved.png" alt="Galaxies unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -88,4 +88,4 @@ Time taken: 0.06 seconds
 
 Applying the solution to the puzzle visually:
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/galaxies_solved.png" alt="Galaxies solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/galaxies_solved.png" alt="Galaxies solved" width="500">

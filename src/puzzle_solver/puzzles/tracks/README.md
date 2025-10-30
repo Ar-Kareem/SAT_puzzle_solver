@@ -14,7 +14,7 @@ Complete the track from A to B so that the rows and columns contain the same num
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tracks_unsolved.png" alt="Tracks unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/tracks_unsolved.png" alt="Tracks unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -85,4 +85,4 @@ Time taken: 1.01 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/tracks_solved.png" alt="Tracks solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/tracks_solved.png" alt="Tracks solved" width="500">

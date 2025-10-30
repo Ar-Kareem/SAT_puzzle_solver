@@ -16,7 +16,7 @@ Finding an optimal solution for any graph is NP-hard.
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/flood_it_unsolved.png" alt="Flood It unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/flood_it_unsolved.png" alt="Flood It unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -66,4 +66,4 @@ This picture won't mean much as the game is about the sequence and number of mov
 
 Note that the solved solution on the bottom left says that only 18 moves were used (based on the above output) despite the website saying 20 total moves are permitted (and the puzzle settings specified 0 extra moves permitted). Thus the solver managed to find a more optimal solution than the website.
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/flood_it_solved.png" alt="Flood It solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/flood_it_solved.png" alt="Flood It solved" width="500">

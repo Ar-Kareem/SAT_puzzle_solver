@@ -11,7 +11,7 @@ You have to shade some of the cells in such a way that:
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/norinori_unsolved.png" alt="Norinori unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/norinori_unsolved.png" alt="Norinori unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -99,4 +99,4 @@ Time taken: 0.03 seconds
 
 Applying the solution to the puzzle visually:
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/norinori_solved.png" alt="Norinori solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/norinori_solved.png" alt="Norinori solved" width="500">

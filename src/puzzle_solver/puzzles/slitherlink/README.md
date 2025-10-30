@@ -14,7 +14,7 @@ A line forming a single loop without crossings or branches means that every corn
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/slitherlink_solved.png" alt="Slitherlink solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/slitherlink_solved.png" alt="Slitherlink solved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -102,4 +102,4 @@ Time taken: 2.39 seconds
 
 Applying the solution to the puzzle visually:
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/slitherlink_solved.png" alt="Slitherlink solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/slitherlink_solved.png" alt="Slitherlink solved" width="500">

@@ -8,7 +8,7 @@ You have a grid of squares, some light and some dark. Your aim is to light all t
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/flip_unsolved.png" alt="Flip unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/flip_unsolved.png" alt="Flip unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -51,4 +51,4 @@ status: OPTIMAL
 
 This picture won't mean much as the game is about the sequence of moves not the final frame as shown here.
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/flip_solved.png" alt="Flip solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/flip_solved.png" alt="Flip solved" width="500">

@@ -24,7 +24,7 @@ Non-numbered black squares may have any number of lights adjacent to them.
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/lightup_unsolved.png" alt="Light Up unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/lightup_unsolved.png" alt="Light Up unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -68,4 +68,4 @@ Time taken: 0.01 seconds
 
 Which exactly matches the true solutions (Remember, the goal of the puzzle is to find where to place the lights, marked as 'L' in the solution above):
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/lightup_solved.png" alt="Light Up solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/lightup_solved.png" alt="Light Up solved" width="500">

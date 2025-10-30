@@ -10,7 +10,7 @@
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/battleships_unsolved.png" alt="Battleships unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/battleships_unsolved.png" alt="Battleships unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -87,4 +87,4 @@ Solution found
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/battleships_solved.png" alt="Battleships solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/battleships_solved.png" alt="Battleships solved" width="500">

@@ -13,7 +13,7 @@ You have a grid of squares, with numbers written in some (but not all) of the sq
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/rectangles_unsolved.png" alt="Rectangles unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/rectangles_unsolved.png" alt="Rectangles unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -99,4 +99,4 @@ Time taken: 0.01 seconds
 
 Applying the solution to the puzzle visually:
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/rectangles_solved.png" alt="Rectangles solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/rectangles_solved.png" alt="Rectangles solved" width="500">

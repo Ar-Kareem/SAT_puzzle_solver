@@ -14,7 +14,7 @@ You have a grid of squares, which must all be filled in either black or white. B
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nonogram_unsolved.png" alt="Nonogram unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/nonogram_unsolved.png" alt="Nonogram unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -99,7 +99,7 @@ Time taken: 0.04 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nonogram_solved.png" alt="Nonogram solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/nonogram_solved.png" alt="Nonogram solved" width="500">
 
 
 # Nonograms Colored (Puzzle Type #57)
@@ -111,7 +111,7 @@ You have a grid of squares, which must all be filled in either white or one of t
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nonograms_colored_unsolved.png" alt="Nonograms Colored unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/nonograms_colored_unsolved.png" alt="Nonograms Colored unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -218,8 +218,8 @@ Time taken: 0.40 seconds
 
 The script also visualizes the solution:
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nonograms_colored_script_output.png" alt="Nonograms Colored solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/nonograms_colored_script_output.png" alt="Nonograms Colored solved" width="500">
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/nonograms_colored_solved.png" alt="Nonograms Colored solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/nonograms_colored_solved.png" alt="Nonograms Colored solved" width="500">

@@ -12,7 +12,7 @@ The goal is to make some of the cells black in such a way that:
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/kakurasu_unsolved.png" alt="Kakurasu unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/kakurasu_unsolved.png" alt="Kakurasu unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -64,4 +64,4 @@ Time taken: 0.00 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/kakurasu_solved.png" alt="Kakurasu solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/kakurasu_solved.png" alt="Kakurasu solved" width="500">

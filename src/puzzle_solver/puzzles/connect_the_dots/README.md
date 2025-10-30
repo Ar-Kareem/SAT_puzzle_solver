@@ -8,7 +8,7 @@ You are given a grid of empty cells and 2 filled cell per color. The goal is to 
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/connect_the_dots_unsolved.png" alt="Connect the Dots unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/connect_the_dots_unsolved.png" alt="Connect the Dots unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -58,4 +58,4 @@ Time taken: 2.91 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/connect_the_dots_solved.png" alt="Connect the Dots solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/connect_the_dots_solved.png" alt="Connect the Dots solved" width="500">

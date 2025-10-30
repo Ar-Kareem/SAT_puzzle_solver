@@ -16,7 +16,7 @@ Your task is to reconstruct the pattern by arranging the set of dominoes to matc
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/dominosa_unsolved.png" alt="Dominosa unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/dominosa_unsolved.png" alt="Dominosa unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -58,4 +58,4 @@ Time taken: 0.02 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/dominosa_solved.png" alt="Dominosa solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/dominosa_solved.png" alt="Dominosa solved" width="500">

@@ -13,7 +13,7 @@ Note: The solver is capable of solving variations where the puzzle pieces the ma
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/lits_unsolved.png" alt="Lits unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/lits_unsolved.png" alt="Lits unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -100,4 +100,4 @@ Time taken: 0.09 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/lits_solved.png" alt="Lits solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/lits_solved.png" alt="Lits solved" width="500">

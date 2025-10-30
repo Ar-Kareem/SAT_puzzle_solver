@@ -8,7 +8,7 @@ You're given a grid of N squares and a region size M, some of which contain numb
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/palisade_unsolved.png" alt="Palisade unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/palisade_unsolved.png" alt="Palisade unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -75,4 +75,4 @@ Time taken: 11.94 seconds
 
 Applying the solution to the puzzle visually:
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/palisade_solved.png" alt="Palisade solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/palisade_solved.png" alt="Palisade solved" width="500">

@@ -9,7 +9,7 @@ Kakuro is played on a rectangular grid by placing numbers in the white cells suc
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/kakuro_unsolved.png" alt="Kakuro unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/kakuro_unsolved.png" alt="Kakuro unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -68,4 +68,4 @@ Time taken: 0.00 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/kakuro_solved.png" alt="Kakuro solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/kakuro_solved.png" alt="Kakuro solved" width="500">

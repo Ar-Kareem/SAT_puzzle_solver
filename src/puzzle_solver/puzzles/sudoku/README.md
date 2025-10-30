@@ -20,7 +20,7 @@ You are given some of the numbers as clues; your aim is to place the rest of the
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_unsolved.png" alt="Sudoku unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/sudoku_unsolved.png" alt="Sudoku unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -103,7 +103,7 @@ Time taken: 0.04 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_solved.png" alt="Sudoku solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/sudoku_solved.png" alt="Sudoku solved" width="500">
 
 # Sudoku Jigsaw (Puzzle Type #52)
 
@@ -114,7 +114,7 @@ Time taken: 0.04 seconds
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_jigsaw_unsolved.png" alt="Sudoku Jigsaw unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/sudoku_jigsaw_unsolved.png" alt="Sudoku Jigsaw unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -181,7 +181,7 @@ Time taken: 0.01 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_jigsaw_solved.png" alt="Sudoku Jigsaw solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/sudoku_jigsaw_solved.png" alt="Sudoku Jigsaw solved" width="500">
 
 # Sudoku Killer (Puzzle Type #53)
 
@@ -193,7 +193,7 @@ Time taken: 0.01 seconds
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_killer_unsolved.png" alt="Sudoku Killer unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/sudoku_killer_unsolved.png" alt="Sudoku Killer unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -256,4 +256,4 @@ Time taken: 0.02 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/sudoku_killer_solved.png" alt="Sudoku Killer solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/sudoku_killer_solved.png" alt="Sudoku Killer solved" width="500">

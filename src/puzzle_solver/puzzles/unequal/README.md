@@ -26,7 +26,7 @@ In 'Trivial' difficulty level (available via the 'Custom' game type selector), t
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/unequal_unsolved.png" alt="Unequal unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/unequal_unsolved.png" alt="Unequal unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -84,4 +84,4 @@ Time taken: 0.05 seconds
 
 Applying the solution to the puzzle visually:
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/unequal_solved.png" alt="Unequal solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/unequal_solved.png" alt="Unequal solved" width="500">

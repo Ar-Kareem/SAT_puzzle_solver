@@ -11,7 +11,7 @@ You have a grid of squares. Your aim is to draw a diagonal line through each squ
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/slant_unsolved.png" alt="Slant unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/slant_unsolved.png" alt="Slant unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -72,4 +72,4 @@ Time taken: 0.06 seconds
 
 Applying the solution to the puzzle visually:
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/slant_solved.png" alt="Slant solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/slant_solved.png" alt="Slant solved" width="500">

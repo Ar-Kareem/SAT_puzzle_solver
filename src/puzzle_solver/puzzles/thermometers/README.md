@@ -13,7 +13,7 @@ The numbers outside the grid show the number of filled cells horizontally and ve
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/thermometers_unsolved.png" alt="Thermometers unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/thermometers_unsolved.png" alt="Thermometers unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 
@@ -68,4 +68,4 @@ Time taken: 0.01 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/thermometers_solved.png" alt="Thermometers solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/thermometers_solved.png" alt="Thermometers solved" width="500">

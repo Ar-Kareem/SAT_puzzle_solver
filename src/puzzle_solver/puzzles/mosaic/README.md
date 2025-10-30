@@ -16,7 +16,7 @@ Some squares contain clue numbers. Each clue tells you the number of black squar
 
 **Unsolved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/mosaic_unsolved.png" alt="Mosaic unsolved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/mosaic_unsolved.png" alt="Mosaic unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
 ```python
@@ -85,4 +85,4 @@ Time taken: 0.02 seconds
 
 **Solved puzzle**
 
-<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/mosaic_solved.png" alt="Mosaic solved" width="500">
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/mosaic_solved.png" alt="Mosaic solved" width="500">
