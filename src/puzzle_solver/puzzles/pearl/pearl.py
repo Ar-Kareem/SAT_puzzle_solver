@@ -4,16 +4,16 @@ import numpy as np
 from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
 
-from puzzle_solver.core.utils import Pos, get_all_pos, set_char, in_bounds, Direction, get_next_pos, get_char, get_opposite_direction
+from puzzle_solver.core.utils import Pos, get_all_pos, in_bounds, Direction, get_next_pos, get_char, get_opposite_direction, get_pos, set_char
 from puzzle_solver.core.utils_ortools import and_constraint, generic_solve_all, SingleSolution, force_connected_component
+from puzzle_solver.core.utils_visualizer import combined_function
 
 
 class Board:
     def __init__(self, board: np.ndarray):
         assert board.ndim == 2 and board.shape[0] > 0 and board.shape[1] > 0, f'board must be 2d, got {board.ndim}'
-        assert all(i.item() in [' ', 'B', 'W'] for i in np.nditer(board)), f'board must be space, B, or W, got {list(np.nditer(board))}'
-        self.V = board.shape[0]
-        self.H = board.shape[1]
+        assert all(c.item().strip() in ['', 'B', 'W'] for c in np.nditer(board)), f'board must be space, B, or W, got {list(np.nditer(board))}'
+        self.V, self.H = board.shape
         self.board = board
         self.model = cp_model.CpModel()
         self.cell_active: dict[Pos, cp_model.IntVar] = {}
@@ -36,11 +36,10 @@ class Board:
     def force_wb_constraints(self):
         for pos in get_all_pos(self.V, self.H):
             c = get_char(self.board, pos)
-            if c == 'B':
-                # must be active
-                self.model.Add(self.cell_active[pos] == 1)
-                # black circle must be a corner not connected directly to another corner
-                # must be a corner
+            if not c.strip():
+                continue
+            self.model.Add(self.cell_active[pos] == 1)  # cell must be active
+            if c == 'B':  # black circle must be a corner not connected directly to another corner
                 self.model.Add(self.cell_direction[(pos, Direction.UP)] != self.cell_direction[(pos, Direction.DOWN)])
                 self.model.Add(self.cell_direction[(pos, Direction.LEFT)] != self.cell_direction[(pos, Direction.RIGHT)])
                 # must not be connected directly to another corner
@@ -49,11 +48,7 @@ class Board:
                     if not in_bounds(q, self.V, self.H):
                         continue
                     self.model.AddImplication(self.cell_direction[(pos, direction)], self.cell_direction[(q, direction)])
-            elif c == 'W':
-                # must be active
-                self.model.Add(self.cell_active[pos] == 1)
-                # white circle must be a straight which is connected to at least one corner
-                # must be straight
+            elif c == 'W':  # white circle must be a straight which is connected to at least one corner
                 self.model.Add(self.cell_direction[(pos, Direction.UP)] == self.cell_direction[(pos, Direction.DOWN)])
                 self.model.Add(self.cell_direction[(pos, Direction.LEFT)] == self.cell_direction[(pos, Direction.RIGHT)])
                 # must be connected to at least one corner (i.e. UP-RIGHT or UP-LEFT or DOWN-RIGHT or DOWN-LEFT or RIGHT-UP or RIGHT-DOWN or LEFT-UP or LEFT-DOWN)
@@ -94,26 +89,19 @@ class Board:
             return False
         force_connected_component(self.model, self.cell_direction, is_neighbor=is_neighbor)
 
-
     def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
             assignment: dict[Pos, str] = defaultdict(str)
             for (pos, direction), var in board.cell_direction.items():
                 assignment[pos] += direction.name[0] if solver.BooleanValue(var) else ''
-            for pos in get_all_pos(self.V, self.H):
-                if len(assignment[pos]) == 0:
-                    assignment[pos] = '  '
-                else:
-                    assignment[pos] = ''.join(sorted(assignment[pos]))
             return SingleSolution(assignment=assignment)
         def callback(single_res: SingleSolution):
             print("Solution found")
-            res = np.full((self.V, self.H), ' ', dtype=object)
-            pretty_dict = {'DU': '┃ ', 'LR': '━━', 'DL': '━┒', 'DR': '┏━', 'RU': '┗━', 'LU': '━┛', '  ': '  '}
+            output_board = np.full((self.V, self.H), '', dtype=str)
             for pos in get_all_pos(self.V, self.H):
-                c = get_char(self.board, pos)
-                c = single_res.assignment[pos]
-                c = pretty_dict[c]
-                set_char(res, pos, c)
-            print(res)
+                if get_char(self.board, pos) in ['B', 'W']:  # if the main board has a white or black pearl, put it in the output
+                    set_char(output_board, pos, get_char(self.board, pos))
+                if not single_res.assignment[pos].strip():  # if the cell does not the line through it, put a dot
+                    set_char(output_board, pos, '.')
+            print(combined_function(self.V, self.H, show_grid=False, special_content=lambda r, c: single_res.assignment[get_pos(x=c, y=r)], center_char=lambda r, c: output_board[r, c]))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose, max_solutions=20)
