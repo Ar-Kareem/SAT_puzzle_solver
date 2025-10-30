@@ -1,14 +1,13 @@
 import numpy as np
 from ortools.sat.python import cp_model
 
-from puzzle_solver.core.utils import Pos, get_all_pos, get_char, set_char, get_neighbors4, get_row_pos, get_col_pos
+from puzzle_solver.core.utils import Pos, get_all_pos, get_char, get_neighbors4, get_row_pos, get_col_pos, get_pos
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution
+from puzzle_solver.core.utils_visualizer import combined_function, id_board_to_wall_fn
 
 
-def _sanity_check(board: np.array):
-    # percolation check
-    V = board.shape[0]
-    H = board.shape[1]
+def _sanity_check(board: np.array):  # percolation check
+    V, H = board.shape
     visited: set[Pos] = set()
     finished_islands: set[int] = set()
     def dfs(pos: Pos, target_i: int):
@@ -28,15 +27,13 @@ def _sanity_check(board: np.array):
         assert current_i not in finished_islands, f'island {current_i} already finished'
         dfs(pos, current_i)
         finished_islands.add(current_i)
-
     assert len(finished_islands) == len(set(board.flatten())), 'board is not connected'
 
 class Board:
     def __init__(self, board: np.array, top: np.array, side: np.array):
         assert board.ndim == 2, f'board must be 2d, got {board.ndim}'
         _sanity_check(board)
-        self.V = board.shape[0]
-        self.H = board.shape[1]
+        self.V, self.H = board.shape
         assert top.ndim == 1 and top.shape[0] == self.H, 'top must be a 1d array of length board width'
         assert side.ndim == 1 and side.shape[0] == self.V, 'side must be a 1d array of length board height'
         assert all((str(c.item()).isdecimal() for c in np.nditer(board))), 'board must contain only digits'
@@ -69,15 +66,12 @@ class Board:
         for aq_i in self.aquarium_numbers:
             for pos in self.aquariums[aq_i]:
                 self.model.Add(self.is_aquarium_here[pos.y, aq_i] == 1).OnlyEnforceIf(self.model_vars[pos])
-
         # aquarium always start from the bottom
         for aq_i in self.aquarium_numbers:
             for row in self.aquariums_exist_in_row[aq_i]:
-                # (row + 1) is below (row)
-                if row + 1 not in self.aquariums_exist_in_row[aq_i]:
+                if row + 1 not in self.aquariums_exist_in_row[aq_i]:  # (row + 1) is below (row) thus currently (row) is the bottom of the aquarium
                     continue
                 self.model.Add(self.is_aquarium_here[row + 1, aq_i] == 1).OnlyEnforceIf(self.is_aquarium_here[row, aq_i])
-
         for row in range(self.V):
             for aq_i in self.aquarium_numbers:
                 aq_i_row_pos = [pos for pos in self.aquariums[aq_i] if pos.y == row]
@@ -88,7 +82,6 @@ class Board:
                 if len(aq_i_row_pos) > 0:
                     self.model.Add(sum([self.model_vars[pos] for pos in aq_i_row_pos]) == len(aq_i_row_pos)).OnlyEnforceIf(self.is_aquarium_here[row, aq_i])
                     self.model.Add(sum([self.model_vars[pos] for pos in aq_i_row_pos]) == 0).OnlyEnforceIf(self.is_aquarium_here[row, aq_i].Not())
-
         # force the top and side constraints
         for col in range(self.H):
             self.model.Add(sum([self.model_vars[pos] for pos in get_col_pos(col, self.V)]) == self.top[col])
@@ -97,16 +90,8 @@ class Board:
 
     def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
-            assignment: dict[Pos, int] = {}
-            for pos, var in board.model_vars.items():
-                assignment[pos] = solver.value(var)
-            return SingleSolution(assignment=assignment)
+            return SingleSolution(assignment={pos: solver.value(board.model_vars[pos]) for pos in board.model_vars.keys()})
         def callback(single_res: SingleSolution):
             print("Solution found")
-            res = np.full((self.V, self.H), ' ', dtype=str)
-            for pos, val in single_res.assignment.items():
-                c = str(val)
-                set_char(res, pos, c)
-            print(res)
-
+            print(combined_function(self.V, self.H, cell_flags=id_board_to_wall_fn(self.board), center_char=lambda r, c: 'O' if single_res.assignment[get_pos(x=c, y=r)] == 1 else ''))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose, max_solutions=99)
