@@ -112,7 +112,7 @@ def test_ground():
     }
     # _viz_board(board, region_to_clue)
     binst = solver.Board(board=board, region_to_clue=region_to_clue)
-    solutions = binst.solve_and_print(max_solutions=1)
+    solutions = binst.solve_and_print()
     assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
     solution = solutions[0].assignment
     ground = np.array([

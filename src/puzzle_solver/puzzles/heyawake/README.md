@@ -97,8 +97,8 @@ Solution found
 19│                ▒▒▒        │▒▒▒  2  ▒▒▒│   │ 2  ▒▒▒  2  ▒▒▒│   │ 2  ▒▒▒│   │ 3 │
   └───────────────────────────┴───────────┴───┴───────────────┴───┴───────┴───┴───┘
 Solutions found: 1
-status: FEASIBLE
-Time taken: 38.04 seconds
+status: OPTIMAL
+Time taken: 6.72 seconds
 ```
 
 **Solved puzzle**
