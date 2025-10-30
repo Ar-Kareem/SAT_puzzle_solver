@@ -2,8 +2,9 @@ from collections import defaultdict
 import numpy as np
 from ortools.sat.python import cp_model
 
-from puzzle_solver.core.utils import Pos, get_all_pos, set_char, get_char, Direction, in_bounds, get_next_pos, get_row_pos, get_col_pos, get_opposite_direction
+from puzzle_solver.core.utils import Pos, get_all_pos, get_char, Direction, in_bounds, get_next_pos, get_row_pos, get_col_pos, get_opposite_direction, get_pos
 from puzzle_solver.core.utils_ortools import force_connected_component, generic_solve_all, SingleSolution
+from puzzle_solver.core.utils_visualizer import combined_function
 
 
 class Board:
@@ -11,8 +12,7 @@ class Board:
         assert board.ndim == 2, f'board must be 2d, got {board.ndim}'
         assert all((len(c.item()) == 2) and all(ch in [' ', 'U', 'L', 'D', 'R'] for ch in c.item()) for c in np.nditer(board)), 'board must contain only digits or space'
         self.board = board
-        self.V = board.shape[0]
-        self.H = board.shape[1]
+        self.V, self.H = board.shape
         self.side = side
         self.top = top
         self.first_col_start_pos = [p for p in get_col_pos(0, self.V) if 'L' in get_char(self.board, p)]
@@ -33,75 +33,45 @@ class Board:
         for pos in get_all_pos(self.V, self.H):
             self.cell_active[pos] = self.model.NewBoolVar(f'{pos}')
             for direction in Direction:
-                self.cell_direction[(pos, direction)] = self.model.NewBoolVar(f'{pos}:{direction}')
+                next_pos = get_next_pos(pos, direction)
+                opposite_direction = get_opposite_direction(direction)
+                if (next_pos, opposite_direction) in self.cell_direction:
+                    self.cell_direction[(pos, direction)] = self.cell_direction[(next_pos, opposite_direction)]
+                else:
+                    self.cell_direction[(pos, direction)] = self.model.NewBoolVar(f'{pos}:{direction}')
 
     def add_all_constraints(self):
-        self.force_hints()
-        self.force_sides()
-        self.force_0_or_2_active()
-        self.force_direction_constraints()
-        self.force_connected_component()
-
-
-    def force_hints(self):
         # force the already given hints
+        str_to_direction = {'U': Direction.UP, 'L': Direction.LEFT, 'D': Direction.DOWN, 'R': Direction.RIGHT}
         for pos in get_all_pos(self.V, self.H):
-            c = get_char(self.board, pos)
-            if 'U' in c:
-                self.model.Add(self.cell_direction[(pos, Direction.UP)] == 1)
-            if 'L' in c:
-                self.model.Add(self.cell_direction[(pos, Direction.LEFT)] == 1)
-            if 'D' in c:
-                self.model.Add(self.cell_direction[(pos, Direction.DOWN)] == 1)
-            if 'R' in c:
-                self.model.Add(self.cell_direction[(pos, Direction.RIGHT)] == 1)
+            for char in get_char(self.board, pos).strip():
+                self.model.Add(self.cell_direction[(pos, str_to_direction[char])] == 1)
 
-    def force_sides(self):
         # force the already given sides
         for i in range(self.V):
             self.model.Add(sum([self.cell_active[pos] for pos in get_row_pos(i, self.H)]) == self.side[i])
         for i in range(self.H):
             self.model.Add(sum([self.cell_active[pos] for pos in get_col_pos(i, self.V)]) == self.top[i])
 
-    def force_0_or_2_active(self):
         # cell active means exactly 2 directions are active, cell not active means no directions are active
         for pos in get_all_pos(self.V, self.H):
             s = sum([self.cell_direction[(pos, direction)] for direction in Direction])
             self.model.Add(s == 2).OnlyEnforceIf(self.cell_active[pos])
             self.model.Add(s == 0).OnlyEnforceIf(self.cell_active[pos].Not())
 
-    def force_direction_constraints(self):
-        # X having right means the cell to its right has left and so on for all directions
-        for pos in get_all_pos(self.V, self.H):
-            right_pos = get_next_pos(pos, Direction.RIGHT)
-            if in_bounds(right_pos, self.V, self.H):
-                self.model.Add(self.cell_direction[(pos, Direction.RIGHT)] == self.cell_direction[(right_pos, Direction.LEFT)])
-            down_pos = get_next_pos(pos, Direction.DOWN)
-            if in_bounds(down_pos, self.V, self.H):
-                self.model.Add(self.cell_direction[(pos, Direction.DOWN)] == self.cell_direction[(down_pos, Direction.UP)])
-            left_pos = get_next_pos(pos, Direction.LEFT)
-            if in_bounds(left_pos, self.V, self.H):
-                self.model.Add(self.cell_direction[(pos, Direction.LEFT)] == self.cell_direction[(left_pos, Direction.RIGHT)])
-            top_pos = get_next_pos(pos, Direction.UP)
-            if in_bounds(top_pos, self.V, self.H):
-                self.model.Add(self.cell_direction[(pos, Direction.UP)] == self.cell_direction[(top_pos, Direction.DOWN)])
-
-        # first column cant have L unless it is the start position
-        for pos in get_col_pos(0, self.V):
+        # force borders
+        for pos in get_col_pos(0, self.V):  # first column cant have L unless it is the start position
             if pos != self.first_col_start_pos:
                 self.model.Add(self.cell_direction[(pos, Direction.LEFT)] == 0)
-        # last column cant have R
-        for pos in get_col_pos(self.H - 1, self.V):
+        for pos in get_col_pos(self.H - 1, self.V):  # last column cant have R
             self.model.Add(self.cell_direction[(pos, Direction.RIGHT)] == 0)
-        # last row cant have D unless it is the end position
-        for pos in get_row_pos(self.V - 1, self.H):
+        for pos in get_row_pos(self.V - 1, self.H):  # last row cant have D unless it is the end position
             if pos != self.last_row_end_pos:
                 self.model.Add(self.cell_direction[(pos, Direction.DOWN)] == 0)
-        # first row cant have U
-        for pos in get_row_pos(0, self.H):
+        for pos in get_row_pos(0, self.H):  # first row cant have U
             self.model.Add(self.cell_direction[(pos, Direction.UP)] == 0)
 
-    def force_connected_component(self):
+        # force single connected component
         def is_neighbor(pd1: tuple[Pos, Direction], pd2: tuple[Pos, Direction]) -> bool:
             p1, d1 = pd1
             p2, d2 = pd2
@@ -112,30 +82,13 @@ class Board:
             return False
         force_connected_component(self.model, self.cell_direction, is_neighbor=is_neighbor)
 
-
-
-
-
     def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
             assignment: dict[Pos, str] = defaultdict(str)
             for (pos, direction), var in board.cell_direction.items():
                 assignment[pos] += direction.name[0] if solver.BooleanValue(var) else ''
-            for pos in get_all_pos(self.V, self.H):
-                if len(assignment[pos]) == 0:
-                    assignment[pos] = '  '
-                else:
-                    assignment[pos] = ''.join(sorted(assignment[pos]))
             return SingleSolution(assignment=assignment)
         def callback(single_res: SingleSolution):
             print("Solution found")
-            print(single_res.assignment)
-            res = np.full((self.V, self.H), ' ', dtype=object)
-            pretty_dict = {'DU': '┃ ', 'LR': '━━', 'DL': '━┒', 'DR': '┏━', 'RU': '┗━', 'LU': '━┛', '  ': '  '}
-            for pos in get_all_pos(self.V, self.H):
-                c = get_char(self.board, pos)
-                c = single_res.assignment[pos]
-                c = pretty_dict[c]
-                set_char(res, pos, c)
-            print(res)
+            print(combined_function(self.V, self.H, show_grid=False, special_content=lambda r, c: single_res.assignment[get_pos(x=c, y=r)].strip(), center_char=lambda r, c: '.', text_on_shaded_cells=False))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose, max_solutions=20)
