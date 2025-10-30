@@ -101,7 +101,7 @@ def in_bounds(pos: Pos, V: int, H: int = None) -> bool:
     return 0 <= pos.y < V and 0 <= pos.x < H
 
 
-def get_opposite_direction(direction: Direction) -> Direction:
+def get_opposite_direction(direction: Union[Direction, Direction8]) -> Union[Direction, Direction8]:
     if direction == Direction.RIGHT:
         return Direction.LEFT
     elif direction == Direction.LEFT:
@@ -110,6 +110,22 @@ def get_opposite_direction(direction: Direction) -> Direction:
         return Direction.UP
     elif direction == Direction.UP:
         return Direction.DOWN
+    elif direction == Direction8.RIGHT:
+        return Direction8.LEFT
+    elif direction == Direction8.LEFT:
+        return Direction8.RIGHT
+    elif direction == Direction8.DOWN:
+        return Direction8.UP
+    elif direction == Direction8.UP:
+        return Direction8.DOWN
+    elif direction == Direction8.UP_LEFT:
+        return Direction8.DOWN_RIGHT
+    elif direction == Direction8.UP_RIGHT:
+        return Direction8.DOWN_LEFT
+    elif direction == Direction8.DOWN_LEFT:
+        return Direction8.UP_RIGHT
+    elif direction == Direction8.DOWN_RIGHT:
+        return Direction8.UP_LEFT
     else:
         raise ValueError(f'invalid direction: {direction}')
 
