@@ -3,7 +3,7 @@ from ortools.sat.python import cp_model
 
 from puzzle_solver.core.utils import Pos, get_all_pos, get_neighbors4, get_pos, get_char
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, force_connected_component
-from puzzle_solver.core.utils_visualizer import combined_function
+from puzzle_solver.core.utils_visualizer import combined_function, id_board_to_wall_fn
 
 
 def return_3_consecutives(int_list: list[int]) -> list[tuple[int, int]]:
@@ -77,22 +77,15 @@ class Board:
                 pos_list = [get_pos(x=col_num, y=y) for y in range(begin_idx, end_idx+1)]
                 self.model.AddBoolOr([self.B[p] for p in pos_list])
 
-    def solve_and_print(self, verbose: bool = True):
+    def solve_and_print(self, verbose: bool = True, max_solutions: int = 20):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
-            assignment: dict[Pos, int] = {}
-            for pos, var in board.B.items():
-                assignment[pos] = 1 if solver.Value(var) == 1 else 0
-            return SingleSolution(assignment=assignment)
+            return SingleSolution(assignment={pos: solver.Value(var) for pos, var in board.B.items()})
         def callback(single_res: SingleSolution):
             print("Solution found")
-            # res = np.full((self.V, self.H), ' ', dtype=object)
-            # for pos in get_all_pos(self.V, self.H):
-            #     c = 'B' if single_res.assignment[pos] == 1 else ' '
-            #     set_char(res, pos, c)
-            # print(res)
             print(combined_function(self.V, self.H,
+                cell_flags=id_board_to_wall_fn(self.board),
                 is_shaded=lambda r, c: single_res.assignment[get_pos(x=c, y=r)] == 1,
                 center_char=lambda r, c: self.region_to_clue.get(int(self.board[r, c]), ''),
                 text_on_shaded_cells=False
             ))
-        return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose, max_solutions=1)
+        return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose, max_solutions=max_solutions)
