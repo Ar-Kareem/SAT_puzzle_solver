@@ -5,8 +5,9 @@ import numpy as np
 from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
 
-from puzzle_solver.core.utils import Pos, get_all_pos, set_char, get_row_pos, get_col_pos
+from puzzle_solver.core.utils import Pos, get_all_pos, get_pos, set_char, get_row_pos, get_col_pos
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution
+from puzzle_solver.core.utils_visualizer import combined_function
 
 
 def assert_input(lines: list[list[tuple[int, str]]]):
@@ -199,32 +200,17 @@ class Board:
 
     def solve_and_print(self, verbose: bool = True, visualize_colors: Optional[dict[str, str]] = None):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
-            assignment: dict[Pos, str] = {}
-            for pos, d in board.model_vars.items():
-                for color, var in d.items():
-                    if solver.value(var) == 1:
-                        assignment[pos] = color
-                        break
-                else:
-                    assignment[pos] = ' '
-            return SingleSolution(assignment=assignment)
+            return SingleSolution(assignment={pos: color for pos, d in board.model_vars.items() for color, var in d.items() if solver.value(var) == 1})
         def callback(single_res: SingleSolution):
             print("Solution found")
-            res = np.full((self.V, self.H), ' ', dtype=object)
-            for pos in get_all_pos(self.V, self.H):
-                c = single_res.assignment[pos]
-                set_char(res, pos, c)
-            print('[')
-            for row in res:
-                print('        "' + "".join(row.tolist()) + '",')
-            print('    ]')
+            print(combined_function(self.V, self.H, center_char=lambda r, c: single_res.assignment.get(get_pos(x=c, y=r), ' ')))
             if visualize_colors is not None:
                 from matplotlib import pyplot as plt
                 from matplotlib.colors import ListedColormap
                 visualize_colors[' '] = 'black'
                 visualize_colors_keys = list(visualize_colors.keys())
                 char_to_int = {c: i for i, c in enumerate(visualize_colors_keys)}
-                nums = [[char_to_int[c] for c in row] for row in res]
+                nums = [[char_to_int[single_res.assignment.get(get_pos(x=c, y=r), ' ')] for c in range(self.H)] for r in range(self.V)]
                 plt.imshow(nums,
                         aspect='equal',
                         cmap=ListedColormap([visualize_colors[c] for c in visualize_colors_keys]),

@@ -82,7 +82,7 @@ def test_toy2():
         ['R', ' ', 'R'],
         ['G', 'G', 'G']
     ])
-    ground_assignment = {get_pos(x=x, y=y): ground[y][x] for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+    ground_assignment = {get_pos(x=x, y=y): ground[y][x] for x in range(ground.shape[1]) for y in range(ground.shape[0]) if ground[y][x].strip()}
     assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) - set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
 
 
@@ -157,15 +157,15 @@ def test_ground():
         ['7M', '8R', '8M', '5P', '3R'], ['24M', '2P', '3R'], ['16M', '7M'], ['12M']
     ]
     binst = solver.Board(top=top, side=side)
-    solutions = binst.solve_and_print()
-    #     visualize_colors={
-    #     'M': 'darkmagenta',
-    #     'R': 'magenta',
-    #     'G': 'green',
-    #     'P': 'pink',
-    #     'L': 'lime',
-    #     'F': 'forestgreen',
-    # })
+    solutions = binst.solve_and_print(
+        # visualize_colors={
+        # 'M': 'darkmagenta',
+        # 'R': 'magenta',
+        # 'G': 'green',
+        # 'P': 'pink',
+        # 'L': 'lime',
+        # 'F': 'forestgreen',}
+    )
     assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
     solution = solutions[0].assignment
     # print(solution)
@@ -200,7 +200,7 @@ def test_ground():
         "  MMMMMMMMMMMMMMMM   MMMMMMM      ",
         "     MMMMMMMMMMMM                 ",
     ])
-    ground_assignment = {get_pos(x=x, y=y): ground[y][x] for y in range(len(ground)) for x in range(len(ground[y]))}
+    ground_assignment = {get_pos(x=x, y=y): ground[y][x] for y in range(len(ground)) for x in range(len(ground[y])) if ground[y][x].strip()}
     assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
     for pos in solution.keys():
         assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
