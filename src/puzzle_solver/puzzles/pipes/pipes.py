@@ -78,5 +78,5 @@ class Board:
             res = np.full((self.V, self.H), ' ', dtype=object)
             for pos in get_all_pos(self.V, self.H):
                 set_char(res, pos, single_res.assignment[pos])
-            print(combined_function(self.V, self.H, show_grid=False, show_axes=True, special_content=lambda r, c: res[r, c], center_char=lambda r, c: '.', text_on_shaded_cells=False)),
+            print(combined_function(self.V, self.H, show_grid=False, show_axes=True, special_content=lambda r, c: res[r, c], center_char=lambda r, c: 'O' if len(res[r, c]) == 1 else '')),
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)

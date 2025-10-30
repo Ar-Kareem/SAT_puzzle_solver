@@ -226,52 +226,74 @@ def combined_function(V: int,
             canvas[yy][start + i] = ch
 
 
-    # helper: place a connector on a border cell, merging if something is there
-    def place_connector(y: int, x: int, kind: str):  # kind in {'h','v'}
-        ch = canvas[y][x]
-        if ch in ('┼','├','┤','┬','┴'):
-            return  # already a full junction from the outer grid; don't touch
-        if kind == 'h':
-            if ch == '│':
-                canvas[y][x] = '┼'
-            elif ch.strip() == '':
-                canvas[y][x] = '─'
-            elif ch == '─':
-                pass  # already fine
-            else:
-                canvas[y][x] = '┼'
-        else:  # kind == 'v'
-            if ch == '─':
-                canvas[y][x] = '┼'
-            elif ch.strip() == '':
-                canvas[y][x] = '│'
-            elif ch == '│':
-                pass
-            else:
-                canvas[y][x] = '┼'
+    # helper to get interior-center coordinates
+    def _cell_center_rc(r_cell: int, c_cell: int):
+        left  = x_corner(c_cell) + 1
+        right = x_corner(c_cell + 1) - 1
+        top   = y_border(r_cell) + 1
+        bottom= y_border(r_cell + 1) - 1
+        if left > right or top > bottom:
+            return None
+        cx = left + (right - left) // 2
+        cy = top  + (bottom - top) // 2
+        return cy, cx
 
-    # pass 2: bridge across missing borders where neighbors point at each other
+    # ── REPLACE your place_connector() and "pass 2" with the following ────
+
+    # PASS 2: merge/bridge on every border using bitmasks (works with or without borders)
     if callable(special_content):
+        # vertical borders: c in [0..H], between (r,c-1) and (r,c)
         for r in range(V):
-            for c in range(H):
-                s = special_map[r][c]
-                # horizontal neighbor (r, c) ↔ (r, c+1)
-                if 'R' in s and c + 1 < H and 'L' in special_map[r][c + 1]:
-                    # only bridge if the vertical grid line between cells is absent
-                    if not V_edges[r][c + 1]:
-                        cy = y_border(r) + 1 + (scale_y - 1) // 2  # same cy as interior center
-                        xx = x_corner(c + 1)                      # border column
-                        place_connector(cy, xx, 'h')
-                # vertical neighbor (r, c) ↔ (r+1, c)
-                if 'D' in s and r + 1 < V and 'U' in special_map[r + 1][c]:
-                    # only bridge if the horizontal grid line between cells is absent
-                    if not H_edges[r + 1][c]:
-                        yy = y_border(r + 1)                      # border row
-                        cx = x_corner(c) + 1 + (2 * scale_x - 2) // 2  # interior center x
-                        place_connector(yy, cx, 'v')
-                if len(s) == 1 and '\\' not in s and '/' not in s:
-                    print(s)
-                    put_center_text(r, c, 'O')
+            # y (row) where we draw the junction on this border: the interior center row
+            cc = _cell_center_rc(r, 0)
+            if cc is None:
+                continue
+            cy = cc[0]
+            for c in range(H + 1):
+                x = x_corner(c)
+                mask = 0
+                # base: if the vertical grid line exists here, add U and D
+                if V_edges[r][c]:
+                    mask |= U | D
+
+                # neighbors pointing toward this vertical border
+                left_flags  = special_map[r][c - 1] if c - 1 >= 0 else set()
+                right_flags = special_map[r][c]     if c < H       else set()
+                if 'R' in left_flags:
+                    mask |= Lb
+                if 'L' in right_flags:
+                    mask |= Rb
+
+                # nothing to draw? leave whatever is already there
+                if mask == 0:
+                    continue
+                canvas[cy][x] = JUNCTION[mask]
+
+        # horizontal borders: r in [0..V], between (r-1,c) and (r,c)
+        for c in range(H):
+            # x (col) where we draw the junction on this border: the interior center col
+            cc = _cell_center_rc(0, c)
+            if cc is None:
+                continue
+            cx = cc[1]
+            for r in range(V + 1):
+                y = y_border(r)
+                mask = 0
+                # base: if the horizontal grid line exists here, add L and R
+                if r <= V - 1 and H_edges[r][c]:  # H_edges indexed [0..V] x [0..H-1]
+                    mask |= Lb | Rb
+
+                # neighbors pointing toward this horizontal border
+                up_flags   = special_map[r - 1][c] if r - 1 >= 0 else set()
+                down_flags = special_map[r][c]     if r < V      else set()
+                if 'D' in up_flags:
+                    mask |= U
+                if 'U' in down_flags:
+                    mask |= D
+
+                if mask == 0:
+                    continue
+                canvas[y][cx] = JUNCTION[mask]
 
     if callable(center_char):
         for r in range(V):
