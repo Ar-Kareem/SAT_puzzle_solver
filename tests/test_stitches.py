@@ -27,7 +27,7 @@ def test_ground_1():
     ['D', 'U', 'D', 'U', 'U'],
     ['U', ' ', 'U', ' ', ' '],
   ])
-  ground_assignment = {get_pos(x=x, y=y): ground[y][x] for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+  ground_assignment = {get_pos(x=x, y=y): ground[y][x] for x in range(ground.shape[1]) for y in range(ground.shape[0]) if ground[y][x].strip()}
   assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())}'
   for pos in solution.keys():
     assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
@@ -75,7 +75,7 @@ def test_ground_2():
     [' ', ' ', 'R', 'L', ' ', ' ', ' ', ' ', ' ', ' ', 'D', ' ', ' ', ' ', ' '],
     ['R', 'L', 'R', 'L', ' ', 'R', 'L', ' ', ' ', ' ', 'U', ' ', ' ', ' ', ' '],
   ])
-  ground_assignment = {get_pos(x=x, y=y): ground[y][x] for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+  ground_assignment = {get_pos(x=x, y=y): ground[y][x] for x in range(ground.shape[1]) for y in range(ground.shape[0]) if ground[y][x].strip()}
   assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())}'
   for pos in solution.keys():
     assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
@@ -123,7 +123,7 @@ def test_ground_3():
     ['R', 'L', 'U', ' ', 'D', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
     [' ', ' ', ' ', ' ', 'U', 'R', 'L', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
   ])
-  ground_assignment = {get_pos(x=x, y=y): ground[y][x] for x in range(ground.shape[1]) for y in range(ground.shape[0])}
+  ground_assignment = {get_pos(x=x, y=y): ground[y][x] for x in range(ground.shape[1]) for y in range(ground.shape[0]) if ground[y][x].strip()}
   assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())}'
   for pos in solution.keys():
     assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'

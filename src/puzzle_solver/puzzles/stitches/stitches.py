@@ -3,8 +3,9 @@ from typing import Union
 import numpy as np
 from ortools.sat.python import cp_model
 
-from puzzle_solver.core.utils import Pos, get_all_pos, get_char, set_char, get_next_pos, Direction, get_row_pos, get_col_pos, in_bounds, get_opposite_direction
+from puzzle_solver.core.utils import Pos, get_all_pos, get_char, get_next_pos, Direction, get_row_pos, get_col_pos, in_bounds, get_opposite_direction, get_pos
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, and_constraint
+from puzzle_solver.core.utils_visualizer import combined_function, id_board_to_wall_fn
 
 
 class Board:
@@ -40,10 +41,6 @@ class Board:
                     self.block_neighbors.setdefault((block_i, block_j), set()).add((pos, direction, neighbor, opposite_direction))
                     self.valid_stitches.add((pos, neighbor))
                     self.valid_stitches.add((neighbor, pos))
-        # for pair in self.block_neighbors.keys():
-        #     print(pair, self.block_neighbors[pair])
-        # print('top empties', self.top_empties)
-        # print('side empties', self.side_empties)
 
         self.model = cp_model.CpModel()
         self.model_vars: dict[tuple[Pos, Union[Direction, None]], cp_model.IntVar] = {}
@@ -62,19 +59,15 @@ class Board:
             state = [self.model_vars[(pos, direction)] for direction in Direction]
             state.append(self.model_vars[(pos, None)])
             self.model.AddExactlyOne(state)
-            # print('ONLY 1 DIRECTION. only one', state)
         # If a position points at X (and this is a valid pair) then X has to point at me
         for pos in get_all_pos(self.V, self.H):
             for direction in Direction:
                 neighbor = get_next_pos(pos, direction)
-                if not in_bounds(neighbor, self.V, self.H) or (pos, neighbor) not in self.valid_stitches:
-                    # this is not a valid stitch
+                if not in_bounds(neighbor, self.V, self.H) or (pos, neighbor) not in self.valid_stitches:  # this is not a valid stitch
                     self.model.Add(self.model_vars[(pos, direction)] == 0)
-                    # print(f'Pos {pos} cant be {direction}')
                     continue
                 opposite_direction = get_opposite_direction(direction)
                 self.model.Add(self.model_vars[(pos, direction)] == self.model_vars[(neighbor, opposite_direction)])
-                # print(f'{pos}:{direction} must == {neighbor}:{opposite_direction}')
 
         # all blocks connected exactly N times (N usually 1 but can be 2 or 3)
         for connections in self.block_neighbors.values():
@@ -93,17 +86,11 @@ class Board:
 
     def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
-            assignment: dict[Pos, str] = {}
-            for (pos, direction), var in board.model_vars.items():
-                if solver.value(var) == 1:
-                    assignment[pos] = direction.name[0] if direction is not None else ' '
-            return SingleSolution(assignment=assignment)
+            return SingleSolution(assignment={pos: direction.name[0] if direction is not None else ' ' for (pos, direction), var in board.model_vars.items() if solver.Value(var) == 1 and direction is not None})
         def callback(single_res: SingleSolution):
             print("Solution found")
-            res = np.full((self.V, self.H), ' ', dtype=object)
-            for pos in get_all_pos(self.V, self.H):
-                c = get_char(self.board, pos)
-                c = single_res.assignment[pos]
-                set_char(res, pos, c)
-            print(res)
+            print(combined_function(self.V, self.H,
+                cell_flags=id_board_to_wall_fn(self.board),
+                special_content=lambda r, c: single_res.assignment.get(get_pos(x=c, y=r), ''),
+                center_char=lambda r, c: 'O' if get_pos(x=c, y=r) in single_res.assignment else '.'))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose, max_solutions=9)
