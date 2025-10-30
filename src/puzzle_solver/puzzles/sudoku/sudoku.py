@@ -6,6 +6,7 @@ from ortools.sat.python import cp_model
 
 from puzzle_solver.core.utils import Pos, get_pos, get_all_pos, get_char, set_char, get_row_pos, get_col_pos
 from puzzle_solver.core.utils_ortools import and_constraint, generic_solve_all, or_constraint, SingleSolution
+from puzzle_solver.core.utils_visualizer import combined_function
 
 
 def get_value(board: np.array, pos: Pos) -> Union[int, str]:
@@ -82,7 +83,7 @@ class Board:
             assert block_size is None, 'cannot set block size if blocks are not constrained'
 
         if jigsaw is not None:
-            if self.constrain_blocks is not None:
+            if self.constrain_blocks:
                 print('Warning: jigsaw and blocks are both constrained, are you sure you want to do this?')
             assert jigsaw.ndim == 2, f'jigsaw must be 2d, got {jigsaw.ndim}'
             assert jigsaw.shape[0] == self.V and jigsaw.shape[1] == self.H, 'jigsaw must be the same size as the board'
@@ -186,18 +187,11 @@ class Board:
 
     def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
-            assignment: dict[Pos, int] = {}
-            for pos, var in board.model_vars.items():
-                assignment[pos] = solver.value(var)
-            return SingleSolution(assignment=assignment)
+            return SingleSolution(assignment={pos: solver.value(var) for pos, var in board.model_vars.items()})
         def callback(single_res: SingleSolution):
             print("Solution found")
-            res = np.full((self.V, self.H), ' ', dtype=object)
-            for pos in get_all_pos(self.V, self.H):
-                c = get_value(self.board, pos)
-                c = single_res.assignment[pos]
-                set_value(res, pos, c)
-            print(res)
+            val_arr = np.array([[single_res.assignment[get_pos(x=c, y=r)] for c in range(self.H)] for r in range(self.V)])
+            print(combined_function(self.V, self.H, center_char=lambda r, c: val_arr[r, c] if val_arr[r, c] < 10 else chr(val_arr[r, c] - 10 + ord('a'))))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)
 
 

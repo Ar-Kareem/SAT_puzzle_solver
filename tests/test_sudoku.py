@@ -353,5 +353,6 @@ if __name__ == '__main__':
   test_ground_sandwich_sudoku()
   test_ground_x()
   test_small_jigsaw()
+  test_ground_jigsaw()
   test_small_killer()
   test_ground_killer()
