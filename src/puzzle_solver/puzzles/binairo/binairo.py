@@ -15,6 +15,7 @@ class Board:
         assert all(c.item() in [' ', 'B', 'W'] for c in np.nditer(board)), 'board must contain only space or B'
         self.board = board
         self.V, self.H = board.shape
+        assert self.V % 2 == 0 and self.H % 2 == 0, f'board must have even number of rows and columns, got {self.V}x{self.H}'
         if arith_rows is not None:
             assert arith_rows.ndim == 2, f'arith_rows must be 2d, got {arith_rows.ndim}'
             assert arith_rows.shape == (self.V, self.H-1), f'arith_rows must be one column less than board, got {arith_rows.shape} for {board.shape}'
@@ -29,7 +30,6 @@ class Board:
 
         self.model = cp_model.CpModel()
         self.model_vars: dict[Pos, cp_model.IntVar] = {}
-
         self.create_vars()
         self.add_all_constraints()
 
@@ -58,9 +58,7 @@ class Board:
 
         # 3. Each row and column is unique.
         if self.force_unique:
-            # a list per row
             self.force_unique_double_list([[self.model_vars[pos] for pos in get_row_pos(row, self.H)] for row in range(self.V)])
-            # a list per column
             self.force_unique_double_list([[self.model_vars[pos] for pos in get_col_pos(col, self.V)] for col in range(self.H)])
 
         # if arithmetic is provided, add constraints for it
@@ -81,37 +79,25 @@ class Board:
                 elif c == '=':
                     self.model.Add(self.model_vars[pos] == self.model_vars[get_next_pos(pos, Direction.DOWN)])
 
-
     def disallow_three_in_a_row(self, p1: Pos, direction: Direction):
         p2 = get_next_pos(p1, direction)
         p3 = get_next_pos(p2, direction)
         if any(not in_bounds(p, self.V, self.H) for p in [p1, p2, p3]):
             return
-        self.model.AddBoolOr([
-            self.model_vars[p1],
-            self.model_vars[p2],
-            self.model_vars[p3],
-        ])
-        self.model.AddBoolOr([
-            self.model_vars[p1].Not(),
-            self.model_vars[p2].Not(),
-            self.model_vars[p3].Not(),
-        ])
+        self.model.AddBoolOr([self.model_vars[p1], self.model_vars[p2], self.model_vars[p3]])
+        self.model.AddBoolOr([self.model_vars[p1].Not(), self.model_vars[p2].Not(), self.model_vars[p3].Not()])
 
     def force_unique_double_list(self, model_vars: list[list[cp_model.IntVar]]):
-        if not model_vars or len(model_vars) < 2:
+        if not model_vars:
             return
         m = len(model_vars[0])
         assert m <= 61, f"Too many cells for binary encoding in int64: m={m}, model_vars={model_vars}"
-
         codes = []
-        pow2 = [1 << k for k in range(m)]  # weights for bit positions (LSB at index 0)
+        pow2 = [2**k for k in range(m)]
         for i, line in enumerate(model_vars):
-            code = self.model.NewIntVar(0, (1 << m) - 1, f"code_{i}")
-            # Sum 2^k * r[k] == code
-            self.model.Add(code == sum(pow2[k] * line[k] for k in range(m)))
+            code = self.model.NewIntVar(0, 2**m, f"code_{i}")
+            self.model.Add(code == lxp.weighted_sum(line, pow2))  # Sum 2^k * r[k] == code
             codes.append(code)
-
         self.model.AddAllDifferent(codes)
 
     def solve_and_print(self, verbose: bool = True):
