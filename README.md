@@ -466,7 +466,7 @@ The puzzles that have solvers implemented are listed below. Each puzzle has a si
 
 ## Nonograms (Puzzle Type #1)
 
-Also known as Hanjie, Paint by Numbers, Griddlers, Pic-a-Pix, Picross, and Pattern.
+Also known as Nonogrids, Numbergrids, or Picross.
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/pattern.html)
 
@@ -1067,7 +1067,7 @@ Time taken: 0.15 seconds
 
 ## Keen (Puzzle Type #8)
 
-Also known as KenKen
+Also known as KenKen or CalcuDoku.
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/keen.html)
 
@@ -1148,6 +1148,8 @@ Time taken: 0.02 seconds
 ---
 
 ## Towers (Puzzle Type #9)
+
+Also known as Skyscrapers.
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/towers.html)
 
@@ -1587,6 +1589,8 @@ Time taken: 0.01 seconds
 ---
 
 ## Unruly (Puzzle Type #15)
+
+Also known as "3-In-A-Row".
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/unruly.html)
 
@@ -3566,7 +3570,7 @@ Applying the solution to the puzzle visually:
 
 ## Unequal (Puzzle Type #37)
 
-Also called "Futoshiki" or Renzoku"
+Also called "Futoshiki", the "Adjacent" variant is also known as "Renzoku" or "Neighbours".
 
 * [**Play online 1**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/unequal.html)
 
@@ -5480,7 +5484,7 @@ Note that the solved solution on the bottom left says that only 18 moves were us
 
 ## Pipes (Puzzle Type #55)
 
-Also known as Net.
+Also known as Net or Network.
 
 * [**Play online 1**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/net.html)
 
@@ -5635,6 +5639,8 @@ Time taken: 2.91 seconds
 ---
 
 ## Nonograms Colored (Puzzle Type #57)
+
+Also known as Nonogrids, Numbergrids, or Picross.
 
 * [**Play online**](https://www.nonograms.org/nonograms2)
 

@@ -1,6 +1,6 @@
 # Unruly (Puzzle Type #15)
 
-This is a dedicated solver for Unruly
+This is a dedicated solver for Unruly. Also known as "3-In-A-Row".
 
 Below are the details of how to utilize the solver. In addition, the solver gives all possible solutions to the input thus it can be utilized to figure out if a single partial input board has multiple possible solutions.
 

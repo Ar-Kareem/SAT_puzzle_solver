@@ -1,6 +1,6 @@
 # Towers (Puzzle Type #9)
 
-This is a dedicated solver for Towers
+This is a dedicated solver for Towers. Also known as Skyscrapers.
 
 Below are the details of how to utilize the solver. In addition, the solver gives all possible solutions to the input thus it can be utilized to figure out if a single partial input board has multiple possible solutions.
 
