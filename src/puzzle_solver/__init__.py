@@ -23,6 +23,7 @@ from puzzle_solver.puzzles.keen import keen as keen_solver
 from puzzle_solver.puzzles.light_up import light_up as light_up_solver
 from puzzle_solver.puzzles.magnets import magnets as magnets_solver
 from puzzle_solver.puzzles.map import map as map_solver
+from puzzle_solver.puzzles.mathema_grids import mathema_grids as mathema_grids_solver
 from puzzle_solver.puzzles.minesweeper import minesweeper as minesweeper_solver
 from puzzle_solver.puzzles.mosaic import mosaic as mosaic_solver
 from puzzle_solver.puzzles.nonograms import nonograms as nonograms_solver
@@ -84,6 +85,7 @@ __all__ = [
     light_up_solver,
     magnets_solver,
     map_solver,
+    mathema_grids_solver,
     minesweeper_solver,
     mosaic_solver,
     nonograms_solver,
