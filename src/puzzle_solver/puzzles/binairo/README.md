@@ -1,5 +1,7 @@
 # Binairo (Puzzle Type #41)
 
+Also known as Takuzu, Binero, Tohu-Wa-Vohu (Formless and Empty), Eins und Zwei (One and Two), Binary Puzzles, Binoxxo, Binox, Zernero, Tic-Tac-Logic, and Sudoku Binary.
+
 * [**Play online**](https://www.puzzle-binairo.com)
 
 Binairo is played on a rectangular grid with no standard size. Some cells start out filled with black or white circles. The rest of the cells are empty. The goal is to place circles in all cells in such a way that:

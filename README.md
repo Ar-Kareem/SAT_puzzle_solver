@@ -4017,6 +4017,8 @@ Applying the solution to the puzzle visually:
 
 ## Binairo (Puzzle Type #41)
 
+Also known as Takuzu, Binero, Tohu-Wa-Vohu (Formless and Empty), Eins und Zwei (One and Two), Binary Puzzles, Binoxxo, Binox, Zernero, Tic-Tac-Logic, and Sudoku Binary.
+
 * [**Play online**](https://www.puzzle-binairo.com)
 
 * [**Solver Code**][41]
