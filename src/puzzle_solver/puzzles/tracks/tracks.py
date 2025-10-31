@@ -2,7 +2,7 @@ from collections import defaultdict
 import numpy as np
 from ortools.sat.python import cp_model
 
-from puzzle_solver.core.utils import Pos, get_all_pos, get_char, Direction, in_bounds, get_next_pos, get_row_pos, get_col_pos, get_opposite_direction, get_pos
+from puzzle_solver.core.utils import Pos, get_all_pos, get_char, Direction, get_next_pos, get_row_pos, get_col_pos, get_opposite_direction, get_pos
 from puzzle_solver.core.utils_ortools import force_connected_component, generic_solve_all, SingleSolution
 from puzzle_solver.core.utils_visualizer import combined_function
 

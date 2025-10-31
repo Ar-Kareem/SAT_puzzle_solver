@@ -189,10 +189,14 @@ def combined_function(V: int,
         # center junction
         U_b, R_b, D_b, L_b = 1, 2, 4, 8
         m = 0
-        if 'U' in s: m |= U_b
-        if 'D' in s: m |= D_b
-        if 'L' in s: m |= L_b
-        if 'R' in s: m |= R_b
+        if 'U' in s:
+            m |= U_b
+        if 'D' in s:
+            m |= D_b
+        if 'L' in s:
+            m |= L_b
+        if 'R' in s:
+            m |= R_b
         canvas[cy][cx] = JUNCTION.get(m, ' ')
 
     # pass 1: draw interior arms per cell

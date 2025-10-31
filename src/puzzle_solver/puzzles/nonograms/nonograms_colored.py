@@ -1,11 +1,10 @@
 from collections import defaultdict
 from typing import Optional
 
-import numpy as np
 from ortools.sat.python import cp_model
 from ortools.sat.python.cp_model import LinearExpr as lxp
 
-from puzzle_solver.core.utils import Pos, get_all_pos, get_pos, set_char, get_row_pos, get_col_pos
+from puzzle_solver.core.utils import Pos, get_all_pos, get_pos, get_row_pos, get_col_pos
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution
 from puzzle_solver.core.utils_visualizer import combined_function
 
