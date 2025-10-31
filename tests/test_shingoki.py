@@ -2,66 +2,12 @@ import numpy as np
 import pytest
 
 from puzzle_solver import shingoki_solver as solver
-from puzzle_solver.core.utils import get_all_pos, get_char, get_next_pos, Direction, in_bounds
-
-
-def _ground_to_assignment(ground):
-    res = {}
-    for pos in get_all_pos(ground.shape[1], ground.shape[0]):
-        cs = get_char(ground, pos).strip()
-        if not cs:
-            continue
-        if 'L' in cs:
-            left_p1 = pos
-            left_p2 = get_next_pos(pos, Direction.DOWN)
-            res[(left_p1, left_p2)] = 1
-            res[(left_p2, left_p1)] = 1
-        if 'U' in cs:
-            up_p1 = pos
-            up_p2 = get_next_pos(pos, Direction.RIGHT)
-            res[(up_p1, up_p2)] = 1
-            res[(up_p2, up_p1)] = 1
-        if 'R' in cs:
-            right_p1 = get_next_pos(pos, Direction.RIGHT)
-            right_p2 = get_next_pos(right_p1, Direction.DOWN)
-            res[(right_p1, right_p2)] = 1
-            res[(right_p2, right_p1)] = 1
-        if 'D' in cs:
-            down_p1 = get_next_pos(pos, Direction.DOWN)
-            down_p2 = get_next_pos(down_p1, Direction.RIGHT)
-            res[(down_p1, down_p2)] = 1
-            res[(down_p2, down_p1)] = 1
-    for pos in get_all_pos(ground.shape[1]+1, ground.shape[0]+1):
-        for direction in Direction:
-            p1 = pos
-            p2 = get_next_pos(p1, direction)
-            if not in_bounds(p2, ground.shape[1]+1, ground.shape[0]+1):
-                continue
-            if (p1, p2) not in res:
-                res[(p1, p2)] = 0
-    return res
+from puzzle_solver.core.utils import get_pos
 
 
 def _debug_print_assignment(assignment, V, H):
-    res = np.full((V - 1, H - 1), ' ', dtype=object)
-    for (pos, neighbor), v in assignment.items():
-        if v == 0:
-            continue
-        min_x = min(pos.x, neighbor.x)
-        min_y = min(pos.y, neighbor.y)
-        dx = abs(pos.x - neighbor.x)
-        dy = abs(pos.y - neighbor.y)
-        if min_x == H - 1:
-            res[min_y][min_x - 1] += 'R'
-        elif min_y == V - 1:
-            res[min_y - 1][min_x] += 'D'
-        elif dx == 1:
-            res[min_y][min_x] += 'U'
-        elif dy == 1:
-            res[min_y][min_x] += 'L'
-        else:
-            raise ValueError(f'Invalid position: {pos} and {neighbor}')
-    print('    [')
+    res = np.array([[assignment[get_pos(x=c, y=r)] for c in range(H)] for r in range(V)])
+    print('[')
     for row in res:
         row = [f"'{c}'" + ' ' * (2 - len(c)) for c in row]
         print("        [ " + ", ".join(row) + " ],")
@@ -84,13 +30,15 @@ def test_small():
     assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
     solution = solutions[0].assignment
     ground = np.array([
-        [ '', 'LU', 'U', 'U', 'L' ],
-        [ '', 'L', 'LU', 'L', 'L' ],
-        [ '', 'L', 'L', 'L', 'RU' ],
-        [ 'LU', '', 'L', 'L', 'LU' ],
-        [ 'U', 'U', '', 'DL', 'DRU' ],
+        [ ''  , 'DR', 'LR', 'LR', 'DL', ''   ],
+        [ ''  , 'UD', 'DR', 'DL', 'UD', ''   ],
+        [ ''  , 'UD', 'UD', 'UD', 'UR', 'DL' ],
+        [ 'DR', 'UL', 'UD', 'UD', 'DR', 'UL' ],
+        [ 'UR', 'LR', 'UL', 'UD', 'UR', 'DL' ],
+        [ ''  , ''  , ''  , 'UR', 'LR', 'UL' ],
     ])
-    ground_assignment = _ground_to_assignment(ground)
+    # _debug_print_assignment(solution, board.shape[0], board.shape[1])
+    ground_assignment = {get_pos(x=x, y=y): ground[y][x] for x in range(ground.shape[1]) for y in range(ground.shape[0])}
     assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
     for pos in solution.keys():
         assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
@@ -113,13 +61,14 @@ def test_small_normal():
     solution = solutions[0].assignment
     # _debug_print_assignment(solution, board.shape[0], board.shape[1])
     ground = np.array([
-        [ ' ULUL', ' UU', ' UU', ' LL', ' ULURLR' ],
-        [ ' LL', ' ULUL', ' LL', ' LL', ' LRLR' ],
-        [ ' LL', ' LL', ' LL', ' LL', ' LRLR' ],
-        [ ' LL', ' LL', ' LL', ' UU', ' RR' ],
-        [ ' LDLD', ' LL', ' UU', ' LDLD', ' ULUL' ],
+        [ 'DR', 'LR', 'LR', 'DL', 'DR', 'DL' ],
+        [ 'UD', 'DR', 'DL', 'UD', 'UD', 'UD' ],
+        [ 'UD', 'UD', 'UD', 'UD', 'UD', 'UD' ],
+        [ 'UD', 'UD', 'UD', 'UR', 'UL', 'UD' ],
+        [ 'UD', 'UD', 'UR', 'DL', 'DR', 'UL' ],
+        [ 'UR', 'UL', ''  , 'UR', 'UL', ''   ],
     ])
-    ground_assignment = _ground_to_assignment(ground)
+    ground_assignment = {get_pos(x=x, y=y): ground[y][x] for x in range(ground.shape[1]) for y in range(ground.shape[0])}
     assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
     for pos in solution.keys():
         assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
@@ -144,15 +93,16 @@ def test_medium():
     solution = solutions[0].assignment
     # _debug_print_assignment(solution, board.shape[0], board.shape[1])
     ground = np.array([
-        [ ' ULUL', ' UU', ' UU', ' UU', ' UU', ' LL', ' ULURLR' ],
-        [ ' LL', ' ULUL', ' UU', ' UU', ' LL', ' UU', ' RR' ],
-        [ ' LL', ' UU', ' LL', ' ' , ' UU', ' UU', ' UU' ],
-        [ ' LL', ' ULUL', ' ' , ' ULUL', ' LL', ' ' , ' ULURLR' ],
-        [ ' LL', ' UU', ' UU', ' ' , ' UU', ' LL', ' LRLR' ],
-        [ ' UU', ' UU', ' LL', ' ULUL', ' UU', ' ' , ' LRLR' ],
-        [ ' ULUDLD', ' UUDD', ' DD', ' UUDD', ' UUDD', ' UUDD', ' RDDR' ],
+        [ 'DR', 'LR', 'LR', 'LR', 'LR', 'DL', 'DR', 'DL' ],
+        [ 'UD', 'DR', 'LR', 'LR', 'DL', 'UR', 'UL', 'UD' ],
+        [ 'UD', 'UR', 'DL', ''  , 'UR', 'LR', 'LR', 'UL' ],
+        [ 'UD', 'DR', 'UL', 'DR', 'DL', ''  , 'DR', 'DL' ],
+        [ 'UD', 'UR', 'LR', 'UL', 'UR', 'DL', 'UD', 'UD' ],
+        [ 'UR', 'LR', 'DL', 'DR', 'LR', 'UL', 'UD', 'UD' ],
+        [ 'DR', 'LR', 'UL', 'UR', 'LR', 'LR', 'UL', 'UD' ],
+        [ 'UR', 'LR', 'LR', 'LR', 'LR', 'LR', 'LR', 'UL' ],
     ])
-    ground_assignment = _ground_to_assignment(ground)
+    ground_assignment = {get_pos(x=x, y=y): ground[y][x] for x in range(ground.shape[1]) for y in range(ground.shape[0])}
     assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
     for pos in solution.keys():
         assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
@@ -189,29 +139,31 @@ def test_ground():
     solutions = binst.solve_and_print()
     assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
     solution = solutions[0].assignment
+    # _debug_print_assignment(solution, board.shape[0], board.shape[1])
     ground = np.array([
-        [ '', '', '', '', '', 'LU', 'U', 'U', 'L', 'LU', 'U', 'U', 'U', 'U', 'U', 'U', 'L', 'LU', 'L', 'LRU' ],
-        [ 'LU', 'U', 'U', 'U', 'L', 'U', 'L', 'LU', '', 'L', 'LU', 'U', 'L', 'LU', 'U', 'U', '', 'L', 'U', 'R' ],
-        [ 'U', 'L', 'LU', 'U', '', 'LU', '', 'U', 'L', 'L', 'U', 'L', 'U', '', '', 'LU', 'L', 'L', 'LU', 'LR' ],
-        [ 'LU', '', 'U', 'L', '', 'U', 'U', 'L', 'L', 'L', 'LU', '', 'LU', 'L', 'LU', '', 'L', 'L', 'L', 'LR' ],
-        [ 'U', 'U', 'L', 'U', 'L', 'LU', 'U', '', 'L', 'L', 'L', 'LU', '', 'U', '', 'LU', '', 'L', 'L', 'LR' ],
-        [ 'LU', 'U', '', 'LU', '', 'U', 'U', 'L', 'U', '', 'U', '', 'LU', 'U', 'L', 'L', '', 'U', '', 'LR' ],
-        [ 'U', 'L', 'LU', '', '', 'LU', 'L', 'U', 'U', 'U', 'U', 'U', '', '', 'L', 'U', 'U', 'U', 'L', 'LR' ],
-        [ 'LU', '', 'L', '', 'LU', '', 'U', 'U', 'L', '', 'LU', 'U', 'U', 'L', 'U', 'L', 'LU', 'U', '', 'LR' ],
-        [ 'L', 'LU', '', '', 'L', 'LU', 'U', 'L', 'U', 'U', '', 'LU', 'L', 'L', 'LU', '', 'U', 'L', '', 'LR' ],
-        [ 'L', 'L', '', '', 'L', 'L', 'LU', '', 'LU', 'U', 'L', 'L', 'L', 'L', 'L', 'LU', 'L', 'L', '', 'LR' ],
-        [ 'L', 'U', 'U', 'U', '', 'L', 'L', 'LU', '', '', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'U', 'U', 'R' ],
-        [ 'U', 'U', 'U', 'L', 'LU', '', 'L', 'L', '', '', 'L', 'L', 'L', 'L', 'L', 'L', 'U', 'U', 'L', 'LU' ],
-        [ 'LU', 'L', '', 'U', '', '', 'L', 'L', 'LU', 'L', 'L', 'L', 'L', 'U', '', 'L', 'LU', 'L', 'L', 'L' ],
-        [ 'L', 'U', 'U', 'L', '', 'LU', '', 'L', 'L', 'L', 'L', 'L', 'U', 'L', '', 'U', '', 'L', 'L', 'RU' ],
-        [ 'L', 'LU', 'L', 'L', '', 'U', 'U', '', 'L', 'U', '', 'L', 'LU', '', 'LU', 'U', 'L', 'L', 'U', 'LR' ],
-        [ 'L', 'L', 'L', 'U', 'U', 'L', 'LU', 'L', 'U', 'U', 'U', '', 'U', 'L', 'L', '', 'L', 'L', 'LU', 'R' ],
-        [ 'L', 'L', 'U', 'U', 'L', 'U', '', 'L', '', 'LU', 'L', '', '', 'L', 'L', '', 'U', '', 'L', 'LU' ],
-        [ 'L', 'L', '', 'LU', '', 'LU', 'U', '', 'LU', '', 'U', 'U', 'U', '', 'U', 'L', 'LU', 'L', 'L', 'L' ],
-        [ 'L', 'U', 'L', 'L', 'LU', '', '', 'LU', '', 'LU', 'U', 'U', 'L', 'LU', 'U', '', 'L', 'U', '', 'RU' ],
-        [ 'U', 'DL', 'L', 'DL', 'DU', 'DU', 'DU', 'D', 'LU', '', 'DLU', 'DU', 'D', 'DU', 'DU', 'L', 'DL', 'LU', 'U', 'DLR' ],
+        [ ''  , ''  , ''  , ''  , ''  , 'DR', 'LR', 'LR', 'DL', 'DR', 'LR', 'LR', 'LR', 'LR', 'LR', 'LR', 'DL', 'DR', 'DL', 'DR', 'DL' ],
+        [ 'DR', 'LR', 'LR', 'LR', 'DL', 'UR', 'DL', 'DR', 'UL', 'UD', 'DR', 'LR', 'DL', 'DR', 'LR', 'LR', 'UL', 'UD', 'UR', 'UL', 'UD' ],
+        [ 'UR', 'DL', 'DR', 'LR', 'UL', 'DR', 'UL', 'UR', 'DL', 'UD', 'UR', 'DL', 'UR', 'UL', ''  , 'DR', 'DL', 'UD', 'DR', 'DL', 'UD' ],
+        [ 'DR', 'UL', 'UR', 'DL', ''  , 'UR', 'LR', 'DL', 'UD', 'UD', 'DR', 'UL', 'DR', 'DL', 'DR', 'UL', 'UD', 'UD', 'UD', 'UD', 'UD' ],
+        [ 'UR', 'LR', 'DL', 'UR', 'DL', 'DR', 'LR', 'UL', 'UD', 'UD', 'UD', 'DR', 'UL', 'UR', 'UL', 'DR', 'UL', 'UD', 'UD', 'UD', 'UD' ],
+        [ 'DR', 'LR', 'UL', 'DR', 'UL', 'UR', 'LR', 'DL', 'UR', 'UL', 'UR', 'UL', 'DR', 'LR', 'DL', 'UD', ''  , 'UR', 'UL', 'UD', 'UD' ],
+        [ 'UR', 'DL', 'DR', 'UL', ''  , 'DR', 'DL', 'UR', 'LR', 'LR', 'LR', 'LR', 'UL', ''  , 'UD', 'UR', 'LR', 'LR', 'DL', 'UD', 'UD' ],
+        [ 'DR', 'UL', 'UD', ''  , 'DR', 'UL', 'UR', 'LR', 'DL', ''  , 'DR', 'LR', 'LR', 'DL', 'UR', 'DL', 'DR', 'LR', 'UL', 'UD', 'UD' ],
+        [ 'UD', 'DR', 'UL', ''  , 'UD', 'DR', 'LR', 'DL', 'UR', 'LR', 'UL', 'DR', 'DL', 'UD', 'DR', 'UL', 'UR', 'DL', ''  , 'UD', 'UD' ],
+        [ 'UD', 'UD', ''  , ''  , 'UD', 'UD', 'DR', 'UL', 'DR', 'LR', 'DL', 'UD', 'UD', 'UD', 'UD', 'DR', 'DL', 'UD', ''  , 'UD', 'UD' ],
+        [ 'UD', 'UR', 'LR', 'LR', 'UL', 'UD', 'UD', 'DR', 'UL', ''  , 'UD', 'UD', 'UD', 'UD', 'UD', 'UD', 'UD', 'UR', 'LR', 'UL', 'UD' ],
+        [ 'UR', 'LR', 'LR', 'DL', 'DR', 'UL', 'UD', 'UD', ''  , ''  , 'UD', 'UD', 'UD', 'UD', 'UD', 'UD', 'UR', 'LR', 'DL', 'DR', 'UL' ],
+        [ 'DR', 'DL', ''  , 'UR', 'UL', ''  , 'UD', 'UD', 'DR', 'DL', 'UD', 'UD', 'UD', 'UR', 'UL', 'UD', 'DR', 'DL', 'UD', 'UD', ''   ],
+        [ 'UD', 'UR', 'LR', 'DL', ''  , 'DR', 'UL', 'UD', 'UD', 'UD', 'UD', 'UD', 'UR', 'DL', ''  , 'UR', 'UL', 'UD', 'UD', 'UR', 'DL' ],
+        [ 'UD', 'DR', 'DL', 'UD', ''  , 'UR', 'LR', 'UL', 'UD', 'UR', 'UL', 'UD', 'DR', 'UL', 'DR', 'LR', 'DL', 'UD', 'UR', 'DL', 'UD' ],
+        [ 'UD', 'UD', 'UD', 'UR', 'LR', 'DL', 'DR', 'DL', 'UR', 'LR', 'LR', 'UL', 'UR', 'DL', 'UD', ''  , 'UD', 'UD', 'DR', 'UL', 'UD' ],
+        [ 'UD', 'UD', 'UR', 'LR', 'DL', 'UR', 'UL', 'UD', ''  , 'DR', 'DL', ''  , ''  , 'UD', 'UD', ''  , 'UR', 'UL', 'UD', 'DR', 'UL' ],
+        [ 'UD', 'UD', ''  , 'DR', 'UL', 'DR', 'LR', 'UL', 'DR', 'UL', 'UR', 'LR', 'LR', 'UL', 'UR', 'DL', 'DR', 'DL', 'UD', 'UD', ''   ],
+        [ 'UD', 'UR', 'DL', 'UD', 'DR', 'UL', ''  , 'DR', 'UL', 'DR', 'LR', 'LR', 'DL', 'DR', 'LR', 'UL', 'UD', 'UR', 'UL', 'UR', 'DL' ],
+        [ 'UR', 'DL', 'UD', 'UD', 'UR', 'LR', 'LR', 'UL', 'DR', 'UL', 'DR', 'LR', 'UL', 'UR', 'LR', 'DL', 'UD', 'DR', 'LR', 'DL', 'UD' ],
+        [ ''  , 'UR', 'UL', 'UR', 'LR', 'LR', 'LR', 'LR', 'UL', ''  , 'UR', 'LR', 'LR', 'LR', 'LR', 'UL', 'UR', 'UL', ''  , 'UR', 'UL' ],
     ])
-    ground_assignment = _ground_to_assignment(ground)
+    ground_assignment = {get_pos(x=x, y=y): ground[y][x] for x in range(ground.shape[1]) for y in range(ground.shape[0])}
     assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
     for pos in solution.keys():
         assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
