@@ -1,3 +1,4 @@
+from puzzle_solver.puzzles.abc_view import abc_view as abc_view_solver
 from puzzle_solver.puzzles.aquarium import aquarium as aquarium_solver
 from puzzle_solver.puzzles.battleships import battleships as battleships_solver
 from puzzle_solver.puzzles.binairo import binairo as binairo_solver
@@ -58,6 +59,7 @@ from puzzle_solver.puzzles.yin_yang import yin_yang as yin_yang_solver
 from puzzle_solver.puzzles.inertia.parse_map.parse_map import main as inertia_image_parser
 
 __all__ = [
+    abc_view_solver,
     aquarium_solver,
     battleships_solver,
     binairo_solver,
