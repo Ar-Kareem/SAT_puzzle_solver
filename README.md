@@ -5650,6 +5650,7 @@ solutions = binst.solve_and_print()
 
 ```python
 Solution found
+
     0   1   2   3   4   5   6   7
   ┌───────┬───────────────────────┐
  0│ R   R │ B   B   B   B   B   B │
@@ -5670,7 +5671,7 @@ Solution found
   └───────────────┴───────────────┘
 Solutions found: 1
 status: OPTIMAL
-Time taken: 2.91 seconds
+Time taken: 0.07 seconds
 ```
 
 **Solved puzzle**
