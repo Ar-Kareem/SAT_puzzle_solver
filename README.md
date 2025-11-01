@@ -4387,19 +4387,30 @@ solutions = binst.solve_and_print()
 
 **Script Output**
 
-The output tells you which squares to tap to solve the puzzle.
+The output tells you which squares to tap to solve the puzzle, the shaded squares are the ones that need to be tapped.
 
 ```python
 Solution found
-[['T' ' ' 'T' 'T' 'T' ' ' ' ']
- [' ' ' ' ' ' 'T' ' ' 'T' ' ']
- [' ' 'T' ' ' ' ' 'T' ' ' ' ']
- ['T' ' ' 'T' ' ' ' ' 'T' ' ']
- [' ' ' ' ' ' 'T' ' ' ' ' 'T']
- ['T' ' ' 'T' ' ' 'T' 'T' 'T']
- [' ' ' ' ' ' ' ' ' ' 'T' 'T']]
+
+    0   1   2   3   4   5   6
+  ┌───┬───┬───┬───┬───┬───┬───┐
+ 0│▒▒▒│   │▒▒▒│▒▒▒│▒▒▒│   │   │
+  ├───┼───┼───┼───┼───┼───┼───┤
+ 1│   │   │   │▒▒▒│   │▒▒▒│   │
+  ├───┼───┼───┼───┼───┼───┼───┤
+ 2│   │▒▒▒│   │   │▒▒▒│   │   │
+  ├───┼───┼───┼───┼───┼───┼───┤
+ 3│▒▒▒│   │▒▒▒│   │   │▒▒▒│   │
+  ├───┼───┼───┼───┼───┼───┼───┤
+ 4│   │   │   │▒▒▒│   │   │▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┤
+ 5│▒▒▒│   │▒▒▒│   │▒▒▒│▒▒▒│▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┤
+ 6│   │   │   │   │   │▒▒▒│▒▒▒│
+  └───┴───┴───┴───┴───┴───┴───┘
 Solutions found: 1
 status: OPTIMAL
+Time taken: 0.01 seconds
 ```
 
 **Solved puzzle**
