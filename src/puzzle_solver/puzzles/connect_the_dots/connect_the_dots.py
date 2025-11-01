@@ -25,10 +25,14 @@ class Board:
 
     def add_all_constraints(self):
         for pos in get_all_pos(self.V, self.H):
+            c = get_char(self.board, pos).strip()
+            if c == '#':  # a wall, thus no color
+                self.model.Add(sum([self.model_vars[(pos, color)] for color in self.unique_colors]) == 0)
+                continue
             self.model.AddExactlyOne([self.model_vars[(pos, color)] for color in self.unique_colors])
-            c = get_char(self.board, pos)
-            if c.strip() not in ['', '#']:
+            if c != '':  # an endpoint, thus must be the color
                 self.model.Add(self.model_vars[(pos, c)] == 1)
+                self.model.Add(sum([self.model_vars[(n, c)] for n in get_neighbors4(pos, self.V, self.H)]) == 1)  # endpoits must have exactly 1 neighbor
             else:  # not an endpoint, thus must have exactly 2 neighbors
                 for color in self.unique_colors:
                     self.model.Add(sum([self.model_vars[(n, color)] for n in get_neighbors4(pos, self.V, self.H)]) == 2).OnlyEnforceIf(self.model_vars[(pos, color)])
@@ -41,6 +45,6 @@ class Board:
         def callback(single_res: SingleSolution):
             print("Solution found")
             print(combined_function(self.V, self.H,
-                cell_flags=id_board_to_wall_fn(np.array([[single_res.assignment[get_pos(x=c, y=r)] for c in range(self.H)] for r in range(self.V)])),
-                center_char=lambda r, c: single_res.assignment[get_pos(x=c, y=r)]))
+                cell_flags=id_board_to_wall_fn(np.array([[single_res.assignment.get(get_pos(x=c, y=r), '') for c in range(self.H)] for r in range(self.V)])),
+                center_char=lambda r, c: single_res.assignment.get(get_pos(x=c, y=r), self.board[r, c])))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)

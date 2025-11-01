@@ -17,6 +17,28 @@ def _debug_assignment_to_array(assignment, V, H):
     print('    ]')
 
 
+def test_toy():
+    board = np.array([
+        ['B', '#', 'R'],
+        [' ', '#', ' '],
+        ['B', '#', 'R'],
+    ])
+    binst = solver.Board(board=board)
+    solutions = binst.solve_and_print()
+    assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+    solution = solutions[0].assignment
+    ground = np.array([
+        ['B', ' ', 'R'],
+        ['B', ' ', 'R'],
+        ['B', ' ', 'R'],
+    ])
+    ground_assignment = {get_pos(x=x, y=y): ground[y][x] for x in range(ground.shape[1]) for y in range(ground.shape[0]) if ground[y][x].strip()}
+    assert set(solution.keys()) == set(ground_assignment.keys()), f'solution keys != ground assignment keys, {set(solution.keys()) ^ set(ground_assignment.keys())} \n\n\n{solution} \n\n\n{ground_assignment}'
+    for pos in solution.keys():
+        assert solution[pos] == ground_assignment[pos], f'solution[{pos}] != ground_assignment[{pos}], {solution[pos]} != {ground_assignment[pos]}'
+
+
+
 def test_easy():
     board = np.array([
         ['B', 'Y', 'R', ' ', ' '],
@@ -134,6 +156,7 @@ def test_ground():
 
 
 if __name__ == "__main__":
+    test_toy()
     test_easy()
     test_medium()
     test_medium2()
