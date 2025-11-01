@@ -119,15 +119,19 @@ def main(image):
     horizontal_idx, vertical_idx = extract_lines(bw)
     horizontal_idx = mean_consecutives(horizontal_idx)
     vertical_idx = mean_consecutives(vertical_idx)
+    mean_vertical_dist = np.mean(np.diff(vertical_idx))
+    mean_horizontal_dist = np.mean(np.diff(horizontal_idx))
     height = len(horizontal_idx)
     width = len(vertical_idx)
     print(f"height: {height}, width: {width}")
     print(f"horizontal_idx: {horizontal_idx}")
     print(f"vertical_idx: {vertical_idx}")
-    arr = np.zeros((height - 1, width - 1), dtype=object)
-    output = {'top': arr.copy(), 'left': arr.copy(), 'right': arr.copy(), 'bottom': arr.copy()}
     hists = {'top': {}, 'left': {}, 'right': {}, 'bottom': {}}
+    j_idx = 0
+    i_len = 0
+    j_len = 0
     for j in range(height - 1):
+        i_idx = 0
         for i in range(width - 1):
             hidx1, hidx2 = horizontal_idx[j], horizontal_idx[j+1]
             vidx1, vidx2 = vertical_idx[i], vertical_idx[i+1]
@@ -135,7 +139,11 @@ def main(image):
             hidx2 = min(src.shape[0], hidx2 + 4)
             vidx1 = max(0, vidx1 - 2)
             vidx2 = min(src.shape[1], vidx2 + 4)
+            if (hidx2 - hidx1) < mean_horizontal_dist * 0.5 or (vidx2 - vidx1) < mean_vertical_dist * 0.5:
+                continue
+            print(f"j_idx: {j_idx}, i_idx: {i_idx}")
             cell = src[hidx1:hidx2, vidx1:vidx2]
+            # print(f"cell_shape: {cell.shape}, mean_horizontal_dist: {mean_horizontal_dist}, mean_vertical_dist: {mean_vertical_dist}")
             mid_x = cell.shape[1] // 2
             mid_y = cell.shape[0] // 2
             # if j > height - 4 and i > width - 6:
@@ -143,13 +151,18 @@ def main(image):
             # show_wait_destroy(f"cell_{i}_{j}", cell)
             cell = cv.bitwise_not(cell)  # invert colors
             top = cell[0:10, mid_y-5:mid_y+5]
-            hists['top'][j, i] = np.sum(top)
+            hists['top'][j_idx, i_idx] = np.sum(top)
             left = cell[mid_x-5:mid_x+5, 0:10]
-            hists['left'][j, i] = np.sum(left)
+            hists['left'][j_idx, i_idx] = np.sum(left)
             right = cell[mid_x-5:mid_x+5, -10:]
-            hists['right'][j, i] = np.sum(right)
+            hists['right'][j_idx, i_idx] = np.sum(right)
             bottom = cell[-10:, mid_y-5:mid_y+5]
-            hists['bottom'][j, i] = np.sum(bottom)
+            hists['bottom'][j_idx, i_idx] = np.sum(bottom)
+            i_idx += 1
+            i_len = max(i_len, i_idx)
+        if i_idx > 0:
+            j_idx += 1
+        j_len = max(j_len, j_idx)
 
     fig, axs = plt.subplots(2, 2)
     axs[0, 0].hist(list(hists['top'].values()), bins=100)
@@ -176,11 +189,13 @@ def main(image):
     axs[0, 1].axvline(target_left, color='red')
     axs[1, 0].axvline(target_right, color='red')
     axs[1, 1].axvline(target_bottom, color='red')
-    # plt.show()
+    plt.show()
     # 1/0
-    print(f"target_top: {target_top}, target_left: {target_left}, target_right: {target_right}, target_bottom: {target_bottom}")
-    for j in range(height - 1):
-        for i in range(width - 1):
+    arr = np.zeros((j_len, i_len), dtype=object)
+    output = {'top': arr.copy(), 'left': arr.copy(), 'right': arr.copy(), 'bottom': arr.copy()}
+    print(f"target_top: {target_top}, target_left: {target_left}, target_right: {target_right}, target_bottom: {target_bottom}, j_len: {j_len}, i_len: {i_len}")
+    for j in range(j_len):
+        for i in range(i_len):
             if hists['top'][j, i] > target_top:
                 output['top'][j, i] = 1
             if hists['left'][j, i] > target_left:
@@ -244,5 +259,7 @@ if __name__ == '__main__':
     # main(Path(__file__).parent / 'input_output' / 'norinori_OTo0LDc0Miw5MTU.png')
     # main(Path(__file__).parent / 'input_output' / 'heyawake_MDoxNiwxNDQ=.png')
     # main(Path(__file__).parent / 'input_output' / 'heyawake_MTQ6ODQ4LDEzOQ==.png')
-    main(Path(__file__).parent / 'input_output' / 'sudoku_jigsaw.png')
+    # main(Path(__file__).parent / 'input_output' / 'sudoku_jigsaw.png')
+    # main(Path(__file__).parent / 'input_output' / 'Screenshot 2025-11-01 025846.png')
+    main(Path(__file__).parent / 'input_output' / 'Screenshot 2025-11-01 035658.png')
 
