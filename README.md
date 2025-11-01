@@ -1,6 +1,6 @@
 # Python Puzzle Solver
 
-Solve countless (50+) classical logic puzzles automatically in Python. 
+Solve countless (60+) classical logic puzzles automatically in Python. 
 
 ## Quick Start
 
@@ -47,7 +47,7 @@ Time taken: 0.04 seconds
 
 ## Introduction
 
-The aim of this repo is to provide very efficient solvers (i.e. not brute force solvers) for countless (50+) popular pencil logic puzzles like Nonograms, Sudoku, Minesweeper, and many more lesser known ones.
+The aim of this repo is to provide very efficient solvers (i.e. not brute force solvers) for countless (60+) popular pencil logic puzzles like Nonograms, Sudoku, Minesweeper, and many more lesser known ones.
 
 If you happen to have a puzzle similar to the ones listed below and want to solve it (or see how many potential solutions a partially covered board has), then this repo is perfect for you.
 
@@ -389,6 +389,18 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   <td align="center">
     <a href="#mathema-grids-puzzle-type-59"><b>Mathema Grids</b><br><br>
       <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/mathema_grids_solved.png" alt="Mathema Grids" width="140">
+    </a>
+  </td>
+  <td align="center">
+    <a href="#split-ends-puzzle-type-60"><b>N-Queens</b><br><br>
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/7_queens_solved.png" alt="N-Queens" width="140">
+    </a>
+  </td>
+</tr>
+<tr>
+  <td align="center">
+    <a href="#split-ends-puzzle-type-61"><b>Split Ends</b><br><br>
+      <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/split_ends_solved.png" alt="Split Ends" width="140">
     </a>
   </td>
 </tr>

@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "multi-puzzle-solver"
 dynamic = ["version"]
-description = "Efficient solvers for countless (50+) types of puzzles (like Sudoku, Minesweeper, etc.) with a simple python API."
+description = "Efficient solvers for countless (60+) types of puzzles (like Sudoku, Minesweeper, etc.) with a simple python API."
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.9"
 authors = [{name = "Ar-Kareem"}]
