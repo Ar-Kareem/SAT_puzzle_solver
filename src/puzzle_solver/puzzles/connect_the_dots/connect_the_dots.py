@@ -1,7 +1,7 @@
 import numpy as np
 from ortools.sat.python import cp_model
 
-from puzzle_solver.core.utils import Pos, get_all_pos, set_char, get_char
+from puzzle_solver.core.utils import Pos, get_all_pos, get_char, get_pos, get_neighbors4
 from puzzle_solver.core.utils_ortools import generic_solve_all, SingleSolution, force_connected_component
 from puzzle_solver.core.utils_visualizer import combined_function, id_board_to_wall_fn
 
@@ -12,7 +12,7 @@ class Board:
         self.board = board
         self.V, self.H = board.shape
         self.unique_colors = set([str(c.item()).strip() for c in np.nditer(board) if str(c.item()).strip() not in ['', '#']])
-        assert all(np.count_nonzero(board == color) >= 2 for color in self.unique_colors), f'each color must appear >= 2 times, got {self.unique_colors}'
+        assert all(np.count_nonzero(board == color) == 2 for color in self.unique_colors), f'each color must appear == 2 times, got {self.unique_colors}'
         self.model = cp_model.CpModel()
         self.model_vars: dict[tuple[Pos, str], cp_model.IntVar] = {}
         self.create_vars()
@@ -29,22 +29,18 @@ class Board:
             c = get_char(self.board, pos)
             if c.strip() not in ['', '#']:
                 self.model.Add(self.model_vars[(pos, c)] == 1)
+            else:  # not an endpoint, thus must have exactly 2 neighbors
+                for color in self.unique_colors:
+                    self.model.Add(sum([self.model_vars[(n, color)] for n in get_neighbors4(pos, self.V, self.H)]) == 2).OnlyEnforceIf(self.model_vars[(pos, color)])
         for color in self.unique_colors:
             force_connected_component(self.model, {pos: self.model_vars[(pos, color)] for pos in get_all_pos(self.V, self.H)})
 
     def solve_and_print(self, verbose: bool = True):
         def board_to_solution(board: Board, solver: cp_model.CpSolverSolutionCallback) -> SingleSolution:
-            assignment: dict[Pos, str] = {}
-            for (pos, color), var in board.model_vars.items():
-                if solver.Value(var) == 1:
-                    assignment[pos] = color
-            return SingleSolution(assignment=assignment)
+            return SingleSolution(assignment={pos: color for (pos, color), var in board.model_vars.items() if solver.Value(var) == 1})
         def callback(single_res: SingleSolution):
             print("Solution found")
-            res = np.full((self.V, self.H), ' ', dtype=object)
-            for pos in get_all_pos(self.V, self.H):
-                set_char(res, pos, single_res.assignment[pos])
             print(combined_function(self.V, self.H,
-                cell_flags=id_board_to_wall_fn(res),
-                center_char=lambda r, c: res[r][c]))
+                cell_flags=id_board_to_wall_fn(np.array([[single_res.assignment[get_pos(x=c, y=r)] for c in range(self.H)] for r in range(self.V)])),
+                center_char=lambda r, c: single_res.assignment[get_pos(x=c, y=r)]))
         return generic_solve_all(self, board_to_solution, callback=callback if verbose else None, verbose=verbose)
