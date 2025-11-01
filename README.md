@@ -465,6 +465,7 @@ These are all the puzzles that are implemented in this repo. <br> Click on any o
   - [Nonograms Colored (Puzzle Type #57)](#nonograms-colored-puzzle-type-57)
   - [ABC View (Puzzle Type #58)](#abc-view-puzzle-type-58)
   - [Mathema Grids (Puzzle Type #59)](#mathema-grids-puzzle-type-59)
+  - [N-Queens (Puzzle Type #60)](#n-queens-puzzle-type-60)
   - [Why SAT / CP-SAT?](#why-sat--cp-sat)
   - [Testing](#testing)
   - [Contributing](#contributing)
@@ -5917,6 +5918,78 @@ Time taken: 0.00 seconds
 **Solved puzzle**
 
 <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/mathema_grids_solved.png" alt="Mathema Grids solved" width="500">
+
+---
+
+## N-Queens (Puzzle Type #60)
+
+Can also solve puzzles such as 7-Queens.
+
+* [**Play online**](https://krazydad.com/play/queens/)
+
+* [**Solver Code**](https://github.com/Ar-Kareem/puzzle_solver/tree/master/src/puzzle_solver/puzzles/n_queens)
+
+<details>
+  <summary><strong>Rules</strong></summary>
+
+7-Queens Variant: Within each of the seven realms lives a lone queen. To maintain the peace, queens must not threaten each other: no row, column, diagonal, nor region may have more than one queen!
+
+</details>
+
+**Unsolved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/7_queens_unsolved.png" alt="7 Queens unsolved" width="500">
+
+Code to utilize this package and solve the puzzle:
+
+```python
+import numpy as np
+from puzzle_solver import n_queens_solver as solver
+board = np.array([
+  ['00', '00', '00', '00', '01', '01', '02', '02'],
+  ['00', '00', '03', '03', '01', '01', '02', '04'],
+  ['00', '00', '03', '03', '01', '01', '01', '04'],
+  ['03', '03', '03', '03', '01', '01', '01', '05'],
+  ['03', '03', '03', '03', '01', '01', '01', '05'],
+  ['03', '03', '06', '06', '06', '05', '05', '05'],
+  ['06', '06', '06', '06', '06', '06', '05', '05'],
+  ['06', '06', '06', '06', '06', '06', '05', '05']
+])
+binst = solver.Board(board=board)
+solutions = binst.solve_and_print()
+```
+
+**Script Output**
+
+```python
+Solution found
+
+    0   1   2   3   4   5   6   7
+  ┌───┬───┬───┬───┬───┬───┬───┬───┐
+ 0│   │   │   │   │   │   │▒▒▒│   │
+  ├───┼───┼───┼───┼───┼───┼───┼───┤
+ 1│▒▒▒│   │   │   │   │   │   │   │
+  ├───┼───┼───┼───┼───┼───┼───┼───┤
+ 2│   │   │   │   │   │   │   │▒▒▒│
+  ├───┼───┼───┼───┼───┼───┼───┼───┤
+ 3│   │   │   │   │▒▒▒│   │   │   │
+  ├───┼───┼───┼───┼───┼───┼───┼───┤
+ 4│   │▒▒▒│   │   │   │   │   │   │
+  ├───┼───┼───┼───┼───┼───┼───┼───┤
+ 5│   │   │   │   │   │▒▒▒│   │   │
+  ├───┼───┼───┼───┼───┼───┼───┼───┤
+ 6│   │   │▒▒▒│   │   │   │   │   │
+  ├───┼───┼───┼───┼───┼───┼───┼───┤
+ 7│   │   │   │   │   │   │   │   │
+  └───┴───┴───┴───┴───┴───┴───┴───┘
+Solutions found: 1
+status: OPTIMAL
+Time taken: 0.00 seconds
+```
+
+**Solved puzzle**
+
+<img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/7_queens_solved.png" alt="7 Queens solved" width="500">
 
 ---
 

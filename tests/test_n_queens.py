@@ -48,6 +48,29 @@ def test_ground_2():
     assert solution[pos] == ground[pos], f'solution[{pos}] != ground[{pos}], {solution[pos]} != {ground[pos]}'
 
 
+def test_ground_3():
+  board = np.array([
+    ['00', '00', '00', '00', '01', '01', '02', '02'],
+    ['00', '00', '03', '03', '01', '01', '02', '04'],
+    ['00', '00', '03', '03', '01', '01', '01', '04'],
+    ['03', '03', '03', '03', '01', '01', '01', '05'],
+    ['03', '03', '03', '03', '01', '01', '01', '05'],
+    ['03', '03', '06', '06', '06', '05', '05', '05'],
+    ['06', '06', '06', '06', '06', '06', '05', '05'],
+    ['06', '06', '06', '06', '06', '06', '05', '05']
+  ])
+  binst = solver.Board(board=board)
+  solutions = binst.solve_and_print()
+  assert len(solutions) == 1, f'unique solutions != 1, == {len(solutions)}'
+  solution = solutions[0].assignment
+  solution = {k: v for k, v in solution.items() if v == 1}
+  ground = {Pos(x=6, y=0): 1, Pos(x=0, y=1): 1, Pos(x=7, y=2): 1, Pos(x=4, y=3): 1, Pos(x=1, y=4): 1, Pos(x=5, y=5): 1, Pos(x=2, y=6): 1}
+  assert set(solution.keys()) == set(ground.keys()), f'solution keys != ground keys, {set(solution.keys()) ^ set(ground.keys())} \n\n\n{solution} \n\n\n{ground}'
+  for pos in solution.keys():
+    assert solution[pos] == ground[pos], f'solution[{pos}] != ground[{pos}], {solution[pos]} != {ground[pos]}'
+
+
 if __name__ == '__main__':
   test_ground_1()
   test_ground_2()
+  test_ground_3()

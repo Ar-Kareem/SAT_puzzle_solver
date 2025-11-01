@@ -189,7 +189,7 @@ def main(image):
     axs[0, 1].axvline(target_left, color='red')
     axs[1, 0].axvline(target_right, color='red')
     axs[1, 1].axvline(target_bottom, color='red')
-    plt.show()
+    # plt.show()
     # 1/0
     arr = np.zeros((j_len, i_len), dtype=object)
     output = {'top': arr.copy(), 'left': arr.copy(), 'right': arr.copy(), 'bottom': arr.copy()}
@@ -261,5 +261,6 @@ if __name__ == '__main__':
     # main(Path(__file__).parent / 'input_output' / 'heyawake_MTQ6ODQ4LDEzOQ==.png')
     # main(Path(__file__).parent / 'input_output' / 'sudoku_jigsaw.png')
     # main(Path(__file__).parent / 'input_output' / 'Screenshot 2025-11-01 025846.png')
-    main(Path(__file__).parent / 'input_output' / 'Screenshot 2025-11-01 035658.png')
+    # main(Path(__file__).parent / 'input_output' / 'Screenshot 2025-11-01 035658.png')
+    main(Path(__file__).parent / 'input_output' / 'Screenshot 2025-11-01 044110.png')
 
