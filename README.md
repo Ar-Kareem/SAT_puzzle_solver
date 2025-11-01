@@ -584,7 +584,15 @@ Time taken: 0.04 seconds
 
 ## Sudoku (Puzzle Type #2)
 
-Also known as Number Place and Solo.
+Also known as Number Place and Solo. 
+
+The code can:
+
+1. Solve arbitrarily sized valid board sizes, thus can be used to solve:
+   - Hex Sudoku (a 16x16 variant) 
+   - Kidoku (a kid-friendly sudoku variant)
+2. Solve the ["Sandwich" sudoku variant](https://dkmgames.com/SandwichSudoku/) using the optional parameter `sandwich={'side': [...], 'bottom': [...]}`
+3. Solve the ["Sudoku-X" variant](https://www.sudopedia.org/wiki/Sudoku-X) using the optional parameter `unique_diagonal=True`
 
 * [**Play online**](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/solo.html)
 
@@ -608,12 +616,6 @@ You are given some of the numbers as clues; your aim is to place the rest of the
 <img src="https://raw.githubusercontent.com/Ar-Kareem/puzzle_solver/master/images/puzzles/sudoku_unsolved.png" alt="Sudoku unsolved" width="500">
 
 Code to utilize this package and solve the puzzle:
-
-Note: 
-
-- The solver also supports solving the ["Sandwich" sudoku variant](https://dkmgames.com/SandwichSudoku/) through the optional parameter ``sandwich={'side': [...], 'bottom': [...] }``。
-
-- The solver also supports solving the ["Sudoku-X" variant](https://www.sudopedia.org/wiki/Sudoku-X) through the optional parameter ``unique_diagonal=True``。
 
 ```python
 import numpy as np

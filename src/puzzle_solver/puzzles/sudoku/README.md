@@ -1,6 +1,14 @@
 # Sudoku (Puzzle Type #2)
 
-This is a dedicated solver for Sudoku. Also known as Number Place and Solo.
+This is a dedicated solver for Sudoku. Also known as Number Place and Solo. 
+
+The code can:
+
+1. Solve arbitrarily sized valid board sizes, thus can be used to solve:
+   - Hex Sudoku (a 16x16 variant) 
+   - Kidoku (a kid-friendly sudoku variant)
+2. Solve the ["Sandwich" sudoku variant](https://dkmgames.com/SandwichSudoku/) using the optional parameter `sandwich={'side': [...], 'bottom': [...]}`
+3. Solve the ["Sudoku-X" variant](https://www.sudopedia.org/wiki/Sudoku-X) using the optional parameter `unique_diagonal=True`
 
 Below are the details of how to utilize the solver. In addition, the solver gives all possible solutions to the input thus it can be utilized to figure out if a single partial input board has multiple possible solutions.
 
